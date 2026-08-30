@@ -265,9 +265,6 @@
                 MtaH5.pgv()
             }
             
-            // prismjs
-            typeof Prism === 'object' && Prism.highlightAll()
-            
             typeof preloader === 'object' && preloader.endLoading()
         })
         
@@ -293,12 +290,6 @@
     if (GLOBAL_CONFIG.isMusic) {
         heo.changeMusicBg(false);
     }
-    //代码块
-    if (GLOBAL_CONFIG.prism.enable) {
-        halo.addPrismTool()
-        halo.dataCodeTheme()
-    }
-
 </script>
 </body>
 

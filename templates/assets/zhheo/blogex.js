@@ -232,10 +232,6 @@ var getTimeState = () => {
             $(".menu-darkmode-text").text("浅色模式")),
             handleCases()
         heo.darkModeStatus();
-        //代码块
-        if (GLOBAL_CONFIG.prism.enable) {
-            halo.dataCodeTheme();
-        }
     }
     , handleCases = () => {
         "function" == typeof utterancesTheme && utterancesTheme(),

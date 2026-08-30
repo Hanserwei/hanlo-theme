@@ -37,10 +37,8 @@
           rel="stylesheet"
     />
 
-    <!-- 代码块自动识别语言 -->
-    <th:block th:replace="~{modules/common/code}"/>
-    <!--  代码块-->
-    <th:block th:replace="~{macro/prism-code}"/>
+    <!-- Shiki 代码高亮 -->
+    <th:block th:replace="~{macro/shiki-code}"/>
 
     <!-- 页脚内容-样式一 -->
     <th:block th:replace="~{modules/common/footer-style-one}"/>

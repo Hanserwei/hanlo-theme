@@ -44,15 +44,17 @@
             rightMenuMsgToTraditionalChinese: "轉為繁體",
             rightMenuMsgToSimplifiedChinese: "转为简体"
         },
-        prism: {
-            enable: [[${ theme.config.code.enable }]],
+        shiki: {
+            enable: [[${theme.config.code.shiki_enable == null || theme.config.code.shiki_enable}]],
             enable_title: [[${ theme.config.code.enable_title }]],
             enable_hr: [[${ theme.config.code.enable_hr }]],
             enable_line: [[${ theme.config.code.enable_line }]],
             enable_copy: [[${ theme.config.code.enable_copy }]],
             enable_expander: [[${ theme.config.code.enable_expander }]],
-            prism_limit: Number([[${#strings.isEmpty(theme.config.code.height_limit) ? 300 : theme.config.code.height_limit}]]) + 30,
-            enable_height_limit: [[${theme.config.code.enable_height_limit}]]
+            height_limit: Number([[${#strings.isEmpty(theme.config.code.height_limit) ? 300 : theme.config.code.height_limit}]]),
+            enable_height_limit: [[${theme.config.code.enable_height_limit}]],
+            theme_light: "[(${theme.config.code.theme_light})]",
+            theme_dark: "[(${theme.config.code.theme_dark})]"
         },
         source: {
             power: {

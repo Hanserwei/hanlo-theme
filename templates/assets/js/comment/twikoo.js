@@ -7,8 +7,7 @@
             region: '',
             path: location.pathname.replace(/\/page\/\d$/, ""),
             onCommentLoaded: function () {
-                typeof hljs === 'object' && hljs.highlightAll()
-                typeof Prism === 'object' && Prism.highlightAll()
+                window.haloShiki && window.haloShiki.highlightAll(document.getElementById('post-comment'))
                 $("input").focus(function () {
                     heo_intype = true;
                 });
