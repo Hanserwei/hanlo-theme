@@ -1,14 +1,11 @@
 apiVersion: theme.halo.run/v1alpha1
 kind: Theme
 metadata:
-  name: theme-hao
-  annotations:
-    "store.halo.run/app-id": "app-MgZJX"
+  name: theme-hanlo
 spec:
-  displayName: Hao
+  displayName: Hanlo Theme
   author:
-    name: 程序员小航 & 困困鱼 & Carol
-    website: https://github.com/chengzhongxue
+    name: Hanserwei
   customTemplates:
     page:
       - name: 友情链接页面模版
@@ -40,12 +37,9 @@ spec:
         screenshot:
         file: new_comment.html
 
-  description: Halo 2.x Theme base on Thymeleaf, Referring to Butterfly and Heo
-  logo: /themes/theme-hao/assets/images/hao-logo.jpg
-  homepage: https://www.halo.run/store/apps/app-MgZJX
-  issues: https://github.com/chengzhongxue/halo-theme-hao/issues
-  repo: https://github.com/chengzhongxue/halo-theme-hao
-  settingName: "theme-hao-setting"
-  configMapName: "theme-hao-configMap"
-  version: "1.7.5"
+  description: 适用于 Halo 2.x、基于 Thymeleaf 的响应式博客主题
+  logo: /themes/theme-hanlo/assets/images/hanlo-logo.png
+  settingName: "theme-hanlo-setting"
+  configMapName: "theme-hanlo-configMap"
+  version: "1.0.0"
   requires: ">=2.22.1"

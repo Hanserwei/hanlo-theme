@@ -712,7 +712,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     src: this.getAttribute("src") || "",
                     player:
                         this.getAttribute("player") ||
-                        `/themes/theme-hao/assets/libs/dplayer/dplayer.html?url=`,
+                        `/themes/theme-hanlo/assets/libs/dplayer/dplayer.html?url=`,
                     width: this.getAttribute("width") || "100%",
                     height: this.getAttribute("height") || "500px",
                 };

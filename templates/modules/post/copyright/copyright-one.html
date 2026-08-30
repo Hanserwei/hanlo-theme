@@ -6,10 +6,10 @@
             <div th:with="contributor=${contributorFinder.getContributor(post.owner.metadata.name)}">
                 <a class="post-copyright__author_img" th:href="'/authors/'+${contributor.name}" data-pjax-state="">
                     <!--                <img class="post-copyright__author_img_back entered loading"-->
-                    <!--                 th:src="@{${#strings.isEmpty(site.logo) ?  assets_link + '/images/hao-logo.jpg' : site.logo}}">-->
+                    <!--                 th:src="@{${#strings.isEmpty(site.logo) ?  assets_link + '/images/hanlo-logo.png' : site.logo}}">-->
                     <!-- 获取当前文章对象（假设变量为 $post） -->
                     <img class="post-copyright__author_img_back entered loading"
-                         th:src="${contributor.avatar ?: assets_link + '/images/hao-logo.jpg'}"/>
+                         th:src="${contributor.avatar ?: assets_link + '/images/hanlo-logo.png'}"/>
                 </a>
             </div>
             <div class="post-copyright__author_name">[[${site.title}]]</div>

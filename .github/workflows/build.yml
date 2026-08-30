@@ -17,24 +17,22 @@ jobs:
       - name: Compress zip
         run: |
           PACKAGE_VERSION=$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)
-          PRE_ZIP_FOLDER=halo-theme-hao-${PACKAGE_VERSION}
-          ARTIFACT_NAME=${PRE_ZIP_FOLDER}.zip
+          THEME_NAME=theme-hanlo
+          ARTIFACT_NAME=${THEME_NAME}-${PACKAGE_VERSION}.zip
           ARTIFACT_PATHNAME=dist/${ARTIFACT_NAME}
-          echo "halo-theme-hao version $PACKAGE_VERSION"
+          echo "${THEME_NAME} version $PACKAGE_VERSION"
           echo "Artifact name: ${ARTIFACT_NAME}"
           echo "Artifact pathname: ${ARTIFACT_PATHNAME}"
           echo "PACKAGE_VERSION=${PACKAGE_VERSION}" >> $GITHUB_ENV
           echo "ARTIFACT_NAME=${ARTIFACT_NAME}" >> $GITHUB_ENV
           echo "ARTIFACT_PATHNAME=${ARTIFACT_PATHNAME}" >> $GITHUB_ENV
           echo "RELEASE_ID=${{ github.event.release.id }}" >> $GITHUB_ENV
-          mkdir $PRE_ZIP_FOLDER
-          mkdir dist
-          cp -r theme.yaml settings.yaml annotation-setting.yaml templates $PRE_ZIP_FOLDER/
-          zip -r $ARTIFACT_PATHNAME $PRE_ZIP_FOLDER
+          mkdir -p dist
+          zip -r $ARTIFACT_PATHNAME theme.yaml settings.yaml annotation-setting.yaml templates
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: halo-theme-hao
+          name: theme-hanlo
           path: |
             dist/*.zip
           retention-days: 7
@@ -53,20 +51,18 @@ jobs:
       - name: Compress zip
         run: |
           PACKAGE_VERSION=$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)
-          PRE_ZIP_FOLDER=halo-theme-hao-${PACKAGE_VERSION}
-          ARTIFACT_NAME=${PRE_ZIP_FOLDER}.zip
+          THEME_NAME=theme-hanlo
+          ARTIFACT_NAME=${THEME_NAME}-${PACKAGE_VERSION}.zip
           ARTIFACT_PATHNAME=dist/${ARTIFACT_NAME}
-          echo "halo-theme-hao version $PACKAGE_VERSION"
+          echo "${THEME_NAME} version $PACKAGE_VERSION"
           echo "Artifact name: ${ARTIFACT_NAME}"
           echo "Artifact pathname: ${ARTIFACT_PATHNAME}"
           echo "PACKAGE_VERSION=${PACKAGE_VERSION}" >> $GITHUB_ENV
           echo "ARTIFACT_NAME=${ARTIFACT_NAME}" >> $GITHUB_ENV
           echo "ARTIFACT_PATHNAME=${ARTIFACT_PATHNAME}" >> $GITHUB_ENV
           echo "RELEASE_ID=${{ github.event.release.id }}" >> $GITHUB_ENV
-          mkdir $PRE_ZIP_FOLDER
-          mkdir dist
-          cp -r theme.yaml settings.yaml annotation-setting.yaml templates $PRE_ZIP_FOLDER/
-          zip -r $ARTIFACT_PATHNAME $PRE_ZIP_FOLDER
+          mkdir -p dist
+          zip -r $ARTIFACT_PATHNAME theme.yaml settings.yaml annotation-setting.yaml templates
       - name: Upload a release asset
         uses: actions/github-script@v2
         with:

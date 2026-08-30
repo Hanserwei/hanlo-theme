@@ -1,7 +1,7 @@
 apiVersion: v1alpha1
 kind: Setting
 metadata:
-  name: theme-hao-setting
+  name: theme-hanlo-setting
 spec:
   forms:
     - group: basics
@@ -372,7 +372,7 @@ spec:
             todayRecommend: true
             todayRecommendContent:
               todayRecommendUrl: /
-              todayRecommendTitle: Halo-Theme-Hao
+              todayRecommendTitle: Hanlo Theme
               todayRecommendCover: https://liuzhihang.com/upload/hao_dark.jpg
               todayRecommendxTitle: 今日推荐
             recommendPost: latest
@@ -407,7 +407,7 @@ spec:
                   name: todayRecommendTitle
                   label: 大标题
                   placeholder: 请输入标题
-                  value: Halo-Theme-Hao
+                  value: Hanlo Theme
                 - $formkit: attachment
                   name: todayRecommendCover
                   label: 背景图
@@ -933,7 +933,7 @@ spec:
             - $formkit: attachment
               name: backgroundImg
               label: 背景图片
-              value: /themes/theme-hao/assets/images/sidebar/profile.webp
+              value: /themes/theme-hanlo/assets/images/sidebar/profile.webp
               width: "15rem"
               aspectRatio: "16/9"
               placeholder: 请输入背景图片路径或地址（建议使用 280px * 330px 图片效果最佳）
@@ -993,7 +993,7 @@ spec:
             wechatImgFace:
             wechatImgBack:
             color: "#07C160"
-            wechatImg: "/themes/theme-hao/assets/images/gzh_cover.png"
+            wechatImg: "/themes/theme-hanlo/assets/images/gzh_cover.png"
             url: "/wechat"
           children:
             - $formkit: color
@@ -3057,8 +3057,8 @@ spec:
           label: 懒加载
           value:
             enable: true
-            errorImg: "/themes/theme-hao/assets/images/404.gif"
-            loadingImg: /themes/theme-hao/assets/images/404s.gif
+            errorImg: "/themes/theme-hanlo/assets/images/404.gif"
+            loadingImg: /themes/theme-hanlo/assets/images/404s.gif
           children:
             - $formkit: switch
               name: enable
@@ -3128,7 +3128,7 @@ spec:
           label: 404 页面
           value:
             subtitle: 请尝试站内搜索寻找文章
-            background: /themes/theme-hao/assets/images/404s.gif
+            background: /themes/theme-hanlo/assets/images/404s.gif
           children:
             - $formkit: text
               name: subtitle
@@ -3143,7 +3143,7 @@ spec:
           label: 500 页面
           value:
             subtitle: 服务器内部出现错误，请查看日志
-            background: /themes/theme-hao/assets/images/404s.gif
+            background: /themes/theme-hanlo/assets/images/404s.gif
           children:
             - $formkit: text
               name: subtitle
