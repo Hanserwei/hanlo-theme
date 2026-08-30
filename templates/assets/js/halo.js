@@ -147,7 +147,7 @@ let halo = {
             if (values.length === 0) {
                 powerStar.href = GLOBAL_CONFIG.source.power.powerLink + GLOBAL_CONFIG.source.power.username
                 powerStar.innerHTML = ` 
-                        <div id="power-star-image" style="background-image: url('/themes/theme-hao/assets/images/afadian/afadian.webp')">
+                        <div id="power-star-image" style="background-image: url('/themes/theme-hanlo/assets/images/afadian/afadian.webp')">
                         </div>
                         <div class="power-star-body">
                             <div id="power-star-title">还没有人赞助～</div>

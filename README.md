@@ -1,16 +1,16 @@
 <div align="center">
-  <img width="96" src="./templates/assets/images/hao-logo.jpg" alt="Hao 主题 Logo">
-  <h1>Halo Theme Hao</h1>
+  <img width="96" src="./templates/assets/images/hanlo-logo.png" alt="Hanlo Theme Logo">
+  <h1>Hanlo Theme</h1>
   <p>适用于 Halo 2.x 的响应式博客主题</p>
 </div>
 
-> 本仓库是 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) 的定制版本，后续将独立维护，功能和配置可能与上游版本不同。
+> Hanlo Theme 基于 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) 定制，后续将独立维护，功能和配置可能与上游版本不同。
 
 [功能特性](#功能特性) · [环境要求](#环境要求) · [快速开始](#快速开始) · [插件支持](#插件支持) · [重构路线图](./docs/MODERNIZATION_ROADMAP.md) · [参与开发](#参与开发)
 
 ## 简介
 
-Halo Theme Hao 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/halo-dev/halo) 的博客主题。主题设计参考了 Hexo 社区的 [Heo](https://blog.zhheo.com/) 与 [Butterfly](https://github.com/jerryc127/hexo-theme-butterfly)。
+Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/halo-dev/halo) 的博客主题。主题设计参考了 Hexo 社区的 [Heo](https://blog.zhheo.com/) 与 [Butterfly](https://github.com/jerryc127/hexo-theme-butterfly)。
 
 本分支在原主题基础上进行定制化开发，目前已使用 Shiki 替代 Prism 提供代码高亮。
 
@@ -39,7 +39,7 @@ Halo Theme Hao 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/
 1. 从本仓库的 Releases 页面下载主题压缩包，或在本地打包主题。
 2. 登录 Halo 控制台，进入“外观 → 主题”。
 3. 选择“安装主题”，上传主题压缩包。
-4. 安装完成后启用 Hao，并进入主题设置完成初始化。
+4. 安装完成后启用 Hanlo Theme，并进入主题设置完成初始化。
 
 首次启用时请填写“建站时间”等必填项，并保存各个设置分组。如果启用后出现 `500` 错误，请先确认 Halo 版本符合要求，再重新保存全部主题设置。
 
@@ -49,12 +49,11 @@ Halo Theme Hao 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/
 
 ```bash
 git archive --format=zip \
-  --prefix=halo-theme-hao/ \
-  --output=halo-theme-hao.zip \
+  --output=theme-hanlo-1.0.0.zip \
   HEAD theme.yaml settings.yaml annotation-setting.yaml templates
 ```
 
-生成的 `halo-theme-hao.zip` 可直接上传至 Halo 控制台。
+生成的 `theme-hanlo-1.0.0.zip` 可直接上传至 Halo 控制台。
 
 ## 插件支持
 
@@ -77,8 +76,8 @@ git archive --format=zip \
 ## 参与开发
 
 ```bash
-git clone git@github.com:Hanserwei/halo-theme-hao.git
-cd halo-theme-hao
+git clone <repository-url> hanlo-theme
+cd hanlo-theme
 git switch master
 ```
 
@@ -91,7 +90,7 @@ git switch master
 | `annotation-setting.yaml` | 文章与页面的扩展设置 |
 | `templates/` | Thymeleaf 模板及静态资源 |
 
-发现问题或希望提交改进时，请通过本仓库的 [Issues](https://github.com/Hanserwei/halo-theme-hao/issues) 和 Pull Requests 反馈。
+发现问题或希望提交改进时，请通过当前仓库的 Issues 和 Pull Requests 反馈。
 
 ## 致谢
 

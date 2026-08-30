@@ -8,10 +8,10 @@
         <version>2.7.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.liuzhihang</groupId>
-    <artifactId>halo-theme-hao</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>halo-theme-hao</name>
+    <groupId>com.hanserwei</groupId>
+    <artifactId>hanlo-theme</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>hanlo-theme</name>
 
     <properties>
         <java.version>17</java.version>

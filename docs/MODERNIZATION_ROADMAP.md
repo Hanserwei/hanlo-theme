@@ -1,4 +1,4 @@
-# Halo Theme Hao 渐进式现代化重构路线图
+# Hanlo Theme 渐进式现代化重构路线图
 
 ## 文档目的
 

@@ -11,7 +11,7 @@
                     <div class="author-info__sayhi" id="author-info__sayhi" onclick="heo.changeSayHelloText()">你好啊！我是
                     </div>
                     <img class="avatar-img"
-                         th:with=" img = @{${#strings.isEmpty(site.logo) ? assets_link + '/images/hao-logo.jpg' : site.logo}}"
+                         th:with=" img = @{${#strings.isEmpty(site.logo) ? assets_link + '/images/hanlo-logo.png' : site.logo}}"
 
                          th:src="${isLazyload ? '' : img}"
                          th:data-lazy-src="${ isLazyload ? img : ''}">
@@ -143,7 +143,7 @@
             </div>
             <div class="avatar-img-group">
                 <img class="avatar-img" alt="avatar"
-                     th:with="img = @{${#strings.isEmpty(site.logo) ? assets_link + '/images/hao-logo.jpg' : site.logo}}"
+                     th:with="img = @{${#strings.isEmpty(site.logo) ? assets_link + '/images/hanlo-logo.png' : site.logo}}"
 
                      th:src="${isLazyload ? '' : img}"
                      th:data-lazy-src="${ isLazyload ? img : ''}">
