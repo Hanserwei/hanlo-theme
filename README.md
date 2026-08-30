@@ -1,77 +1,105 @@
 <div align="center">
-<!-- 主题Logo -->
-<img width="100px" src="https://api.minio.yyds.pink/moony/files/2024/04/halo-theme-hao-sbxqdmuv.png">
-<!-- 主题名称 -->
-<h1>Halo-Theme-Hao</h1>
-<!-- 快捷导航 -->
-<p align="center">
-
-[主题预览](#-预览) | [快速上手](#-安装) | [使用文档](https://www.yuque.com/liuzhihangs/halo-theme-hao) | [加入我们](#-讨论)
-
-</p>
+  <img width="96" src="./templates/assets/images/hao-logo.jpg" alt="Hao 主题 Logo">
+  <h1>Halo Theme Hao</h1>
+  <p>适用于 Halo 2.x 的响应式博客主题</p>
 </div>
 
-## ℹ️ 简介
+> 本仓库是 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) 的定制版本，后续将独立维护，功能和配置可能与上游版本不同。
 
-[Halo-Theme-Hao](https://github.com/chengzhongxue/halo-theme-hao)
-是一款适用于 [Halo2.x](https://github.com/halo-dev/halo) 的博客主题。
+[功能特性](#功能特性) · [环境要求](#环境要求) · [快速开始](#快速开始) · [插件支持](#插件支持) · [重构路线图](./docs/MODERNIZATION_ROADMAP.md) · [参与开发](#参与开发)
 
-移植自 [Hexo](https://hexo.io/zh-cn/index.html) 社区中 [张洪 Heo](https://blog.zhheo.com/)
-对 [Hexo-Theme-Butterfly](https://github.com/chengzhongxue/halo-theme-hao)
-主题的魔改版本。
+## 简介
 
-## 🚨注意事项(看我看我)
+Halo Theme Hao 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/halo-dev/halo) 的博客主题。主题设计参考了 Hexo 社区的 [Heo](https://blog.zhheo.com/) 与 [Butterfly](https://github.com/jerryc127/hexo-theme-butterfly)。
 
-1. **建站时间必填**
-2. 如果安装主题后报错，请仔细查阅[主题说明](https://github.com/chengzhongxue/halo-theme-hao)
-   与[更新说明](https://github.com/chengzhongxue/halo-theme-hao/releases)！！！
-3. 如果还未解决，可以加群求助！！！
-4. 如果群友也解决不了，再考虑提ISSUE！！！
-5. `1.5.5`及以上版本需要`Halo`版本>=`2.17.0`
-6. `1.6.0`及以上版本需要`Halo`版本>=`2.20.0`（自定义登录页兼容）
-7. **若安装主题后出现500错误，请到主题设置页面，将每个设置项都保存一下！！！**
+本分支在原主题基础上进行定制化开发，目前已使用 Shiki 替代 Prism 提供代码高亮。
 
-### 🔌 插件依赖
+项目将按照[渐进式现代化重构路线图](./docs/MODERNIZATION_ROADMAP.md)持续演进，在保持 Halo 兼容性和页面稳定性的前提下，逐步完善构建、类型、模块化、测试和发布体系。
 
-> 所有插件均为可选，不安装则不会出现对应功能。
-> 部分插件可能已经预设在 Halo 内。
-> 部分插件主题尚未适配。
+## 功能特性
 
-- 评论功能 [plugin-comment-widget](https://www.halo.run/store/apps/app-YXyaD)
-- 搜索功能 [plugin-search-widget](https://www.halo.run/store/apps/app-DlacW)
-- 友链页面 [plugin-links](https://www.halo.run/store/apps/app-hfbQg)
-- 瞬间页面 [plugin-moments](https://www.halo.run/store/apps/app-SnwWD)
-- 追番插件 [plugin-bilibili-bangumi](https://www.halo.run/store/apps/app-OTFPN)
-- 图库插件 [plugin-photos](https://www.halo.run/store/apps/app-BmQJW)
-- katex插件 [plugin-katex](https://www.halo.run/store/apps/app-ISCsX)
-- 我的装备 [plugin-equipment](https://www.halo.run/store/apps/app-ytygyqml)
-- Markdown / HTML 内容块插件 [plugin-hybrid-edit-block](https://www.halo.run/store/apps/app-NgHnY)
-- 爱发电 [plugin-afdian](https://www.halo.run/store/apps/app-oXvZp)
+- 响应式博客布局，适配桌面端与移动端
+- 可视化主题设置，无需直接修改模板
+- 支持文章、独立页面、友链、瞬间、图库等内容类型
+- 支持评论、搜索以及多种 Halo 插件集成
+- 使用 Shiki 渲染代码高亮
+- 提供关于、音乐、留言板、待办清单、相册等自定义页面模板
 
-> 更多插件请参见：https://github.com/halo-sigs/awesome-halo
+## 环境要求
 
-## 📝 使用
+- Halo `2.22.1` 或更高版本
+- 安装主题前建议先备份 Halo 数据及现有主题配置
 
-* [新版本主题文档(持续更新中)](https://docs.kunkunyu.com/docs/hao)
-* [老版本主题文档](https://www.yuque.com/liuzhihangs/halo-theme-hao)
+具体版本要求以 [`theme.yaml`](./theme.yaml) 中的 `spec.requires` 字段为准。
 
-## 💬 讨论
+## 快速开始
 
-如果你对主题有什么建议或者意见，欢迎提 PR & issue。
+### 安装主题
 
-* 添加企业微信 （备注进群）
-<img width="360" src="https://api.minio.yyds.pink/kunkunyu/files/2025/02/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250212142105-pbceif.jpg" />
+1. 从本仓库的 Releases 页面下载主题压缩包，或在本地打包主题。
+2. 登录 Halo 控制台，进入“外观 → 主题”。
+3. 选择“安装主题”，上传主题压缩包。
+4. 安装完成后启用 Hao，并进入主题设置完成初始化。
 
-* QQ群
-<img width="360" src="https://api.minio.yyds.pink/kunkunyu/files/2025/05/qq-708998089-iqowsh.webp" />
+首次启用时请填写“建站时间”等必填项，并保存各个设置分组。如果启用后出现 `500` 错误，请先确认 Halo 版本符合要求，再重新保存全部主题设置。
 
-> 卖服务器的广告人，就不要加了。
+### 本地打包
 
-## 🔐 许可
+在仓库根目录执行：
 
-[Halo-Theme-Hao](https://github.com/chengzhongxue/halo-theme-hao) 使用 [GPL-v3.0](./LICENSE) 协议开源，请遵守开源协议。
+```bash
+git archive --format=zip \
+  --prefix=halo-theme-hao/ \
+  --output=halo-theme-hao.zip \
+  HEAD theme.yaml settings.yaml annotation-setting.yaml templates
+```
 
+生成的 `halo-theme-hao.zip` 可直接上传至 Halo 控制台。
 
+## 插件支持
 
+所有插件均为可选依赖；未安装插件时，对应功能不会显示。
 
+| 功能 | 插件 |
+| --- | --- |
+| 评论 | [plugin-comment-widget](https://www.halo.run/store/apps/app-YXyaD) |
+| 搜索 | [plugin-search-widget](https://www.halo.run/store/apps/app-DlacW) |
+| 友链 | [plugin-links](https://www.halo.run/store/apps/app-hfbQg) |
+| 瞬间 | [plugin-moments](https://www.halo.run/store/apps/app-SnwWD) |
+| 追番 | [plugin-bilibili-bangumi](https://www.halo.run/store/apps/app-OTFPN) |
+| 图库 | [plugin-photos](https://www.halo.run/store/apps/app-BmQJW) |
+| 数学公式 | [plugin-katex](https://www.halo.run/store/apps/app-ISCsX) |
+| 装备页面 | [plugin-equipment](https://www.halo.run/store/apps/app-ytygyqml) |
+| Markdown / HTML 内容块 | [plugin-hybrid-edit-block](https://www.halo.run/store/apps/app-NgHnY) |
 
+插件兼容性可能随 Halo 或插件版本变化。遇到问题时，请先确认 Halo、主题和插件均使用兼容版本。
+
+## 参与开发
+
+```bash
+git clone git@github.com:Hanserwei/halo-theme-hao.git
+cd halo-theme-hao
+git switch master
+```
+
+主要目录和文件：
+
+| 路径 | 说明 |
+| --- | --- |
+| `theme.yaml` | 主题元数据与 Halo 版本要求 |
+| `settings.yaml` | 主题设置项定义 |
+| `annotation-setting.yaml` | 文章与页面的扩展设置 |
+| `templates/` | Thymeleaf 模板及静态资源 |
+
+发现问题或希望提交改进时，请通过本仓库的 [Issues](https://github.com/Hanserwei/halo-theme-hao/issues) 和 Pull Requests 反馈。
+
+## 致谢
+
+- [Halo](https://github.com/halo-dev/halo)
+- [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao)
+- [Hexo Theme Butterfly](https://github.com/jerryc127/hexo-theme-butterfly)
+- [Heo](https://blog.zhheo.com/)
+
+## 许可证
+
+本项目基于 [GPL-3.0](./LICENSE) 协议开源。使用、修改和分发时请遵守许可证要求，并保留必要的版权与来源说明。
