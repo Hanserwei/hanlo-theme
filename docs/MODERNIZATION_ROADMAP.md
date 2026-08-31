@@ -218,7 +218,7 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 
 ### 阶段 1：建立现代构建基础
 
-**状态：进行中（本地验收已通过，待 CI 与合并）**
+**状态：已完成**
 
 目标是在不改变页面外观和业务行为的前提下，让项目拥有可复现的开发、检查、构建和打包流程。
 
@@ -486,7 +486,7 @@ chore: establish Vite and TypeScript build pipeline
 | 阶段 | 状态 | 目标 |
 | --- | --- | --- |
 | 阶段 0 | 已完成 | 功能盘点、裁剪与回归基线 |
-| 阶段 1 | 进行中 | Vite、TypeScript、pnpm、CI 和可复现构建；本地验收通过，待 CI 与合并 |
+| 阶段 1 | 已完成 | Vite、TypeScript、pnpm、CI 和可复现构建 |
 | 阶段 2 | 未开始 | 统一页面与 PJAX 生命周期 |
 | 阶段 3 | 未开始 | JavaScript/TypeScript 模块化 |
 | 阶段 4 | 未开始 | 第三方依赖治理和按需加载 |

@@ -2,7 +2,7 @@
 
 ## 1. 状态
 
-进行中；本地实现与验收已通过，待 GitHub CI 实际运行并合并。
+已完成。实现提交为 [`e4a10bf`](https://github.com/Hanserwei/hanlo-theme/commit/e4a10bf76a5a5033677cffdd2b3101c54e2fe4e2)，远端 [CI 运行 33414807718](https://github.com/Hanserwei/hanlo-theme/actions/runs/33414807718) 已通过。
 
 阶段目标是在不改变页面结构、功能和视觉的前提下，把主题迁移到可复现的 pnpm、TypeScript、Vite Plus 和 Halo 官方主题工具链。
 

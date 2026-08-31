@@ -2,12 +2,14 @@
 
 ## 1. 审计结论
 
-阶段 1 的实现和本地验收已通过。正式状态保持“进行中”，原因只有两项：本次改动尚未提交或合并，GitHub CI 也尚未在远端实际运行。
+阶段 1 已完成。实现已提交并推送至 `master`，远端 CI 的冻结安装、检查、构建、产物同步、ZIP 校验和 artifact 上传全部通过。
 
 | 字段 | 值 |
 | --- | --- |
 | 日期 | 2026-09-01 |
 | 基准提交 | `04a03538` |
+| 实现提交 | [`e4a10bf`](https://github.com/Hanserwei/hanlo-theme/commit/e4a10bf76a5a5033677cffdd2b3101c54e2fe4e2) |
+| 远端 CI | [CI 33414807718](https://github.com/Hanserwei/hanlo-theme/actions/runs/33414807718)，通过 |
 | Halo | `2.26.0-SNAPSHOT`，最低兼容目标 `2.26.0` |
 | Node.js | `24.16.0` |
 | pnpm | `10.33.0` |
@@ -25,13 +27,13 @@
 | 首次原样迁移 | 通过 | 98 个输出 HTML 和全部静态资源与阶段 0 运行时快照逐字节一致；未改写 PJAX、业务脚本和 CSS |
 | 构建脚本 | 通过 | `dev`、`check`、`build-only`、`build`、`validate`、`verify-build` 均已提供；watch 初始构建通过，触碰 `src/index.html` 后触发第二次构建 |
 | 版本单一来源 | 通过 | 版本只保留在 `theme.yaml:spec.version`；校验脚本拒绝 `package.json` 再声明版本 |
-| CI/CD | 本地静态通过 | CI 使用 Node.js 24、pnpm 10.33.0、冻结安装、检查、构建、产物差异和 ZIP 校验；CD 使用 Halo 官方 `theme-cd.yaml@v4`；YAML 解析通过 |
+| CI/CD | 通过 | [CI 33414807718](https://github.com/Hanserwei/hanlo-theme/actions/runs/33414807718) 使用 Node.js 24、pnpm 10.33.0 完成冻结安装、检查、构建、产物差异、ZIP 校验和 artifact 上传；CD 使用 Halo 官方 `theme-cd.yaml@v4` |
 | Maven/Spring Boot | 通过 | 无 Java 源码和 Maven 主题构建用途，已删除 `pom.xml` |
 | 本地 Halo 文档 | 通过 | `LOCAL_DEVELOPMENT.md` 记录 Halo 目录、监听构建和 `spring.thymeleaf.cache: false` |
 
 ## 3. 命令验收
 
-以下命令在当前工作树通过：
+以下命令在本地和远端 CI 通过：
 
 ```bash
 pnpm install --frozen-lockfile
@@ -78,6 +80,6 @@ unzip -t dist/theme-hanlo-1.0.0.zip
 
 ## 6. 正式完成条件
 
-- [ ] 在 GitHub 上触发并通过新增 CI。
-- [ ] 将阶段 1 改动提交并合并到 `master`。
-- [ ] 将路线图阶段 1 状态从“进行中”改为“已完成”，补充提交或 Pull Request 链接。
+- [x] 在 GitHub 上触发并通过新增 CI。
+- [x] 将阶段 1 改动提交并推送到 `master`。
+- [x] 将路线图阶段 1 状态从“进行中”改为“已完成”，补充提交和 CI 链接。
