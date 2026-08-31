@@ -247,7 +247,7 @@
         }, 600);
     }
     function aiGoHome() {
-        startAI("前往爱发电购买...", false);
+        startAI("正在返回本站首页...", false);
         sto[2] = setTimeout(() => {
             pjax.loadUrl("/");
         }, 1000);

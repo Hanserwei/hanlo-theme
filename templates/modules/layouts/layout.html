@@ -10,10 +10,6 @@
 
 <head>
     <th:block th:replace="~{modules/head :: head(htmlType = ${htmlType})}"/>
-    <link th:if="${#strings.equals(theme.config.comments.use, 'Waline')
-    && not #strings.isEmpty(theme.config.comments.walines.serverURL)}"
-          rel="stylesheet"
-          th:href="${not #strings.isEmpty(theme.config.comments.walines.walinesCss) ? theme.config.comments.walines.walinesCss : 'https://cdn.cbd.int/@waline/client@2.15.7/dist/waline.css' }">
     <!--  解决 katex pjax问题 -->
     <script th:if="${pluginFinder.available('plugin-katex')}" defer=""
             src="/plugins/plugin-katex/assets/static/katex.min.js"></script>
@@ -95,18 +91,10 @@
 
 </script>
 
-<!-- 网站背景 -->
-<div id="an_music_bg"></div>
-
 <!-- 控制台 -->
 <div th:replace="~{modules/widgets/console}"/>
 
 <div th:replace="~{modules/sidebar}"/>
-
-<!-- 左下角音乐 -->
-<th:block th:if="${theme.config.tool.nav_music.nav_musicEnable}">
-    <div th:replace="~{modules/widgets/nav-music}"/>
-</th:block>
 
 <!-- 内容 -->
 <th:block th:replace="${content}"></th:block>
@@ -139,16 +127,6 @@
         <script th:replace="~{modules/common/diytitle}"/>
     </div>
     
-    <!-- 评论 -->
-    <th:block th:if="${theme.config.comments.use!='commentWidget' && theme.config.comments.commentsEnable }"
-              th:with="use = ${theme.config.comments.use}">
-        <th:block th:replace="~{'modules/comment/' + ${use}}"></th:block>
-        <script th:if="${theme.config.comments.visitorMail.visitorMailEnable}">var visitorMail = "[(${theme.config.comments.visitorMail.mail})]";</script>
-    </th:block>
-    
-    <!--音乐-->
-    <script>var meting_api = "[(${theme.config.tool.nav_music.meting_api})]"; </script>
-    
     <!-- 深色模式下添加粒子效果canvas -->
     <canvas th:if="${theme.config.style.universe}" id="universe" width="1312" height="880"></canvas>
     <script th:if="${theme.config.style.universe}" async="" th:src="${assets_link + '/libs/canvas/dark.js'}"></script>
@@ -166,13 +144,6 @@
     
     <script th:src="${assets_link + '/libs/view-image/view-image.min.js'}"></script>
 
-    <link rel="stylesheet" th:href="${assets_link + '/libs/aplayer/APlayer.min.css'}"
-          media="all" onload="this.media='all'">
-    
-    <script th:src="${assets_link + '/libs/aplayer/APlayer.min.js'}"></script>
-    
-    <script th:src="${assets_link + '/libs/aplayer/Meting2.min.js'}"></script>
-    
     <script th:src="${assets_link + '/libs/pjax/pjax.min.js'}"></script>
     
     <!-- swiper 在瞬间滚动时会使用 -->
@@ -183,19 +154,8 @@
     <script th:if="${theme.config.tool.rightMenu.rightMenuEnable}"
             th:src="${assets_link + '/zhheo/rightmenu.js'}"></script>
     
-    <!-- 评论弹幕 -->
-    <script th:if="${ ( ( not #strings.isEmpty(theme.config.comments.twikoos.envId)  && not #strings.isEmpty(theme.config.comments.twikoos.accessToken) ) ||
-        ( not #strings.isEmpty(theme.config.comments.artalks.server) && not #strings.isEmpty(theme.config.comments.artalks.siteName)) ||
-          (#strings.equals(theme.config.comments.use, 'Waline') && not #strings.isEmpty(theme.config.comments.walines.serverURL)) )
-        && theme.config.comments.commentBarrageConfig.commentBarrageEnable
-        && theme.config.comments.commentsEnable}" data-pjax=""
-            th:src="${assets_link + '/zhheo/commentBarrage.js'}"></script>
-    
     <!-- Tocbot 目录生成 start -->
     <th:block th:replace="~{modules/common/toc-bot}"/>
-    
-    <!-- 51统计 -->
-    <th:block th:replace="~{modules/common/51-la}"/>
     
     <script>
         let pjaxSelectors = ['title', '#config-diff', '#body-wrap', '#rightside-config-hide', '#rightside-config-show', '.js-pjax', '#site-config']
@@ -217,14 +177,6 @@
             window.removeEventListener('scroll', window.tocScrollFn)
             
             typeof preloader === 'object' && preloader.initLoading()
-            
-            if (window.aplayers) {
-                for (let i = 0; i < window.aplayers.length; i++) {
-                    if (!window.aplayers[i].options.fixed) {
-                        window.aplayers[i].destroy()
-                    }
-                }
-            }
             
             typeof typed === 'object' && typed.destroy()
             
@@ -258,8 +210,6 @@
             // baidu analytics
             typeof _hmt === 'object' && _hmt.push(['_trackPageview', window.location.pathname]);
             
-            typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
-            
             // Analytics
             if (false) {
                 MtaH5.pgv()
@@ -286,10 +236,6 @@
     
     //页脚友联
     GLOBAL_CONFIG.isFriendLinksInFooter && heo.addFriendLinksInFooter()
-    //音乐页面切换歌曲调用
-    if (GLOBAL_CONFIG.isMusic) {
-        heo.changeMusicBg(false);
-    }
 </script>
 </body>
 

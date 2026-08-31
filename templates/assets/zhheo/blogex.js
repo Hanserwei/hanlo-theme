@@ -242,31 +242,6 @@ var getTimeState = () => {
         switchDarkMode: switchDarkMode
     };
 
-//引用到评论
-function rightMenuCommentText(txt) {
-    if (GLOBAL_CONFIG.rightMenuEnable) {
-        rm.hideRightMenu();
-    }
-    var input = document.getElementsByClassName(GLOBAL_CONFIG.source.comments.textarea)[0];
-    let evt = document.createEvent('HTMLEvents');
-    evt.initEvent('input', true, true);
-    let inputValue = replaceAll(txt, '\n', '\n> ')
-    input.value = '> ' + inputValue + '\n\n';
-    input.dispatchEvent(evt);
-    var domTop = document.querySelector("#post-comment").offsetTop;
-    window.scrollTo(0, domTop - 80);
-    input.focus();
-    input.setSelectionRange(-1, -1);
-    if (document.getElementById("comment-tips")) {
-        document.getElementById("comment-tips").classList.add("show");
-    }
-}
-
-//替换所有内容
-function replaceAll(string, search, replace) {
-    return string.split(search).join(replace);
-}
-
 // 移除赞赏蒙版
 function RemoveRewardMask() {
     if (!document.querySelector(".reward-main")) return;
@@ -388,17 +363,6 @@ function removeLoading() {
     }, 3000)
 }
 
-function addFriendLink() {
-    var input = document.getElementsByClassName(GLOBAL_CONFIG.source.comments.textarea)[0];
-    let evt = document.createEvent('HTMLEvents');
-    evt.initEvent('input', true, true);
-    input.value = '昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片，我会上传到我自己的图床）：\n描述：\n';
-    input.dispatchEvent(evt);
-    heo.scrollTo("#post-comment");
-    input.focus();
-    input.setSelectionRange(-1, -1);
-}
-
 //从一个给定的数组arr中,随机返回num个不重复项
 function getArrayItems(arr, num) {
     //新建一个数组,将传入的数组复制过来,用于运算,而不要直接操作传入的数组;
@@ -428,55 +392,10 @@ function getArrayItems(arr, num) {
 function bindTodayCardHoverEvent() {
     $(".topGroup").hover((function() {}
     ), (function() {
-            hoverOnCommentBarrage = !1,
-                document.getElementById("topGroup").classList.remove("hideCard"),
+            document.getElementById("topGroup").classList.remove("hideCard"),
                 document.getElementById("topGroup").style.zIndex = 1
         }
     ))
-}
-
-//评论增加放大功能
-function owoBig() {
-    new MutationObserver((e => {
-            for (let t of e)
-                if ("childList" === t.type)
-                    for (let e of t.addedNodes)
-                        if (e.classList && e.classList.contains("OwO-body")) {
-                            let t = e
-                                , o = ""
-                                , n = !0
-                                , a = document.createElement("div");
-                            a.id = "owo-big",
-                                document.querySelector("body").appendChild(a),
-                                t.addEventListener("contextmenu", (e => e.preventDefault())),
-                                t.addEventListener("mouseover", (e => {
-                                        "LI" === e.target.tagName && n && (n = !1,
-                                            o = setTimeout((() => {
-                                                    let t = 3 * e.target.clientWidth
-                                                        , o = e.x - e.offsetX - (t - e.target.clientWidth) / 2
-                                                        , n = e.y - e.offsetY;
-                                                    a.style.height = 3 * e.target.clientHeight + "px",
-                                                        a.style.width = t + "px",
-                                                        a.style.left = o + "px",
-                                                        a.style.top = n + "px",
-                                                        a.style.display = "flex",
-                                                        a.innerHTML = `<img src="${e.target.querySelector("img").src}">`
-                                                }
-                                            ), 300))
-                                    }
-                                )),
-                                t.addEventListener("mouseout", (e => {
-                                        a.style.display = "none",
-                                            n = !0,
-                                            clearTimeout(o)
-                                    }
-                                ))
-                        }
-        }
-    )).observe(document.getElementById("post-comment"), {
-        childList: !0,
-        subtree: !0
-    })
 }
 
 // 检测按键
@@ -502,20 +421,6 @@ window.addEventListener("resize", (function () {
         document.querySelector("#waterfall") && heo.reflashEssayWaterFall()
     }
 ));
-
-function initObserver() {
-    var e = document.getElementById("post-comment")
-        , t = document.getElementById("pagination");
-    e && new IntersectionObserver((function (e) {
-            e.forEach((function (e) {
-                    e.isIntersecting ? (t && t.classList.add("show-window"),
-                        document.querySelector(".comment-barrage").style.bottom = "-200px") : (t && t.classList.remove("show-window"),
-                        document.querySelector(".comment-barrage").style.bottom = "0px")
-                }
-            ))
-        }
-    )).observe(e)
-}
 
 // 页面百分比
 function percent() {
@@ -581,7 +486,6 @@ function initBlog() {
         heo.topPostScroll(),
         heo.sayhi(),
         heo.stopImgRightDrag(),
-        heo.addPowerLinksInPostRightSide(),
         heo.qrcodeCreate(),
         //右下角 snackbar 弹窗
     GLOBAL_CONFIG.source.tool.switch && heo.hidecookie(),
@@ -596,17 +500,12 @@ function initBlog() {
         //隐藏加载动画
     GLOBAL_CONFIG.loadingBox && heo.hideLoading(),
         heo.tagPageActive(),
-        initObserver(),
         checkUrlAndAddHideBanner(),
         bindTodayCardHoverEvent(),
-        halo.getTopSponsors(),
-        halo.checkAd()
+        halo.checkFooterBanner()
 
 
 }
-
-// 如果当前页有评论就执行函数
-document.getElementById("post-comment") && owoBig()
 
 //检查是否开启快捷键
 // if (localStorage.getItem('keyboardToggle') !== 'false') {
@@ -641,12 +540,6 @@ $(window).on('keydown', function (ev) {
         //响应打开控制台键 shift+A
         if (ev.keyCode == 65) {
             heo.showConsole();
-            return false;
-        }
-
-        //音乐控制 shift+M
-        if (ev.keyCode == 77) {
-            heo.musicToggle();
             return false;
         }
 

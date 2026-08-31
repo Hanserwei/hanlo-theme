@@ -16,10 +16,6 @@ spec:
         description: 关于页面
         screenshot:
         file: about.html
-      - name: 音乐页面模版
-        description: 音乐页面
-        screenshot:
-        file: music.html
       - name: 留言板页面模版
         description: 留言板页面
         screenshot:
@@ -42,4 +38,4 @@ spec:
   settingName: "theme-hanlo-setting"
   configMapName: "theme-hanlo-configMap"
   version: "1.0.0"
-  requires: ">=2.22.1"
+  requires: ">=2.26.0"

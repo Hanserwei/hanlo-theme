@@ -52,7 +52,6 @@ window.oncontextmenu = function (event) {
         let $rightMenuPlugin = $('.rightMenuPlugin');
         let $rightMenuCopyText = $('#menu-copytext');
         let $rightMenuPasteText = $('#menu-pastetext');
-        let $rightMenuCommentText = $('#menu-commenttext');
         let $rightMenuNewWindow = $('#menu-newwindow');
         let $rightMenuNewWindowImg = $('#menu-newwindowimg');
         let $rightMenuCopyLink = $('#menu-copylink');
@@ -60,11 +59,6 @@ window.oncontextmenu = function (event) {
         let $rightMenuDownloadImg = $('#menu-downloadimg');
         let $rightMenuSearch = $('#menu-search');
         let $rightMenuSearchBaidu = $('#menu-searchBaidu');
-        let $rightMenuMusicToggle = $('#menu-music-toggle');
-        let $rightMenuMusicBack = $('#menu-music-back');
-        let $rightMenuMusicForward = $('#menu-music-forward');
-        let $rightMenuMusicPlaylist = $('#menu-music-playlist');
-        let $rightMenuMusicCopyMusicName = $('#menu-music-copyMusicName');
         let href = event.target.href;
         let imgsrc = event.target.currentSrc;
 
@@ -77,12 +71,10 @@ window.oncontextmenu = function (event) {
         if (selectTextNow && window.getSelection()) {
             pluginMode = true;
             $rightMenuCopyText.show();
-            $rightMenuCommentText.show();
             $rightMenuSearch.show();
             $rightMenuSearchBaidu.show();
         } else {
             $rightMenuCopyText.hide();
-            $rightMenuCommentText.hide();
             $rightMenuSearchBaidu.hide();
             $rightMenuSearch.hide();
         }
@@ -118,23 +110,6 @@ window.oncontextmenu = function (event) {
             $rightMenuPasteText.show();
         } else {
             $rightMenuPasteText.hide();
-        }
-
-        //判断是否是音乐
-        const navMusicEl = document.querySelector("#nav-music");
-        if (navMusicEl && navMusicEl.contains(event.target)) {
-            pluginMode = true;
-            $rightMenuMusicToggle.show();
-            $rightMenuMusicBack.show();
-            $rightMenuMusicForward.show();
-            $rightMenuMusicPlaylist.show();
-            $rightMenuMusicCopyMusicName.show();
-        } else {
-            $rightMenuMusicToggle.hide();
-            $rightMenuMusicBack.hide();
-            $rightMenuMusicForward.hide();
-            $rightMenuMusicPlaylist.hide();
-            $rightMenuMusicCopyMusicName.hide()
         }
 
         // 如果不是扩展模式则隐藏扩展模块
@@ -207,8 +182,6 @@ async function copyImage(imageURL) {
 rm.switchDarkMode = function () {
     navFn.switchDarkMode();
     rm.hideRightMenu();
-
-    //halo.darkComment();
 }
 
 rm.copyUrl = function (id) {
@@ -318,29 +291,6 @@ rm.pasteText = function () {
     rm.hideRightMenu();
 }
 
-//引用到评论
-rm.rightMenuCommentText = function (txt) {
-    rm.hideRightMenu();
-    var input = document.getElementsByClassName(GLOBAL_CONFIG.source.comments.textarea)[0];
-    let evt = document.createEvent('HTMLEvents');
-    evt.initEvent('input', true, true);
-    let inputValue = replaceAll(txt, '\n', '\n> ')
-    input.value = '> ' + inputValue + '\n\n';
-    input.dispatchEvent(evt);
-    var domTop = document.querySelector("#post-comment").offsetTop;
-    window.scrollTo(0, domTop - 80);
-    input.focus();
-    input.setSelectionRange(-1, -1);
-    if (document.getElementById("comment-tips")) {
-        document.getElementById("comment-tips").classList.add("show");
-    }
-}
-
-//替换所有内容
-function replaceAll(string, search, replace) {
-    return string.split(search).join(replace);
-}
-
 // 百度搜索
 rm.searchBaidu = function () {
     btf.snackbarShow('即将跳转到百度搜索', false, 2000);
@@ -381,7 +331,6 @@ function addRightMenuClickEvent() {
     $('#menu-randomPost').on('click', function () {
         toRandomPost()
     });
-    $('#menu-commentBarrage').on('click', heo.switchCommentBarrage);
     $('#rightmenu-mask').on('click', rm.hideRightMenu);
     $('#rightmenu-mask').contextmenu(function () {
         rm.hideRightMenu();
@@ -395,9 +344,6 @@ function addRightMenuClickEvent() {
     $('#menu-copytext').on('click', function () {
         rm.rightmenuCopyText(selectTextNow);
         btf.snackbarShow('复制成功，复制和转载请标注本文地址');
-    });
-    $('#menu-commenttext').on('click', function () {
-        rm.rightMenuCommentText(selectTextNow);
     });
     $('#menu-newwindow').on('click', function () {
         window.open(domhref);
@@ -415,12 +361,4 @@ function addRightMenuClickEvent() {
         rm.writeClipImg(domImgSrc);
     });
     $('#menu-searchBaidu').on('click', rm.searchBaidu);
-    //音乐
-    $('#menu-music-toggle').on('click', heo.musicToggle);
-    $('#menu-music-back').on('click', heo.musicSkipBack);
-    $('#menu-music-forward').on('click', heo.musicSkipForward);
-    $('#menu-music-copyMusicName').on('click', function () {
-        rm.rightmenuCopyText(heo.musicGetName());
-        btf.snackbarShow('复制歌曲名称成功', false, 3000);
-    });
 }
