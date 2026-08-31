@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 10.33.0
+          run_install: false
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check source
+        run: pnpm check
+      - name: Build and package theme
+        run: pnpm build
+      - name: Verify committed build output
+        run: git diff --exit-code -- templates
+      - name: Verify ZIP archive
+        run: unzip -t dist/*.zip
+      - name: Upload theme package
+        uses: actions/upload-artifact@v7
+        with:
+          name: theme-hanlo
+          path: dist/*.zip
+          if-no-files-found: error
+          retention-days: 7

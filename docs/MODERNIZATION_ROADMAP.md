@@ -218,22 +218,22 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 
 ### 阶段 1：建立现代构建基础
 
-**状态：未开始**
+**状态：进行中（本地验收已通过，待 CI 与合并）**
 
 目标是在不改变页面外观和业务行为的前提下，让项目拥有可复现的开发、检查、构建和打包流程。
 
 任务：
 
-- [ ] 使用 pnpm 管理依赖并提交 lockfile。
-- [ ] 引入 TypeScript、Vite Plus 和 Halo 官方 Vite 主题插件。
-- [ ] 引入 `@halo-dev/theme-package-cli`。
-- [ ] 建立 `src/` 源码目录和 `templates/` 构建产物约定。
-- [ ] 首次迁移以原样复制和构建通过为主，不主动重写业务代码。
-- [ ] 增加 `dev`、`check`、`build-only` 和 `build` 脚本。
-- [ ] 统一项目版本号来源，消除 `theme.yaml` 与 `package.json` 的差异。
-- [ ] 更新 GitHub Actions，使用受支持的 Node.js、pnpm 和 Halo 官方发布流程。
-- [ ] 评估并移除没有实际用途的 Maven/Spring Boot 配置。
-- [ ] 补充本地 Halo 开发环境说明，并关闭开发环境的 Thymeleaf 缓存。
+- [x] 使用 pnpm 管理依赖并提交 lockfile。
+- [x] 引入 TypeScript、Vite Plus 和 Halo 官方 Vite 主题插件。
+- [x] 引入 `@halo-dev/theme-package-cli`。
+- [x] 建立 `src/` 源码目录和 `templates/` 构建产物约定。
+- [x] 首次迁移以原样复制和构建通过为主，不主动重写业务代码。
+- [x] 增加 `dev`、`check`、`build-only` 和 `build` 脚本。
+- [x] 统一项目版本号来源，消除 `theme.yaml` 与 `package.json` 的差异。
+- [x] 更新 GitHub Actions，使用受支持的 Node.js、pnpm 和 Halo 官方发布流程。
+- [x] 评估并移除没有实际用途的 Maven/Spring Boot 配置。
+- [x] 补充本地 Halo 开发环境说明，并关闭开发环境的 Thymeleaf 缓存。
 
 验收标准：
 
@@ -486,7 +486,7 @@ chore: establish Vite and TypeScript build pipeline
 | 阶段 | 状态 | 目标 |
 | --- | --- | --- |
 | 阶段 0 | 已完成 | 功能盘点、裁剪与回归基线 |
-| 阶段 1 | 未开始 | Vite、TypeScript、pnpm、CI 和可复现构建 |
+| 阶段 1 | 进行中 | Vite、TypeScript、pnpm、CI 和可复现构建；本地验收通过，待 CI 与合并 |
 | 阶段 2 | 未开始 | 统一页面与 PJAX 生命周期 |
 | 阶段 3 | 未开始 | JavaScript/TypeScript 模块化 |
 | 阶段 4 | 未开始 | 第三方依赖治理和按需加载 |
