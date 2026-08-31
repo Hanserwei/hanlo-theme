@@ -253,7 +253,7 @@
 
 | 字段 | 值 |
 | --- | --- |
-| 状态 | 已完成（待提交） |
+| 状态 | 已完成 |
 | 日期 | 2026-08-31 |
 | 网络证据 | [`evidence/final/RESOURCE_BASELINE.json`](evidence/final/RESOURCE_BASELINE.json) |
 | 完成审计 | [`COMPLETION_AUDIT.md`](COMPLETION_AUDIT.md) |
@@ -281,7 +281,7 @@
 
 ### 阶段状态
 
-所有工作树内验收项已通过。根据路线图维护约定，阶段 0 在当前变更提交或合并到 `master` 前仍保持“进行中”。
+所有验收项已通过。阶段 0 实施与验收通过提交 `9a0d77d` 落到 `master`，路线图状态已更新为“已完成”。
 
 ---
 

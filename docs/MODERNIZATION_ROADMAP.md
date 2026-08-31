@@ -192,7 +192,7 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 
 ### 阶段 0：功能盘点与回归基线
 
-**状态：进行中**
+**状态：已完成**
 
 执行入口与迭代记录见 [`docs/modernization/phase-0/README.md`](modernization/phase-0/README.md)。
 
@@ -485,7 +485,7 @@ chore: establish Vite and TypeScript build pipeline
 
 | 阶段 | 状态 | 目标 |
 | --- | --- | --- |
-| 阶段 0 | 进行中 | 功能盘点、裁剪与回归基线 |
+| 阶段 0 | 已完成 | 功能盘点、裁剪与回归基线 |
 | 阶段 1 | 未开始 | Vite、TypeScript、pnpm、CI 和可复现构建 |
 | 阶段 2 | 未开始 | 统一页面与 PJAX 生命周期 |
 | 阶段 3 | 未开始 | JavaScript/TypeScript 模块化 |
