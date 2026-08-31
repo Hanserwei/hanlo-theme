@@ -50,6 +50,9 @@ function preserveLegacyTemplates(): Plugin {
         build: {
           rollupOptions: {
             input: buildEntry,
+            output: {
+              entryFileNames: "assets/js/hanlo-runtime.js",
+            },
           },
         },
       };

@@ -5,6 +5,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let menusWidth = $menusEle && $menusEle.offsetWidth
     const $searchEle = document.querySelector('#search-button')
     let searchWidth = $searchEle && $searchEle.offsetWidth
+    let pageAbortController = new AbortController()
+
+    const addPageEventListener = (target, type, listener, options = {}) => {
+        const normalizedOptions = typeof options === 'boolean' ? {capture: options} : options
+        target.addEventListener(type, listener, {
+            ...normalizedOptions,
+            signal: pageAbortController.signal
+        })
+    }
 
     const adjustMenu = (change = false) => {
         if (change) {
@@ -51,15 +60,15 @@ document.addEventListener('DOMContentLoaded', function () {
             $mobileSidebarMenus.classList.remove('open')
         }
 
-        $toggleMenu.addEventListener('click', openMobileSidebar)
+        addPageEventListener($toggleMenu, 'click', openMobileSidebar)
 
-        $menuMask.addEventListener('click', e => {
+        addPageEventListener($menuMask, 'click', e => {
             if ($mobileSidebarMenus.classList.contains('open')) {
                 closeMobileSidebar()
             }
         })
 
-        window.addEventListener('resize', e => {
+        addPageEventListener(window, 'resize', () => {
             if (btf.isHidden($toggleMenu)) {
                 if ($mobileSidebarMenus.classList.contains('open')) closeMobileSidebar()
             }
@@ -72,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const scrollDownInIndex = () => {
         const $scrollDownEle = document.getElementById('scroll-down')
         const $homeTop = document.getElementById('home_top')
-        $scrollDownEle && $scrollDownEle.addEventListener('click', function () {
+        $scrollDownEle && addPageEventListener($scrollDownEle, 'click', function () {
             $homeTop &&  btf.scrollToDest($homeTop.offsetTop, 300)
 
         })
@@ -180,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0]
 
             // toc元素點擊
-            $cardToc.addEventListener('click', (ele) => {
+            addPageEventListener($cardToc, 'click', () => {
                 if (window.innerWidth < 900) {
                     $cardTocLayout.classList.remove("open");
                 }
@@ -292,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const $cookies_window = document.getElementById('cookies-window')
         const isChatBtnHide = typeof chatBtnHide === 'function'
         const isChatBtnShow = typeof chatBtnShow === 'function'
-        window.addEventListener('scroll', btf.throttle(function (e) {
+        addPageEventListener(window, 'scroll', btf.throttle(function () {
             const currentTop = window.scrollY || document.documentElement.scrollTop
             const isDown = scrollDirection(currentTop)
             if (currentTop > 0) {
@@ -522,6 +531,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const lazyloadImg = () => {
+        if (window.lazyLoadInstance && typeof window.lazyLoadInstance.destroy === 'function') {
+            window.lazyLoadInstance.destroy()
+        }
         window.lazyLoadInstance = new LazyLoad({
             elements_selector: 'img',
             threshold: 0,
@@ -539,11 +551,24 @@ document.addEventListener('DOMContentLoaded', function () {
         })
 
         clickFnOfSubMenu()
-        GLOBAL_CONFIG.lazyload.enable && lazyloadImg()
         GLOBAL_CONFIG.copyright !== undefined && addCopyright()
     }
 
+    window.destroyRefreshFn = function () {
+        pageAbortController.abort()
+        if (typeof tocbot === 'object' && typeof tocbot.destroy === 'function') {
+            tocbot.destroy()
+        }
+        if (window.lazyLoadInstance && typeof window.lazyLoadInstance.destroy === 'function') {
+            window.lazyLoadInstance.destroy()
+            window.lazyLoadInstance = null
+        }
+        document.body.oncopy = null
+    }
+
     window.refreshFn = function () {
+        window.destroyRefreshFn()
+        pageAbortController = new AbortController()
         initAdjust();
 
 
@@ -564,8 +589,10 @@ document.addEventListener('DOMContentLoaded', function () {
         tabsFn.clickFnOfTabs()
         tabsFn.backToTop()
         jqLoadAndRun()
+        GLOBAL_CONFIG.lazyload.enable && lazyloadImg()
     }
 
     refreshFn()
     unRefreshFn()
+    document.addEventListener('hanlo:page:destroy', window.destroyRefreshFn)
 })

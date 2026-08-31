@@ -74,6 +74,12 @@
     let j = 0;
     let sto = [];
     let elapsed = 0;
+    let animationFrame = null;
+    let animationInterval = null;
+    let requestController = null;
+    const scheduleAnimation = () => {
+        animationFrame = requestAnimationFrame(animate);
+    };
     const animate = timestamp => {
         if (!animationRunning) {
             return; // 动画函数停止运行
@@ -101,11 +107,11 @@
                     explanation.removeChild(explanation.firstElementChild);
                 }
                 sto[0] = setTimeout(() => {
-                    requestAnimationFrame(animate);
+                    scheduleAnimation();
                 }, delay);
             }
         } else {
-            requestAnimationFrame(animate);
+            scheduleAnimation();
         }
     };
     const observer = new IntersectionObserver(
@@ -122,7 +128,7 @@
                     if (i === 0) {
                         explanation.innerHTML = ai_str.charAt(0);
                     }
-                    requestAnimationFrame(animate);
+                    scheduleAnimation();
                 }, delay_init);
             }
         },
@@ -179,7 +185,9 @@
                 body: JSON.stringify(requestBody),
             };
             try {
-                let animationInterval = null
+                requestController?.abort();
+                requestController = new AbortController();
+                requestOptions.signal = requestController.signal;
                 if (animationInterval) clearInterval(animationInterval);
                 animationInterval = setInterval(() => {
                     const animationText = "生成中" + ".".repeat(j);
@@ -209,8 +217,10 @@
                     startAI("摘要获取失败!!!请检查Tianli服务是否正常!!!");
                 }
                 clearInterval(animationInterval)
+                animationInterval = null
 
             } catch (error) {
+                if (error.name === 'AbortError') return;
                 console.error(error);
                 explanation.innerHTML = "发生异常" + error;
             }
@@ -437,6 +447,15 @@
             return '';
         }
     }
+
+    document.addEventListener('hanlo:page:destroy', () => {
+        animationRunning = false;
+        clearSTO();
+        observer.disconnect();
+        requestController?.abort();
+        if (animationInterval) clearInterval(animationInterval);
+        if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+    }, {once: true});
 
     aiAbstract();
     showAiBtn();

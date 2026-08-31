@@ -1,6 +1,6 @@
 <!-- 声明一些公共信息 -->
 <script id="site-config" th:inline="javascript">
-    var GLOBAL_CONFIG = {
+    window.GLOBAL_CONFIG = {
         // 页面类型 index,page,post,tag,category
         htmlType: [[${ htmlType }]],
         postTitle: [[${ htmlType == 'post' ? post.spec.title : htmlType == 'page' ? singlePage.spec.title : ''}]],

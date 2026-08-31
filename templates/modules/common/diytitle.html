@@ -1,22 +1,28 @@
 <!-- 动态标题 -->
 <script
         th:if="${theme.config.other.diytitle.diytitleEnable}">
-    var leaveTitle = '[[${theme.config.other.diytitle.leaveTitle}]]';
-    var backTitle = '[[${theme.config.other.diytitle.backTitle}]]';
-    var OriginTitile = "[(${siteTitle})]"
-    var titleTime
-    document.addEventListener('visibilitychange', function () {
-        if (document.hidden) {
-            //离开当前页面时标签显示内容
-            document.title = leaveTitle
-            clearTimeout(titleTime)
-        } else {
-            //返回当前页面时标签显示内容
-            document.title = backTitle + OriginTitile
-            //两秒后变回正常标题
-            titleTime = setTimeout(function () {
-                document.title = OriginTitile
-            }, 2000)
-        }
-    })
+    (function () {
+        const leaveTitle = '[[${theme.config.other.diytitle.leaveTitle}]]';
+        const backTitle = '[[${theme.config.other.diytitle.backTitle}]]';
+        const originTitle = "[(${siteTitle})]";
+        const controller = new AbortController();
+        let titleTime;
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                document.title = leaveTitle;
+                clearTimeout(titleTime);
+            } else {
+                document.title = backTitle + originTitle;
+                titleTime = setTimeout(function () {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        }, {signal: controller.signal});
+
+        document.addEventListener('hanlo:page:destroy', function () {
+            controller.abort();
+            clearTimeout(titleTime);
+        }, {once: true});
+    })();
 </script>

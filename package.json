@@ -5,19 +5,24 @@
   "scripts": {
     "build": "pnpm run build-only && theme-package",
     "build-only": "pnpm run validate && tsc --noEmit && vp build && pnpm run verify-build",
-    "check": "pnpm run validate && tsc --noEmit && vp check vite.config.ts vite-env.d.ts scripts/*.mjs",
+    "check": "pnpm run validate && tsc --noEmit && vp check vite.config.ts vite-env.d.ts scripts/*.mjs src/js tests playwright.config.ts vitest.config.ts",
     "dev": "vp build --watch",
     "package": "theme-package",
+    "test": "pnpm run test:unit && pnpm run test:e2e",
+    "test:e2e": "playwright test",
+    "test:unit": "vitest run",
     "validate": "node scripts/validate-theme.mjs",
     "verify-build": "node scripts/verify-build.mjs"
   },
   "devDependencies": {
     "@halo-dev/theme-package-cli": "1.1.1",
     "@halo-dev/vite-plugin-halo-theme": "1.0.3",
+    "@playwright/test": "1.58.2",
     "@types/node": "24.13.3",
     "typescript": "5.9.3",
     "vite": "8.2.2",
     "vite-plus": "0.3.0",
+    "vitest": "4.1.11",
     "yaml": "2.9.0"
   },
   "engines": {
