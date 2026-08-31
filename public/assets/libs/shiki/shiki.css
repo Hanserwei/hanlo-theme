@@ -1,0 +1,237 @@
+[data-theme='light'] {
+    --shiki-code-bar-shadow: 0 5px 10px 0 rgba(144, 164, 174, 0.4);
+}
+
+[data-theme='dark'] {
+    --shiki-code-bar-shadow: 0 0 6px 2px #272727;
+}
+
+#article-container .shiki-code-block,
+#post-comment .shiki-code-block {
+    position: relative;
+    margin: 18px 0;
+    overflow: hidden;
+    border-radius: 7px;
+    box-shadow: var(--shiki-code-bar-shadow);
+}
+
+#article-container .shiki-code-block::before,
+#post-comment .shiki-code-block::before {
+    content: '';
+    position: absolute;
+    top: 11px;
+    left: 12px;
+    z-index: 2;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #fc625d;
+    box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+}
+
+.shiki-code-block pre.shiki {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 45px 18px 12px;
+    overflow: auto;
+    border: 0;
+    border-radius: 7px;
+    background-color: var(--shiki-light-bg);
+    color: var(--shiki-light);
+    text-align: left;
+    white-space: pre;
+    tab-size: 4;
+}
+
+.shiki-code-block pre.shiki code {
+    display: block;
+    width: max-content;
+    min-width: 100%;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+.shiki-code-block pre.shiki span {
+    color: var(--shiki-light);
+    font-style: var(--shiki-light-font-style);
+    font-weight: var(--shiki-light-font-weight);
+    text-decoration: var(--shiki-light-text-decoration);
+}
+
+[data-theme='dark'] .shiki-code-block pre.shiki {
+    background-color: var(--shiki-dark-bg);
+    color: var(--shiki-dark);
+}
+
+[data-theme='dark'] .shiki-code-block pre.shiki span {
+    color: var(--shiki-dark);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
+}
+
+.shiki-code-block pre.shiki .line {
+    display: inline-block;
+    min-width: 100%;
+    min-height: 1.65em;
+}
+
+.shiki-code-block pre.shiki.line-numbers code {
+    counter-reset: shiki-line-number;
+}
+
+.shiki-code-block pre.shiki.line-numbers .line::before {
+    content: counter(shiki-line-number);
+    display: inline-block;
+    width: 2.5rem;
+    margin-right: 1.25rem;
+    color: color-mix(in srgb, currentColor 45%, transparent);
+    text-align: right;
+    counter-increment: shiki-line-number;
+    user-select: none;
+}
+
+.shiki-code-block .toolbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 3;
+    box-sizing: border-box;
+    height: 35px;
+    line-height: 34px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.shiki-code-block .toolbar.c-hr {
+    border-bottom: 1px solid #b2a8a84d;
+}
+
+.shiki-code-block .shiki-language-title {
+    display: none;
+    padding: 0 90px;
+    overflow: hidden;
+    font-size: 0.9em;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.shiki-code-block .toolbar.c-title .shiki-language-title {
+    display: block;
+}
+
+.shiki-code-block .shiki-toolbar-actions {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    display: flex;
+    height: 35px;
+    align-items: center;
+    gap: 3px;
+    pointer-events: auto;
+}
+
+.shiki-code-block .shiki-tool,
+.shiki-code-block .code-expand-btn {
+    border: 0;
+    background: transparent;
+    color: #999;
+    cursor: pointer;
+}
+
+.shiki-code-block .shiki-tool {
+    display: inline-flex;
+    width: 27px;
+    height: 30px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.shiki-code-block .shiki-tool:hover,
+.shiki-code-block .shiki-tool:focus-visible {
+    color: var(--heo-main);
+}
+
+.shiki-code-block .shiki-copy-button[data-copy-state='success'] {
+    color: #35cd4b;
+}
+
+.shiki-code-block .shiki-copy-button[data-copy-state='error'] {
+    color: #fc625d;
+}
+
+.shiki-code-block.is-code-collapsed {
+    height: 35px;
+    min-height: 35px;
+}
+
+.shiki-code-block.is-code-collapsed .shiki-collapse-button {
+    transform: rotate(90deg);
+}
+
+.shiki-code-block.is-code-collapsed pre.shiki {
+    height: 35px;
+    min-height: 35px;
+    max-height: 35px !important;
+    padding: 0;
+    overflow: hidden;
+}
+
+.shiki-code-block.is-code-collapsed pre.shiki code,
+.shiki-code-block.is-code-collapsed .code-expand-btn {
+    display: none;
+}
+
+.shiki-code-block.is-height-limited:not(.is-height-expanded) pre.shiki {
+    max-height: var(--shiki-code-height, 300px);
+}
+
+.shiki-code-block .code-expand-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 4;
+    display: flex;
+    width: 100%;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    color: var(--heo-main);
+    backdrop-filter: saturate(180%) blur(20px);
+    transition: color 0.3s, background-color 0.3s, transform 0.3s;
+}
+
+.shiki-code-block .code-expand-btn:hover,
+.shiki-code-block .code-expand-btn:focus-visible {
+    background-color: var(--heo-main);
+    color: var(--heo-white);
+}
+
+.shiki-code-block .code-expand-btn.expand-done i {
+    transform: rotate(180deg);
+}
+
+.shiki-code-block pre.shiki::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+@supports not (color: color-mix(in srgb, black, white)) {
+    .shiki-code-block pre.shiki.line-numbers .line::before {
+        color: #888;
+    }
+}

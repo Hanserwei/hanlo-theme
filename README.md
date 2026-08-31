@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="96" src="./templates/assets/images/hanlo-logo.png" alt="Hanlo Theme Logo">
+  <img width="96" src="./public/assets/images/hanlo-logo.png" alt="Hanlo Theme Logo">
   <h1>Hanlo Theme</h1>
   <p>适用于 Halo 2.x 的响应式博客主题</p>
 </div>
@@ -45,15 +45,15 @@ Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/hal
 
 ### 本地打包
 
-在仓库根目录执行：
+项目使用 pnpm 10、TypeScript、Vite Plus 和 Halo 官方主题构建插件。在仓库根目录执行：
 
 ```bash
-git archive --format=zip \
-  --output=theme-hanlo-1.0.0.zip \
-  HEAD theme.yaml settings.yaml annotation-setting.yaml templates
+pnpm install --frozen-lockfile
+pnpm check
+pnpm build
 ```
 
-生成的 `theme-hanlo-1.0.0.zip` 可直接上传至 Halo 控制台。
+构建会从 `src/` 和 `public/` 重新生成 `templates/`，并在 `dist/` 输出可直接上传至 Halo 控制台的 `theme-hanlo-<version>.zip`。版本唯一来源是 `theme.yaml` 的 `spec.version`。
 
 ## 插件支持
 
@@ -79,7 +79,11 @@ git archive --format=zip \
 git clone <repository-url> hanlo-theme
 cd hanlo-theme
 git switch master
+pnpm install --frozen-lockfile
+pnpm dev
 ```
+
+`pnpm dev` 会监听源码并持续生成 `templates/`。本地 Halo 必须安装并启用当前主题，同时通过 `spring.thymeleaf.cache: false` 或环境变量 `SPRING_THYMELEAF_CACHE=false` 关闭 Thymeleaf 缓存。完整说明见[阶段 1 本地开发环境](./docs/modernization/phase-1/LOCAL_DEVELOPMENT.md)。
 
 主要目录和文件：
 
@@ -88,7 +92,10 @@ git switch master
 | `theme.yaml` | 主题元数据与 Halo 版本要求 |
 | `settings.yaml` | 主题设置项定义 |
 | `annotation-setting.yaml` | 文章与页面的扩展设置 |
-| `templates/` | Thymeleaf 模板及静态资源 |
+| `src/` | Thymeleaf 页面与片段源码；应在此修改模板 |
+| `public/assets/` | 原样复制到主题包的旧版脚本、样式、图片和 vendor 资源 |
+| `templates/` | Vite 生成、Halo 实际读取的运行时产物；不要手动修改 |
+| `vite.config.ts` | Vite Plus 与 Halo 主题构建插件配置 |
 
 发现问题或希望提交改进时，请通过当前仓库的 Issues 和 Pull Requests 反馈。
 

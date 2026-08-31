@@ -1,5 +1,27 @@
 {
-  "name": "hanlo-theme",
-  "version": "1.0.0",
-  "dependencies": {}
+  "name": "theme-hanlo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm run build-only && theme-package",
+    "build-only": "pnpm run validate && tsc --noEmit && vp build && pnpm run verify-build",
+    "check": "pnpm run validate && tsc --noEmit && vp check vite.config.ts vite-env.d.ts scripts/*.mjs",
+    "dev": "vp build --watch",
+    "package": "theme-package",
+    "validate": "node scripts/validate-theme.mjs",
+    "verify-build": "node scripts/verify-build.mjs"
+  },
+  "devDependencies": {
+    "@halo-dev/theme-package-cli": "1.1.1",
+    "@halo-dev/vite-plugin-halo-theme": "1.0.3",
+    "@types/node": "24.13.3",
+    "typescript": "5.9.3",
+    "vite": "8.2.2",
+    "vite-plus": "0.3.0",
+    "yaml": "2.9.0"
+  },
+  "engines": {
+    "node": "^20.19.0 || ^22.18.0 || >=24.11.0"
+  },
+  "packageManager": "pnpm@10.33.0"
 }
