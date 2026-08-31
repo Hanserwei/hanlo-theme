@@ -29,17 +29,17 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 
 ## 当前技术基线
 
-以下数据用于描述开始重构时的规模，后续会随项目演进而变化：
+以下数据描述阶段 0 功能裁剪后的当前规模；裁剪前数据保留在阶段 0 基线文档中：
 
 | 领域 | 当前状态 |
 | --- | --- |
-| 运行平台 | Halo `>= 2.22.1` |
+| 运行平台 | Halo `>= 2.26.0` |
 | 服务端模板 | Thymeleaf，深度使用 Halo Finder API 和主题配置 |
-| HTML | 约 107 个页面、片段和组件模板 |
-| JavaScript | 约 48 个文件；业务脚本以原生 JS、jQuery 和全局对象为主 |
-| CSS | 约 25 个文件；主样式文件接近 1.9 万行 |
-| 主题配置 | `settings.yaml` 超过 3200 行，包含 21 个设置分组和约 450 个表单项 |
-| 静态资源 | `templates/` 约 7 MiB，其中第三方库约 2.3 MiB |
+| HTML | 98 个页面、片段和组件模板 |
+| JavaScript | 39 个文件；业务脚本以原生 JS、jQuery 和全局对象为主 |
+| CSS | 21 个文件；主样式文件约 1.75 万行 |
+| 主题配置 | `settings.yaml` 约 2850 行，包含 21 个设置分组 |
+| 静态资源 | `templates/` 约 4.9 MiB，其中第三方库约 1.3 MiB |
 | 页面导航 | PJAX，依靠手动销毁和重新初始化脚本 |
 | 高亮方案 | Shiki 4.4.3，通过远程 ESM CDN 在浏览器运行时加载 |
 | 前端构建 | 尚无正式构建、类型检查、Lint 和 lockfile |
@@ -56,9 +56,7 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 - Shiki
 - Swiper
 - Fancybox
-- APlayer / Meting
 - DPlayer / HLS.js
-- Twikoo、Artalk、Waline
 - Tocbot
 - GSAP
 - Vanilla LazyLoad
@@ -88,14 +86,14 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 
 - 页面进入、离开、组件销毁和重新挂载没有统一协议。
 - 部分事件监听器和 `MutationObserver` 可能重复注册。
-- 音乐、评论、目录、代码高亮和图片组件各自处理 PJAX，行为不一致。
+- 目录、代码高亮和图片组件各自处理 PJAX，行为不一致。
 
 #### 资源加载过重
 
 - 多个仅在特定页面使用的库被全站加载。
 - Vue 2、jQuery 和部分第三方库存在重复副本或只服务于单个功能。
 - Shiki 在客户端加载完整语言和主题集合，依赖外部 CDN 可用性。
-- 大型评论、播放器和图片资源增加了安装包与页面负担。
+- 大型图片和未按需加载的工具资源增加了安装包与页面负担。
 
 #### 样式维护困难
 
@@ -194,7 +192,9 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 
 ### 阶段 0：功能盘点与回归基线
 
-**状态：未开始**
+**状态：进行中**
+
+执行入口与迭代记录见 [`docs/modernization/phase-0/README.md`](modernization/phase-0/README.md)。
 
 目标是在大规模改动前明确真正需要保留的功能，并建立可比较的行为与视觉基线。
 
@@ -485,7 +485,7 @@ chore: establish Vite and TypeScript build pipeline
 
 | 阶段 | 状态 | 目标 |
 | --- | --- | --- |
-| 阶段 0 | 未开始 | 功能盘点、裁剪与回归基线 |
+| 阶段 0 | 进行中 | 功能盘点、裁剪与回归基线 |
 | 阶段 1 | 未开始 | Vite、TypeScript、pnpm、CI 和可复现构建 |
 | 阶段 2 | 未开始 | 统一页面与 PJAX 生命周期 |
 | 阶段 3 | 未开始 | JavaScript/TypeScript 模块化 |

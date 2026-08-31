@@ -583,26 +583,22 @@ spec:
           value:
             indexWidget:
               - widget: "profile"
-              - widget: "wechat"
               - widget: "comments"
               - widget: "recent-posts"
               - widget: "categories"
             postWidget:
               - widget: "profile"
-              - widget: "wechat"
               - widget: "toc"
               - widget: "comments"
               - widget: "recent-posts"
               - widget: "categories"
             tagWidget:
               - widget: "profile"
-              - widget: "wechat"
               - widget: "comments"
               - widget: "recent-posts"
               - widget: "categories"
             categoryWidget:
               - widget: "profile"
-              - widget: "wechat"
               - widget: "comments"
               - widget: "recent-posts"
               - widget: "categories"
@@ -621,10 +617,6 @@ spec:
                   options:
                     - value: "profile"
                       label: 个人卡片
-                    - value: "wechat"
-                      label: 公众号
-                    - value: "power"
-                      label: 爱发电赞助
                     - value: "steam"
                       label: Steam卡片
                     - value: "music"
@@ -645,8 +637,6 @@ spec:
                       label: 统计
                     - value: "tags-stat"
                       label: 标签&归档&统计
-                    - value: "adbox"
-                      label: 广告区域
                     - value: "custom_html"
                       label: 自定义
                 - $formkit: group
@@ -684,10 +674,6 @@ spec:
                       label: 个人卡片
                     - value: "toc"
                       label: 目录
-                    - value: "wechat"
-                      label: 公众号
-                    - value: "power"
-                      label: 爱发电赞助
                     - value: "steam"
                       label: Steam卡片
                     - value: "music"
@@ -708,8 +694,6 @@ spec:
                       label: 统计
                     - value: "tags-stat"
                       label: 标签&归档&统计
-                    - value: "adbox"
-                      label: 广告区域
                     - value: "custom_html"
                       label: 自定义
                 - $formkit: group
@@ -745,10 +729,6 @@ spec:
                   options:
                     - value: "profile"
                       label: 个人卡片
-                    - value: "wechat"
-                      label: 公众号
-                    - value: "power"
-                      label: 爱发电赞助
                     - value: "steam"
                       label: Steam卡片
                     - value: "music"
@@ -769,8 +749,6 @@ spec:
                       label: 统计
                     - value: "tags-stat"
                       label: 标签&归档&统计
-                    - value: "adbox"
-                      label: 广告区域
                     - value: "custom_html"
                       label: 自定义
                 - $formkit: group
@@ -805,10 +783,6 @@ spec:
                   options:
                     - value: "profile"
                       label: 个人卡片
-                    - value: "wechat"
-                      label: 公众号
-                    - value: "power"
-                      label: 爱发电赞助
                     - value: "steam"
                       label: Steam卡片
                     - value: "music"
@@ -829,8 +803,6 @@ spec:
                       label: 统计
                     - value: "tags-stat"
                       label: 标签&归档&统计
-                    - value: "adbox"
-                      label: 广告区域
                     - value: "custom_html"
                       label: 自定义
                 - $formkit: group
@@ -866,10 +838,6 @@ spec:
                   options:
                     - value: "profile"
                       label: 个人卡片
-                    - value: "wechat"
-                      label: 公众号
-                    - value: "power"
-                      label: 爱发电赞助
                     - value: "steam"
                       label: Steam卡片
                     - value: "music"
@@ -890,8 +858,6 @@ spec:
                       label: 统计
                     - value: "tags-stat"
                       label: 标签&归档&统计
-                    - value: "adbox"
-                      label: 广告区域
                     - value: "custom_html"
                       label: 自定义
                 - $formkit: group
@@ -987,55 +953,6 @@ spec:
                   name: url
                   label: 链接
         - $formkit: group
-          name: wechat
-          label: 公众号
-          value:
-            wechatImgFace:
-            wechatImgBack:
-            color: "#07C160"
-            wechatImg: "/themes/theme-hanlo/assets/images/gzh_cover.png"
-            url: "/wechat"
-          children:
-            - $formkit: color
-              name: color
-              label: 背景颜色
-              value: "#07C160"
-            - $formkit: attachment
-              name: wechatImg
-              label: 背景图
-            - $formkit: url
-              name: url
-              label: 链接
-            - $formkit: attachment
-              name: wechatImgFace
-              label: 公众号正面图
-              width: "15rem"
-              aspectRatio: "20/8"
-            - $formkit: attachment
-              name: wechatImgBack
-              label: 公众号背面图
-              help: 图片可以从公众号后台下载物料或者自制
-              width: "15rem"
-              aspectRatio: "20/8"
-        - $formkit: group
-          name: power
-          label: 爱发电赞助
-          value:
-            powerLink: /
-            showNum: 3
-          children:
-            - $formkit: url
-              name: powerLink
-              label: 赞助地址
-              help: https://afdian.com/a/ (必须带上末尾的/)
-            - $formkit: number
-              name: showNum
-              label: 最大展示条数
-            - $formkit: text
-              name: username
-              label: 赞助用户名
-              help: carolcoral
-        - $formkit: group
           name: music
           label: 音乐卡片
           help: 文档请看：https://githubfast.com/zonemeen/netease-recent-profile
@@ -1128,88 +1045,6 @@ spec:
           name: archive_switch
           label: 标签&归档&统计 (归档按钮开关)
           value: false
-        - $formkit: group
-          name: adbox
-          label: 广告区域
-          value:
-            adType:
-          children:
-            - $formkit: select
-              name: adType
-              id: adType
-              key: adType
-              label: 广告类型
-              value: none
-              options:
-                - label: 无
-                  value: none
-                - label: Google AdSence
-                  value: google
-                - label: 自定义
-                  value: customAd
-            - $formkit: group
-              if: $get(adType).value == 'google'
-              name: ad_google
-              label: Google AdSence
-              help: 申请地址：https://www.google.com/adsense/
-              value:
-                ad_client:
-                ad_slot:
-                ad_format:
-                full_width_responsive:
-              children:
-                - $formkit: text
-                  name: ad_client
-                  label: ad_client
-                  help: 填写Google AdSence广告代码中的ad_client(必填)，示例：ca-pub-123456789
-                - $formkit: text
-                  name: ad_slot
-                  label: ad_slot
-                  help: 填写Google AdSence单元代码中的ad_slot(必填)，示例：987654321
-                - $formkit: radio
-                  name: ad_format
-                  id: ad_format
-                  key: ad_format
-                  label: 广告尺寸
-                  value: auto
-                  options:
-                    - label: 自适应
-                      value: auto
-                    - label: 长方形/矩形
-                      value: rectangle
-                    - label: 垂直
-                      value: vertical
-                    - label: 水平横向
-                      value: horizontal
-                - $formkit: switch
-                  name: full_width_responsive
-                  id: full_width_responsive
-                  key: full_width_responsive
-                  value: false
-                  label: 宽度自适应
-            - $formkit: group
-              if: $get(adType).value == 'customAd'
-              name: ad_custom
-              label: 自定义区域
-              help: 填写标题图片地址和跳转地址
-              value:
-                ad_title: '广告'
-                ad_pic_url:
-                ad_redirect_url:
-              children:
-                - $formkit: text
-                  name: ad_title
-                  label: 自定义标题
-                  help: 自定义标题
-                - $formkit: text
-                  name: ad_pic_url
-                  label: 自定义图片地址
-                  help: 自定义图片地址
-                - $formkit: text
-                  name: ad_redirect_url
-                  label: 自定义跳转地址
-                  help: 自定义跳转地址
-
     - group: footer
       label: 页脚
       formSchema:
@@ -1602,9 +1437,9 @@ spec:
             - $formkit: url
               if: $get(aiDescriptionEnable).value
               name: btnLink
-              label: 链接地址
+              label: Tianli GPT 介绍链接
               placeholder: 输入链接地址
-              value: https://afdian.net/item/f18c2e08db4411eda2f25254001e7c00
+              value: ""
             - $formkit: number
               if: $get(aiDescriptionEnable).value
               name: randomNum
@@ -2049,7 +1884,7 @@ spec:
           multiple: true
           sortable: true
           label: 小部件
-          help: 我的介绍&我的想法, 我的问候, 技能&职业生涯, 性格&图片, 座右铭, 爱好, 关注偏好&音乐偏好, 数据统计&作者相关信息。
+          help: 我的介绍&我的想法, 我的问候, 技能&职业生涯, 性格&图片, 座右铭, 爱好, 关注偏好&音乐偏好, 地图&作者相关信息。
           value:
             - content-idea
             - hello-about
@@ -2075,7 +1910,7 @@ spec:
             - value: like-music
               label: 关注偏好&音乐偏好
             - value: statistics-map
-              label: 数据统计&作者相关信息
+              label: 地图&作者相关信息
 
         - $formkit: list
           name: author_info_left_tags
@@ -2361,11 +2196,6 @@ spec:
               width: "15rem"
               aspectRatio: "16/9"
               placeholder: 请输入内容
-        - $formkit: text
-          name: LingQueMonitorID
-          label: 51la 网站统计
-          help: 统计ID
-          placeholder: 请输入内容
         - $formkit: group
           name: map
           label: 地图相关配置
@@ -2562,186 +2392,6 @@ spec:
           key: commentsEnable
           label: 开关
           value: true
-        - $formkit: select
-          name: use
-          label: 请选择评论系统
-          id: use
-          key: use
-          if: $get(commentsEnable).value
-          value: commentWidget
-          options:
-            - label: 默认
-              value: commentWidget
-            - label: Twikoo
-              value: Twikoo
-            - label: Artalk
-              value: Artalk
-            - label: Waline
-              value: Waline
-        - $formkit: switch
-          if: ($get(use).value == 'Twikoo' || $get(use).value == 'Artalk' || $get(use).value == 'Waline' ) && $get(commentsEnable).value
-          name: lazyload
-          label: 评论懒加载
-          value: false
-          help: 当评论进入浏览器的视窗时，将加载评论系统。(不建议使用，定位不到评论位置)
-        - $formkit: group
-          if: $get(commentsEnable).value &&  $get(use).value == 'Artalk'
-          name: artalks
-          key: artalks
-          label: Artalk评论配置 (文档：https://artalk.js.org/)
-          value:
-            siteName: ""
-            server: ""
-            js: ""
-            css: ""
-          children:
-            - $formkit: url
-              name: server
-              key: artalkServer
-              label: Artalk评论 - 后端URL
-              placeholder: 请输入后端URL
-              help: 详情请查看文档 (后缀带 / )
-              validation: required
-            - $formkit: text
-              name: siteName
-              key: siteName
-              label: 标题
-              placeholder: 请输入标题
-              validation: required
-            - $formkit: text
-              name: artalkJs
-              key: artalkJs
-              label: Artalk评论 - js
-              placeholder: 请输入js文件地址
-              help: 主题的Artalk版本是最新版本(如果你使用的不是最新版本请自己引入js文件)
-            - $formkit: text
-              name: artalkCss
-              key: artalkCss
-              label: Artalk评论 - css
-              placeholder: 请输入css文件地址
-              help: 主题的Artalk版本是最新版本(如果你使用的不是最新版本请自己引入css文件)
-        - $formkit: group
-          if: $get(commentsEnable).value &&  $get(use).value == 'Twikoo'
-          name: twikoos
-          key: twikoos
-          label: Twikoo评论配置 (文档：https://twikoo.js.org/)
-          value:
-            envId:
-            accessToken:
-            js: ""
-          children:
-            - $formkit: url
-              name: envId
-              key: envId
-              label: Twikoo评论 - 环境id/后端URL
-              placeholder: 请输入环境id或URL
-              help: 详情请查看文档 (后缀带 / )
-              validation: required
-            - $formkit: text
-              name: accessToken
-              key: accessToken
-              label: Twikoo评论 - 管理员令牌
-              placeholder: 请输入token
-              help: 在浏览器F12的控制台中获取，用于显示弹幕，详情请查看文档
-              validation: required
-            - $formkit: text
-              name: js
-              key: js
-              label: Twikoo评论 - js
-              placeholder: 请输入js文件地址
-              help: 主题的twikoo版本是最新版本(如果你使用的不是最新版本请自己引入js文件)
-        - $formkit: group
-          if: $get(commentsEnable).value && $get(use).value == 'Waline'
-          name: walines
-          key: walines
-          label: Waline评论配置 (文档：https://waline.js.org/)
-          value:
-            serverURL: ""
-            walinesJs: ""
-            walinesCss: ""
-            locale: "{'placeholder': '欢迎评论', 'sofa': '来发评论吧~1'}"
-          children:
-            - $formkit: url
-              name: serverURL
-              key: serverURL
-              label: Waline评论 - 后端URL
-              placeholder: 请输入后端URL
-              help: 详情请查看文档 (后缀不带 / )
-              validation: required
-            - $formkit: text
-              name: walinesJs
-              key: walinesJs
-              label: Waline评论 - js
-              placeholder: 请输入js文件地址
-              help: 主题的walines版本是最新版本(如果你使用的不是最新版本请自己引入js文件)
-            - $formkit: text
-              name: walinesCss
-              key: walinesCss
-              label: Waline评论 - css
-              placeholder: 请输入css文件地址
-              help: 主题的walines版本是最新版本(如果你使用的不是最新版本请自己引入css文件)
-            - $formkit: code
-              name: locale
-              height: 200px
-              label: 选项
-              placeholder: 请输入json格式数据
-              help: "格式：{'placeholder': '欢迎评论', 'sofa': '来发评论吧~1'} 更多请查看文档：https://waline.js.org/cookbook/customize/locale.html#%E4%BE%8B%E5%AD%90"
-              language: json
-        - $formkit: group
-          if: ($get(use).value == 'Twikoo' || $get(use).value == 'Artalk' || $get(use).value == 'Waline' ) && $get(commentsEnable).value
-          name: visitorMail
-          label: 评论匿名邮箱
-          value:
-            visitorMailEnable: true
-            mail: visitor@xxx.com
-          children:
-            - $formkit: switch
-              name: visitorMailEnable
-              id: visitorMailEnable
-              key: visitorMailEnable
-            - $formkit: text
-              if: $get(visitorMailEnable).value
-              name: mail
-              label: 匿名邮箱
-              placeholder: 请输入匿名邮箱
-        - $formkit: group
-          name: commentBarrageConfig
-          if: ($get(use).value == 'Twikoo' || $get(use).value == 'Artalk' || $get(use).value == 'Waline' ) && $get(commentsEnable).value
-          label: 留言弹幕配置
-          value:
-            commentBarrageEnable: true
-            maxBarrage: 1
-            barrageTime: 4000
-            mailMd5:
-          children:
-            - $formkit: switch
-              name: commentBarrageEnable
-              id: commentBarrageEnable
-              key: commentBarrageEnable
-            - $formkit: number
-              if: $get(commentBarrageEnable).value
-              name: maxBarrage
-              key: maxBarrage
-              label: 同时最多显示弹幕数
-              placeholder: 请输入显示弹幕数
-              help: 右下角同时最多显示的弹幕数量
-              validation: required
-            - $formkit: number
-              if: $get(commentBarrageEnable).value
-              name: barrageTime
-              key: barrageTime
-              label: 弹幕显示间隔时间ms
-              placeholder: 请输入间隔时间ms
-              help: 右下角弹出热评弹幕的间隔时间
-              validation: required
-            - $formkit: text
-              if: $get(commentBarrageEnable).value && $get(use).value != 'Waline'
-              name: mailMd5
-              key: mailMd5
-              label: 评论 - 博主邮箱MD5值
-              placeholder: 请输入md5值
-              help: 用于验证博主评论，可前往cmd5.com加密自己使用的邮箱，选择32位小写
-              validation: required
 
     - group: style
       label: 样式
@@ -2951,36 +2601,6 @@ spec:
               name: readmode
               if: $get(rightsideEnable).value
               label: 阅读模式
-        - $formkit: group
-          name: nav_music
-          label: 音乐
-          value:
-            nav_musicEnable: false
-          children:
-            - $formkit: switch
-              label: 左下角音乐
-              name: nav_musicEnable
-              id: nav_musicEnable
-              key: nav_musicEnable
-            - $formkit: text
-              name: id
-              label: 音乐的id
-              help: 歌单的id，可以从音乐歌单分享的链接中获取
-              value: "xxxxxx"
-            - $formkit: text
-              name: server
-              label: 服务
-              help: 歌单的服务商，例如netease（网易云音乐）,tencent（腾讯）,kugou（酷狗）,xiami（小米音乐）,baidu（百度音乐）
-              value: "tencent"
-            - $formkit: url
-              name: all_playlist
-              label: 播放列表地址
-              help: 用于右键查看所有歌曲
-              value: https://y.qq.com/n/ryqq/playlist/xxxxx
-            - $formkit: url
-              name: meting_api
-              label: 音乐api
-              value: https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&r=:r
         - $formkit: group
           name: snackbar
           label: 右下角弹窗

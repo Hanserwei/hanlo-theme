@@ -12,7 +12,7 @@
           <span class="author-content-item-title">最近评论</span>
         </div>
         <div class="aside-list">
-          <th:block th:if="${#strings.equals(theme.config.comments.use, 'commentWidget') }">
+          <th:block>
             <!-- BUG：由于当前的列出所有评论API无过滤功能，非文章页的评论无法查询到页面信息，所以非文章评论跳转至首页-->
             <div class="aside-list-item" th:each="comment,iterStat : ${commentFinder.list(null, 1, 20)}"
                  th:with="page = ${comment.spec.subjectRef.kind == 'Post' ? postFinder.getByName(comment.spec.subjectRef.name) :
@@ -40,7 +40,7 @@
               });
             </script>
           </th:block>
-          <span th:if="${#strings.equals(theme.config.comments.use, 'Twikoo') }">正在加载中...</span></div>
+          </div>
       </div>
     </div>
     <!-- 右侧展示 tag -->
@@ -116,20 +116,12 @@
     </div>
     <div class="console-btn-item" id="consoleHideAside" onclick="heo.hideAsideBtn()" title="边栏显示控制"><a
             class="asideSwitch" data-pjax-state=""><i class="haofont hao-icon-arrows-left-right"></i></a></div>
-    <div class="console-btn-item on" id="consoleCommentBarrage" onclick="heo.switchCommentBarrage()" title="热评开关"><a
-            class="commentBarrage" data-pjax-state=""><i class="haofont hao-icon-chat--fill"></i></a></div>
-
     <!--<div class="console-btn-item" id="consoleKeyboard" onclick="heo.keyboardToggle()" title="快捷键开关"><a-->
     <!--        class="keyboard-switch"><i class="fa-duotone fa-keyboard"></i></a>-->
     <!--</div>-->
     <!--<div class="console-btn-item" id="assist-open" onclick="heo.hideConsole()" title="无障碍工具栏"><a-->
     <!--        class="assist-btn"><i class="fa-duotone fa-wheelchair"></i></a>-->
     <!--</div>-->
-    <div th:if="${theme.config.tool.nav_music.nav_musicEnable}" class="console-btn-item" id="consoleMusic" onclick="heo.musicToggle()" title="音乐开关">
-      <a class="music-switch" data-pjax-state="">
-        <i class="haofont hao-icon-disc-fill"></i>
-      </a>
-    </div>
   </div>
   <div class="console-mask" href="javascript:void(0);" onclick="heo.hideConsole()" rel="external nofollow">
   </div>

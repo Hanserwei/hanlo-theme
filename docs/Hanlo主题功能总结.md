@@ -4,12 +4,12 @@
 
 这是一个功能非常完整的 Halo 2.x 个人博客与生活方式主题，不只是简单的文章样式主题。它覆盖了博客内容展示、个人主页、社交互动、图库、追番、装备、音乐、打赏、评论和大量视觉交互。
 
-当前主题版本以 [`theme.yaml`](../theme.yaml) 为准，是 **Hanlo Theme 1.0.0**，要求 **Halo >= 2.22.1**。项目中包含：
+当前主题版本以 [`theme.yaml`](../theme.yaml) 为准，是 **Hanlo Theme 1.0.0**，要求 **Halo >= 2.26.0**。项目中包含：
 
 - 21 组后台主题设置
-- 108 个 Thymeleaf HTML 模板
-- 49 个 JavaScript 文件
-- 273 个主题模板及静态资源文件
+- 98 个 Thymeleaf HTML 模板
+- 39 个 JavaScript 文件
+- 208 个主题模板及静态资源文件
 
 主要功能配置集中在 [`settings.yaml`](../settings.yaml)，文章、菜单、友链和相册的扩展字段位于 [`annotation-setting.yaml`](../annotation-setting.yaml)。
 
@@ -40,7 +40,7 @@
 - 卡片擦亮动画
 - 分类、标签或自定义链接导航条
 
-相关实现位于 [`templates/index.html`](./templates/index.html) 和 [`templates/modules/post-list.html`](./templates/modules/post-list.html)。
+相关实现位于 [`templates/index.html`](../templates/index.html) 和 [`templates/modules/post-list.html`](../templates/modules/post-list.html)。
 
 ## 2. 首页和导航
 
@@ -60,7 +60,7 @@
 - 最近六篇文章或人工指定文章推荐
 - “今日推荐”卡片
 
-首屏实现位于 [`templates/modules/header/index-img.html`](./templates/modules/header/index-img.html)，推荐区域位于 [`templates/modules/widgets/top-group.html`](./templates/modules/widgets/top-group.html)。
+首屏实现位于 [`templates/modules/header/index-img.html`](../templates/modules/header/index-img.html)，推荐区域位于 [`templates/modules/widgets/top-group.html`](../templates/modules/widgets/top-group.html)。
 
 导航栏支持：
 
@@ -80,7 +80,7 @@
 
 ## 3. 文章阅读功能
 
-文章页是该主题功能最丰富的部分，主要实现在 [`templates/post.html`](./templates/post.html)。
+文章页是该主题功能最丰富的部分，主要实现在 [`templates/post.html`](../templates/post.html)。
 
 文章头部会显示：
 
@@ -147,42 +147,31 @@
 - 超高代码块限制与展开
 - PJAX 切页后重新高亮
 
-相关实现位于 [`templates/assets/js/halo.js`](./templates/assets/js/halo.js)。
+相关实现位于 [`templates/assets/libs/shiki/shiki.js`](../templates/assets/libs/shiki/shiki.js)。
 
 ## 5. 评论和互动
 
-主题支持四套评论方案：
+主题只支持 Halo 官方 `plugin-comment-widget`，不再维护 Twikoo、Artalk 和 Waline 适配。
 
-- Halo 默认 `plugin-comment-widget`
-- Twikoo
-- Artalk
-- Waline
-
-评论模板位于 [`templates/modules/comment.html`](./templates/modules/comment.html)。
+评论模板位于 [`templates/modules/comment.html`](../templates/modules/comment.html)。
 
 附加评论功能包括：
 
 - 评论系统总开关
-- 评论懒加载
-- 匿名评论，自动生成“形容词 + 蔬菜水果”昵称
-- 默认匿名邮箱
 - 评论区隐私政策入口
-- 右下角热门评论弹幕
-- 弹幕数量和间隔设置
-- 博主身份识别
 - 独立“最近评论”页面
-- 最近评论页面同时适配默认评论、Twikoo、Artalk、Waline
+- 最近评论页面使用 Halo 原生评论数据
 - 侧栏最近评论
 - 中控台最近评论
 - 友链、瞬间、图库、追番等特殊页面评论
 
-留言板还有单独的信封动画样式，可自定义信纸图片、标题、正文提示、底部文本和展开高度，相关实现位于 [`templates/comments.html`](./templates/comments.html)。
+留言板还有单独的信封动画样式，可自定义信纸图片、标题、正文提示、底部文本和展开高度，相关实现位于 [`templates/comments.html`](../templates/comments.html)。
 
 ## 6. 特殊页面
 
 | 页面 | 主要功能 |
 | --- | --- |
-| 关于页 | 个人标签、头像、介绍、想法、问候、职业、16 型人格、座右铭、游戏、追番、兴趣、音乐、地图、统计、心路历程、十年之约、打赏名单 |
+| 关于页 | 个人标签、头像、介绍、想法、问候、职业、16 型人格、座右铭、游戏、追番、兴趣、音乐偏好、地图、心路历程、十年之约、打赏名单 |
 | 友链页 | 友链分组、默认/美化/失联样式、网站截图、标签、标签颜色、随机访问、友链申请、底部自定义内容 |
 | 互动友链 | 将友链头像放入 Box2D 物理画布，可点击“换个头像试试” |
 | 瞬间页 | 展示文字、图片和视频瞬间，首页轮播最近瞬间 |
@@ -190,16 +179,14 @@
 | 相册入口页 | 以卡片方式展示所有图库分组 |
 | 追番页 | Bilibili 想看、在看、已看三种状态，显示评分、播放量、追番数、硬币、弹幕和分页 |
 | 我的装备 | 按分组展示装备封面、名称、规格、描述和详情链接 |
-| 音乐馆 | APlayer + Meting 歌单，可接网易云、QQ、酷狗等服务 |
 | 待办清单 | 左右双栏、分组、完成/未完成状态、已完成划线 |
 | 最近评论 | 汇总最近评论并跳转到对应文章或页面 |
 | 朋友圈 | 文章统计、作者筛选、标题搜索、排序、升降序、滚动加载和错误重试 |
 
-主题在 [`theme.yaml`](./theme.yaml) 中注册了 7 个可在 Halo 后台选择的自定义页面模板：
+主题在 [`theme.yaml`](../theme.yaml) 中注册了 6 个可在 Halo 后台选择的自定义页面模板：
 
 - 友情链接页面模板
 - 关于页面模板
-- 音乐页面模板
 - 留言板页面模板
 - 待办清单页面模板
 - 相册页面模板
@@ -213,8 +200,6 @@
 
 - 个人资料卡
 - 社交媒体
-- 微信公众号翻转卡片
-- 爱发电赞助
 - Steam 卡片
 - 音乐卡片
 - 友情链接
@@ -226,8 +211,6 @@
 - 归档
 - 网站统计
 - 标签、归档、统计组合卡
-- Google AdSense
-- 自定义广告
 - 自定义 HTML
 - 文章目录
 
@@ -239,8 +222,6 @@
 - 微信、支付宝打赏
 - 深浅色开关
 - 侧栏开关
-- 评论弹幕开关
-- 音乐开关
 
 ## 8. 页脚功能
 
@@ -262,7 +243,7 @@
 - 又拍云、阿里云、腾讯云、华为云或自定义云服务商标识
 - 隐私协议提醒弹窗
 
-相关实现位于 [`templates/modules/footer.html`](./templates/modules/footer.html)。
+相关实现位于 [`templates/modules/footer.html`](../templates/modules/footer.html)。
 
 ## 9. 外观、交互和体验
 
@@ -289,20 +270,18 @@
 - 前进、后退、刷新、回到顶部
 - 复制选中文本
 - 粘贴文本
-- 引用文本到评论
 - 新窗口打开链接或图片
 - 复制、下载图片
 - 站内搜索、百度搜索
-- 音乐播放、暂停、上一首、下一首、复制歌名
 - 随机文章、分类、标签
-- 评论弹幕、深浅色、简繁切换
+- 深浅色、简繁切换
 
 ## 10. 性能与 SEO
 
 主题在体验层面还实现了：
 
 - PJAX 无刷新切页
-- PJAX 后重新初始化评论、代码、目录、相册和音乐
+- PJAX 后重新初始化评论、代码、目录和相册
 - InstantPage 链接预加载
 - Vanilla LazyLoad 图片懒加载
 - Halo 缩略图生成
@@ -311,13 +290,12 @@
 - Twitter Card 元数据
 - 图片查看器和瀑布流按需加载
 - 主题状态、侧栏状态和部分接口数据的本地缓存
-- 51LA 统计接入
 
-相关入口位于 [`templates/modules/layouts/layout.html`](./templates/modules/layouts/layout.html) 和 [`templates/modules/common/open-graph.html`](./templates/modules/common/open-graph.html)。
+相关入口位于 [`templates/modules/layouts/layout.html`](../templates/modules/layouts/layout.html) 和 [`templates/modules/common/open-graph.html`](../templates/modules/common/open-graph.html)。
 
 ## 11. 插件依赖
 
-[`README.md`](./README.md) 中声明的插件都是可选的，未安装时对应功能不显示或不可用：
+[`README.md`](../README.md) 中声明的插件都是可选的，未安装时对应功能不显示或不可用：
 
 - 评论插件
 - 搜索插件
@@ -328,7 +306,6 @@
 - KaTeX 插件
 - 我的装备插件
 - Markdown/HTML 内容块插件
-- 爱发电插件
 
 ### 插件 GitHub 地址
 
@@ -345,7 +322,6 @@
 | KaTeX | [halo-sigs/plugin-katex](https://github.com/halo-sigs/plugin-katex) |
 | 装备管理 | [chengzhongxue/plugin-equipment](https://github.com/chengzhongxue/plugin-equipment) |
 | Markdown/HTML 内容块 | [halo-sigs/plugin-hybrid-edit-block](https://github.com/halo-sigs/plugin-hybrid-edit-block) |
-| 爱发电插件 | [carolcoral/plugin-afdian](https://github.com/carolcoral/plugin-afdian) |
 
 代码还额外兼容：
 
@@ -353,7 +329,6 @@
 - PrismJS 插件
 - 公众号或平台同步插件
 - 友链自助申请插件
-- Twikoo、Artalk、Waline 外部评论后端
 
 ## 12. 当前项目里需要留意的地方
 

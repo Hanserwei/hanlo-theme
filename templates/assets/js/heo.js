@@ -1,8 +1,4 @@
 let heo_cookiesTime = null
-// 第一次播放音乐
-,heo_musicFirst = false
-// 音乐播放状态
-,heo_musicPlaying = false
 ,heo_keyboard = false
 ,heo_intype = false
 ,lastSayHello = ""
@@ -254,29 +250,6 @@ var heo = {
         }
     },
 
-    //控制评论弹幕
-    switchCommentBarrage: function () {
-        let commentBarrage = document.querySelector('.comment-barrage');
-        if (commentBarrage) {
-            if ($(".comment-barrage").is(":visible")) {
-                $(".comment-barrage").hide();
-                $(".menu-commentBarrage-text").text("显示热评");
-                document.querySelector("#consoleCommentBarrage").classList.remove("on");
-                localStorage.setItem('commentBarrageSwitch', 'false');
-                btf.snackbarShow("✨ 已关闭评论弹幕", false, 2000)
-            } else if ($(".comment-barrage").is(":hidden")) {
-                $(".comment-barrage").show();
-                $(".menu-commentBarrage-text").text("关闭热评");
-                document.querySelector("#consoleCommentBarrage").classList.add("on");
-                localStorage.removeItem('commentBarrageSwitch');
-                btf.snackbarShow("✨ 已开启评论弹幕", false, 2000)
-            }
-        }
-        if(GLOBAL_CONFIG.rightMenuEnable){
-            rm.hideRightMenu();
-        }
-    },
-
     //隐藏cookie窗口
     hidecookie: function() {
         heo_cookiesTime = setTimeout((()=>{
@@ -338,79 +311,6 @@ var heo = {
     hideLoading: function () {
         document.querySelector("#loading-box").classList.add("loaded");
     },
-
-    //切换音乐播放状态
-    musicToggle: function (changePaly = true) {
-        const navMusicEl = document.getElementById("nav-music");
-        if (!heo_musicFirst) {
-            heo.musicBindEvent();
-            heo_musicFirst = true;
-        }
-        let msgPlay = '<i class="haofont hao-icon-play"></i><span>播放音乐</span>';
-        let msgPause = '<i class="haofont hao-icon-pause"></i><span>暂停音乐</span>';
-        if (heo_musicPlaying) {
-            navMusicEl.classList.remove("playing");
-            if(GLOBAL_CONFIG.rightMenuEnable){
-                document.getElementById("menu-music-toggle").innerHTML = msgPlay;
-            }
-            document.getElementById("nav-music-hoverTips").innerHTML = "音乐已暂停";
-            document.querySelector("#consoleMusic").classList.remove("on");
-            heo_musicPlaying = false;
-            navMusicEl.classList.remove("stretch");
-        } else {
-            navMusicEl.classList.add("playing");
-            if(GLOBAL_CONFIG.rightMenuEnable){
-                document.getElementById("menu-music-toggle").innerHTML = msgPause;
-            }
-            document.querySelector("#consoleMusic").classList.add("on");
-            heo_musicPlaying = true;
-            navMusicEl.classList.add("stretch");
-        }
-        if (changePaly) document.querySelector("#nav-music meting-js").aplayer.toggle();
-        if(GLOBAL_CONFIG.rightMenuEnable){
-            rm.hideRightMenu();
-        }
-    },
-
-    // 音乐绑定事件
-    musicBindEvent: function () {
-        document.querySelector("#nav-music .aplayer-music").addEventListener("click", function () {
-            heo.musicTelescopic();
-        });
-        document.querySelector("#nav-music .aplayer-button").addEventListener("click", function () {
-            heo.musicToggle(false);
-        });
-    },
-
-    // 音乐伸缩
-    musicTelescopic: function () {
-        const navMusicEl = document.getElementById("nav-music");
-        if (navMusicEl.classList.contains("stretch")) {
-            navMusicEl.classList.remove("stretch");
-        } else {
-            navMusicEl.classList.add("stretch");
-        }
-    },
-
-    //音乐上一曲
-    musicSkipBack: function () {
-        document.querySelector("meting-js").aplayer.skipBack(),
-            rm.hideRightMenu()
-    },
-
-    //音乐下一曲
-    musicSkipForward: function () {
-        document.querySelector("meting-js").aplayer.skipForward(),
-            rm.hideRightMenu()
-    },
-
-    //获取音乐中的名称
-    musicGetName: function () {
-        for (var e = $(".aplayer-title"), t = [], o = e.length - 1; o >= 0; o--)
-            t[o] = e[o].innerText;
-        return t[0]
-    },
-
 
     // 显示打赏中控台
     rewardShowConsole: function () {
@@ -517,159 +417,11 @@ var heo = {
             lastSayHello = randomGreeting
     },
 
-    //匿名评论
-    addRandomCommentInfo: function () {
-        // 从形容词数组中随机取一个值
-        const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-
-        // 从蔬菜水果动物名字数组中随机取一个值
-        const randomName = vegetablesAndFruits[Math.floor(Math.random() * vegetablesAndFruits.length)];
-
-        // 将两个值组合成一个字符串
-        const name = `${randomAdjective}${randomName}`;
-
-        function dr_js_autofill_commentinfos() {
-            var lauthor = [
-                    "#author",
-                    "input[name='comname']",
-                    "#inpName",
-                    "input[name='author']",
-                    "#ds-dialog-name",
-                    "#name",
-                    "input[name='nick']",
-                    "#comment_author",
-                ],
-                lmail = [
-                    "#mail",
-                    "#email",
-                    "input[name='commail']",
-                    "#inpEmail",
-                    "input[name='email']",
-                    "#ds-dialog-email",
-                    "input[name='mail']",
-                    "#comment_email",
-                ],
-                lurl = [
-                    "#url",
-                    "input[name='comurl']",
-                    "#inpHomePage",
-                    "#ds-dialog-url",
-                    "input[name='url']",
-                    "input[name='website']",
-                    "#website",
-                    "input[name='link']",
-                    "#comment_url",
-                ];
-            for (var i = 0; i < lauthor.length; i++) {
-                var author = document.querySelector(lauthor[i]);
-                if (author != null) {
-                    author.value = name;
-                    author.dispatchEvent(new Event("input"));
-                    author.dispatchEvent(new Event("change"));
-                    break;
-                }
-            }
-            for (var j = 0; j < lmail.length; j++) {
-                var mail = document.querySelector(lmail[j]);
-                if (mail != null) {
-                    mail.value = visitorMail;
-                    mail.dispatchEvent(new Event("input"));
-                    mail.dispatchEvent(new Event("change"));
-                    break;
-                }
-            }
-            return !1;
-        }
-        dr_js_autofill_commentinfos();
-        var input = document.getElementsByClassName(GLOBAL_CONFIG.source.comments.textarea)[0];
-        input.focus();
-        input.setSelectionRange(-1, -1);
-    },
-
-    //爱发电赞助
-    addPowerLinksInPostRightSide: async function() {
-        const image = document.getElementById("power-star-image")
-            , star = document.getElementById("power-star")
-            , title = document.getElementById("power-star-title")
-            , desc = document.getElementById("power-star-desc");
-        if (image && star && title && desc)
-            try {
-                const list = GLOBAL_CONFIG.source.power.list
-                    , i = heo.getRandomInt(0, list.length)
-                    , power = list[i].realNode;
-                image.style.backgroundImage = `url(${power.avatar})`,
-                    star.href = power.link,
-                    title.innerText = power.name,
-                    desc.innerText = power.descr
-            } catch (e) {}
-    },
-    getRandomInt: function(e, t) {
-        return Math.floor(Math.random() * (t - e)) + e
-    },
-
     //初始化console图标
     initConsoleState: function() {
         document.documentElement.classList.contains("hide-aside") ? document.querySelector("#consoleHideAside").classList.add("on") : document.querySelector("#consoleHideAside").classList.remove("on")
     },
-
-
-    // 音乐节目切换背景
-    changeMusicBg: function (isChangeBg = true) {
-        if (window.location.pathname != "/music") {
-            return;
-        }
-        const anMusicBg = document.getElementById("an_music_bg");
-
-        if (isChangeBg) {
-            // player listswitch 会进入此处
-            const musiccover = document.querySelector("#anMusic-page .aplayer-pic");
-            anMusicBg.style.backgroundImage = musiccover.style.backgroundImage;
-        } else {
-            // 第一次进入，绑定事件，改背景
-            let timer = setInterval(() => {
-                const musiccover = document.querySelector("#anMusic-page .aplayer-pic");
-                // 确保player加载完成
-                if (musiccover) {
-                    clearInterval(timer);
-                    anMusicBg.style.backgroundImage = musiccover.style.backgroundImage;
-                    // 绑定事件
-                    heo.addEventListenerChangeMusicBg();
-
-                    // 暂停nav的音乐
-                    if(GLOBAL_CONFIG.navMusicEnable){
-                        if (
-                            document.querySelector("#nav-music meting-js").aplayer &&
-                            !document.querySelector("#nav-music meting-js").aplayer.audio.paused
-                        ) {
-                            heo.musicToggle();
-                        }
-                    }
-                }
-            }, 100);
-        }
-    },
-    addEventListenerChangeMusicBg: function () {
-        const anMusicPage = document.getElementById("anMusic-page");
-        const aplayerIconMenu = anMusicPage.querySelector(".aplayer-info .aplayer-time .aplayer-icon-menu");
-
-        anMusicPage.querySelector("meting-js").aplayer.on("loadeddata", function () {
-            heo.changeMusicBg();
-            console.info("player loadeddata");
-        });
-
-        aplayerIconMenu.addEventListener("click", function () {
-            $(".music-mask").css("display","block")
-            $(".music-mask").css("animation","0.5s ease 0s 1 normal none running to_show")
-        });
-        $(".music-mask").click(function(){
-            anMusicPage.querySelector(".aplayer-list").classList.remove("aplayer-list-hide");
-            $(".music-mask").hide();
-        })
-    },
-
 };
-const adjectives = ["美丽的", "英俊的", "聪明的", "勇敢的", "可爱的", "慷慨的", "善良的", "可靠的", "开朗的", "成熟的", "稳重的", "真诚的", "幽默的", "豁达的", "有趣的", "活泼的", "优雅的", "敏捷的", "温柔的", "温暖的", "敬业的", "细心的", "耐心的", "深沉的", "朴素的", "含蓄的", "率直的", "开放的", "务实的", "坚强的", "自信的", "谦虚的", "文静的", "深刻的", "纯真的", "朝气蓬勃的", "慎重的", "大方的", "顽强的", "迷人的", "机智的", "善解人意的", "富有想象力的", "有魅力的", "独立的", "好奇的", "干净的", "宽容的", "尊重他人的", "体贴的", "守信的", "有耐性的", "有责任心的", "有担当的", "有远见的", "有智慧的", "有眼光的", "有冒险精神的", "有爱心的", "有同情心的", "喜欢思考的", "喜欢学习的", "具有批判性思维的", "善于表达的", "善于沟通的", "善于合作的", "善于领导的", "有激情的", "有幽默感的", "有思想的", "有个性的", "有正义感的", "有责任感的", "有创造力的", "有想象力的", "有艺术细胞的", "有团队精神的", "有协调能力的", "有决策能力的", "有组织能力的", "有学习能力的", "有执行能力的", "有分析能力的", "有逻辑思维的", "有创新能力的", "有专业素养的", "有商业头脑的"]
-    , vegetablesAndFruits = ["萝卜", "白菜", "芹菜", "生菜", "青椒", "辣椒", "茄子", "豆角", "黄瓜", "西红柿", "洋葱", "大蒜", "土豆", "南瓜", "豆腐", "韭菜", "花菜", "西兰花", "蘑菇", "金针菇", "苹果", "香蕉", "橙子", "柠檬", "猕猴桃", "草莓", "葡萄", "桃子", "杏子", "李子", "石榴", "西瓜", "哈密瓜", "蜜瓜", "樱桃", "蓝莓", "柿子", "橄榄", "柚子", "火龙果"];
 $(document).ready((function() {
         initBlog()
     }

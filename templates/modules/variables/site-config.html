@@ -15,8 +15,6 @@
         isFriendLinksInFooter: [[${theme.config.footer.footer_group.enable_footer_group}]],
         loadingBox: [[${theme.config.other.loadingBoxs.loadingBoxEnable}]],
         loadProgressBar: [[${theme.config.other.loadingBoxs.loadProgressBar}]],
-        navMusicEnable: [[${theme.config.tool.nav_music.nav_musicEnable}]],
-        isMusic: [[${ htmlType == 'music'}]],
         helloText: [[${#strings.listSplit(theme.config.sidebar.profile.helloText, ',')}]],
         profileStyle: [[${theme.config.sidebar.profile.profileStyle}]],
         rightMenuEnable: [[${theme.config.tool.rightMenu.rightMenuEnable}]],
@@ -57,11 +55,6 @@
             theme_dark: "[(${theme.config.code.theme_dark})]"
         },
         source: {
-            power: {
-                powerLink: [[${theme.config.sidebar.power.powerLink}]],
-                showNum: [[${theme.config.sidebar.power.showNum}]],
-                username: [[${theme.config.sidebar.power.username}]]
-            },
             links: {
                 linksUrl: [[${ theme.config.link.linksUrl }]],
                 linksNum: [[${theme.config.footer.footer_group.num}]],
@@ -74,16 +67,6 @@
             fancybox: {
                 js: [[${assets_link + '/libs/fancybox/jquery.fancybox.min.js'}]],
                 css: '/null'
-            },
-            comments: {
-                use: [[${theme.config.comments.use}]],
-                maxBarrage: [[${ theme.config.comments.commentBarrageConfig.maxBarrage }]],
-                barrageTime: [[${ theme.config.comments.commentBarrageConfig.barrageTime }]],
-                mailMd5: "[(${theme.config.comments.commentBarrageConfig.mailMd5})]",
-                lazyload: [[${theme.config.comments.lazyload}]],
-                textarea: [[${ theme.config.comments.use == 'Twikoo' ? 'el-textarea__inner' :
-                                   theme.config.comments.use == 'Artalk' ? 'atk-textarea' :
-                                   theme.config.comments.use == 'Waline' ? 'wl-editor' : 'appearance-none' }]]
             },
             post: {
                 dynamicBackground: [[${ theme.config.post.dynamicBackground }]]
@@ -107,22 +90,6 @@
             },
             img: {
                 src: [[${isLazyload ? 'data-lazy-src' : 'src' }]]
-            },
-            twikoo: {
-                js: [[${not #strings.isEmpty(theme.config.comments.twikoos.js) ? theme.config.comments.twikoos.js : assets_link +'/libs/twikoo/twikoo.all.min.js' }]],
-                twikooUrl: "[(${theme.config.comments.twikoos.envId})]",
-                accessToken: "[(${theme.config.comments.twikoos.accessToken})]",
-            },
-            artalk: {
-                js: [[${not #strings.isEmpty(theme.config.comments.artalks.artalkJs) ? theme.config.comments.artalks.artalkJs : assets_link +'/libs/artalk/Artalk.js' }]],
-                css: [[${not #strings.isEmpty(theme.config.comments.artalks.artalkCss) ? theme.config.comments.artalks.artalkCss : assets_link +'/libs/artalk/Artalk.css' }]],
-                artalkUrl: "[(${theme.config.comments.artalks.server})]",
-                siteName: "[(${theme.config.comments.artalks.siteName})]",
-            },
-            waline: {
-                js: [[${not #strings.isEmpty(theme.config.comments.walines.walinesJs) ? theme.config.comments.walines.walinesJs : 'https://cdn.cbd.int/@waline/client@2.15.7/dist/waline.js' }]],
-                serverURL: "[(${theme.config.comments.walines.serverURL})]",
-                locale: [[${not #strings.isEmpty(theme.config.comments.walines.locale) ? theme.config.comments.walines.locale : '' }]]
             },
             footer: {
                 default_enable: [[${theme.config.footer.footerContent.default_enable_group.default_enable}]]
