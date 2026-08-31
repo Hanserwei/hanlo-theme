@@ -3,6 +3,7 @@ let heo_cookiesTime = null
 ,heo_intype = false
 ,lastSayHello = ""
 ,refreshNum = 1;
+window.hanloIndexEssaySwiper = null;
 // 私有函数
 var heo = {
     // 检测显示模式
@@ -24,7 +25,10 @@ var heo = {
                     $(this).text(btf.changeContent(text));
                 }
             })
-            new Swiper(".swiper-container",{
+            if (window.hanloIndexEssaySwiper) {
+                window.hanloIndexEssaySwiper.destroy(true, true);
+            }
+            window.hanloIndexEssaySwiper = new Swiper(".swiper-container",{
                 direction: "vertical",
                 loop: !0,
                 autoplay: {
@@ -32,6 +36,9 @@ var heo = {
                     pauseOnMouseEnter: !0
                 }
             })
+        } else if (window.hanloIndexEssaySwiper) {
+            window.hanloIndexEssaySwiper.destroy(true, true);
+            window.hanloIndexEssaySwiper = null;
         }
     },
 

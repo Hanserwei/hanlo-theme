@@ -7,6 +7,7 @@
         var pursuitInterval = null;
         pursuitInterval = setInterval(function () {
             const show = document.querySelector('span[data-show]')
+            if (!show) return
             const next = show.nextElementSibling || document.querySelector('.first-tips')
             const up = document.querySelector('span[data-up]')
             if (up) {
@@ -17,8 +18,8 @@
             next.setAttribute('data-show', '')
         }, 2000)
 
-        document.addEventListener('pjax:send', function () {
+        document.addEventListener('hanlo:page:destroy', function () {
             clearInterval(pursuitInterval);
-        });
+        }, {once: true});
     </script>
 </div>

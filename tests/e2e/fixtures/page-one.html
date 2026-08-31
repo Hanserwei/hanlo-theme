@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lifecycle page one</title>
+    <script src="/tests/e2e/fixtures/config.js"></script>
+    <script id="site-config">
+      window.GLOBAL_CONFIG = window.createHanloTestConfig("page-one");
+    </script>
+  </head>
+  <body>
+    <main id="body-wrap" data-page="one">
+      <a id="next-page" data-pjax-test href="/tests/e2e/fixtures/page-two.html">Next</a>
+      <a id="broken-page" data-pjax-test href="/tests/e2e/fixtures/missing.html">Broken</a>
+      <p>Page one</p>
+      <script>
+        window.__newPageDestroyCount = 0;
+        document.addEventListener("hanlo:page:destroy", () => window.__newPageDestroyCount++, {
+          once: true,
+        });
+      </script>
+    </main>
+    <script src="/assets/libs/pjax/pjax.min.js"></script>
+    <script src="/tests/e2e/fixtures/setup.js"></script>
+  </body>
+</html>

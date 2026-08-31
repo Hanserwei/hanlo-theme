@@ -175,6 +175,7 @@ if (typeof window.FriendMomentsApp === 'undefined') {
 
             // console.log(`Destroying FriendMomentsApp instance: ${this.instanceId}`);
 
+            this.cleanup();
             this.destroyed = true;
             this.initialized = false;
 
@@ -182,8 +183,6 @@ if (typeof window.FriendMomentsApp === 'undefined') {
             if (this.initPromise) {
                 this.initPromise = null;
             }
-
-            this.cleanup();
 
             // 清理全局引用
             if (window._friendMomentsInstance === this) {

@@ -251,7 +251,11 @@ pnpm build
 
 ### 阶段 2：建立统一页面生命周期
 
-**状态：未开始**
+**状态：进行中**
+
+执行说明与本地验收记录见 [`docs/modernization/phase-2/README.md`](modernization/phase-2/README.md)
+和 [`docs/modernization/phase-2/COMPLETION_AUDIT.md`](modernization/phase-2/COMPLETION_AUDIT.md)。
+实现与本地 Halo 2.26 验收已经完成；待 CI 通过并合并到 `master` 后更新为“已完成”。
 
 目标是先解决 PJAX 和组件初始化的公共问题，为后续逐模块迁移提供稳定边界。
 
@@ -266,13 +270,13 @@ export interface PageController {
 
 任务：
 
-- [ ] 定义首次加载、页面离开、页面进入和销毁事件。
-- [ ] 建立组件注册表，统一执行 `mount` 与 `unmount`。
-- [ ] 使用 `AbortController` 或等价机制统一清理事件监听器。
-- [ ] 统一清理定时器、播放器、Observer 和第三方组件实例。
-- [ ] 把 Thymeleaf 输出的前端配置改为有类型、可校验的只读对象。
-- [ ] 保留兼容层，让尚未迁移的旧脚本仍可运行。
-- [ ] 增加连续 PJAX 导航和浏览器前进/后退的自动化测试。
+- [x] 定义首次加载、页面离开、页面进入和销毁事件。
+- [x] 建立组件注册表，统一执行 `mount` 与 `unmount`。
+- [x] 使用 `AbortController` 或等价机制统一清理事件监听器。
+- [x] 统一清理定时器、播放器、Observer 和第三方组件实例。
+- [x] 把 Thymeleaf 输出的前端配置改为有类型、可校验的只读对象。
+- [x] 保留兼容层，让尚未迁移的旧脚本仍可运行。
+- [x] 增加连续 PJAX 导航和浏览器前进/后退的自动化测试。
 
 验收标准：
 
@@ -487,7 +491,7 @@ chore: establish Vite and TypeScript build pipeline
 | --- | --- | --- |
 | 阶段 0 | 已完成 | 功能盘点、裁剪与回归基线 |
 | 阶段 1 | 已完成 | Vite、TypeScript、pnpm、CI 和可复现构建 |
-| 阶段 2 | 未开始 | 统一页面与 PJAX 生命周期 |
+| 阶段 2 | 进行中 | 统一页面与 PJAX 生命周期；本地验收通过，待 CI 与合并 |
 | 阶段 3 | 未开始 | JavaScript/TypeScript 模块化 |
 | 阶段 4 | 未开始 | 第三方依赖治理和按需加载 |
 | 阶段 5 | 未开始 | CSS 架构与视觉系统 |

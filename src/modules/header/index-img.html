@@ -237,39 +237,52 @@
         }
     </style>
     <script th:inline="javascript">
-        function subtitleType() {
-            if([[${theme.config.top.above.enable_typed_random}]]){
-                fetch("https://v1.hitokoto.cn").then((t => t.json())).then((t => {
-                    {
-                        const e = "出自 " + t.from;
-                        const n = [[${theme.config.top.above.typed}]].map((item) => {
-                            return item.realNode.text;
-                        });
-                        n.push(t.hitokoto, e), window.typed = new Typed("#subtitle", {
-                            strings: n,
-                            startDelay: 300,
-                            typeSpeed: 100,
-                            loop: !0,
-                            backSpeed: 50
-                        })
-                    }
-                }))
-            }else{
-                const n = [[${theme.config.top.above.typed}]].map((item) => {
-                    return item.realNode.text;
-                });
+        (function () {
+            let active = true;
+            const requestController = new AbortController();
+            const configuredStrings = [[${theme.config.top.above.typed}]].map((item) => item.realNode.text);
+
+            function mountTyped(strings) {
+                if (!active || !document.getElementById("subtitle")) return;
+                if (window.typed && typeof window.typed.destroy === "function") window.typed.destroy();
                 window.typed = new Typed("#subtitle", {
-                    strings: n,
+                    strings: strings,
                     startDelay: 300,
                     typeSpeed: 100,
-                    loop: !0,
+                    loop: true,
                     backSpeed: 50
-                })
+                });
             }
-        }
-        // 防止加载文字太短时第一个自定义文字显示不出来
-        setTimeout(()=>{
-            "function" == typeof Typed ? subtitleType() : getScript("https://npm.elemecdn.com/typed.js@2.0.12/lib/typed.min.js").then(subtitleType)
-        },1800)
+
+            async function subtitleType() {
+                if (!active || !document.getElementById("subtitle")) return;
+                if ([[${theme.config.top.above.enable_typed_random}]]) {
+                    try {
+                        const response = await fetch("https://v1.hitokoto.cn", {signal: requestController.signal});
+                        const hitokoto = await response.json();
+                        mountTyped([...configuredStrings, hitokoto.hitokoto, "出自 " + hitokoto.from]);
+                    } catch (error) {
+                        if (error.name !== "AbortError") mountTyped(configuredStrings);
+                    }
+                    return;
+                }
+                mountTyped(configuredStrings);
+            }
+
+            // 防止加载文字太短时第一个自定义文字显示不出来
+            const typedDelay = setTimeout(() => {
+                if (!active) return;
+                if (typeof Typed === "function") subtitleType();
+                else getScript("https://npm.elemecdn.com/typed.js@2.0.12/lib/typed.min.js").then(subtitleType);
+            }, 1800);
+
+            document.addEventListener("hanlo:page:destroy", function () {
+                active = false;
+                clearTimeout(typedDelay);
+                requestController.abort();
+                if (window.typed && typeof window.typed.destroy === "function") window.typed.destroy();
+                window.typed = null;
+            }, {once: true});
+        })();
     </script>
 </th:block>

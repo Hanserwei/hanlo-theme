@@ -145,6 +145,9 @@
     <script th:src="${assets_link + '/libs/view-image/view-image.min.js'}"></script>
 
     <script th:src="${assets_link + '/libs/pjax/pjax.min.js'}"></script>
+
+    <!-- 阶段 2 页面生命周期：稳定文件名由 Vite 构建生成。 -->
+    <script type="module" th:src="${assets_link + '/js/hanlo-runtime.js' + theme_version}"></script>
     
     <!-- swiper 在瞬间滚动时会使用 -->
     <script th:if="${theme.config.top.moment}" data-pjax
@@ -178,7 +181,7 @@
             
             typeof preloader === 'object' && preloader.initLoading()
             
-            typeof typed === 'object' && typed.destroy()
+            typeof typed === 'object' && typed && typeof typed.destroy === 'function' && typed.destroy()
             
             //reset readmode
             const $bodyClassList = document.body.classList
@@ -218,12 +221,6 @@
             typeof preloader === 'object' && preloader.endLoading()
         })
         
-        document.addEventListener('pjax:error', (e) => {
-                    if (e.request.status === 404 || e.request.status === 500) {
-                        window.location.href = e.request.responseURL;
-                    }
-                }
-        )
     </script>
 
 

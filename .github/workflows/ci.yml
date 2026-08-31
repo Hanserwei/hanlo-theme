@@ -36,6 +36,12 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Check source
         run: pnpm check
+      - name: Run unit tests
+        run: pnpm test:unit
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run browser lifecycle tests
+        run: pnpm test:e2e
       - name: Build and package theme
         run: pnpm build
       - name: Verify committed build output
