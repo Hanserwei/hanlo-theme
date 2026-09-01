@@ -1,4 +1,4 @@
-import{t as e}from"./js/hanlo-runtime-1.1.0.js";var t=e(((e,t)=>{(function(n,r){typeof e==`object`&&typeof t==`object`?t.exports=r():typeof define==`function`&&define.amd?define(`DPlayer`,[],r):typeof e==`object`?e.DPlayer=r():n.DPlayer=r()})(self,(()=>(()=>{var e={916:(e,t,n)=>{var r=n(471);e.exports=function(e){var t,i=``,a=(e||={}).video,o=e.options,s=r.$escape,c=e.tran,l=e.icons,u=e.index,d=r.$each;return e.$value,e.$index,i+=`<div class="dplayer-mask"></div>
+import{t as e}from"./js/hanlo-runtime-1.1.1.js";var t=e(((e,t)=>{(function(n,r){typeof e==`object`&&typeof t==`object`?t.exports=r():typeof define==`function`&&define.amd?define(`DPlayer`,[],r):typeof e==`object`?e.DPlayer=r():n.DPlayer=r()})(self,(()=>(()=>{var e={916:(e,t,n)=>{var r=n(471);e.exports=function(e){var t,i=``,a=(e||={}).video,o=e.options,s=r.$escape,c=e.tran,l=e.icons,u=e.index,d=r.$each;return e.$value,e.$index,i+=`<div class="dplayer-mask"></div>
 <div class="dplayer-video-wrap">
     `,t=n(568)(a),i+=t,i+=`
     `,o.logo&&(i+=`
