@@ -1,16 +1,10 @@
 <!-- hello -->
 <div class="hello-about">
-    <div class="cursor" style="translate: none; rotate: none; scale: none; transform: translate(721px,180px);"></div>
+    <div class="cursor"></div>
     <div class="shapes">
-        <div class="shape shape-1"
-             style="translate: none; rotate: none; scale: none; transform: translate(721px,180px);">
-        </div>
-        <div class="shape shape-2"
-             style="translate: none; rotate: none; scale: none; transform: translate(721px,180px);">
-        </div>
-        <div class="shape shape-3"
-             style="translate: none; rotate: none; scale: none; transform: translate(721px,180px);">
-        </div>
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
     </div>
     <div class="content">
         <h1>[[${theme.config.about.helloAbout}]]</h1>
@@ -40,6 +34,7 @@
             will-change: transform;
             position: absolute;
             border-radius: 50%;
+            transition: transform 120ms ease-out;
         }
 
         .shape.shape-1 {
@@ -120,6 +115,7 @@
             margin: -10px 0 0 -10px;
             border-radius: 50%;
             will-change: transform;
+            transition: transform 40ms linear;
             user-select: none;
             pointer-events: none;
             z-index: 3;

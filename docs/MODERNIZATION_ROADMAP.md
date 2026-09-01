@@ -48,43 +48,33 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 | 发布流程 | GitHub Actions 手动复制文件并压缩，仍使用 Node.js 16 和旧版 Actions |
 | 自动化测试 | 暂无单元测试、模板验证和浏览器端回归测试 |
 
-### 阶段 3 收尾后的当前状态
+### 阶段 4 本地实现后的当前状态
 
 | 领域 | 当前状态 |
 | --- | --- |
-| 主题版本 | `1.0.1`；唯一版本来源为 `theme.yaml:spec.version` |
+| 主题版本 | `1.1.0`；唯一版本来源为 `theme.yaml:spec.version` |
 | 运行平台 | Halo `>= 2.26.0`，本地验证环境为 `2.26.0-SNAPSHOT` |
-| 模板源码 | `src/` 中 95 个运行时 Thymeleaf 模板和 1 个构建入口；构建输出 98 个 HTML |
-| 第一方脚本 | 24 个 TypeScript 源文件，由单一 ESM 入口生成稳定的 `hanlo-runtime.js` |
-| 第三方脚本 | `public/assets/` 中仍有 24 个 vendor JavaScript；来源治理和按需加载属于阶段 4 |
+| 模板源码 | `src/` 中运行时 Thymeleaf 模板和构建入口；`templates/` 继续由构建生成 |
+| 第一方脚本 | TypeScript ESM 入口生成版本化的 `hanlo-runtime-<version>.js` 与按功能拆分的动态分块，入口与分块共享同一模块 URL |
+| 第三方脚本 | 保留依赖均由 pnpm 精确锁定；仓库不再签入 `public/assets/libs/` vendor JavaScript |
 | 页面生命周期 | `PageControllerRegistry` + `PageResourceScope` 统一首次加载、PJAX、历史导航、挂载和销毁 |
 | 前端构建 | pnpm、严格 TypeScript、Vite Plus、Halo Vite 插件、冻结 lockfile 和主题打包 CLI |
 | 自动化测试 | Vitest 单元测试、Playwright 合成/真实 Halo 测试、YAML 与构建产物校验 |
-| CI/CD | `master` 推送和 Pull Request 执行检查、测试、构建、产物同步和 ZIP 校验；Release 使用 Halo 官方工作流 |
+| 阶段 4 收尾 | 本地静态/合成门禁与真实 Halo 2.26 页面矩阵已通过；等待提交、推送和远端 CI 证据 |
 
-阶段 1 的模板保真桥仍有意保留：现有 Thymeleaf 片段、首屏同步主题引导和模板级 PJAX 初始化
-尚不能无差异地交给 Vite HTML 转换。第一方业务脚本模块化已经完成；移除该桥需要单独迁移模板构建
+阶段 1 的模板保真桥仍有意保留：现有 Thymeleaf 片段和首屏同步主题引导尚不能无差异地交给
+Vite HTML 转换。PJAX 已在阶段 4 进入本地 ESM；移除该桥仍需单独迁移模板构建
 语法并重新执行完整页面矩阵，不属于阶段 0–3 的未完成验收项。
 
-### 阶段 3 结束后的主要运行时依赖
+### 阶段 4 治理后的主要运行时依赖
 
-- Halo 2.x
-- Thymeleaf
-- jQuery
-- PJAX
-- Vue 2，仅在少量页面功能中使用
-- Shiki
-- Swiper
-- Fancybox
-- DPlayer / HLS.js
-- Tocbot
-- GSAP
-- Vanilla LazyLoad
-- Clipboard.js
-- QRCode.js
-- FastAverageColor
-- Waterfall.js
-- Node Snackbar
+- Halo 2.x 与 Thymeleaf
+- PJAX，核心本地 ESM
+- Shiki、Swiper、DPlayer / HLS.js、Tocbot、Typed.js、QRCode 和 FastAverageColor，按功能动态导入
+- 原生 TypeScript 图库/灯箱、懒加载、Snackbar、瀑布流、进度条、预取、3D 分类和友链 Canvas
+
+精确版本、许可证、用途和替换成本见
+[`docs/modernization/phase-4/DEPENDENCIES.md`](modernization/phase-4/DEPENDENCIES.md)。
 
 ### 阶段 0 识别的主要技术债
 
@@ -353,21 +343,25 @@ export interface PageController {
 
 ### 阶段 4：第三方依赖治理与按需加载
 
-**状态：未开始**
+**状态：进行中**
+
+执行说明与依赖登记见 [`docs/modernization/phase-4/README.md`](modernization/phase-4/README.md)
+和 [`docs/modernization/phase-4/DEPENDENCIES.md`](modernization/phase-4/DEPENDENCIES.md)。本地实现、静态/合成门禁和
+真实 Halo 页面矩阵已通过；远端 CI、提交和推送由收尾流程补充证据。
 
 目标是让第三方依赖来源明确、版本可控，并减少首屏无效资源。
 
 任务：
 
-- [ ] 将仍需维护的依赖纳入 pnpm 和 lockfile。
-- [ ] 删除重复的 Vue 2、jQuery 和其他 vendor 副本。
-- [ ] 重写图库后移除 jQuery 及旧 Fancybox 依赖。
-- [ ] 重写或移除 3D 分类页后移除 Vue 2。
-- [ ] 评论、音乐、视频、图库等模块使用动态导入。
-- [ ] Shiki 改为本地构建，仅包含启用的主题和常用语言。
-- [ ] 为可配置外部 CDN 提供失败回退或明确错误提示。
-- [ ] 使用 Dependabot、Renovate 或定期人工检查管理版本更新。
-- [ ] 记录每个第三方库的用途、许可证和替换成本。
+- [x] 将仍需维护的依赖纳入 pnpm 和 lockfile。
+- [x] 删除重复的 Vue 2、jQuery 和其他 vendor 副本。
+- [x] 重写图库后移除 jQuery 及旧 Fancybox 依赖。
+- [x] 重写 3D 分类页后移除 Vue 2。
+- [x] 评论保持 Halo 插件所有，视频、图库和其他重型功能使用动态导入；侧栏音乐卡无脚本运行时。
+- [x] Shiki 改为本地构建，仅包含启用的主题和常用语言。
+- [x] 为可配置外部 CDN 提供失败回退或明确错误提示。
+- [x] 使用 Dependabot 管理版本更新。
+- [x] 记录每个第三方库的用途、许可证和替换成本，并生成随包分发的第三方通知。
 
 验收标准：
 
@@ -525,7 +519,7 @@ chore: establish Vite and TypeScript build pipeline
 | 阶段 1 | 已完成 | Vite、TypeScript、pnpm、CI 和可复现构建 |
 | 阶段 2 | 已完成 | 统一页面与 PJAX 生命周期；本地、CI 与合并门禁通过 |
 | 阶段 3 | 已完成 | JavaScript/TypeScript 模块化；本地、CI 与合并门禁通过 |
-| 阶段 4 | 未开始 | 第三方依赖治理和按需加载 |
+| 阶段 4 | 进行中 | 本地与真实 Halo 验收已完成；等待提交、推送与远端 CI 证据 |
 | 阶段 5 | 未开始 | CSS 架构与视觉系统 |
 | 阶段 6 | 未开始 | 测试、性能、可访问性和发布治理 |
 

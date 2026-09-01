@@ -1,6 +1,8 @@
+import { installInternalLinkPrefetch, installPjaxNavigation } from "../core/navigation";
 import { installPageLifecycle } from "../core/runtime";
 import { createBrowserStorage } from "../core/storage";
 import { createBangumiController } from "../features/bangumi";
+import { createCategories3dController } from "../features/categories-3d";
 import { createContentElementsController } from "../features/content-elements";
 import { createEffectsController } from "../features/effects";
 import { createFriendMomentsController } from "../features/friend-moments";
@@ -12,10 +14,13 @@ import { createSiteShellController } from "../features/site-shell";
 import { createThemeModeController } from "../features/theme-mode";
 import { createTranslationController } from "../features/translation";
 
+installPjaxNavigation();
+installInternalLinkPrefetch();
 const storage = createBrowserStorage();
 const lifecycle = installPageLifecycle();
 lifecycle.register(createThemeModeController(storage));
 lifecycle.register(createContentElementsController());
+lifecycle.register(createCategories3dController());
 lifecycle.register(createSiteShellController(storage));
 lifecycle.register(createRightMenuController());
 lifecycle.register(createTranslationController(storage));

@@ -1,9 +1,13 @@
 <th:block th:fragment="links-canvas(groups)" th:if="${theme.config.link.linksCanvas && not #lists.isEmpty(groups)}" >
 
     <style>
-        #iframe {
+        #link-canvas {
+            display: block;
+            width: 100%;
+            height: 450px;
             border: var(--style-border);
             border-radius: 12px;
+            background: var(--heo-card-bg);
         }
 
         .addBtn {
@@ -50,8 +54,7 @@
         }
     </style>
     <div class="flink">
-        <iframe id="link-canvas-frame" scrolling="auto" src="/themes/theme-hanlo/assets/html/link-canvas.html" frameborder="0"
-                height="450px" width="100%"></iframe>
+        <canvas id="link-canvas" width="960" height="450" aria-label="互动友链头像画布"></canvas>
 
         <div class="addBtn">
             <button data-hanlo-action="refresh-link-canvas">

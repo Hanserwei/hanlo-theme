@@ -3,104 +3,70 @@ import type { ThemeConfig } from "../../core/config";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
 import { snackbarShow } from "../../core/ui";
+import { LOCAL_LANGUAGES, LOCAL_THEMES } from "./registry";
 
-const SHIKI_MODULE_URL = "https://esm.sh/shiki@4.4.3";
 const FALLBACK_THEMES = { light: "one-light", dark: "one-dark-pro" } as const;
 const LEGACY_THEME_ALIASES: Readonly<Record<string, string>> = {
   "one-dark": "one-dark-pro",
-  "a11y-dark": "github-dark-high-contrast",
-  "atom-dark": "one-dark-pro",
-  "base16-ateliersulphurpool.light": "solarized-light",
-  cb: "dark-plus",
-  "coldark-cold": "github-light",
-  "coldark-dark": "github-dark",
-  "coy-without-shadows": "github-light",
-  darcula: "material-theme-darker",
-  "duotone-dark": "min-dark",
-  "duotone-earth": "rose-pine",
-  "duotone-forest": "everforest-dark",
-  "duotone-light": "min-light",
-  "duotone-sea": "material-theme-ocean",
-  "duotone-space": "poimandres",
-  ghcolors: "github-light",
-  "gruvbox-dark": "gruvbox-dark-medium",
-  "gruvbox-light": "gruvbox-light-medium",
-  "holi-theme": "synthwave-84",
-  hopscotch: "rose-pine",
-  lucario: "min-dark",
-  "material-dark": "material-theme-darker",
-  "material-light": "material-theme-lighter",
-  "material-oceanic": "material-theme-ocean",
-  pojoaque: "monokai",
-  "shades-of-purple": "synthwave-84",
-  "solarized-dark-atom": "solarized-dark",
-  synthwave84: "synthwave-84",
   vs: "light-plus",
   "vsc-dark-plus": "dark-plus",
-  xonokai: "monokai",
-  "z-touch": "min-light",
 };
 const LANGUAGE_ALIASES: Readonly<Record<string, string>> = {
   "c++": "cpp",
   "c#": "csharp",
   htm: "html",
   md: "markdown",
+  sh: "shellscript",
+  shell: "shellscript",
+  js: "javascript",
+  ts: "typescript",
+  py: "python",
   "vue-html": "vue",
+  xml: "html",
 };
 const LANGUAGE_LABELS: Readonly<Record<string, string>> = {
   bash: "Bash",
   csharp: "C#",
   cpp: "C++",
   css: "CSS",
+  dockerfile: "Dockerfile",
   html: "HTML",
+  java: "Java",
   javascript: "JavaScript",
   json: "JSON",
   jsx: "JSX",
   markdown: "Markdown",
+  python: "Python",
   shellscript: "Shell",
+  sql: "SQL",
   typescript: "TypeScript",
   tsx: "TSX",
   vue: "Vue",
-  xml: "XML",
   yaml: "YAML",
 };
-
-interface ShikiModule {
-  readonly bundledLanguages: Readonly<Record<string, unknown>>;
-  readonly bundledThemes: Readonly<Record<string, unknown>>;
-  codeToHtml(
-    source: string,
-    options: Readonly<{
-      lang: string;
-      themes: Readonly<{ readonly light: string; readonly dark: string }>;
-      defaultColor: false;
-    }>,
-  ): Promise<string>;
-}
-
-let modulePromise: Promise<ShikiModule> | undefined;
-
-function loadShiki(): Promise<ShikiModule> {
-  modulePromise ??= import(/* @vite-ignore */ SHIKI_MODULE_URL) as Promise<ShikiModule>;
-  return modulePromise;
-}
 
 export function normalizeTheme(
   theme: string,
   mode: "dark" | "light",
-  bundledThemes: Readonly<Record<string, unknown>>,
+  themes: Readonly<Record<string, unknown>> | readonly string[],
 ): string {
   const requested = LEGACY_THEME_ALIASES[theme] ?? theme;
-  return requested && bundledThemes[requested] ? requested : FALLBACK_THEMES[mode];
+  const available = Array.isArray(themes)
+    ? (themes as readonly string[]).includes(requested)
+    : Boolean((themes as Readonly<Record<string, unknown>>)[requested]);
+  return requested && available ? requested : FALLBACK_THEMES[mode];
 }
 
 export function normalizeLanguage(
   language: string,
-  bundledLanguages: Readonly<Record<string, unknown>>,
+  languages: Readonly<Record<string, unknown>> | readonly string[],
 ): string {
   const aliased = LANGUAGE_ALIASES[language] ?? language;
   if (["text", "txt", "plain", "plaintext"].includes(aliased)) return "text";
-  return bundledLanguages[aliased] ? aliased : "text";
+  const available = Array.isArray(languages)
+    ? (languages as readonly string[]).includes(aliased)
+    : Boolean((languages as Readonly<Record<string, unknown>>)[aliased]);
+  return available ? aliased : "text";
 }
 
 function extractLanguage(pre: HTMLElement, code: HTMLElement): string {
@@ -241,14 +207,20 @@ async function renderCodeBlock(
   const source = code.textContent ?? "";
   const language = extractLanguage(pre, code);
   try {
-    const shiki = await loadShiki();
+    const normalized = normalizeLanguage(language, LOCAL_LANGUAGES);
+    if (normalized === "text") {
+      delete code.dataset["shikiPending"];
+      return;
+    }
+    const { getLocalHighlighter } = await import("./local");
     if (resources.disposed) return;
-    const normalized = normalizeLanguage(language, shiki.bundledLanguages);
-    const html = await shiki.codeToHtml(source, {
+    const shiki = await getLocalHighlighter();
+    if (resources.disposed) return;
+    const html = shiki.codeToHtml(source, {
       lang: normalized,
       themes: {
-        light: normalizeTheme(config.theme_light, "light", shiki.bundledThemes),
-        dark: normalizeTheme(config.theme_dark, "dark", shiki.bundledThemes),
+        light: normalizeTheme(config.theme_light, "light", LOCAL_THEMES),
+        dark: normalizeTheme(config.theme_dark, "dark", LOCAL_THEMES),
       },
       defaultColor: false,
     });

@@ -43,6 +43,7 @@ test("serializes consecutive PJAX and history navigations without resource leaks
   expect(result.active).toEqual([
     "theme-mode",
     "content-elements",
+    "categories-3d",
     "site-shell",
     "translation",
     "page-widgets",
@@ -87,6 +88,16 @@ test("serializes consecutive PJAX and history navigations without resource leaks
     "/tests/e2e/fixtures/page-one.html",
     "/tests/e2e/fixtures/page-two.html",
   ]);
+});
+
+test("preserves native download-anchor behavior outside PJAX", async ({ page }) => {
+  await page.goto(pageOne);
+  await waitForLifecycle(page);
+  const downloadPromise = page.waitForEvent("download");
+  await page.locator("#download-file").click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe("config.js");
+  await expect(page).toHaveURL(new RegExp(`${pageOne.replaceAll(".", "\\.")}$`));
 });
 
 test("falls back to a document navigation when PJAX fails", async ({ page }) => {

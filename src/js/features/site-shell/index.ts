@@ -11,17 +11,7 @@ import {
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { ExpiringStorage } from "../../core/storage";
 import type { PageControllerDefinition } from "../../core/types";
-import {
-  ensureJquery,
-  fadeIn,
-  fadeOut,
-  initJustifiedGalleries,
-  loadScript,
-  loadStyle,
-  sidebarPaddingRight,
-  snackbarShow,
-  syncThemeColor,
-} from "../../core/ui";
+import { fadeIn, fadeOut, sidebarPaddingRight, snackbarShow, syncThemeColor } from "../../core/ui";
 
 const LINKS_ENDPOINT = "/apis/api.plugin.halo.run/v1alpha1/plugins/PluginLinks/links?keyword=";
 const SCROLL_POSTS_KEY = "hanlo-scroll-posts";
@@ -381,9 +371,7 @@ function initializeNavigation(
     if (hideButton) {
       hideButton.classList.toggle("open");
       const content = hideButton.nextElementSibling;
-      if (content && hideButton.classList.contains("open")) {
-        initJustifiedGalleries(content.querySelectorAll<HTMLElement>(".gallery"));
-      }
+      if (content && hideButton.classList.contains("open")) revealGalleries(content);
     }
 
     const tabButton = event.target.closest<HTMLButtonElement>("#article-container .tab > button");
@@ -445,7 +433,6 @@ function initializeNavigation(
 
   resources.listen(window, "resize", () => {
     if (window.innerWidth >= 768 && sidebar?.classList.contains("open")) closeSidebar();
-    initializeWaterfall(resources);
   });
   resources.listen(window, "touchmove", () => {
     document.querySelectorAll<HTMLElement>("#nav .menus_item_child").forEach((menu) => {
@@ -464,7 +451,16 @@ function activateTab(button: HTMLButtonElement): void {
   Array.from(content.children).forEach((child) =>
     child.classList.toggle("active", child.id === id),
   );
-  initJustifiedGalleries(content.querySelectorAll<HTMLElement>(`#${CSS.escape(id)} .gallery`));
+  const active = content.querySelector<HTMLElement>(`#${CSS.escape(id)}`);
+  if (active) revealGalleries(active);
+}
+
+function revealGalleries(root: ParentNode): void {
+  root.querySelectorAll<HTMLElement>(".gallery").forEach((gallery) => {
+    gallery.classList.add("hanlo-native-gallery");
+    gallery.style.opacity = "1";
+  });
+  root.querySelector(".loadings")?.classList.remove("loadings");
 }
 
 function enterReadMode(resources: PageResourceScope): void {
@@ -540,7 +536,10 @@ function initializeScroll(resources: PageResourceScope): void {
   resources.defer(() => update.cancel());
 }
 
-function initializeContent(config: Readonly<ThemeConfig>, resources: PageResourceScope): void {
+async function initializeContent(
+  config: Readonly<ThemeConfig>,
+  resources: PageResourceScope,
+): Promise<void> {
   const runtime = document.querySelector<HTMLElement>("#runtimeshow");
   if (runtime?.textContent)
     runtime.textContent = `${Math.max(0, differenceInDays(runtime.textContent))}天`;
@@ -575,18 +574,22 @@ function initializeContent(config: Readonly<ThemeConfig>, resources: PageResourc
     });
   }
 
-  initializeToc(resources);
+  const mounts = [
+    initializeToc(resources),
+    initializeGalleries(resources),
+    initializeQrCode(resources),
+    initializeIndexEssay(resources),
+    initializeCoverColor(config, resources),
+  ];
   initializeLazyLoad(config, resources);
-  initializeGalleries(config);
-  initializeQrCode();
-  initializeIndexEssay(resources);
   initializeWaterfall(resources);
-  initializeCoverColor(config, resources);
+  await Promise.all(mounts);
 }
 
-function initializeToc(resources: PageResourceScope): void {
+async function initializeToc(resources: PageResourceScope): Promise<void> {
   const content = document.querySelector<HTMLElement>(".post-content");
-  if (!content) return;
+  const toc = document.querySelector<HTMLElement>("#card-toc .toc-content");
+  if (!content || !toc) return;
   const titles = content.querySelectorAll("h1,h2,h3,h4,h5,h6");
   if (titles.length === 0) {
     document.querySelector("#card-toc")?.remove();
@@ -594,7 +597,12 @@ function initializeToc(resources: PageResourceScope): void {
     if (button) button.style.display = "none";
     return;
   }
-  window.tocbot?.init({
+  const [{ default: tocbot }] = await Promise.all([
+    import("tocbot"),
+    import("tocbot/dist/tocbot.css"),
+  ]);
+  if (resources.disposed) return;
+  tocbot.init({
     tocSelector: ".toc-content",
     contentSelector: ".post-content",
     headingSelector: "h1,h2,h3,h4,h5,h6",
@@ -606,117 +614,89 @@ function initializeToc(resources: PageResourceScope): void {
     scrollSmoothOffset: -70,
     tocScrollOffset: 50,
   });
-  if (window.tocbot) {
-    resources.defer(() => {
-      window.tocbot?.destroy();
-    });
-  }
-  const toc = document.querySelector<HTMLElement>("#card-toc .toc-content");
-  if (toc) {
-    resources.listen(toc, "click", () => {
-      if (window.innerWidth < 900) document.querySelector("#card-toc")?.classList.remove("open");
-    });
-  }
+  resources.defer(() => tocbot.destroy());
+  resources.listen(toc, "click", () => {
+    if (window.innerWidth < 900) document.querySelector("#card-toc")?.classList.remove("open");
+  });
 }
 
 function initializeLazyLoad(config: Readonly<ThemeConfig>, resources: PageResourceScope): void {
-  if (!config.lazyload.enable || !window.LazyLoad) return;
-  const instance = new window.LazyLoad({
-    elements_selector: "img",
-    threshold: 0,
-    data_src: "lazy-src",
-    callback_error: (image: HTMLImageElement) =>
-      image.setAttribute("srcset", config.lazyload.error),
-  });
-  resources.track(instance, (value) => {
-    value.destroy();
-  });
-}
-
-function initializeGalleries(config: Readonly<ThemeConfig>): void {
-  const galleries = document.querySelectorAll<HTMLElement>("#article-container .gallery");
-  const images =
-    config.lightbox === "fancybox"
-      ? document.querySelectorAll<HTMLImageElement>(
-          "#article-container :not(a):not(.rss-plan-info-group):not(.no-lightbox) > img, #article-container > img, .bber-container-img > img",
-        )
-      : [];
-  if (galleries.length === 0 && images.length === 0) return;
-  ensureJquery(() => {
-    if (galleries.length > 0) runJustifiedGallery(galleries, config);
-    if (images.length > 0) runFancybox(images, config);
-  });
-}
-
-function runJustifiedGallery(
-  galleries: NodeListOf<HTMLElement>,
-  config: Readonly<ThemeConfig>,
-): void {
-  if (window.fjGallery) {
-    initJustifiedGalleries(galleries);
+  const images = Array.from(document.querySelectorAll<HTMLImageElement>("img[data-lazy-src]"));
+  if (!config.lazyload.enable || images.length === 0) return;
+  const load = (image: HTMLImageElement): void => {
+    const source = image.dataset["lazySrc"];
+    if (!source) return;
+    image.src = source;
+    image.removeAttribute("data-lazy-src");
+    image.loading = "lazy";
+    image.addEventListener(
+      "error",
+      () => {
+        image.src = config.lazyload.error;
+        image.removeAttribute("srcset");
+      },
+      { once: true },
+    );
+  };
+  if (!("IntersectionObserver" in window)) {
+    images.forEach(load);
     return;
   }
-  const source = config.source.justifiedGallery;
-  if (source?.css) void loadStyle(source.css, "hanlo-justified-gallery");
-  if (source?.js) void loadScript(source.js).then(() => initJustifiedGalleries(galleries));
+  const observer = resources.observe(
+    new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const image = entry.target as HTMLImageElement;
+          observer.unobserve(image);
+          load(image);
+        }
+      },
+      { rootMargin: "160px" },
+    ),
+  );
+  images.forEach((image) => observer.observe(image));
 }
 
-function runFancybox(images: ArrayLike<HTMLImageElement>, config: Readonly<ThemeConfig>): void {
-  const jquery = window.jQuery ?? window.$;
-  if (!jquery) return;
-  const initialize = () => {
-    Array.from(images).forEach((image) => {
-      if (image.closest("a.fancybox")) return;
-      const requestedSource = image.dataset["lazySrc"] || image.src;
-      const source = new URL(requestedSource, window.location.href);
-      if (!(["blob:", "data:", "http:", "https:"] as const).includes(source.protocol as never)) {
-        return;
-      }
-      const anchor = document.createElement("a");
-      anchor.href = source.href;
-      anchor.className = "fancybox";
-      anchor.dataset["fancybox"] = "images";
-      anchor.dataset["caption"] = image.alt;
-      anchor.dataset["srcset"] = source.href;
-      image.replaceWith(anchor);
-      anchor.append(image);
-    });
-    jquery().fancybox?.({
-      selector: "[data-fancybox]",
-      loop: true,
-      transitionEffect: "slide",
-      protect: true,
-      buttons: ["slideShow", "fullScreen", "thumbs", "close"],
-      hash: false,
-    });
-  };
-  if (jquery.fancybox) initialize();
-  else {
-    const source = config.source.fancybox?.js;
-    if (source) jquery.getScript(source, initialize);
-  }
+async function initializeGalleries(resources: PageResourceScope): Promise<void> {
+  if (
+    !document.querySelector(
+      "#article-container .gallery, #article-container img, .bber-container-img img",
+    )
+  )
+    return;
+  const { mountNativeGallery } = await import("../gallery");
+  if (!resources.disposed) mountNativeGallery(resources);
 }
 
-function initializeQrCode(): void {
+async function initializeQrCode(resources: PageResourceScope): Promise<void> {
   const element = document.querySelector<HTMLElement>("#qrcode");
-  if (!element || !window.QRCode) return;
+  if (!element) return;
+  const { toCanvas } = await import("qrcode");
+  if (resources.disposed) return;
   element.replaceChildren();
-  new window.QRCode(element, {
-    text: window.location.href,
+  const canvas = document.createElement("canvas");
+  element.append(canvas);
+  await toCanvas(canvas, window.location.href, {
     width: 250,
-    height: 250,
-    colorDark: "#000",
-    colorLight: "#fff",
-    correctLevel: window.QRCode.CorrectLevel.H,
+    errorCorrectionLevel: "H",
+    color: { dark: "#000000", light: "#ffffff" },
   });
 }
 
-function initializeIndexEssay(resources: PageResourceScope): void {
-  if (!document.querySelector("#bber-talk") || !window.Swiper) return;
+async function initializeIndexEssay(resources: PageResourceScope): Promise<void> {
+  if (!document.querySelector("#bber-talk")) return;
   document.querySelectorAll<HTMLElement>(".swiper-wrapper .swiper-slide").forEach((slide) => {
     slide.textContent = changeContent(slide.textContent ?? "");
   });
-  const swiper = new window.Swiper(".swiper-container", {
+  const [{ default: Swiper }, { Autoplay }] = await Promise.all([
+    import("swiper"),
+    import("swiper/modules"),
+    import("swiper/css"),
+  ]);
+  if (resources.disposed) return;
+  const swiper = new Swiper(".swiper-container", {
+    modules: [Autoplay],
     direction: "vertical",
     loop: true,
     autoplay: { delay: 3_000, pauseOnMouseEnter: true },
@@ -727,14 +707,58 @@ function initializeIndexEssay(resources: PageResourceScope): void {
 }
 
 function initializeWaterfall(resources: PageResourceScope): void {
-  if (!document.querySelector("#waterfall") || !window.waterfall) return;
-  resources.timeout(() => {
-    window.waterfall?.("#waterfall");
-    document.querySelector("#waterfall")?.classList.add("show");
-  }, 500);
+  const waterfall = document.querySelector<HTMLElement>("#waterfall");
+  if (!waterfall) return;
+  const items = Array.from(waterfall.children).filter(
+    (item): item is HTMLElement => item instanceof HTMLElement,
+  );
+  if (items.length === 0) return;
+
+  let scheduled = false;
+  const layout = (): void => {
+    scheduled = false;
+    const minimumWidth = 280;
+    const gap = 16;
+    const columns = Math.max(1, Math.floor((waterfall.clientWidth + gap) / (minimumWidth + gap)));
+    const width = (waterfall.clientWidth - gap * (columns - 1)) / columns;
+    const heights = Array.from({ length: columns }, () => 0);
+    for (const item of items) {
+      const column = heights.indexOf(Math.min(...heights));
+      item.style.position = "absolute";
+      item.style.width = `${width}px`;
+      item.style.left = `${column * (width + gap)}px`;
+      item.style.top = `${heights[column]}px`;
+      heights[column] += item.offsetHeight + gap;
+    }
+    waterfall.style.position = "relative";
+    waterfall.style.height = `${Math.max(...heights)}px`;
+    waterfall.classList.add("show");
+  };
+  const schedule = (): void => {
+    if (scheduled || resources.disposed) return;
+    scheduled = true;
+    resources.animationFrame(layout);
+  };
+
+  for (const image of Array.from(waterfall.querySelectorAll<HTMLImageElement>("img"))) {
+    if (!image.complete) {
+      resources.listen(image, "load", schedule);
+      resources.listen(image, "error", schedule);
+    }
+  }
+  if ("ResizeObserver" in window) {
+    const observer = resources.observe(new ResizeObserver(schedule));
+    observer.observe(waterfall);
+  } else {
+    resources.listen(window, "resize", schedule);
+  }
+  schedule();
 }
 
-function initializeCoverColor(config: Readonly<ThemeConfig>, resources: PageResourceScope): void {
+async function initializeCoverColor(
+  config: Readonly<ThemeConfig>,
+  resources: PageResourceScope,
+): Promise<void> {
   const rootStyle = document.documentElement.style;
   const reset = () => {
     rootStyle.setProperty("--heo-main", "var(--heo-theme)");
@@ -742,7 +766,7 @@ function initializeCoverColor(config: Readonly<ThemeConfig>, resources: PageReso
     rootStyle.setProperty("--heo-main-op-deep", "var(--heo-theme-op-deep)");
     rootStyle.setProperty("--heo-main-none", "var(--heo-theme-none)");
   };
-  if (!config.source.post?.dynamicBackground || !window.FastAverageColor) {
+  if (!config.source.post?.dynamicBackground) {
     reset();
     return;
   }
@@ -751,9 +775,9 @@ function initializeCoverColor(config: Readonly<ThemeConfig>, resources: PageReso
     reset();
     return;
   }
-  const colorReader = resources.track(new window.FastAverageColor(), (value) => {
-    value.destroy();
-  });
+  const { FastAverageColor } = await import("fast-average-color");
+  if (resources.disposed) return;
+  const colorReader = resources.track(new FastAverageColor(), (value) => value.destroy());
   void colorReader
     .getColorAsync(source, { ignoredColor: [255, 255, 255, 255] })
     .then(({ hex }) => {
@@ -845,11 +869,11 @@ export function createSiteShellController(storage: ExpiringStorage): PageControl
   return {
     name: "site-shell",
     create: ({ config, resources }) => ({
-      mount() {
+      async mount() {
         initializeHeader(resources);
         initializeNavigation(config, storage, resources);
         initializeScroll(resources);
-        initializeContent(config, resources);
+        await initializeContent(config, resources);
         initializePageState(config, storage, resources);
       },
       unmount() {

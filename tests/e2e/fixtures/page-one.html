@@ -12,6 +12,7 @@
     <main id="body-wrap" data-page="one">
       <a id="next-page" data-pjax-test href="/tests/e2e/fixtures/page-two.html">Next</a>
       <a id="broken-page" data-pjax-test href="/tests/e2e/fixtures/missing.html">Broken</a>
+      <a id="download-file" href="/tests/e2e/fixtures/config.js" download>Download</a>
       <p>Page one</p>
       <div id="fmomentsContainer" hidden></div>
       <script>
@@ -21,7 +22,6 @@
         });
       </script>
     </main>
-    <script src="/assets/libs/pjax/pjax.min.js"></script>
     <script src="/tests/e2e/fixtures/setup.js"></script>
   </body>
 </html>

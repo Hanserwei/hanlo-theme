@@ -3,22 +3,25 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "pnpm run build-only && theme-package",
+    "build": "pnpm run build-only && pnpm run package",
     "build-only": "pnpm run validate && tsc --noEmit && vp build && pnpm run verify-build",
     "check": "pnpm run validate && tsc --noEmit && vp check vite.config.ts vite-env.d.ts scripts/*.mjs src/js tests playwright.config.ts vitest.config.ts",
     "dev": "vp build --watch",
-    "package": "theme-package",
+    "notices": "node scripts/generate-third-party-notices.mjs",
+    "package": "node scripts/package-theme.mjs",
     "test": "pnpm run test:unit && pnpm run test:e2e",
     "test:e2e": "playwright test",
     "test:unit": "vitest run",
-    "validate": "node scripts/validate-theme.mjs",
+    "validate": "node scripts/validate-theme.mjs && node scripts/generate-third-party-notices.mjs --check",
     "verify-build": "node scripts/verify-build.mjs"
   },
   "devDependencies": {
     "@halo-dev/theme-package-cli": "1.1.1",
     "@halo-dev/vite-plugin-halo-theme": "1.0.3",
     "@playwright/test": "1.58.2",
+    "@types/dplayer": "1.25.6",
     "@types/node": "24.13.3",
+    "@types/qrcode": "1.5.6",
     "typescript": "5.9.3",
     "vite": "8.2.2",
     "vite-plus": "0.3.0",
@@ -28,5 +31,16 @@
   "engines": {
     "node": "^20.19.0 || ^22.18.0 || >=24.11.0"
   },
-  "packageManager": "pnpm@10.33.0"
+  "packageManager": "pnpm@10.33.0",
+  "dependencies": {
+    "dplayer": "1.27.1",
+    "fast-average-color": "9.5.2",
+    "hls.js": "1.7.1",
+    "pjax": "0.2.8",
+    "qrcode": "1.5.4",
+    "shiki": "4.4.3",
+    "swiper": "14.2.0",
+    "tocbot": "4.36.8",
+    "typed.js": "2.0.12"
+  }
 }

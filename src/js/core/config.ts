@@ -1,7 +1,4 @@
 export interface ThemeSourceConfig extends Readonly<Record<string, unknown>> {
-  readonly jQuery?: string;
-  readonly justifiedGallery?: Readonly<{ readonly js?: string; readonly css?: string }>;
-  readonly fancybox?: Readonly<{ readonly js?: string; readonly css?: string }>;
   readonly post?: Readonly<{ readonly dynamicBackground?: boolean }>;
   readonly tool?: Readonly<{ readonly switch?: boolean }>;
   readonly links?: Readonly<{ readonly linksUrl?: string; readonly linksNum?: number }>;

@@ -9,6 +9,7 @@ window.createHanloTestConfig = function createHanloTestConfig(htmlType) {
     loadProgressBar: false,
     rightMenuEnable: false,
     colorScheme: "system",
+    Snackbar: { bgLight: "#fff", bgDark: "#111", position: "top-center" },
     date_suffix: { just: "刚刚", min: "分钟前", hour: "小时前", day: "天前" },
     translate: {
       defaultEncoding: 2,

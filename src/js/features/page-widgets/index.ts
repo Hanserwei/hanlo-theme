@@ -1,22 +1,11 @@
 import type { ThemeConfig } from "../../core/config";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
-import { loadScript } from "../../core/ui";
 
 interface GreetingItem {
   readonly greeting: string;
   readonly start: number;
   readonly end: number;
-}
-
-interface TypedConstructor {
-  new (selector: string, options: Readonly<Record<string, unknown>>): { destroy(): void };
-}
-
-interface GsapApi {
-  set(target: string, options: Readonly<Record<string, unknown>>): void;
-  to(target: string, options: Readonly<Record<string, unknown>>): void;
-  killTweensOf(target: string): void;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -169,13 +158,9 @@ function mountTyped(config: Readonly<ThemeConfig>, resources: PageResourceScope)
       }
     }
     if (resources.disposed || !document.querySelector("#subtitle")) return;
-    let constructor = window.Typed;
-    if (!constructor) {
-      await loadScript("https://npm.elemecdn.com/typed.js@2.0.12/lib/typed.min.js");
-      constructor = window.Typed;
-    }
-    if (!constructor || resources.disposed) return;
-    const instance = new constructor("#subtitle", {
+    const { default: Typed } = await import("typed.js");
+    if (resources.disposed) return;
+    const instance = new Typed("#subtitle", {
       strings,
       startDelay: 300,
       typeSpeed: 100,
@@ -223,24 +208,29 @@ function mountPursuit(resources: PageResourceScope): void {
   }, 2_000);
 }
 
-async function mountHelloAbout(resources: PageResourceScope): Promise<void> {
+function mountHelloAbout(resources: PageResourceScope): void {
   const element = document.querySelector<HTMLElement>(".hello-about");
-  if (!element) return;
-  let gsap = window.gsap;
-  if (!gsap) {
-    await loadScript("/themes/theme-hanlo/assets/libs/gsap/gsap.min.js");
-    gsap = window.gsap;
-  }
-  if (!gsap || resources.disposed) return;
-  resources.listen(element, "mousemove", (event) => {
-    const mouse = event as MouseEvent;
-    gsap.set(".cursor", { x: mouse.offsetX, y: mouse.offsetY });
-    gsap.to(".shape", { x: mouse.offsetX, y: mouse.offsetY, stagger: -0.1 });
+  const cursor = element?.querySelector<HTMLElement>(".cursor");
+  const shapes = element?.querySelectorAll<HTMLElement>(".shape");
+  if (!element || !cursor || !shapes || shapes.length === 0) return;
+  const reset = (): void => {
+    cursor.style.removeProperty("transform");
+    shapes.forEach((shape) => shape.style.removeProperty("transform"));
+  };
+  resources.listen(element, "pointermove", (event) => {
+    const pointer = event as PointerEvent;
+    if (pointer.pointerType === "touch") return;
+    const bounds = element.getBoundingClientRect();
+    const x = pointer.clientX - bounds.left;
+    const y = pointer.clientY - bounds.top;
+    cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    shapes.forEach((shape, index) => {
+      const lag = 1 - index * 0.035;
+      shape.style.transform = `translate3d(${x * lag}px, ${y * lag}px, 0)`;
+    });
   });
-  resources.defer(() => {
-    gsap.killTweensOf(".cursor");
-    gsap.killTweensOf(".shape");
-  });
+  resources.listen(element, "pointerleave", reset);
+  resources.defer(reset);
 }
 
 function mountRandomTagColors(config: Readonly<ThemeConfig>): void {
@@ -252,29 +242,10 @@ function mountRandomTagColors(config: Readonly<ThemeConfig>): void {
   });
 }
 
-function mountLinkCanvas(resources: PageResourceScope): void {
-  const frame = document.querySelector<HTMLIFrameElement>("#link-canvas-frame");
-  const button = document.querySelector<HTMLElement>("[data-hanlo-action='refresh-link-canvas']");
-  const data = document.querySelector<HTMLScriptElement>("#link-canvas-data");
-  if (!frame || !button) return;
-  if (data?.textContent) {
-    try {
-      const groups: unknown = JSON.parse(data.textContent);
-      const logos = Array.isArray(groups)
-        ? groups.flatMap((group) => {
-            if (!isRecord(group) || !Array.isArray(group["links"])) return [];
-            return group["links"].flatMap((link) => {
-              if (!isRecord(link) || !isRecord(link["spec"])) return [];
-              return typeof link["spec"]["logo"] === "string" ? [link["spec"]["logo"]] : [];
-            });
-          })
-        : [];
-      localStorage.setItem("logos", JSON.stringify(logos));
-    } catch (error) {
-      console.warn("[Hanlo] Link canvas data could not be parsed.", error);
-    }
-  }
-  resources.listen(button, "click", () => frame.contentWindow?.location.reload());
+async function mountLinkCanvas(resources: PageResourceScope): Promise<void> {
+  if (!document.querySelector("#link-canvas")) return;
+  const { mountLinkCanvas: mount } = await import("../link-canvas");
+  if (!resources.disposed) mount(resources);
 }
 
 export function createPageWidgetsController(): PageControllerDefinition {
@@ -288,9 +259,9 @@ export function createPageWidgetsController(): PageControllerDefinition {
         mountTyped(config, resources);
         mountTenYear(config, resources);
         mountPursuit(resources);
-        void mountHelloAbout(resources);
+        mountHelloAbout(resources);
         mountRandomTagColors(config);
-        mountLinkCanvas(resources);
+        void mountLinkCanvas(resources);
         resources.timeout(() => loading(false), 3_000);
       },
       unmount() {},
@@ -299,10 +270,3 @@ export function createPageWidgetsController(): PageControllerDefinition {
 }
 
 export const pageWidgetTestables = Object.freeze({ parseGreetingItems, parseTypedTexts });
-
-declare global {
-  interface Window {
-    Typed?: TypedConstructor;
-    gsap?: GsapApi;
-  }
-}

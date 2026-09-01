@@ -93,9 +93,10 @@ pnpm dev
 | `settings.yaml` | 主题设置项定义 |
 | `annotation-setting.yaml` | 文章与页面的扩展设置 |
 | `src/` | Thymeleaf 页面与片段源码；应在此修改模板 |
-| `public/assets/` | 原样复制到主题包的样式、图片和待阶段 4 治理的 vendor 资源 |
+| `public/assets/` | 原样复制到主题包的第一方样式、字体和图片；第三方运行时由 pnpm/Vite 构建 |
 | `templates/` | Vite 生成、Halo 实际读取的运行时产物；不要手动修改 |
 | `vite.config.ts` | Vite Plus 与 Halo 主题构建插件配置 |
+| `THIRD_PARTY_NOTICES.txt` | 由生产依赖图生成并随 ZIP 分发的第三方许可与通知文本 |
 
 发现问题或希望提交改进时，请通过当前仓库的 Issues 和 Pull Requests 反馈。
 

@@ -9,11 +9,35 @@
     <link rel="shortcut icon"
           th:href="@{${#strings.isEmpty(site.favicon) ? assets_link + '/images/hanlo-logo.png' : site.favicon}}"/>
 
-    <script th:src="${assets_link + '/libs/jquery/jquery.min.js'}"></script>
+    <script th:if="${theme.config.other.staticResource.use == 'custom'}" th:inline="javascript">
+        (() => {
+            const customAssetsBase = [[${assets_link}]]
+            let shown = false
+            const showWarning = () => {
+                if (shown) return
+                shown = true
+                const warning = document.createElement('div')
+                warning.className = 'hanlo-resource-warning'
+                warning.setAttribute('role', 'alert')
+                warning.textContent = '自定义静态资源地址不可用，页面已保留本地导航；部分样式或图片可能暂时缺失。'
+                const attach = () => (document.body || document.documentElement).prepend(warning)
+                if (document.body) attach()
+                else document.addEventListener('DOMContentLoaded', attach, { once: true })
+            }
+            window.addEventListener('error', event => {
+                const target = event.target
+                const failedUrl = target instanceof HTMLLinkElement
+                    ? target.href
+                    : target instanceof HTMLScriptElement || target instanceof HTMLImageElement ? target.src : ''
+                if (failedUrl.startsWith(customAssetsBase)) showWarning()
+            }, true)
+        })()
+    </script>
 
     <link rel="stylesheet" th:href="${assets_link + '/zhheo/zhheoblog.css' + theme_version}">
 
     <link rel="stylesheet" th:href="${assets_link + '/zhheo/custom.css' + theme_version}">
+    <link rel="stylesheet" th:href="@{/assets/css/phase4-runtime.css?v={version}(version=${theme.spec.version})}">
 
     <style th:if="${theme.config.other.scrollbarLinearGradientEnable}">
         *::-webkit-scrollbar-thumb {
@@ -22,16 +46,6 @@
             border-radius: 2em
         }
     </style>
-
-    <!-- swiper 在瞬间滚动时会使用 -->
-    <link th:if="${theme.config.top.moment}" rel="stylesheet" th:href="${assets_link + '/libs/swiper/swiper-bundle.min.css'}"/>
-    
-    <!-- 右下角通知 -->
-    <link th:href="${assets_link + '/libs/node-snackbar/snackbar.min.css'}"
-          media="print"
-          onload='this.media="all"'
-          rel="stylesheet"
-    />
 
     <!-- Shiki 代码高亮 -->
     <th:block th:replace="~{macro/shiki-code}"/>
@@ -79,15 +93,6 @@
             }
         })(window)
     </script>
-
-    <!-- 动态加载条 -->
-    <script data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"
-            th:src="${assets_link + '/libs/pace/pace.min.js'}"
-            th:if="${theme.config.other.loadingBoxs.loadProgressBar}">
-    </script>
-
-    <!-- 复制 https://githubfast.com/zenorocha/clipboard.js -->
-    <script th:src="${assets_link + '/libs/clipboard/clipboard.min.js'}"></script>
 
     <!-- icon图标 -->
     <link rel="stylesheet" th:href="${assets_link + '/icon/iconfont.css' + theme_version}">

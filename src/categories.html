@@ -30,20 +30,22 @@
                     </div>
                 </div>
                 <th:block th:if="${#strings.equals(theme.config.categories.use, '3D')}">
-                    <link rel="stylesheet" th:href="${assets_link + '/libs/no3d/no3d.css'}">
-                    <div id="libCategories" >
-                        <div id="lib-cards" class="container" >
-                            <a th:each="categoryItem : ${categoryFinder.listAll()}" th:href="@{${categoryItem.status.permalink}}" th:id="${categoryItem.spec.displayName}">
-                                <card th:data-image="${categoryItem.spec.cover}">
-                                    <h1 slot="header">[[${categoryItem.spec.displayName}]]</h1>
-                                    <p slot="content">[[${categoryItem.spec.description}]]</p>
-                                </card>
+                    <link rel="stylesheet" th:href="${assets_link + '/css/categories-3d.css' + theme_version}">
+                    <div id="libCategories">
+                        <div id="lib-cards" class="container">
+                            <a class="card-wrap" data-hanlo-category-card
+                               th:each="categoryItem : ${categoryFinder.listAll()}"
+                               th:href="@{${categoryItem.status.permalink}}"
+                               th:id="${categoryItem.spec.displayName}">
+                                <article class="card">
+                                    <div class="card-bg" th:style="|background-image: url('${categoryItem.spec.cover}')|"></div>
+                                    <div class="card-info">
+                                        <h2>[[${categoryItem.spec.displayName}]]</h2>
+                                        <p>[[${categoryItem.spec.description}]]</p>
+                                    </div>
+                                </article>
                             </a>
                         </div>
-                    </div>
-                    <div>
-                        <script data-pjax th:src="${assets_link + '/libs/vue/vue.min.js'}"></script>
-                        <script data-pjax th:src="${assets_link + '/libs/no3d/no3d.min.js'}"></script>
                     </div>
                 </th:block>
             </div>

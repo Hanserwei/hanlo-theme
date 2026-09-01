@@ -1,5 +1,5 @@
 <th:block th:if="${theme.config.code.shiki_enable == null || theme.config.code.shiki_enable}">
-    <link rel="stylesheet" th:href="${assets_link+'/libs/shiki/shiki.css'+theme_version}">
+    <link rel="stylesheet" th:href="${assets_link+'/css/shiki.css'+theme_version}">
     <style>
         .shiki-code-block {
             --shiki-code-height: [[${#strings.isEmpty(theme.config.code.height_limit) ? 300 : theme.config.code.height_limit}]]px;

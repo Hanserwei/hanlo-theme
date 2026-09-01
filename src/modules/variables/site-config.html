@@ -7,7 +7,7 @@
         isPost: [[${htmlType == 'post'}]],
         isHome: [[${ htmlType == 'index'}]],
         copyright: undefined,
-        lightbox: 'fancybox',
+        lightbox: 'native',
         lazyload: {
             enable: [[${theme.config.other.vanillaLazyload.enable}]],
             error: [[@{${theme.config.other.vanillaLazyload.errorImg}}]]
@@ -110,15 +110,6 @@
             links: {
                 linksUrl: [[${ theme.config.link.linksUrl }]],
                 linksNum: [[${theme.config.footer.footer_group.num}]],
-            },
-            jQuery: [[${assets_link + '/libs/jquery/jquery.min.js'}]],
-            justifiedGallery: {
-                js: 'https://npm.elemecdn.com/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
-                css: 'https://npm.elemecdn.com/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
-            },
-            fancybox: {
-                js: [[${assets_link + '/libs/fancybox/jquery.fancybox.min.js'}]],
-                css: '/null'
             },
             post: {
                 dynamicBackground: [[${ theme.config.post.dynamicBackground }]]

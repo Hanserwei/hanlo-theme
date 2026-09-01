@@ -1,0 +1,36 @@
+{
+  "capturedAt": "2026-09-01",
+  "baseUrl": "http://127.0.0.1:8090",
+  "themeVersion": "1.1.0",
+  "temporaryConfiguration": {
+    "categories.use": "3D",
+    "link.linksCanvas": true
+  },
+  "categories3d": {
+    "renderedCards": 44,
+    "desktopPointerTransform": "rotateY(-13.125deg) rotateX(13.125deg)",
+    "reducedMotionTransform": "",
+    "pjaxDestination": "/links",
+    "pageErrors": [],
+    "forbiddenLegacyRequests": []
+  },
+  "linkCanvas": {
+    "liveRouteResult": "Not mounted because the local PluginLinks dataset returned no groups; the empty server-rendered route remained readable.",
+    "syntheticPositiveCoverage": "phase4-targets.html loads the first-party link-canvas module, renders a Canvas from inline link data, and exercises the refresh action in both Playwright projects."
+  },
+  "customCdnFailure": {
+    "temporaryUrl": "http://127.0.0.1:9/unavailable",
+    "expectedFailedRequests": 47,
+    "warning": "自定义静态资源地址不可用，页面已保留本地导航；部分样式或图片可能暂时缺失。",
+    "serverRenderedContentVisible": true,
+    "pjaxDestination": "/bi-ji",
+    "pageErrors": [],
+    "localCoreRuntimeLoaded": true,
+    "localPhase4CssLoaded": true
+  },
+  "restoredConfiguration": {
+    "categories.use": "default",
+    "link.linksCanvas": false,
+    "other.staticResource.use": "local"
+  }
+}
