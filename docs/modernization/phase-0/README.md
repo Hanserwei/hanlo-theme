@@ -56,7 +56,7 @@
 
 | 项目 | 当前事实 | 依据 |
 | --- | --- | --- |
-| 主题版本 | `1.0.0` | [`theme.yaml`](../../../theme.yaml) |
+| 阶段 0 收尾版本 | `1.0.0` | [`COMPLETION_AUDIT.md`](COMPLETION_AUDIT.md)；当前发布版本见 [`theme.yaml`](../../../theme.yaml) |
 | Halo 最低版本声明 | `>= 2.26.0` | P0-DEC-001 已接受并同步至 [`theme.yaml`](../../../theme.yaml) |
 | 页面模板 | 107 → 98 个 HTML 文件 | P0-I0 与 P0-I3 仓库静态统计 |
 | JavaScript | 48 → 39 个 JS 文件 | P0-I0 与 P0-I3 仓库静态统计 |

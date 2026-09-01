@@ -37,5 +37,5 @@ spec:
   logo: /themes/theme-hanlo/assets/images/hanlo-logo.png
   settingName: "theme-hanlo-setting"
   configMapName: "theme-hanlo-configMap"
-  version: "1.0.0"
+  version: "1.0.1"
   requires: ">=2.26.0"

@@ -27,11 +27,13 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 7. **兼容迁移优先于全量重写**：先为旧代码建立模块边界和生命周期，再逐个替换内部实现。
 8. **每个阶段都可发布**：任何阶段结束时，`master` 都应保持可构建、可安装、可运行。
 
-## 当前技术基线
+## 技术基线
 
-以下数据描述阶段 0 功能裁剪后的当前规模；裁剪前数据保留在阶段 0 基线文档中：
+### 阶段 0 裁剪后的初始基线
 
-| 领域 | 当前状态 |
+以下数据是阶段 0 收尾时的历史快照；裁剪前数据保留在阶段 0 基线文档中：
+
+| 领域 | 阶段 0 收尾状态 |
 | --- | --- |
 | 运行平台 | Halo `>= 2.26.0` |
 | 服务端模板 | Thymeleaf，深度使用 Halo Finder API 和主题配置 |
@@ -46,7 +48,25 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 | 发布流程 | GitHub Actions 手动复制文件并压缩，仍使用 Node.js 16 和旧版 Actions |
 | 自动化测试 | 暂无单元测试、模板验证和浏览器端回归测试 |
 
-### 当前主要依赖
+### 阶段 3 收尾后的当前状态
+
+| 领域 | 当前状态 |
+| --- | --- |
+| 主题版本 | `1.0.1`；唯一版本来源为 `theme.yaml:spec.version` |
+| 运行平台 | Halo `>= 2.26.0`，本地验证环境为 `2.26.0-SNAPSHOT` |
+| 模板源码 | `src/` 中 95 个运行时 Thymeleaf 模板和 1 个构建入口；构建输出 98 个 HTML |
+| 第一方脚本 | 24 个 TypeScript 源文件，由单一 ESM 入口生成稳定的 `hanlo-runtime.js` |
+| 第三方脚本 | `public/assets/` 中仍有 24 个 vendor JavaScript；来源治理和按需加载属于阶段 4 |
+| 页面生命周期 | `PageControllerRegistry` + `PageResourceScope` 统一首次加载、PJAX、历史导航、挂载和销毁 |
+| 前端构建 | pnpm、严格 TypeScript、Vite Plus、Halo Vite 插件、冻结 lockfile 和主题打包 CLI |
+| 自动化测试 | Vitest 单元测试、Playwright 合成/真实 Halo 测试、YAML 与构建产物校验 |
+| CI/CD | `master` 推送和 Pull Request 执行检查、测试、构建、产物同步和 ZIP 校验；Release 使用 Halo 官方工作流 |
+
+阶段 1 的模板保真桥仍有意保留：现有 Thymeleaf 片段、首屏同步主题引导和模板级 PJAX 初始化
+尚不能无差异地交给 Vite HTML 转换。第一方业务脚本模块化已经完成；移除该桥需要单独迁移模板构建
+语法并重新执行完整页面矩阵，不属于阶段 0–3 的未完成验收项。
+
+### 阶段 3 结束后的主要运行时依赖
 
 - Halo 2.x
 - Thymeleaf
@@ -66,7 +86,10 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 - Waterfall.js
 - Node Snackbar
 
-### 当前主要技术债
+### 阶段 0 识别的主要技术债
+
+其中“构建不可复现”已由阶段 1 解决，“全局脚本耦合”已由阶段 3 解决，“PJAX 生命周期脆弱”
+已由阶段 2 解决。第三方资源治理和 CSS 架构仍分别由阶段 4、5 继续处理。
 
 #### 构建不可复现
 
@@ -200,14 +223,14 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 
 任务：
 
-- [ ] 建立功能清单，标记“保留、重写、可选、删除”。
-- [ ] 删除确认不再需要的广告、赞助、群聊和推广功能及其静态资源。
-- [ ] 决定是否保留微信组件、开往、51 统计、音乐、3D 分类和右键菜单。
-- [ ] 确定继续支持的评论系统，避免同时维护过多实现。
-- [ ] 确定必须兼容的 Halo 最低版本和浏览器范围。
-- [ ] 为首页、文章页、独立页面、分类、标签、评论和移动端建立截图基线。
-- [ ] 记录浅色、深色、无插件和可选插件启用时的行为。
-- [ ] 记录当前安装包大小和关键页面资源加载情况。
+- [x] 建立功能清单，标记“保留、重写、可选、删除”。
+- [x] 删除确认不再需要的广告、赞助、群聊和推广功能及其静态资源。
+- [x] 决定是否保留微信组件、开往、51 统计、音乐、3D 分类和右键菜单。
+- [x] 确定继续支持的评论系统，避免同时维护过多实现。
+- [x] 确定必须兼容的 Halo 最低版本和浏览器范围。
+- [x] 为首页、文章页、独立页面、分类、标签、评论和移动端建立截图基线。
+- [x] 记录浅色、深色、无插件和可选插件启用时的行为。
+- [x] 记录当前安装包大小和关键页面资源加载情况。
 
 验收标准：
 
@@ -251,11 +274,13 @@ pnpm build
 
 ### 阶段 2：建立统一页面生命周期
 
-**状态：进行中**
+**状态：已完成**
 
 执行说明与本地验收记录见 [`docs/modernization/phase-2/README.md`](modernization/phase-2/README.md)
 和 [`docs/modernization/phase-2/COMPLETION_AUDIT.md`](modernization/phase-2/COMPLETION_AUDIT.md)。
-实现与本地 Halo 2.26 验收已经完成；待 CI 通过并合并到 `master` 后更新为“已完成”。
+实现提交 [`ea0df66`](https://github.com/Hanserwei/hanlo-theme/commit/ea0df66ebad37a4c3156830800ab329560af4ab5)
+已位于 `master`，远端 [CI 33424572166](https://github.com/Hanserwei/hanlo-theme/actions/runs/33424572166)
+通过全部检查、测试、构建和打包门禁。
 
 目标是先解决 PJAX 和组件初始化的公共问题，为后续逐模块迁移提供稳定边界。
 
@@ -287,12 +312,14 @@ export interface PageController {
 
 ### 阶段 3：JavaScript 与 TypeScript 模块化
 
-**状态：进行中**
+**状态：已完成**
 
 执行入口与第一轮迁移记录见
 [`docs/modernization/phase-3/README.md`](modernization/phase-3/README.md) 和
 [`docs/modernization/phase-3/COMPLETION_AUDIT.md`](modernization/phase-3/COMPLETION_AUDIT.md)。
-实现、本地自动化与真实 Halo 2.26 页面矩阵已经完成；待 CI 与合并门禁通过后更新为“已完成”。
+实现提交 [`0d5a2d11`](https://github.com/Hanserwei/hanlo-theme/commit/0d5a2d11dc524b81d650d2889999b4c38fd68437)
+已位于 `master`，远端 [CI 33454750241](https://github.com/Hanserwei/hanlo-theme/actions/runs/33454750241)
+通过全部检查、测试、构建和打包门禁。
 
 目标是逐步清除业务脚本中的隐式全局状态，并按功能建立可测试模块。
 
@@ -496,11 +523,36 @@ chore: establish Vite and TypeScript build pipeline
 | --- | --- | --- |
 | 阶段 0 | 已完成 | 功能盘点、裁剪与回归基线 |
 | 阶段 1 | 已完成 | Vite、TypeScript、pnpm、CI 和可复现构建 |
-| 阶段 2 | 进行中 | 统一页面与 PJAX 生命周期；本地验收通过，待 CI 与合并 |
-| 阶段 3 | 进行中 | JavaScript/TypeScript 模块化；实现与真实 Halo 验收已完成，待 CI/合并 |
+| 阶段 2 | 已完成 | 统一页面与 PJAX 生命周期；本地、CI 与合并门禁通过 |
+| 阶段 3 | 已完成 | JavaScript/TypeScript 模块化；本地、CI 与合并门禁通过 |
 | 阶段 4 | 未开始 | 第三方依赖治理和按需加载 |
 | 阶段 5 | 未开始 | CSS 架构与视觉系统 |
 | 阶段 6 | 未开始 | 测试、性能、可访问性和发布治理 |
+
+### 阶段 0–3 收尾复核（2026-09-01）
+
+| 阶段 | 复核结论 | 关键证据 |
+| --- | --- | --- |
+| 阶段 0 | 已完成，路线图任务已补齐勾选 | 36 张基线截图的 `SHA256SUMS` 全部通过；功能、决策、资源和完成审计文件齐备 |
+| 阶段 1 | 已完成，模板保真桥仍是必要边界 | 实现 `e4a10bf` 与 CI 33414807718 通过；默认 Vite HTML 转换隔离试验会改变现有 Thymeleaf 输出和运行时入口 |
+| 阶段 2 | 已完成 | 实现 `ea0df66` 已进入 `master`；CI 33424572166 通过全部质量门禁 |
+| 阶段 3 | 已完成 | 实现 `0d5a2d11` 已进入 `master`；CI 33454750241 通过；18 张固定证据截图校验通过 |
+
+本次以主题 `1.0.1` 重新执行了冻结安装、`pnpm check`、29 项 Vitest 断言、6 项合成 Playwright
+用例、构建与 ZIP 完整性检查。构建产物共 194 项，其中 98 个 HTML；安装包
+`dist/theme-hanlo-1.0.1.zip` 为 2,354,169 bytes、254 个条目，并与提交中的 `templates/`
+保持同步。
+
+本地 Halo `2.26.0-SNAPSHOT` 重载后报告主题 `1.0.1`、`READY`。真实浏览器测试覆盖 13 个固定
+路由的桌面浅色与移动深色直接加载，以及两种视口下各 12 次 PJAX/历史导航；页面异常、Console
+error、失败主题请求和本地 HTTP 错误均为 0。
+
+以下项目明确不影响阶段 0–3 的完成结论：
+
+- Halo 2.26 可选的 `templates/layout.html` 页面布局契约仍为 `MISSING`，插件页面会使用 Halo
+  fallback；这是后续插件集成工作，不在现有阶段验收条件内。
+- jQuery、Vue 2、Shiki 远程运行时和其他 vendor 依赖仍由阶段 4 治理。
+- CSS 分层、视觉系统和性能预算仍分别属于阶段 5、6。
 
 ## 参考资料
 
