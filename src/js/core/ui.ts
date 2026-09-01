@@ -1,11 +1,5 @@
 const scriptLoads = new Map<string, Promise<void>>();
 
-function escapeHtml(value: string): string {
-  const element = document.createElement("span");
-  element.textContent = value;
-  return element.innerHTML;
-}
-
 export function loadScript(url: string): Promise<void> {
   const absolute = new URL(url, window.location.href).href;
   const existing = Array.from(document.scripts).find((script) => script.src === absolute);
@@ -53,6 +47,8 @@ export function loadStyle(url: string, id?: string): Promise<void> {
   });
 }
 
+let snackbarTimer: number | undefined;
+
 export function snackbarShow(
   text: string,
   action: false | ((element: HTMLElement) => void) = false,
@@ -62,16 +58,35 @@ export function snackbarShow(
   const config = window.GLOBAL_CONFIG.Snackbar;
   const colorKey = document.documentElement.dataset["theme"] === "light" ? "bgLight" : "bgDark";
   document.documentElement.style.setProperty("--heo-snackbar-time", `${duration}ms`);
-  window.Snackbar?.show({
-    text: escapeHtml(text),
-    backgroundColor: config?.[colorKey],
-    onActionClick: action || undefined,
-    actionText: actionText || undefined,
-    showAction: Boolean(actionText),
-    duration,
-    pos: config?.position,
-    customClass: "snackbar-css",
-  });
+  window.clearTimeout(snackbarTimer);
+  document.querySelector("#hanlo-snackbar")?.remove();
+
+  const container = document.createElement("div");
+  container.id = "hanlo-snackbar";
+  container.className = "snackbar-container snackbar-css";
+  container.setAttribute("role", "status");
+  container.setAttribute("aria-live", "polite");
+  container.dataset["position"] =
+    config?.position === "top-center" ? "top-center" : "bottom-center";
+  container.style.backgroundColor = String(config?.[colorKey] ?? "");
+
+  const message = document.createElement("p");
+  message.textContent = text;
+  container.append(message);
+  if (action && actionText) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "action";
+    button.textContent = actionText;
+    button.addEventListener("click", () => action(container), { once: true });
+    container.append(button);
+  }
+  document.body.append(container);
+  requestAnimationFrame(() => container.classList.add("show"));
+  snackbarTimer = window.setTimeout(() => {
+    container.classList.remove("show");
+    window.setTimeout(() => container.remove(), 220);
+  }, duration);
 }
 
 export function fadeIn(element: HTMLElement, seconds: number): void {
@@ -92,32 +107,6 @@ export function fadeOut(element: HTMLElement, seconds: number): void {
 export function sidebarPaddingRight(): void {
   const padding = window.innerWidth - document.body.clientWidth;
   if (padding > 0) document.body.style.paddingRight = `${padding}px`;
-}
-
-export function initJustifiedGalleries(
-  elements: Iterable<HTMLElement> | ArrayLike<HTMLElement>,
-): void {
-  Array.from(elements).forEach((element) => {
-    if (element.offsetHeight === 0 && element.offsetWidth === 0) return;
-    window.fjGallery?.(element, {
-      itemSelector: ".fj-gallery-item",
-      rowHeight: 240,
-      gutter: 4,
-      onJustify() {
-        element.style.opacity = "1";
-      },
-    });
-  });
-  document.querySelector("#article-container .loadings")?.classList.remove("loadings");
-}
-
-export function ensureJquery(callback: () => void): void {
-  if (window.jQuery) {
-    callback();
-    return;
-  }
-  const source = window.GLOBAL_CONFIG.source.jQuery;
-  if (source) void loadScript(source).then(callback);
 }
 
 export function syncThemeColor(): void {

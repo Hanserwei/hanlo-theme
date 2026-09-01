@@ -2459,7 +2459,7 @@ p.p.gray,span.p.gray {
 
 
 /*适配GitHub仓库*/
-#article-container a:not(.fancybox).repo-title:hover,#article-container a:not(.fancybox).mr-3:hover{
+#article-container a.repo-title:hover,#article-container a.mr-3:hover{
     text-decoration: none;
     border-bottom: 0px;
     color: rgb(48 122 246 / 0%);

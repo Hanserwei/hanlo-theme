@@ -4,7 +4,7 @@ import path from "node:path";
 import { expect, test } from "@playwright/test";
 
 const haloBaseUrl = process.env.HALO_BASE_URL;
-const evidenceRoot = path.resolve("docs/modernization/phase-3/evidence/live");
+const evidenceRoot = path.resolve("docs/modernization/phase-4/evidence/live");
 
 const liveRoutes = [
   { id: "home", route: "/", selector: "#body-wrap", screenshot: true },
@@ -80,6 +80,7 @@ test("runs repeated PJAX and history navigation on Halo 2.26 @live", async ({ pa
       expect.arrayContaining([
         "theme-mode",
         "content-elements",
+        "categories-3d",
         "site-shell",
         "translation",
         "page-widgets",
@@ -178,11 +179,17 @@ test("renders the fixed Halo page matrix without theme runtime errors @live", as
   const failedThemeRequests: string[] = [];
   const badThemeResponses: string[] = [];
   const badLocalResponses: string[] = [];
+  const forbiddenLegacyRequests: string[] = [];
   page.on("pageerror", (error) => pageErrors.push(error.stack ?? error.message));
   page.on("console", (message) => {
     if (message.type() === "error") {
       const location = message.location();
       consoleErrors.push(`${message.text()}${location.url ? ` @ ${location.url}` : ""}`);
+    }
+  });
+  page.on("request", (request) => {
+    if (/\/assets\/libs\/|jquery|fancybox|vue(?:\.min)?\.js/i.test(request.url())) {
+      forbiddenLegacyRequests.push(request.url());
     }
   });
   page.on("requestfailed", (request) => {
@@ -223,7 +230,7 @@ test("renders the fixed Halo page matrix without theme runtime errors @live", as
     if (item.screenshot) {
       await page.screenshot({
         animations: "disabled",
-        path: path.join(evidenceRoot, `phase3-live__P-${item.id}__${viewport}__${mode}.png`),
+        path: path.join(evidenceRoot, `phase4-live__P-${item.id}__${viewport}__${mode}.png`),
       });
     }
   }
@@ -233,4 +240,5 @@ test("renders the fixed Halo page matrix without theme runtime errors @live", as
   expect(failedThemeRequests).toEqual([]);
   expect(badThemeResponses).toEqual([]);
   expect(badLocalResponses).toEqual([]);
+  expect(forbiddenLegacyRequests).toEqual([]);
 });

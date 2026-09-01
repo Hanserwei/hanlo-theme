@@ -16,7 +16,7 @@
 | `src/js/core/config.ts` | 校验并深度冻结 Thymeleaf 输出的 `GLOBAL_CONFIG` |
 | `src/js/core/runtime.ts` | 将首次加载、PJAX、历史导航和整页离开转换为统一事件 |
 | `src/js/entries/main.ts` | 浏览器 ESM 入口 |
-| `templates/assets/js/hanlo-runtime.js` | Vite 生成的稳定运行时产物，不直接编辑 |
+| `templates/assets/js/hanlo-runtime-<version>.js` | 阶段 4 起由 Vite 生成的版本化运行时产物，不直接编辑；动态分块引用同一模块 URL |
 
 主题继续通过阶段 1 的模板兼容桥原样复制旧 Thymeleaf 模板。只有新的 TypeScript 入口交给 Vite
 打包，因此可以在不改变现有页面结构和样式的前提下逐步迁移旧模块。

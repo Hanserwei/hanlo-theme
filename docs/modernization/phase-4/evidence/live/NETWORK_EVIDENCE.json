@@ -1,0 +1,57 @@
+{
+  "capturedAt": "2026-09-01T14:42:15.561Z",
+  "baseUrl": "http://127.0.0.1:8090",
+  "haloVersion": "2.26.0-SNAPSHOT",
+  "themeVersion": "1.1.0",
+  "method": "fresh browser context per route; wait for HanloLifecycle.whenIdle plus 2500ms",
+  "forbiddenRequestPattern": "/assets/libs/|jquery|fancybox|vue(.min).js",
+  "routes": {
+    "/": {
+      "status": 200,
+      "pageErrors": [],
+      "forbiddenLegacyRequests": [],
+      "heavyChunks": [
+        "/themes/theme-hanlo/assets/swiper-Bdbi0viN.css",
+        "/themes/theme-hanlo/assets/swiper-Bectn4BF.js",
+        "/themes/theme-hanlo/assets/typed-BYZmoKpQ.js"
+      ]
+    },
+    "/archives/react-dui-zhao-su-cheng-wen-dang": {
+      "status": 200,
+      "pageErrors": [],
+      "forbiddenLegacyRequests": [],
+      "heavyChunks": [
+        "/themes/theme-hanlo/assets/browser-DIs5v8Tk.js",
+        "/themes/theme-hanlo/assets/index.esm-B2NK4b9J.js",
+        "/themes/theme-hanlo/assets/local-BxmAO3OF.js",
+        "/themes/theme-hanlo/assets/tocbot-DXGpIK5v.css",
+        "/themes/theme-hanlo/assets/tocbot-uPGJuOqd.js"
+      ]
+    },
+    "/bi-ji": {
+      "status": 200,
+      "pageErrors": [],
+      "forbiddenLegacyRequests": [],
+      "heavyChunks": []
+    },
+    "/moments": {
+      "status": 200,
+      "pageErrors": [],
+      "forbiddenLegacyRequests": [],
+      "heavyChunks": []
+    },
+    "/links": {
+      "status": 200,
+      "pageErrors": [],
+      "forbiddenLegacyRequests": [],
+      "heavyChunks": []
+    }
+  },
+  "interpretation": {
+    "home": "Swiper and Typed load because the enabled first-screen moment and typed DOM targets are present.",
+    "post": "Local bounded Shiki, Tocbot, QRCode support and FastAverageColor support load for eligible post targets.",
+    "ordinaryPage": "No heavy optional chunk loads on /bi-ji.",
+    "moments": "The native waterfall needs no third-party chunk.",
+    "links": "The first-party Canvas chunk stays absent because linksCanvas is disabled in the restored default configuration."
+  }
+}

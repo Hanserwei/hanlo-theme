@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Phase 4 optional targets</title>
+    <script src="/tests/e2e/fixtures/config.js"></script>
+    <script id="site-config">
+      window.GLOBAL_CONFIG = window.createHanloTestConfig("phase4-targets");
+      window.GLOBAL_CONFIG.source.post = { dynamicBackground: true };
+      window.GLOBAL_CONFIG.widgets.typed.items = [{ text: "Typed locally" }];
+    </script>
+  </head>
+  <body>
+    <main id="body-wrap">
+      <div id="subtitle"></div>
+      <canvas id="link-canvas" width="640" height="360"></canvas>
+      <button type="button" data-hanlo-action="refresh-link-canvas">Refresh canvas</button>
+      <script id="link-canvas-data" type="application/json">
+        [
+          {
+            "links": [
+              {
+                "spec": {
+                  "logo": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect width='32' height='32' fill='%23425aef'/%3E%3C/svg%3E"
+                }
+              }
+            ]
+          }
+        ]
+      </script>
+      <div id="bber-talk">
+        <div class="swiper-container">
+          <div class="swiper-wrapper"><div class="swiper-slide">Moment text</div></div>
+        </div>
+      </div>
+      <aside id="card-toc"><div class="toc-content"></div></aside>
+      <article id="article-container" class="post-content">
+        <h1>Target heading</h1>
+        <img
+          id="post-cover"
+          alt="Post cover"
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Crect width='32' height='32' fill='%23425aef'/%3E%3C/svg%3E"
+        />
+        <div id="qrcode"></div>
+      </article>
+    </main>
+    <script type="module">
+      import("/src/js/entries/main.ts");
+    </script>
+  </body>
+</html>

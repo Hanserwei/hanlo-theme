@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Phase 4 no optional targets</title>
+    <script src="/tests/e2e/fixtures/config.js"></script>
+    <script id="site-config">
+      window.GLOBAL_CONFIG = window.createHanloTestConfig("phase4-no-target");
+      window.GLOBAL_CONFIG.shiki.enable = true;
+    </script>
+  </head>
+  <body>
+    <main id="body-wrap"><p>Readable baseline content</p></main>
+    <script type="module">
+      import("/src/js/entries/main.ts");
+    </script>
+  </body>
+</html>

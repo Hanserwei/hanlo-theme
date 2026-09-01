@@ -95,94 +95,14 @@
 <div th:replace="~{modules/widgets/right-menu}"/>
 
 <div>
-    <!-- https://instant.page/ 网站预加载， 放在 </body> 之前 -->
-    <script th:src="${assets_link + '/libs/instantpage/instantpage.min.js'}"
-            type="module"></script>
-    
-    <script th:src="${assets_link + '/libs/vanilla-lazyload/lazyload.iife.min.js'}"></script>
-    
-    <!-- 右下角通知 https://www.polonel.com/snackbar/ -->
-    <!-- todo head 中有它的 css，应该可以写一块，并改成后台可配置的功能，代码中应该还有他的 js -->
-    <script th:src="${assets_link + '/libs/node-snackbar/snackbar.min.js'}"></script>
-    
     <div class="js-pjax">
-        <!-- 动态标题 -->
         <script th:replace="~{modules/common/diytitle}"/>
     </div>
-    
-    <!-- 深色模式下添加粒子效果canvas -->
+
     <canvas th:if="${theme.config.style.universe}" id="universe" width="1312" height="880"></canvas>
-    
-    <!-- https://davidshimjs.github.io/qrcodejs/ 生成二维码 -->
-    <!-- 应该是文章页分享使用 -->
-    <script data-pjax th:src="${assets_link + '/libs/qrcode/qrcode.min.js'}" ></script>
-    
-    <!--  https://raphamorim.io/waterfall.js/  应该是这个 还有相关的 js 代码 是否可以调整-->
-    <script th:src="${assets_link + '/libs/waterfall/waterfall.min.js'}"></script>
-    
-    <!-- 获取主色 https://lokeshdhakar.com/projects/color-thief/ -->
-    <!--<script th:src="@{/assets/libs/color-thief/color-thief.umd.js}"></script>-->
-    <script th:src="${assets_link + '/libs/fast-average-color/index.browser.min.js'}"></script>
-    
-    <script th:src="${assets_link + '/libs/view-image/view-image.min.js'}"></script>
 
-    <script th:src="${assets_link + '/libs/pjax/pjax.min.js'}"></script>
-
-    <!-- 阶段 2 页面生命周期：稳定文件名由 Vite 构建生成。 -->
-    <script type="module" th:src="${assets_link + '/js/hanlo-runtime.js' + theme_version}"></script>
-    
-    <!-- swiper 在瞬间滚动时会使用 -->
-    <script th:if="${theme.config.top.moment}" data-pjax
-            th:src="${assets_link + '/libs/swiper/swiper-bundle.min.js'}"></script>
-    
-    <!-- Tocbot 目录生成 start -->
-    <th:block th:replace="~{modules/common/toc-bot}"/>
-    
-    <script>
-        let pjaxSelectors = ['title', '#config-diff', '#body-wrap', '#rightside-config-hide', '#rightside-config-show', '.js-pjax', '#site-config']
-        
-        pjaxSelectors.unshift('meta[property="og:type"]', 'meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]', 'meta[property="og:description"]'
-                , 'meta[name="twitter:title"]', 'meta[name="twitter:url"]', 'meta[name="twitter:description"]', 'meta[name="twitter:image"]')
-        
-        var pjax = new Pjax({
-            elements: 'a:not([target="_blank"])',
-            selectors: pjaxSelectors,
-            cacheBust: false,
-            analytics: false,
-            scrollRestoration: false
-        })
-        
-        document.addEventListener('pjax:send', function () {
-            
-            document.getElementById('loading-box')?.classList.remove('loaded')
-            
-            //reset readmode
-            const $bodyClassList = document.body.classList
-            $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
-        })
-        
-        document.addEventListener('pjax:complete', function () {
-            typeof chatBtnFn === 'function' && chatBtnFn()
-            
-            // google analytics
-            typeof gtag === 'function' && gtag('config', '', {
-                'page_path': window.location.pathname
-            });
-            
-            // baidu analytics
-            typeof _hmt === 'object' && _hmt.push(['_trackPageview', window.location.pathname]);
-            
-            // Analytics
-            if (false) {
-                MtaH5.pgv()
-            }
-            
-            document.getElementById('loading-box')?.classList.add('loaded')
-        })
-        
-    </script>
-
-
+    <!-- 核心导航和生命周期始终从主题本地加载，避免自定义 CDN 故障阻断导航。 -->
+    <script type="module" th:src="${'/themes/theme-hanlo/assets/js/hanlo-runtime-' + theme.spec.version + '.js'}"></script>
 </div>
 
 <!-- 根据配置设置 css 变量值，全局 css 通过变量值进行处理 -->

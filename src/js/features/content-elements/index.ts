@@ -231,21 +231,62 @@ function registerContentElements(): void {
   register("hao-dplayer", (element) => {
     const source = attribute(element, "src");
     if (!source) return "视频地址未填写！";
-    const player = attribute(
-      element,
-      "player",
-      "/themes/theme-hanlo/assets/libs/dplayer/dplayer.html?url=",
-    );
-    return `<iframe allowfullscreen="true" class="hao_vplayer" src="${player}${source}" style="width:${attribute(element, "width", "100%")} ;height:${attribute(element, "height", "500px")}"></iframe>`;
+    return `<div class="hao_vplayer hao-dplayer-target" data-video-source="${source}" style="width:${attribute(element, "width", "100%")} ;height:${attribute(element, "height", "500px")}"></div>`;
   });
+}
+
+async function mountDPlayers(
+  resources: import("../../core/resource-scope").PageResourceScope,
+): Promise<void> {
+  const targets = document.querySelectorAll<HTMLElement>(".hao-dplayer-target[data-video-source]");
+  if (targets.length === 0) return;
+  const { default: DPlayer } = await import("dplayer");
+  if (resources.disposed) return;
+  for (const target of Array.from(targets)) {
+    const source = target.dataset["videoSource"];
+    if (!source) continue;
+    const hlsSource = /\.m3u8(?:$|[?#])/i.test(source);
+    let customType: Record<string, (video: HTMLVideoElement) => void> | undefined;
+    let type = "auto";
+    if (hlsSource) {
+      const { default: Hls } = await import("hls.js");
+      if (resources.disposed) return;
+      type = "hanloHls";
+      customType = {
+        hanloHls(video) {
+          if (Hls.isSupported()) {
+            const hls = resources.track(new Hls(), (instance) => instance.destroy());
+            hls.loadSource(source);
+            hls.attachMedia(video);
+          } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+            video.src = source;
+          }
+        },
+      };
+    }
+    const player = new DPlayer({
+      container: target,
+      autoplay: false,
+      theme: "#409eff",
+      loop: false,
+      screenshot: false,
+      airplay: true,
+      volume: 0.5,
+      playbackSpeed: [2, 1.5, 1.25, 1],
+      video: { url: source, type, customType },
+    });
+    resources.track(player, (instance) => instance.destroy());
+  }
 }
 
 export function createContentElementsController(): PageControllerDefinition {
   return {
     name: "content-elements",
-    create: () => ({
-      mount() {
+    create: ({ resources }) => ({
+      async mount() {
         registerContentElements();
+        await Promise.resolve();
+        await mountDPlayers(resources);
       },
       unmount() {},
     }),

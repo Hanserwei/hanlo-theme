@@ -25,14 +25,6 @@ for (const type of [
   });
 }
 
-window.pjax = new Pjax({
-  elements: "a[data-pjax-test]",
-  selectors: ["title", "#site-config", "#body-wrap"],
-  analytics: false,
-  cacheBust: false,
-  scrollRestoration: false,
-});
-
 void import("/src/js/entries/main.ts").then(() => {
   window.HanloLifecycle.register({
     name: "e2e-probe",
