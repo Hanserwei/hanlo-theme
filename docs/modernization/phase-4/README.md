@@ -2,8 +2,8 @@
 
 ## 1. 状态
 
-阶段 4 的源码实现、本地静态/合成门禁和真实 Halo 页面矩阵均已通过，等待提交、推送和远端 CI 收尾。
-主题版本为 `1.1.0`，Halo 兼容要求保持 `>= 2.26.0`，构建系统保持 pnpm、Vite Plus 和 Halo Vite 插件。真实验收证据见 [`evidence/live/README.md`](evidence/live/README.md)。
+阶段 4 已完成。源码实现、本地静态/合成门禁、真实 Halo 页面矩阵和实现提交的远端 CI 均已通过。
+收尾主题版本为 `1.1.1`，Halo 兼容要求保持 `>= 2.26.0`，构建系统保持 pnpm、Vite Plus 和 Halo Vite 插件。完成结论见 [`COMPLETION_AUDIT.md`](COMPLETION_AUDIT.md)，真实验收证据见 [`evidence/live/README.md`](evidence/live/README.md)。
 
 ## 2. 实现结果
 
@@ -58,5 +58,5 @@ PLAYWRIGHT_EXECUTABLE_PATH=/usr/sbin/google-chrome-stable pnpm test:e2e
 
 - Shiki 本地分块虽只注册常用语言和六个主题，但语法定义仍形成较大的延迟分块；无代码块页面不会下载该分块。
 - DPlayer 1.27.1 本身是较大的延迟分块，只有 `hao-dplayer` 存在时加载；HLS.js 进一步按 HLS 来源隔离。
-- 真实 Halo 的默认/可选配置、网络请求门禁和截图证据已经完成；本文在提交推送前仍不声明远端 CI 或发布完成。
+- 真实 Halo 的默认/可选配置、网络请求门禁和截图证据已经完成；实现提交的远端 CI 已通过。
 - 当前通知清单明确记录 `emoji-regex@8.0.0` 包内未附 LICENSE/COPYING/NOTICE 文本；包元数据声明 MIT，但该缺口不应被表述为法律审核通过。

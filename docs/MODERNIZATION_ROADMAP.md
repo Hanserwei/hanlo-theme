@@ -48,11 +48,11 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 | 发布流程 | GitHub Actions 手动复制文件并压缩，仍使用 Node.js 16 和旧版 Actions |
 | 自动化测试 | 暂无单元测试、模板验证和浏览器端回归测试 |
 
-### 阶段 4 本地实现后的当前状态
+### 阶段 4 收尾后的当前状态
 
 | 领域 | 当前状态 |
 | --- | --- |
-| 主题版本 | `1.1.0`；唯一版本来源为 `theme.yaml:spec.version` |
+| 主题版本 | `1.1.1`；唯一版本来源为 `theme.yaml:spec.version` |
 | 运行平台 | Halo `>= 2.26.0`，本地验证环境为 `2.26.0-SNAPSHOT` |
 | 模板源码 | `src/` 中运行时 Thymeleaf 模板和构建入口；`templates/` 继续由构建生成 |
 | 第一方脚本 | TypeScript ESM 入口生成版本化的 `hanlo-runtime-<version>.js` 与按功能拆分的动态分块，入口与分块共享同一模块 URL |
@@ -60,7 +60,7 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 | 页面生命周期 | `PageControllerRegistry` + `PageResourceScope` 统一首次加载、PJAX、历史导航、挂载和销毁 |
 | 前端构建 | pnpm、严格 TypeScript、Vite Plus、Halo Vite 插件、冻结 lockfile 和主题打包 CLI |
 | 自动化测试 | Vitest 单元测试、Playwright 合成/真实 Halo 测试、YAML 与构建产物校验 |
-| 阶段 4 收尾 | 本地静态/合成门禁与真实 Halo 2.26 页面矩阵已通过；等待提交、推送和远端 CI 证据 |
+| 阶段 4 收尾 | 实现提交已进入 `master`；本地、真实 Halo 与远端 CI 质量门禁全部通过 |
 
 阶段 1 的模板保真桥仍有意保留：现有 Thymeleaf 片段和首屏同步主题引导尚不能无差异地交给
 Vite HTML 转换。PJAX 已在阶段 4 进入本地 ESM；移除该桥仍需单独迁移模板构建
@@ -343,11 +343,14 @@ export interface PageController {
 
 ### 阶段 4：第三方依赖治理与按需加载
 
-**状态：进行中**
+**状态：已完成**
 
-执行说明与依赖登记见 [`docs/modernization/phase-4/README.md`](modernization/phase-4/README.md)
-和 [`docs/modernization/phase-4/DEPENDENCIES.md`](modernization/phase-4/DEPENDENCIES.md)。本地实现、静态/合成门禁和
-真实 Halo 页面矩阵已通过；远端 CI、提交和推送由收尾流程补充证据。
+执行说明、依赖登记与完成审计见 [`docs/modernization/phase-4/README.md`](modernization/phase-4/README.md)、
+[`docs/modernization/phase-4/DEPENDENCIES.md`](modernization/phase-4/DEPENDENCIES.md) 和
+[`docs/modernization/phase-4/COMPLETION_AUDIT.md`](modernization/phase-4/COMPLETION_AUDIT.md)。实现提交
+[`93d4cdb8`](https://github.com/Hanserwei/hanlo-theme/commit/93d4cdb8874c78b88e0acf49da5b5efff6904667)
+已位于 `master`，远端 [CI 33523065226](https://github.com/Hanserwei/hanlo-theme/actions/runs/33523065226)
+通过全部检查、测试、构建、产物同步和 ZIP 门禁。
 
 目标是让第三方依赖来源明确、版本可控，并减少首屏无效资源。
 
@@ -519,11 +522,11 @@ chore: establish Vite and TypeScript build pipeline
 | 阶段 1 | 已完成 | Vite、TypeScript、pnpm、CI 和可复现构建 |
 | 阶段 2 | 已完成 | 统一页面与 PJAX 生命周期；本地、CI 与合并门禁通过 |
 | 阶段 3 | 已完成 | JavaScript/TypeScript 模块化；本地、CI 与合并门禁通过 |
-| 阶段 4 | 进行中 | 本地与真实 Halo 验收已完成；等待提交、推送与远端 CI 证据 |
+| 阶段 4 | 已完成 | 第三方依赖治理与按需加载；本地、真实 Halo 与远端 CI 门禁通过 |
 | 阶段 5 | 未开始 | CSS 架构与视觉系统 |
 | 阶段 6 | 未开始 | 测试、性能、可访问性和发布治理 |
 
-### 阶段 0–3 收尾复核（2026-09-01）
+### 阶段 0–4 收尾复核（2026-09-01）
 
 | 阶段 | 复核结论 | 关键证据 |
 | --- | --- | --- |
@@ -531,6 +534,7 @@ chore: establish Vite and TypeScript build pipeline
 | 阶段 1 | 已完成，模板保真桥仍是必要边界 | 实现 `e4a10bf` 与 CI 33414807718 通过；默认 Vite HTML 转换隔离试验会改变现有 Thymeleaf 输出和运行时入口 |
 | 阶段 2 | 已完成 | 实现 `ea0df66` 已进入 `master`；CI 33424572166 通过全部质量门禁 |
 | 阶段 3 | 已完成 | 实现 `0d5a2d11` 已进入 `master`；CI 33454750241 通过；18 张固定证据截图校验通过 |
+| 阶段 4 | 已完成 | 实现 `93d4cdb8` 已进入 `master`；CI 33523065226 通过；依赖、许可、按需加载、真实 Halo 与 18 张截图证据齐备 |
 
 本次以主题 `1.0.1` 重新执行了冻结安装、`pnpm check`、29 项 Vitest 断言、6 项合成 Playwright
 用例、构建与 ZIP 完整性检查。构建产物共 194 项，其中 98 个 HTML；安装包
