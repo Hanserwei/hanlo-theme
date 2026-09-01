@@ -2,8 +2,9 @@
 
 ## 1. 状态
 
-实现和本地验收已完成，阶段状态为“进行中”。按照总路线图的维护约定，待 CI 通过并合并到
-`master` 后再标记为“已完成”。本阶段没有替换 PJAX，也没有提前执行阶段 3 的全量业务脚本模块化。
+已完成。实现提交 [`ea0df66`](https://github.com/Hanserwei/hanlo-theme/commit/ea0df66ebad37a4c3156830800ab329560af4ab5)
+已推送到 `master`，远端 [CI 33424572166](https://github.com/Hanserwei/hanlo-theme/actions/runs/33424572166)
+通过。本阶段没有替换 PJAX；后续阶段 3 的业务脚本模块化也已完成。
 
 ## 2. 运行时结构
 
@@ -73,7 +74,8 @@ window.HanloLifecycle.register({
 - 已迁移清理边界包括主脚本的页面监听器与 LazyLoad、首页 Swiper、Typed.js、AI 摘要、朋友圈、
   动态标题、关于页轮播文案和气泡动画。
 - PJAX 请求或切换失败时，运行时使用目标 URL 执行普通文档导航；不会停留在半更新页面。
-- 阶段 3 仍需把旧全局函数按功能迁移为控制器；兼容层在迁移完成前保留。
+- 阶段 3 已把旧全局函数按功能迁移为控制器并删除业务脚本兼容控制器；模板级 PJAX 实例继续作为
+  第三方导航边界保留，其依赖治理属于阶段 4。
 
 ## 6. 验收命令
 
@@ -92,4 +94,4 @@ HALO_BASE_URL=http://127.0.0.1:8090 pnpm test:e2e --grep @live
 ```
 
 未设置 `HALO_BASE_URL` 时，`@live` 用例自动跳过；CI 始终运行不依赖 Halo 数据的合成 PJAX 用例。
-详细证据和剩余门禁见 [`COMPLETION_AUDIT.md`](COMPLETION_AUDIT.md)。
+详细证据和已完成门禁见 [`COMPLETION_AUDIT.md`](COMPLETION_AUDIT.md)。

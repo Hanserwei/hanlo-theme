@@ -1,15 +1,15 @@
-# Hanlo Theme 1.0.0 功能总结
+# Hanlo Theme 1.0.1 功能总结
 
 ## 总体结论
 
 这是一个功能非常完整的 Halo 2.x 个人博客与生活方式主题，不只是简单的文章样式主题。它覆盖了博客内容展示、个人主页、社交互动、图库、追番、装备、音乐、打赏、评论和大量视觉交互。
 
-当前主题版本以 [`theme.yaml`](../theme.yaml) 为准，是 **Hanlo Theme 1.0.0**，要求 **Halo >= 2.26.0**。项目中包含：
+当前主题版本以 [`theme.yaml`](../theme.yaml) 为准，是 **Hanlo Theme 1.0.1**，要求 **Halo >= 2.26.0**。项目中包含：
 
 - 21 组后台主题设置
 - 98 个 Thymeleaf HTML 模板
-- 39 个 JavaScript 文件
-- 208 个主题模板及静态资源文件
+- 24 个第一方 TypeScript 源文件，以及 24 个待阶段 4 治理的 vendor JavaScript
+- 194 个构建后的主题模板及静态资源文件
 
 主要功能配置集中在 [`settings.yaml`](../settings.yaml)，文章、菜单、友链和相册的扩展字段位于 [`annotation-setting.yaml`](../annotation-setting.yaml)。
 
@@ -147,7 +147,7 @@
 - 超高代码块限制与展开
 - PJAX 切页后重新高亮
 
-相关实现位于 [`templates/assets/libs/shiki/shiki.js`](../templates/assets/libs/shiki/shiki.js)。
+相关源码位于 [`src/js/features/shiki/index.ts`](../src/js/features/shiki/index.ts)。
 
 ## 5. 评论和互动
 
@@ -281,7 +281,7 @@
 主题在体验层面还实现了：
 
 - PJAX 无刷新切页
-- PJAX 后重新初始化评论、代码、目录和相册
+- 统一生命周期在 PJAX/历史导航后挂载代码、目录、相册和其他页面控制器
 - InstantPage 链接预加载
 - Vanilla LazyLoad 图片懒加载
 - Halo 缩略图生成
@@ -291,7 +291,9 @@
 - 图片查看器和瀑布流按需加载
 - 主题状态、侧栏状态和部分接口数据的本地缓存
 
-相关入口位于 [`templates/modules/layouts/layout.html`](../templates/modules/layouts/layout.html) 和 [`templates/modules/common/open-graph.html`](../templates/modules/common/open-graph.html)。
+相关源码入口位于 [`src/modules/layouts/layout.html`](../src/modules/layouts/layout.html)、
+[`src/js/entries/main.ts`](../src/js/entries/main.ts) 和
+[`src/modules/common/open-graph.html`](../src/modules/common/open-graph.html)。
 
 ## 11. 插件依赖
 
@@ -332,11 +334,10 @@
 
 ## 12. 当前项目里需要留意的地方
 
-有几项是“代码已经存在，但 1.0.0 配置还不完全闭环”：
+阶段 0–3 已完成，当前仍需在后续阶段处理：
 
-- `templates/friends.html` 朋友圈模板引用了 `theme.config.link.fmomentsApiUrl`，但当前 `settings.yaml` 没有这个配置项。
-- 旧友链鱼塘代码还引用了不存在的 `theme.config.fcircle.apiurl`。
-- 相册的样式一引用了没有定义的 `theme.config.photos.bigTitle`。
+- Halo 2.26 可选的 `templates/layout.html` 插件页面布局契约尚未适配，当前使用 Halo fallback。
+- jQuery、Vue 2、Shiki 远程运行时和其他 vendor 依赖仍待阶段 4 做来源治理与按需加载。
 - 瞬间页模板明确写着只展示最近 30 条，分页尚未实现。
 - 仓库包含 DPlayer、HLS 等资源文件，但目前没有模板实际加载它们，因此不能算作当前已启用的视频播放功能。
 

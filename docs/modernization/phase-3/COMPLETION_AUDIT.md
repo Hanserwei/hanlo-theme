@@ -2,11 +2,14 @@
 
 ## 1. 审计结论
 
-JavaScript/TypeScript 模块化实现、本地自动化和真实 Halo 2.26 页面矩阵已经通过。阶段仍标记
-为“进行中”，因为 CI 和合并结果不在本地证据内。
+阶段 3 已完成。JavaScript/TypeScript 模块化实现、本地自动化和真实 Halo 2.26 页面矩阵已经
+通过；实现提交已进入 `master`，远端 CI 的完整质量门禁也已通过。
 
 | 字段 | 值 |
 | --- | --- |
+| 日期 | 2026-09-01 |
+| 实现提交 | [`0d5a2d11`](https://github.com/Hanserwei/hanlo-theme/commit/0d5a2d11dc524b81d650d2889999b4c38fd68437) |
+| 远端 CI | [CI 33454750241](https://github.com/Hanserwei/hanlo-theme/actions/runs/33454750241)，通过 |
 | Halo 兼容要求 | `>= 2.26.0`，未提高 |
 | 构建系统 | pnpm + Vite Plus + Halo Vite 插件，未替换 |
 | TypeScript | 严格检查通过 |
@@ -51,9 +54,27 @@ JavaScript/TypeScript 模块化实现、本地自动化和真实 Halo 2.26 页�
 - 连续 PJAX、浏览器后退/前进、直接文档加载及配置冻结断言通过。
 - 详细路由和截图证据见 [`evidence/live/README.md`](evidence/live/README.md)。
 
-## 5. 尚未获得的证据
+## 5. CI 与合并门禁
 
-- CI 结果和合并到 `master` 的门禁结果。
+- [x] 冻结依赖安装、检查、单元测试、浏览器测试、构建和 ZIP 校验全部通过。
+- [x] `templates/` 与重新构建结果无差异。
+- [x] 实现提交 `0d5a2d11` 已进入并推送到 `master`。
+- [x] 路线图、阶段说明和本审计结论已更新为“已完成”。
 
-该项目影响阶段状态从“进行中”变为“已完成”，但不影响实现、类型、单元、真实浏览器、构建
-和打包结论。
+## 6. 版本 1.0.1 收尾复核
+
+2026-09-01 在当前 `master` 基础上提升主题版本并重新执行完整门禁：
+
+| 检查 | 结果 |
+| --- | --- |
+| `pnpm install --frozen-lockfile` | 通过 |
+| `pnpm check` | 51 个文件格式检查、49 个文件 Lint/类型检查通过 |
+| `pnpm test:unit` | 13 个测试文件、29 项断言通过 |
+| 合成 Playwright | 桌面浅色与移动深色共 6 项通过 |
+| 真实 Halo Playwright | 桌面浅色与移动深色共 4 项通过；13 个路由矩阵与 PJAX/历史导航无异常 |
+| 构建产物 | 194 项输出、98 个 HTML，与源码及生成入口校验通过 |
+| 安装包 | `dist/theme-hanlo-1.0.1.zip`，2,354,169 bytes、254 个条目，完整性通过 |
+| Halo 运行状态 | `2.26.0-SNAPSHOT`；主题 `1.0.1`、`READY`，页面加载版本参数为 `v=1.0.1` |
+
+阶段 0 与阶段 3 已提交截图的 `SHA256SUMS` 均重新校验通过。真实页面矩阵断言页面异常、
+Console error、失败主题请求、主题资源 HTTP 错误和本地 HTTP 错误均为 0。

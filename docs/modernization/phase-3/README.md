@@ -2,11 +2,12 @@
 
 ## 1. 状态
 
-实现、本地自动化和真实 Halo 2.26 页面矩阵验收已完成，阶段状态为“进行中”。按照总路线图
-约定，待 CI 和合并门禁通过后再标记为“已完成”。本阶段没有提前删除 jQuery、Vue 2 或其他
-第三方依赖，也没有把 Shiki 的远程运行时改成本地按需包；这些工作仍属于阶段 4。
+已完成。实现提交 [`0d5a2d11`](https://github.com/Hanserwei/hanlo-theme/commit/0d5a2d11dc524b81d650d2889999b4c38fd68437)
+已推送到 `master`，远端 [CI 33454750241](https://github.com/Hanserwei/hanlo-theme/actions/runs/33454750241)
+通过。本阶段没有提前删除 jQuery、Vue 2 或其他第三方依赖，也没有把 Shiki 的远程运行时改成
+本地按需包；这些工作仍属于阶段 4。
 
-本地结果和门禁说明见 [`COMPLETION_AUDIT.md`](COMPLETION_AUDIT.md)。
+本地结果和已完成门禁见 [`COMPLETION_AUDIT.md`](COMPLETION_AUDIT.md)。
 
 ## 2. 模块结构
 
