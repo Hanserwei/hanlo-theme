@@ -12,14 +12,14 @@
     </div>
 
     <div class="nav-button" id="randomPost_button" th:if="${theme.config.nav.right.article}">
-        <a class="site-page" href="javascript:void(0);" onclick="toRandomPost()" title="随机文章">
+        <a class="site-page" data-hanlo-action="random-post" href="javascript:void(0);" title="随机文章">
             <i class="haofont hao-icon-signal-tower-fill"></i>
         </a>
     </div>
 
     <!-- 切换模式 -->
     <div class="nav-button" id="darkmode_button" th:if="${theme.config.nav.right.darkMode}">
-        <a class="console_switchbutton" href="javascript:void(0);"  onclick="navFn.switchDarkMode();" rel="external nofollow"
+        <a class="console_switchbutton" data-hanlo-action="toggle-theme" href="javascript:void(0);" rel="external nofollow"
            title="切换模式 - 日夜交替，黑白互换。">
             <i class="haofont hao-icon-moon-clear-fill" style="font-size: 1rem;"></i>
         </a>
@@ -62,13 +62,13 @@
         </div>
     </div>
     <div th:if="${theme.config.nav.right.console.consoleEnable}" class="nav-button" id="nav-console">
-        <a class="console_switchbutton" href="javascript:void(0);" onclick="heo.showConsole()" rel="external nofollow"
+        <a class="console_switchbutton" data-hanlo-action="show-console" href="javascript:void(0);" rel="external nofollow"
            title="显示中控台">
             <i class="haofont hao-icon-dashboard"></i>
         </a>
     </div>
 
-    <div class="nav-button" id="nav-totop" onclick="btf.scrollToDest(0,500)">
+    <div class="nav-button" data-hanlo-action="scroll-top" id="nav-totop">
         <a class="totopbtn">
             <i class="haofont hao-icon-arrow-up" style="font-size: 1rem;"></i><span id="percent">0</span>
         </a>

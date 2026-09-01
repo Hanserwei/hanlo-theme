@@ -5,10 +5,11 @@
     <!-- 默认 -->
     <th:block th:if="${#strings.equals(theme.config.sidebar.profile.profileStyle, 'default')}">
         <!-- 描述信息 -->
-        <div class="card-content" th:style="|background-image: url(${theme.config.sidebar.profile.backgroundImg});|">
+        <div class="card-content"
+             th:style="${#strings.isEmpty(theme.config.sidebar.profile.backgroundImg) ? '' : 'background-image: url(' + theme.config.sidebar.profile.backgroundImg + ');'}">
             <div class="card-info-avatar is-center">
                 <div class="author-info__top-group">
-                    <div class="author-info__sayhi" id="author-info__sayhi" onclick="heo.changeSayHelloText()">你好啊！我是
+                    <div class="author-info__sayhi" data-hanlo-action="change-greeting" id="author-info__sayhi">你好啊！我是
                     </div>
                     <img class="avatar-img"
                          th:with=" img = @{${#strings.isEmpty(site.logo) ? assets_link + '/images/hanlo-logo.png' : site.logo}}"
@@ -137,7 +138,7 @@
         <div class="card-content">
             <div class="card-info-avatar is-center">
                 <div class="author-info__top-group">
-                    <div class="author-info__sayhi" id="author-info__sayhi" onclick="heo.changeSayHelloText()">你好啊！
+                    <div class="author-info__sayhi" data-hanlo-action="change-greeting" id="author-info__sayhi">你好啊！
                     </div>
                 </div>
             </div>

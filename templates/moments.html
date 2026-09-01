@@ -66,15 +66,11 @@
                     <!--  分页还没写 -->
                 </div>
                 <div id="bber-tips" style="color: var(--heo-secondtext);">- 只展示最近30条短文 -</div>
-                <script>heo.reflashEssayWaterFall();</script>
             </div>
 
         </main>
         <!-- 底部 -->
         <footer th:replace="~{modules/footer}"/>
-        <!-- 卡片顶部气泡效果 -->
-        <script th:if="${theme.config.other.bubbleEnable}" async data-pjax
-                th:src="${assets_link + '/libs/canvas/bubble.js'}"></script>
     </div>
 
 </th:block>

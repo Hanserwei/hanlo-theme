@@ -68,7 +68,7 @@ window.HanloLifecycle.register({
 
 ## 5. 旧脚本兼容边界
 
-- PJAX 仍由现有 `Pjax` 全局实例负责，旧 `pjax:send` / `pjax:complete` 监听器继续工作。
+- PJAX 仍由现有 `Pjax` 全局实例负责；阶段 3 已移除业务脚本兼容控制器。
 - 生命周期转换器串行化销毁和挂载，旧模块与新控制器在同一导航中协同运行。
 - 已迁移清理边界包括主脚本的页面监听器与 LazyLoad、首页 Swiper、Typed.js、AI 摘要、朋友圈、
   动态标题、关于页轮播文案和气泡动画。

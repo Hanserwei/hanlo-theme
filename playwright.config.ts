@@ -16,11 +16,16 @@ export default defineConfig({
   projects: [
     {
       name: "chromium-desktop-light",
-      use: { ...devices["Desktop Chrome"] },
+      use: { ...devices["Desktop Chrome"], viewport: { width: 1_440, height: 900 } },
     },
     {
       name: "chromium-mobile-dark",
-      use: { ...devices["Pixel 5"], colorScheme: "dark" },
+      use: {
+        ...devices["Pixel 5"],
+        colorScheme: "dark",
+        deviceScaleFactor: 1,
+        viewport: { width: 390, height: 844 },
+      },
     },
   ],
   webServer: process.env.HALO_BASE_URL

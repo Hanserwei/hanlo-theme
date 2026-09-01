@@ -20,7 +20,7 @@
 
         <img th:if="${not #strings.isEmpty(theme.config.footer.social_media.centerImg)}" class="footer_mini_logo"
              th:with="img = @{${theme.config.footer.social_media.centerImg}}" th:src="${isLazyload ? '' : img}"
-             th:data-lazy-src="${ isLazyload ? img : ''}" title="返回顶部" onclick="btf.scrollToDest(0, 500)">
+             th:data-lazy-src="${ isLazyload ? img : ''}" title="返回顶部" data-hanlo-action="scroll-top">
 
         <th:block th:with="socialMedias = ${theme.config.footer.social_media.socialMediaRight}">
             <a th:class="${socialMedia.option_social_data == 'custom' ? 'custom_socials' : 'deal_link'}" rel="external nofollow" target="_blank" th:each="socialMedia : ${socialMedias}"
@@ -49,7 +49,7 @@
                 <div class="footer-title-group">
                     <h3 class="footer-title">友链</h3>
                     <a class="random-friends-btn" id="footer-random-friends-btn"
-                       href="javascript:heo.addFriendLinksInFooter();" rel="external nofollow" title="换一批友情链接"
+                       data-hanlo-action="refresh-footer-links" href="javascript:void(0);" rel="external nofollow" title="换一批友情链接"
                        data-pjax-state="external"><i class="haofont hao-icon-arrow-rotate-right" style="font-size: 16px;"></i></a>
                 </div>
                 <div class="footer-links" id="friend-links-in-footer"></div>
@@ -209,7 +209,7 @@
                     class="bber-gotobb haofont hao-icon-circle-arrow-right"></i></a>
         </div>
     </div>
-    <div id="quit-box" onclick="RemoveRewardMask()"></div>
+    <div data-hanlo-action="hide-reward-mask" id="quit-box"></div>
 
     <!--评论弹幕弹窗 -->
 

@@ -40,7 +40,14 @@ test("serializes consecutive PJAX and history navigations without resource leaks
     probe: window.__hanloProbe,
   }));
 
-  expect(result.active).toEqual(["legacy-compatibility", "e2e-probe"]);
+  expect(result.active).toEqual([
+    "theme-mode",
+    "content-elements",
+    "site-shell",
+    "translation",
+    "page-widgets",
+    "e2e-probe",
+  ]);
   expect(result.configFrozen).toBe(true);
   expect(result.lazyloadFrozen).toBe(true);
   expect(result.configType).toBe("page-two");
@@ -104,4 +111,28 @@ test("falls back to a document navigation when PJAX fails", async ({ page }) => 
   await page.waitForURL("**/tests/e2e/fixtures/missing.html");
   await expect(page.locator("#fallback-loaded")).toHaveText("Fallback loaded");
   expect(xhrFailures).toBe(1);
+});
+
+test("does not block navigation while an optional friend request is pending", async ({ page }) => {
+  let releaseRequest: (() => void) | undefined;
+  let markRequestStarted: (() => void) | undefined;
+  const requestStarted = new Promise<void>((resolve) => {
+    markRequestStarted = resolve;
+  });
+  const requestGate = new Promise<void>((resolve) => {
+    releaseRequest = resolve;
+  });
+  await page.route("**/api/friends**", async (route) => {
+    markRequestStarted?.();
+    await requestGate;
+    await route.abort().catch(() => undefined);
+  });
+
+  await page.goto(pageOne);
+  await requestStarted;
+  await waitForLifecycle(page);
+  await page.locator("#next-page").click();
+  await expect(page.locator("#body-wrap")).toHaveAttribute("data-page", "two");
+  await waitForLifecycle(page);
+  releaseRequest?.();
 });

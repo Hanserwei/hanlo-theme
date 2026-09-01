@@ -50,27 +50,16 @@
         }
     </style>
     <div class="flink">
-        <iframe id="iframe" scrolling="auto" src="/themes/theme-hanlo/assets/html/link-canvas.html" frameborder="0"
+        <iframe id="link-canvas-frame" scrolling="auto" src="/themes/theme-hanlo/assets/html/link-canvas.html" frameborder="0"
                 height="450px" width="100%"></iframe>
 
         <div class="addBtn">
-            <button onclick="javascript:refreshFrame();">
+            <button data-hanlo-action="refresh-link-canvas">
                 <i class="fas fa-shuffle"></i>
                 换个头像试试
             </button>
         </div>
     </div>
-    <script th:inline="javascript">
-        function refreshFrame() {
-            document.getElementById('iframe').contentWindow.location.reload(true);
-        }
-        const group = [[${ groups }]]
-        const logos = group.flatMap((item) => {
-            return item.links
-        }).flatMap((item) => {
-            return item.spec.logo
-        })
-        localStorage.setItem('logos', JSON.stringify(logos))
-    </script>
+    <script id="link-canvas-data" type="application/json" th:inline="javascript">[[${groups}]]</script>
 
 </th:block>

@@ -287,7 +287,12 @@ export interface PageController {
 
 ### 阶段 3：JavaScript 与 TypeScript 模块化
 
-**状态：未开始**
+**状态：进行中**
+
+执行入口与第一轮迁移记录见
+[`docs/modernization/phase-3/README.md`](modernization/phase-3/README.md) 和
+[`docs/modernization/phase-3/COMPLETION_AUDIT.md`](modernization/phase-3/COMPLETION_AUDIT.md)。
+实现、本地自动化与真实 Halo 2.26 页面矩阵已经完成；待 CI 与合并门禁通过后更新为“已完成”。
 
 目标是逐步清除业务脚本中的隐式全局状态，并按功能建立可测试模块。
 
@@ -304,13 +309,13 @@ export interface PageController {
 
 每个模块的任务：
 
-- [ ] 将脚本迁移为 TypeScript 和 ES Module。
-- [ ] 声明输入配置与对外接口。
-- [ ] 移除不必要的 `window` 变量和旧式 `var`。
-- [ ] 实现幂等 `mount` 和完整 `unmount`。
-- [ ] 为纯函数和关键状态逻辑补充 Vitest 测试。
-- [ ] 保持现有模板结构和视觉效果，行为变化单独提交。
-- [ ] 删除对应旧脚本和兼容层代码。
+- [x] 将脚本迁移为 TypeScript 和 ES Module。
+- [x] 声明输入配置与对外接口。
+- [x] 移除不必要的 `window` 变量和旧式 `var`。
+- [x] 实现幂等 `mount` 和完整 `unmount`。
+- [x] 为纯函数和关键状态逻辑补充 Vitest 测试。
+- [x] 保持现有模板结构和视觉效果，行为变化单独提交。
+- [x] 删除对应旧脚本和兼容层代码。
 
 验收标准：
 
@@ -492,7 +497,7 @@ chore: establish Vite and TypeScript build pipeline
 | 阶段 0 | 已完成 | 功能盘点、裁剪与回归基线 |
 | 阶段 1 | 已完成 | Vite、TypeScript、pnpm、CI 和可复现构建 |
 | 阶段 2 | 进行中 | 统一页面与 PJAX 生命周期；本地验收通过，待 CI 与合并 |
-| 阶段 3 | 未开始 | JavaScript/TypeScript 模块化 |
+| 阶段 3 | 进行中 | JavaScript/TypeScript 模块化；实现与真实 Halo 验收已完成，待 CI/合并 |
 | 阶段 4 | 未开始 | 第三方依赖治理和按需加载 |
 | 阶段 5 | 未开始 | CSS 架构与视觉系统 |
 | 阶段 6 | 未开始 | 测试、性能、可访问性和发布治理 |

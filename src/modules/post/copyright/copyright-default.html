@@ -5,7 +5,7 @@
 
             <!-- 打赏 -->
             <div th:if="${theme.config.aboutReward.reward.enable_reward_wz}" class="post-reward"
-                 onclick="AddRewardMask()">
+                 data-hanlo-action="show-reward-mask">
                 <div class="reward-button button&#45;&#45;animated" title="赞赏作者"><i class="haofont hao-icon-hand-heart-fill"></i>
                     打赏作者
                 </div>
@@ -58,7 +58,7 @@
                     <i class="haofont hao-icon-weibo" style="font-size:22px"></i></a>
             </div>
             <div class="share-link copyurl" th:if="${theme.config.post.share_right.copyurl_edit}">
-                <div class="share-button" id="post-share-url" onclick="rm.copyPageUrl()" title="复制链接"><i
+                <div class="share-button" data-hanlo-action="copy-page-url" id="post-share-url" title="复制链接"><i
                         class="haofont hao-icon-link"></i></div>
             </div>
         </div>
@@ -95,7 +95,7 @@
             <span class="post-copyright-info" id="post-copyright-url">
                 <a href="javascript:window.location.href;">[[${post.spec.title}]]</a>
             </span>
-            <button class="post-copyright-copybtn" onclick="rm.copyPageUrl()">
+            <button class="post-copyright-copybtn" data-hanlo-action="copy-page-url">
                 <i class="haofont hao-icon-paste"></i>
             </button>
         </div>

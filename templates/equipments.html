@@ -38,7 +38,8 @@
                                     </div>
                                     <div class="equipment-item-content-item-info">
                                         <div class="equipment-item-content-item-name"
-                                             th:onclick="rm.rightmenuCopyText([[${equipment.spec.displayName}]]);btf.snackbarShow('已复制装备名称');">
+                                             data-hanlo-action="copy-text"
+                                             th:data-copy-text="${equipment.spec.displayName}">
                                             [[${equipment.spec.displayName}]]
                                         </div>
                                         <div class="equipment-item-content-item-specification">[[${equipment.spec.specification}]]
@@ -59,9 +60,6 @@
         </main>
         <!-- 底部 -->
         <footer th:replace="~{modules/footer}"/>
-        <!-- 卡片顶部气泡效果 -->
-        <script th:if="${theme.config.other.bubbleEnable}" async data-pjax
-                th:src="${assets_link + '/libs/canvas/bubble.js'}"></script>
     </div>
 
 </th:block>
