@@ -18,6 +18,58 @@
         helloText: [[${#strings.listSplit(theme.config.sidebar.profile.helloText, ',')}]],
         profileStyle: [[${theme.config.sidebar.profile.profileStyle}]],
         rightMenuEnable: [[${theme.config.tool.rightMenu.rightMenuEnable}]],
+        colorScheme: [[${theme.config.style.colorScheme}]],
+        effects: {
+            bubble: [[${theme.config.other.bubbleEnable}]],
+            universe: [[${theme.config.style.universe}]]
+        },
+        friends: {
+            apiUrl: '/apis/api.friend.moony.la/v1alpha1/friendposts',
+            pageSize: Number([[${theme.config.link.fmomentsPageSize}]]),
+            errorImage: [[@{${theme.config.other.error_404.background}}]]
+        },
+        postAi: {
+            summary: [[${htmlType != 'post' || !theme.config.post.aiDescription.aiDescriptionEnable ? '' :
+                        theme.config.post.aiDescription.mode != 'local' && !theme.config.post.aiDescription.switchBtn ? '' :
+                        post.spec.excerpt.autoGenerate ? '本地模式需要自己填写文章摘要' :
+                        #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt}]],
+            randomRange: Number([[${theme.config.post.aiDescription.randomNum}]]),
+            wordLimit: Number([[${theme.config.post.aiDescription.basicWordCount}]]),
+            buttonLink: "[(${theme.config.post.aiDescription.btnLink})]",
+            name: "[(${theme.config.post.aiDescription.gptName})]",
+            mode: [[${theme.config.post.aiDescription.mode}]],
+            switchable: [[${theme.config.post.aiDescription.switchBtn}]],
+            key: "[(${theme.config.post.aiDescription.key})]",
+            referer: "[(${theme.config.post.aiDescription.Referer})]"
+        },
+        widgets: {
+            dynamicTitle: {
+                enabled: Boolean([[${theme.config.other.diytitle.diytitleEnable}]]),
+                leave: [[${theme.config.other.diytitle.leaveTitle}]] || '',
+                back: [[${theme.config.other.diytitle.backTitle}]] || ''
+            },
+            footerRuntime: {
+                enabled: [[${theme.config.footer.footerContent.style_one.runtime_enable}]],
+                startedAt: [[${theme.config.basics.siteStartTime}]],
+                workImage: [[${theme.config.footer.footerContent.style_one.work_img}]],
+                workDescription: [[${theme.config.footer.footerContent.style_one.work_description}]],
+                offDutyImage: [[${theme.config.footer.footerContent.style_one.offduty_img}]],
+                offDutyDescription: [[${theme.config.footer.footerContent.style_one.offduty_description}]]
+            },
+            greeting: {
+                enabled: Boolean([[${theme.config.other.greeting.enable_greeting}]]),
+                items: [[${theme.config.other.greeting.setting}]] || []
+            },
+            typed: {
+                random: Boolean([[${theme.config.top.above.enable_typed_random}]]),
+                items: [[${theme.config.top.above.typed}]] || []
+            },
+            tenYear: {
+                startedAt: [[${theme.config.about.tenyear.start_time}]],
+                endedAt: [[${theme.config.about.tenyear.end_time}]]
+            },
+            randomTagColors: [[${theme.config.other.tagRandomColorEnable}]]
+        },
         date_suffix: {
             just: '刚刚',
             min: '分钟前',

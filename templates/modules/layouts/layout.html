@@ -13,7 +13,6 @@
     <!--  解决 katex pjax问题 -->
     <script th:if="${pluginFinder.available('plugin-katex')}" defer=""
             src="/plugins/plugin-katex/assets/static/katex.min.js"></script>
-    <script th:src="${assets_link + '/js/custom.js' + theme_version}"></script>
     <th:block th:if="${head != null}">
         <th:block th:replace="${head}"/>
     </th:block>
@@ -73,23 +72,12 @@
     </style>
 </th:block>
 
-<script th:if="${not #lists.isEmpty(postFinder.listAll())}"
-        th:inline="javascript"
+<div hidden id="hanlo-page-data"
+    th:if="${not #lists.isEmpty(postFinder.listAll())}"
     th:with="allPostList=${postFinder.listAll()},
     randomIndex=${T(java.lang.Math).floor(T(java.lang.Math).random()*#lists.size(allPostList))},
     postPermalink=${allPostList[randomIndex].status.permalink}"
->
-    function toRandomPost() {
-        // 随机跳转全站的一篇文章
-        let permalink = /*[[${postPermalink}]]*/ "/";
-        
-        // 当前窗口打开
-        //window.location.href = permalink;
-        pjax.loadUrl(permalink);
-        // window.open(permalink);
-    }
-
-</script>
+    th:data-random-post-url="${postPermalink}"></div>
 
 <!-- 控制台 -->
 <div th:replace="~{modules/widgets/console}"/>
@@ -107,11 +95,6 @@
 <div th:replace="~{modules/widgets/right-menu}"/>
 
 <div>
-    <script th:src="${assets_link + '/js/utils.js' + theme_version}"></script>
-    <script th:src="${assets_link + '/js/halo.js' + theme_version}"></script>
-    <script th:src="${assets_link + '/js/main.js' + theme_version}"></script>
-    <script charset="utf-8" data-pjax th:src="${assets_link + '/zhheo/blogex.js' + theme_version}"></script>
-    <script th:src="${assets_link + '/js/tw_cn.js' + theme_version}"></script>
     <!-- https://instant.page/ 网站预加载， 放在 </body> 之前 -->
     <script th:src="${assets_link + '/libs/instantpage/instantpage.min.js'}"
             type="module"></script>
@@ -129,7 +112,6 @@
     
     <!-- 深色模式下添加粒子效果canvas -->
     <canvas th:if="${theme.config.style.universe}" id="universe" width="1312" height="880"></canvas>
-    <script th:if="${theme.config.style.universe}" async="" th:src="${assets_link + '/libs/canvas/dark.js'}"></script>
     
     <!-- https://davidshimjs.github.io/qrcodejs/ 生成二维码 -->
     <!-- 应该是文章页分享使用 -->
@@ -153,10 +135,6 @@
     <script th:if="${theme.config.top.moment}" data-pjax
             th:src="${assets_link + '/libs/swiper/swiper-bundle.min.js'}"></script>
     
-    <!-- 右键菜单 -->
-    <script th:if="${theme.config.tool.rightMenu.rightMenuEnable}"
-            th:src="${assets_link + '/zhheo/rightmenu.js'}"></script>
-    
     <!-- Tocbot 目录生成 start -->
     <th:block th:replace="~{modules/common/toc-bot}"/>
     
@@ -176,12 +154,7 @@
         
         document.addEventListener('pjax:send', function () {
             
-            // removeEventListener toc scroll
-            window.removeEventListener('scroll', window.tocScrollFn)
-            
-            typeof preloader === 'object' && preloader.initLoading()
-            
-            typeof typed === 'object' && typed && typeof typed.destroy === 'function' && typed.destroy()
+            document.getElementById('loading-box')?.classList.remove('loaded')
             
             //reset readmode
             const $bodyClassList = document.body.classList
@@ -189,21 +162,7 @@
         })
         
         document.addEventListener('pjax:complete', function () {
-            window.refreshFn()
-            
-            document.querySelectorAll('script[data-pjax]').forEach(item => {
-                        const newScript = document.createElement('script')
-                        const content = item.text || item.textContent || item.innerHTML || ""
-                        Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
-                        newScript.appendChild(document.createTextNode(content))
-                        item.parentNode.replaceChild(newScript, item)
-                    }
-            )
-            
-            GLOBAL_CONFIG.lazyload.enable && window.lazyLoadInstance.update()
-            
             typeof chatBtnFn === 'function' && chatBtnFn()
-            typeof panguInit === 'function' && panguInit()
             
             // google analytics
             typeof gtag === 'function' && gtag('config', '', {
@@ -218,7 +177,7 @@
                 MtaH5.pgv()
             }
             
-            typeof preloader === 'object' && preloader.endLoading()
+            document.getElementById('loading-box')?.classList.add('loaded')
         })
         
     </script>
@@ -229,11 +188,6 @@
 <!-- 根据配置设置 css 变量值，全局 css 通过变量值进行处理 -->
 <th:block th:replace="~{'modules/variables/layout'}"></th:block>
 
-<script data-pjax="">
-    
-    //页脚友联
-    GLOBAL_CONFIG.isFriendLinksInFooter && heo.addFriendLinksInFooter()
-</script>
 </body>
 
 </html>

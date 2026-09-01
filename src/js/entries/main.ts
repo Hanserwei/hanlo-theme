@@ -1,3 +1,27 @@
 import { installPageLifecycle } from "../core/runtime";
+import { createBrowserStorage } from "../core/storage";
+import { createBangumiController } from "../features/bangumi";
+import { createContentElementsController } from "../features/content-elements";
+import { createEffectsController } from "../features/effects";
+import { createFriendMomentsController } from "../features/friend-moments";
+import { createPageWidgetsController } from "../features/page-widgets";
+import { createPostAiController } from "../features/post-ai";
+import { createRightMenuController } from "../features/right-menu";
+import { createShikiController } from "../features/shiki";
+import { createSiteShellController } from "../features/site-shell";
+import { createThemeModeController } from "../features/theme-mode";
+import { createTranslationController } from "../features/translation";
 
-installPageLifecycle();
+const storage = createBrowserStorage();
+const lifecycle = installPageLifecycle();
+lifecycle.register(createThemeModeController(storage));
+lifecycle.register(createContentElementsController());
+lifecycle.register(createSiteShellController(storage));
+lifecycle.register(createRightMenuController());
+lifecycle.register(createTranslationController(storage));
+lifecycle.register(createShikiController());
+lifecycle.register(createEffectsController());
+lifecycle.register(createFriendMomentsController());
+lifecycle.register(createPostAiController());
+lifecycle.register(createPageWidgetsController());
+lifecycle.register(createBangumiController());

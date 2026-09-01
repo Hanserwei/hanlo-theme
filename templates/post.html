@@ -176,11 +176,6 @@
                     <th:block th:utext="${post.content.content}"/>
                 </article>
 
-                <!-- 文章ai摘要 -->
-                <script data-pjax th:if="${not #strings.isEmpty(#annotations.get(post, 'ai')) ?
-                      #annotations.get(post, 'ai') == 'true' : theme.config.post.aiDescription.aiDescriptionEnable}"
-                        th:src="${assets_link + '/libs/gpt/post-ai.js'}"></script>
-
                 <!-- 版权声明 -->
                 <th:block th:replace="~{modules/post/copyright}"></th:block>
 

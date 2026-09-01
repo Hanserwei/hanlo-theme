@@ -1,12 +1,12 @@
 <!-- TODO 控制台功能 -->
 <div id="console" >
-  <div class="close-btn" onclick="heo.hideConsole()" href="javascript:void(0);">
+  <div class="close-btn" data-hanlo-action="hide-console" href="javascript:void(0);">
     <i class="haofont hao-icon-circle-xmark"></i>
   </div>
   <div class="console-card-group">
     <!-- 评论，需要使用评论插件，获取最近评论 -->
     <div class="console-card-group-left">
-      <div class="console-card" id="card-newest-comments" onclick="heo.hideConsole()">
+      <div class="console-card" data-hanlo-action="hide-console" id="card-newest-comments">
         <div class="card-content">
           <div class="author-content-item-tips">互动</div>
           <span class="author-content-item-title">最近评论</span>
@@ -31,21 +31,13 @@
                 <time th:datetime="${#dates.format(comment.metadata.creationTimestamp, 'yyyy-MM-dd HH:mm:ss')}"></time>
               </div>
             </div>
-            <script data-pjax>
-              window.addEventListener('load', () => {
-                $(".aside-list time").each(function () {
-                  var timeVal = $(this).attr("datetime");
-                  $(this).text(btf.diffDateExact(timeVal,true));
-                })
-              });
-            </script>
           </th:block>
           </div>
       </div>
     </div>
     <!-- 右侧展示 tag -->
     <div class="console-card-group-right">
-      <div class="console-card tags" onclick="heo.hideConsole()">
+      <div class="console-card tags" data-hanlo-action="hide-console">
         <div class="card-content">
           <div class="author-content-item-tips">标签</div>
           <span class="author-content-item-title">寻找感兴趣的领域</span>
@@ -59,7 +51,7 @@
         </div>
       </div>
       <!-- 底部展示时间归档 -->
-      <div class="console-card history" onclick="heo.hideConsole()">
+      <div class="console-card history" data-hanlo-action="hide-console">
         <div class="item-headline"><i class="fas fa-archive"></i><span>文章</span></div>
         <ul class="card-archive-list" th:with="archives = ${postFinder.archives(1,0)}">
           <th:block th:each="archive : ${archives.items}">
@@ -110,19 +102,19 @@
   </div>
   <div class="button-group">
     <div class="console-btn-item">
-      <a class="darkmode_switchbutton" href="javascript:void(0);" onclick="navFn.switchDarkMode();" rel="external nofollow"
+      <a class="darkmode_switchbutton" data-hanlo-action="toggle-theme" href="javascript:void(0);" rel="external nofollow"
          title="显示模式切换"><i class="haofont hao-icon-moon-clear-fill" style="font-size:1rem"></i>
       </a>
     </div>
-    <div class="console-btn-item" id="consoleHideAside" onclick="heo.hideAsideBtn()" title="边栏显示控制"><a
+    <div class="console-btn-item" data-hanlo-action="toggle-aside" id="consoleHideAside" title="边栏显示控制"><a
             class="asideSwitch" data-pjax-state=""><i class="haofont hao-icon-arrows-left-right"></i></a></div>
-    <!--<div class="console-btn-item" id="consoleKeyboard" onclick="heo.keyboardToggle()" title="快捷键开关"><a-->
+    <!--<div class="console-btn-item" id="consoleKeyboard" title="快捷键开关"><a-->
     <!--        class="keyboard-switch"><i class="fa-duotone fa-keyboard"></i></a>-->
     <!--</div>-->
-    <!--<div class="console-btn-item" id="assist-open" onclick="heo.hideConsole()" title="无障碍工具栏"><a-->
+    <!--<div class="console-btn-item" id="assist-open" title="无障碍工具栏"><a-->
     <!--        class="assist-btn"><i class="fa-duotone fa-wheelchair"></i></a>-->
     <!--</div>-->
   </div>
-  <div class="console-mask" href="javascript:void(0);" onclick="heo.hideConsole()" rel="external nofollow">
+  <div class="console-mask" data-hanlo-action="hide-console" href="javascript:void(0);" rel="external nofollow">
   </div>
 </div>

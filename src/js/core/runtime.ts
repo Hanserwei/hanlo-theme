@@ -38,26 +38,6 @@ export interface HanloLifecycleApi {
   whenIdle(): Promise<void>;
 }
 
-function invokeMethod(target: unknown, method: string): void {
-  if (typeof target !== "object" || target === null) return;
-  const candidate = Reflect.get(target, method);
-  if (typeof candidate === "function") candidate.call(target);
-}
-
-function registerLegacyCompatibility(registry: PageControllerRegistry): void {
-  registry.register({
-    name: "legacy-compatibility",
-    create: () => ({
-      mount: () => undefined,
-      unmount: () => {
-        invokeMethod(window.hanloIndexEssaySwiper, "destroy");
-        window.hanloIndexEssaySwiper = null;
-        document.body.oncopy = null;
-      },
-    }),
-  });
-}
-
 class PageLifecycleCoordinator {
   readonly #abortController = new AbortController();
   readonly #configStore: ThemeConfigStore;
@@ -324,7 +304,6 @@ export function installPageLifecycle(): HanloLifecycleApi {
   const registry = new PageControllerRegistry();
   const configStore = new ThemeConfigStore();
   const coordinator = new PageLifecycleCoordinator(registry, configStore);
-  registerLegacyCompatibility(registry);
   for (const definition of window.HanloPageControllers ?? []) registry.register(definition);
   window.HanloPageControllers = [];
 
