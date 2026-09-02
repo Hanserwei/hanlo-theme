@@ -4,7 +4,7 @@
 
     <div class="item-headline"></div>
     <div class="card-tag-cloud">
-        <a class="tag-item" style="font-size:1em" th:each="tag,iterStat : ${tags}"
+        <a class="tag-item hl:[font-size:1em]" th:each="tag,iterStat : ${tags}"
            th:href="@{${tag.status.permalink}}"
            th:title="${tag.spec.displayName}">
             <!-- 角标 -->

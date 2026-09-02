@@ -1,5 +1,7 @@
 <!-- 版权样式一 -->
 <th:block th:if="${#strings.equals(theme.config.post.copyrightsStyle, 'one')}">
+    <link rel="stylesheet"
+          th:href="${assets_link + '/css/post-copyright-one-' + theme.spec.version + '.css' + theme_version}">
     <!-- 版权声明 -->
     <div class="post-copyright">
         <div class="post-copyright__author_group">
@@ -71,7 +73,7 @@
                         <a class="share-button" rel="noopener external nofollow noreferrer noopener" target="_blank"
                            th:href="'https://service.weibo.com/share/share.php?title=' + ${post.spec.title}"
                            title="分享到微博">
-                            <i class="haofont hao-icon-weibo" style="font-size:22px"></i></a>
+                            <i class="haofont hao-icon-weibo hl:[font-size:22px]"></i></a>
                     </div>
                     <div class="share-link copyurl" th:if="${theme.config.post.share_right.copyurl_edit}">
                         <div class="share-button" data-hanlo-action="copy-page-url" id="post-share-url" title="复制链接"><i
@@ -102,5 +104,4 @@
             </div>
         </div>
     </div>
-    <link rel="stylesheet" th:href="${assets_link + '/css/post-copyright-one.css' + theme_version}">
 </th:block>

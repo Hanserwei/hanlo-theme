@@ -19,6 +19,22 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"], viewport: { width: 1_440, height: 900 } },
     },
     {
+      name: "chromium-desktop-dark",
+      use: {
+        ...devices["Desktop Chrome"],
+        colorScheme: "dark",
+        viewport: { width: 1_440, height: 900 },
+      },
+    },
+    {
+      name: "chromium-mobile-light",
+      use: {
+        ...devices["Pixel 5"],
+        deviceScaleFactor: 1,
+        viewport: { width: 390, height: 844 },
+      },
+    },
+    {
       name: "chromium-mobile-dark",
       use: {
         ...devices["Pixel 5"],

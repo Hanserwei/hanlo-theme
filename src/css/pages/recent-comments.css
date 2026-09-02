@@ -1,0 +1,138 @@
+/* Extracted from src/new_comment.html. */
+#comments-page {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 12px;
+                        min-height: 100px;
+                        width: 100%;
+                        margin-top: 1.5rem
+                    }
+
+                    #comments-page .comment-card {
+                        position: relative;
+                        width: calc(100% / 4 - 9px);
+                        border-radius: 12px;
+                        border: var(--style-border);
+                        padding: 14px;
+                        cursor: pointer;
+                        transition: .3s;
+                        overflow: hidden;
+                        box-shadow: var(--heo-shadow-border);
+                        background: var(--heo-card-bg)
+                    }
+
+                    span.isBlogger {
+                        background: var(--heo-main);
+                        color: white;
+                        font-weight: normal;
+                        font-size: 13px;
+                        line-height: 1;
+                        display: inline-flex;
+                        padding: 3px 4px 4px 4.5px;
+                        border-radius: 3px;
+                        margin-left: 5px;
+                        letter-spacing: 1px;
+                    }
+
+                    @media screen and (max-width: 900px) {
+                        #comments-page .comment-card {
+                            width: calc(100% / 2 - 6px)
+                        }
+                    }
+
+                    @media screen and (max-width: 768px) {
+                        #comments-page .comment-card {
+                            width: 100%
+                        }
+                    }
+
+                    #comments-page .comment-card:hover {
+                        border-color: var(--heo-main)
+                    }
+
+                    #comments-page .comment-card:hover .comment-article {
+                        opacity: 1;
+                        top: 0
+                    }
+
+                    #comments-page .comment-card .comment-info {
+                        display: flex;
+                        align-items: center;
+                        padding-bottom: 14px;
+                        margin-bottom: 8px;
+                        border-bottom: 1px dashed var(--hr-border)
+                    }
+
+                    #comments-page .comment-card .comment-info img {
+                        width: 50px;
+                        height: 50px;
+                        object-fit: cover;
+                        border-radius: 50%;
+                        margin: 0 !important
+                    }
+
+                    #comments-page .comment-card .comment-info .comment-information {
+                        display: flex;
+                        flex-direction: column;
+                        margin-left: 12px;
+                        line-height: 1.5
+                    }
+
+                    #comments-page .comment-card .comment-info .comment-information .comment-user {
+                        display: flex;
+                        align-items: center;
+                        font-weight: 700;
+                        font-size: 15px
+                    }
+
+                    #comments-page .comment-card .comment-info .comment-information .comment-author::after {
+                        content: "\f3a5";
+                        font-family: "Font Awesome 6 Free" !important;
+                        padding-left: 6px;
+                        padding-top: 5px;
+                        font-size: 14px;
+                        color: #fdc22d
+                    }
+
+                    [data-theme=dark] #comments-page .comment-card .comment-info .comment-information .comment-author::after {
+                        color: var(--heo-main)
+                    }
+
+                    #comments-page .comment-card .comment-info .comment-information .comment-time {
+                        opacity: .8;
+                        font-size: 15px
+                    }
+
+                    #comments-page .comment-card .comment-info .comment-content {
+                        margin: 8px 5px 0
+                    }
+
+                    .comment-article,
+                    .comment-content {
+                        transition: .3s;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 2;
+                        line-height: 1.7;
+                        font-weight: 400
+                    }
+
+                    .comment-article {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        height: 100%;
+                        width: 100%;
+                        z-index: 1;
+                        background: var(--heo-main);
+                        color: var(--heo-card-bg);
+                        margin: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 1rem;
+                        opacity: 0;
+                        text-align: center
+                    }

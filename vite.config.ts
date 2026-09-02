@@ -2,12 +2,18 @@ import { copyFileSync, mkdirSync, readFileSync, readdirSync, rmSync } from "node
 import path from "node:path";
 
 import { haloThemePlugin } from "@halo-dev/vite-plugin-halo-theme";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, type Plugin } from "vite-plus";
 import { parse } from "yaml";
+
+import conditionalStyleSources from "./css-entries.json";
 
 const sourceRoot = path.resolve("src");
 const outputRoot = path.resolve("templates");
 const buildEntry = path.join(sourceRoot, ".build-entry.html");
+const conditionalStyleEntries = Object.fromEntries(
+  Object.entries(conditionalStyleSources).map(([name, source]) => [name, path.resolve(source)]),
+);
 const themeManifest: unknown = parse(readFileSync("theme.yaml", "utf8"));
 const themeVersion =
   typeof themeManifest === "object" &&
@@ -78,9 +84,37 @@ function preserveLegacyTemplates(): Plugin {
       return {
         build: {
           rollupOptions: {
-            input: buildEntry,
+            input: { runtime: buildEntry, ...conditionalStyleEntries },
             output: {
-              entryFileNames: `assets/js/hanlo-runtime-${themeVersion}.js`,
+              entryFileNames(chunkInfo) {
+                return chunkInfo.name === "runtime"
+                  ? `assets/js/hanlo-runtime-${themeVersion}.js`
+                  : "assets/js/[name]-[hash].js";
+              },
+              assetFileNames(assetInfo) {
+                const sources = [...assetInfo.names, ...assetInfo.originalFileNames];
+                if (
+                  sources.some(
+                    (source) =>
+                      source.endsWith("src/css/index.css") ||
+                      source === "index.css" ||
+                      source === ".build-entry.css" ||
+                      source === "runtime.css",
+                  )
+                ) {
+                  return `assets/css/hanlo-theme-${themeVersion}[extname]`;
+                }
+                for (const [entryName, entryPath] of Object.entries(conditionalStyleEntries)) {
+                  if (
+                    sources.some(
+                      (source) => source === `${entryName}.css` || source.endsWith(entryPath),
+                    )
+                  ) {
+                    return `assets/css/${entryName}-${themeVersion}[extname]`;
+                  }
+                }
+                return "assets/[name]-[hash][extname]";
+              },
             },
           },
         },
@@ -99,6 +133,7 @@ function preserveLegacyTemplates(): Plugin {
 export default defineConfig({
   // Vite Plus is API-compatible with Vite, but both packages publish nominal plugin types.
   plugins: [
+    tailwindcss() as unknown as Plugin,
     haloThemePlugin() as unknown as Plugin,
     sanitizeGeneratedDependencyPaths(),
     preserveLegacyTemplates(),

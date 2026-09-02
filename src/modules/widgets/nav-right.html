@@ -21,7 +21,7 @@
     <div class="nav-button" id="darkmode_button" th:if="${theme.config.nav.right.darkMode}">
         <a class="console_switchbutton" data-hanlo-action="toggle-theme" href="javascript:void(0);" rel="external nofollow"
            title="切换模式 - 日夜交替，黑白互换。">
-            <i class="haofont hao-icon-moon-clear-fill" style="font-size: 1rem;"></i>
+            <i class="haofont hao-icon-moon-clear-fill hl:[font-size:1rem]"></i>
         </a>
     </div>
 
@@ -36,13 +36,13 @@
     <div th:if="${theme.config.nav.right.navLogin}" class="console-button" tabindex="-1"
          th:with="currentUser = ${contributorFinder.getContributor(#authentication.name)}">
         <span class="site-page nav-login">
-            <i sec:authorize="isAnonymous()" class="haofont hao-icon-zhanghao1 " style="font-size: 19.5px;"></i>
-            <img sec:authorize="isAuthenticated()"  th:src="${currentUser.avatar}"
+            <i sec:authorize="isAnonymous()" class="haofont hao-icon-zhanghao1  hl:[font-size:19.5px]"></i>
+            <img class="hl:[width:24px] hl:[height:24px] hl:rounded-full" sec:authorize="isAuthenticated()"  th:src="${currentUser.avatar}"
                  th:alt="${currentUser.displayName}"
-                 style=" width: 24px; height: 24px; border-radius: 9999px" />
+                 />
         </span>
         <div class="back-menu-list-groups">
-            <div class="back-menu-list-group" style="margin: -4px -9px -4px -18px">
+            <div class="back-menu-list-group hl:[margin:-4px_-9px_-4px_-18px]">
                 <div class="back-menu-list">
                     <th:block sec:authorize="isAuthenticated()">
                         <a class="back-menu-item" rel="external nofollow" target="_blank" href="/console">
@@ -70,7 +70,7 @@
 
     <div class="nav-button" data-hanlo-action="scroll-top" id="nav-totop">
         <a class="totopbtn">
-            <i class="haofont hao-icon-arrow-up" style="font-size: 1rem;"></i><span id="percent">0</span>
+            <i class="haofont hao-icon-arrow-up hl:[font-size:1rem]"></i><span id="percent">0</span>
         </a>
     </div>
 

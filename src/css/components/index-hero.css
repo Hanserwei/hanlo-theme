@@ -1,0 +1,210 @@
+/* Extracted from src/modules/header/index-img.html. */
+#site-title {
+            width: max-content;
+            max-width: 100%;
+            position: relative;
+            color: rgba(255, 255, 255, 0);
+            animation: 1.5s linear 1s 1 normal both running show;
+            margin: 0px auto !important;
+        }
+
+        #site-title::after {
+            content: "";
+            position: absolute;
+            left: 0px;
+            margin: auto;
+            border-radius: 12px;
+            top: 11px;
+            height: 55px;
+            width: 110%;
+            animation: 2s cubic-bezier(0.62, 0.21, 0.25, 1) 1.5s 1 normal both running color_change, 2s cubic-bezier(0.62, 0.21, 0.25, 1) 1.5s 1 normal both running swipe_box;
+        }
+
+        @media screen and (max-width: 768px) {
+            #site-title::after {
+                background: rgb(255, 255, 255) !important;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            #site-subtitle::after {
+                background: rgb(255, 255, 255) !important;
+            }
+        }
+
+        #site-subtitle {
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+            animation: 1.5s linear 1s 1 normal both running show;
+            margin: 0px auto !important;
+        }
+
+        #site-subtitle::after {
+            content: "";
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            margin: auto;
+            border-radius: 12px;
+            height: 100%;
+            width: 0%;
+            animation: 2s cubic-bezier(0.62, 0.21, 0.25, 1) 1.5s 1 normal both running color_change, 2s cubic-bezier(0.62, 0.21, 0.25, 1) 1.5s 1 normal both running swipe_box2;
+        }
+
+        @keyframes color_change {
+            0% {
+                background: rgb(255, 255, 255);
+            }
+
+            100% {
+                background: var(--xlfd-main);
+            }
+        }
+
+        @-webkit-keyframes color_change {
+            0% {
+                background: rgb(255, 255, 255);
+            }
+
+            100% {
+                background: var(--xlfd-main);
+            }
+        }
+
+        @-webkit-keyframes swipe_box {
+            0% {
+                left: 0px;
+                width: 0%;
+            }
+
+            50% {
+                left: 0px;
+                width: 100%;
+            }
+
+            100% {
+                left: 100%;
+                width: 0%;
+            }
+        }
+
+        @keyframes swipe_box {
+            0% {
+                left: 0px;
+                width: 0%;
+            }
+
+            50% {
+                left: 0px;
+                width: 100%;
+            }
+
+            100% {
+                left: 100%;
+                width: 0%;
+            }
+        }
+
+        @-webkit-keyframes swipe_box2 {
+            0% {
+                left: 0px;
+                width: 0%;
+            }
+
+            50% {
+                left: 0px;
+                width: 80%;
+            }
+
+            100% {
+                left: 0px;
+                width: 0%;
+            }
+        }
+
+        @keyframes swipe_box2 {
+            0% {
+                left: 0px;
+                width: 0%;
+            }
+
+            50% {
+                left: 0px;
+                width: 80%;
+            }
+
+            100% {
+                left: 0px;
+                width: 0%;
+            }
+        }
+
+        @-webkit-keyframes show {
+            0% {
+                color: rgba(255, 255, 255, 0);
+                text-shadow: transparent 2px 3px 10px;
+            }
+
+            81% {
+                color: rgba(255, 255, 255, 0);
+            }
+
+            100% {
+                color: rgb(255, 255, 255);
+            }
+        }
+
+        @keyframes show {
+            0% {
+                color: rgba(255, 255, 255, 0);
+                text-shadow: transparent 2px 3px 10px;
+            }
+
+            81% {
+                color: rgba(255, 255, 255, 0);
+            }
+
+            100% {
+                color: rgb(255, 255, 255);
+            }
+        }
+
+        .pl-img {
+            background-image: var(--hanlo-index-image);
+
+        }
+
+        @media screen and (max-width: 768px) {
+            .pl-img {
+                background-image: var(--hanlo-index-image-mobile);
+            }
+        }
+
+        .typed-cursor {
+            opacity: 1;
+        }
+
+        .typed-cursor.typed-cursor--blink {
+            animation: typedjsBlink 0.7s infinite;
+            -webkit-animation: typedjsBlink 0.7s infinite;
+            animation: typedjsBlink 0.7s infinite;
+        }
+
+        @keyframes typedjsBlink {
+            50% {
+                opacity: 0.0;
+            }
+        }
+
+        @-webkit-keyframes typedjsBlink {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }

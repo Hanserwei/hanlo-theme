@@ -16,14 +16,21 @@ function collectFiles(directory) {
 }
 
 const theme = parse(readFileSync("theme.yaml", "utf8"));
+const conditionalStyleSources = JSON.parse(readFileSync("css-entries.json", "utf8"));
 const themeVersion = theme?.spec?.version;
 if (typeof themeVersion !== "string") {
   throw new TypeError("theme.yaml must declare spec.version.");
 }
 
 const expected = new Map();
-const generated = new Set([`assets/js/hanlo-runtime-${themeVersion}.js`]);
-const generatedChunkPattern = /^assets\/[\w.-]+-[\w-]+\.(?:css|js)$/;
+const generated = new Set([
+  `assets/js/hanlo-runtime-${themeVersion}.js`,
+  `assets/css/hanlo-theme-${themeVersion}.css`,
+  ...Object.keys(conditionalStyleSources).map(
+    (entryName) => `assets/css/${entryName}-${themeVersion}.css`,
+  ),
+]);
+const generatedChunkPattern = /^assets\/(?:js\/)?[\w.-]+-[\w-]+\.(?:css|js)$/;
 
 for (const source of collectFiles("public")) {
   expected.set(path.relative("public", source), source);

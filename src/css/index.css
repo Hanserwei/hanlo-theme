@@ -1,0 +1,62 @@
+@layer reset, tokens, base, layout, components, pages, utilities, overrides;
+
+/* Tailwind is intentionally incremental: theme + prefixed utilities, no Preflight reset. */
+@import "tailwindcss/theme.css" layer(tokens) prefix(hl);
+@import "./tokens.css" layer(tokens);
+
+@import "./base.css" layer(base);
+
+/* Preserve the legacy cascade byte order while keeping each responsibility editable. */
+@import "./legacy/foundation.css" layer(base);
+@import "./pages/archive-taxonomy.css" layer(base);
+@import "./pages/error-legacy.css" layer(base);
+@import "./components/sidebar-legacy.css" layer(base);
+@import "./layout/shell-legacy.css" layer(base);
+@import "./components/article-content.css" layer(base);
+@import "./components/article-extensions.css" layer(base);
+@import "./layout/navigation.css" layer(base);
+@import "./layout/footer-sidebar.css" layer(base);
+@import "./components/general.css" layer(base);
+@import "./pages/home-categories.css" layer(base);
+@import "./pages/home-post-list.css" layer(base);
+@import "./pages/home-aside.css" layer(base);
+@import "./pages/post-header.css" layer(base);
+@import "./pages/post-content.css" layer(base);
+@import "./pages/post-footer.css" layer(base);
+@import "./pages/listing.css" layer(base);
+@import "./pages/links.css" layer(base);
+@import "./pages/social.css" layer(base);
+@import "./pages/tags-footer.css" layer(base);
+@import "./pages/about-profile.css" layer(base);
+@import "./pages/about-sections.css" layer(base);
+@import "./pages/widgets.css" layer(base);
+@import "./pages/content-tools.css" layer(base);
+@import "./overrides/global.css" layer(base);
+@import "./overrides/sidebar.css" layer(base);
+@import "./overrides/components.css" layer(base);
+@import "./overrides/pages.css" layer(base);
+@import "./overrides/integrations.css" layer(base);
+
+@import "./layout/footer-template.css" layer(layout);
+@import "./layout/global-background.css" layer(layout);
+@import "./layout/nav-menu.css" layer(layout);
+
+@import "./components/runtime.css" layer(components);
+@import "./components/banner-group.css" layer(components);
+@import "./components/dynamic-values.css" layer(components);
+@import "./components/greeting.css" layer(components);
+@import "./components/index-hero.css" layer(components);
+@import "./components/link-canvas.css" layer(components);
+@import "./components/loading.css" layer(components);
+@import "./components/music-card.css" layer(components);
+@import "./components/rightside.css" layer(components);
+
+@import "./pages/about-game.css" layer(pages);
+@import "./pages/about-hello.css" layer(pages);
+@import "./pages/about-map.css" layer(pages);
+@import "./pages/error-inline.css" layer(pages);
+
+@import "tailwindcss/utilities.css" layer(utilities) prefix(hl) source("../");
+@import "./utilities.css" layer(utilities);
+
+@source "../../tests/e2e/fixtures/phase5-visual.html";

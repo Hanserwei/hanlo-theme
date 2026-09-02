@@ -34,21 +34,11 @@
         })()
     </script>
 
-    <link rel="stylesheet" th:href="${assets_link + '/zhheo/zhheoblog.css' + theme_version}">
-
-    <link rel="stylesheet" th:href="${assets_link + '/zhheo/custom.css' + theme_version}">
-    <link rel="stylesheet" th:href="@{/assets/css/phase4-runtime.css?v={version}(version=${theme.spec.version})}">
-
-    <style th:if="${theme.config.other.scrollbarLinearGradientEnable}">
-        *::-webkit-scrollbar-thumb {
-            background-color: var(--heo-main);
-            background-image: -webkit-linear-gradient(45deg,rgba(255,255,255,.4) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.4) 50%,rgba(255,255,255,.4) 75%,transparent 75%,transparent);
-            border-radius: 2em
-        }
-    </style>
-
-    <!-- Shiki 代码高亮 -->
-    <th:block th:replace="~{macro/shiki-code}"/>
+    <link rel="stylesheet"
+          th:href="@{/assets/css/hanlo-theme-{version}.css(version=${theme.spec.version})}">
+    <link th:if="${theme.config.code.shiki_enable == null || theme.config.code.shiki_enable}"
+          rel="stylesheet"
+          th:href="${assets_link + '/css/shiki-' + theme.spec.version + '.css' + theme_version}">
 
     <!-- 页脚内容-样式一 -->
     <th:block th:replace="~{modules/common/footer-style-one}"/>

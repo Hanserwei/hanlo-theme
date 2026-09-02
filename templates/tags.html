@@ -16,12 +16,13 @@
             <nav th:replace="~{modules/nav :: nav(title = '标签')}"></nav>
         </header>
         <main class="layout hide-aside" id="content-inner">
-            <div id="page"><h1 class="page-title" style="display: inline;">标签</h1>
+            <div id="page"><h1 class="page-title hl:inline">标签</h1>
                 <div class="tag-cloud-title is-center">标签 - <span class="tag-cloud-amount">0</span></div>
                 <div class="tag-cloud-list is-center">
                     <a th:each="tagItem : ${tagFinder.listAll()}"
                        th:href="@{${tagItem.status.permalink}}"
-                       th:id="${tagItem.spec.displayName}" th:style="'font-size: 1em; color:' + ${tagItem.spec.color} ">
+                           class="hl:[font-size:1em] hanlo-dynamic-color"
+                           th:id="${tagItem.spec.displayName}" th:style="'--hanlo-dynamic-color:' + ${tagItem.spec.color}">
                         <span class="tags-punctuation">[[${tagItem.spec.displayName}]]</span>
 
                         <span class="tagsPageCount">[[${tagItem.status.visiblePostCount}]]</span>

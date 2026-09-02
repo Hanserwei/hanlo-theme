@@ -1,0 +1,123 @@
+/* Extracted from src/photos.html. */
+.gallery-groups {
+                        box-shadow: var(--heo-shadow-border);
+                        padding: 1rem 2rem;
+                        border-radius: 12px;
+                        background: var(--heo-card-bg);
+                        border: var(--style-border);
+                        width: 100%;
+                        align-self: flex-start;
+                        animation: slide-in 0.6s 0.1s backwards;
+                    }
+
+                    #content-inner .loadings .type-gallery {
+                        opacity: 0
+                    }
+
+                    .loadings {
+                        height: 60px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        color: #504e4e;
+                        border: none;
+                        background-size: auto 100%;
+                        box-shadow: none;
+                        background-color: inherit;
+background-image:
+    radial-gradient(circle at 50% 25%, #fff8eb 0 7px, transparent 8px),
+    radial-gradient(circle, #ffa500 0 30px, transparent 31px)
+}
+
+                    #article-container .type-gallery {
+                        overflow: hidden;
+                        margin-top: 40px;
+                    }
+
+                    #content-inner .gallery {
+                        margin: 0 0 16px;
+                        text-align: center
+                    }
+
+                    #content-inner .gallery .fj-gallery {
+                        opacity: 0;
+                        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+                        filter: alpha(opacity=0)
+                    }
+
+                    #content-inner .gallery .fj-gallery .img-alt {
+                        display: none
+                    }
+
+                    #content-inner .gallery .fj-gallery.lazyload+button {
+                        display: inline-block
+                    }
+
+                    #content-inner .gallery .fj-gallery .gallery-data {
+                        opacity: 0;
+                        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+                        filter: alpha(opacity=0);
+                        visibility: hidden
+                    }
+
+                    #content-inner .gallery button {
+                        display: none;
+                        margin-top: 25px;
+                        padding: 10px;
+                        width: 9em;
+                        border-radius: 5px;
+                        background: var(--btn-bg);
+                        color: var(--btn-color);
+                        font-weight: 700;
+                        font-size: 1.1em;
+                        -webkit-transition: all .3s;
+                        -moz-transition: all .3s;
+                        -o-transition: all .3s;
+                        -ms-transition: all .3s;
+                        transition: all .3s
+                    }
+
+                    #content-inner .gallery button>* {
+                        -webkit-transition: all .4s;
+                        -moz-transition: all .4s;
+                        -o-transition: all .4s;
+                        -ms-transition: all .4s;
+                        transition: all .4s
+                    }
+
+                    #content-inner .gallery button i {
+                        opacity: 1;
+                        -ms-filter: none;
+                        filter: none;
+                        font-size: 1.1rem
+                    }
+
+                    #content-inner .gallery button:hover {
+                        background: var(--btn-hover-color)
+                    }
+
+                    #content-inner .gallery button:hover i {
+                        margin-left: 2px
+                    }
+
+                    #article-container .tag-address {
+                        display: flex;
+                        position: absolute;
+                        left: 8px;
+                        top: 8px;
+                        padding: 4px 6px;
+                        border-radius: 8px;
+                        background: var(--heo-black-op);
+                        font-size: 12px;
+                        color: var(--heo-white);
+                        transition: .3s;
+                        z-index: 1;
+                        user-select: none
+                    }
+
+                    img {
+                        border-style: none;
+                        border-radius: 8px;
+                        max-width: 100%;
+                        transition: all .2s ease 0s;
+                        -webkit-user-drag: none
+                    }

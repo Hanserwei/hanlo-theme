@@ -1,0 +1,758 @@
+/* Migrated from public/assets/zhheo/zhheoblog.css; keep module order in src/css/index.css. */
+/* 接下来下一篇 */
+/* 接下来下一篇 */
+.next-post.pull-right,
+.prev-post.pull-left,
+#pagination .prev-post,
+#pagination .next-post {
+    background: #363636;
+}
+
+#preimg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: .4;
+    -webkit-transition: all .6s, filter 375ms ease-in .2s;
+    -moz-transition: all .6s, filter 375ms ease-in .2s;
+    -o-transition: all .6s, filter 375ms ease-in .2s;
+    -ms-transition: all .6s, filter 375ms ease-in .2s;
+    transition: all .6s, filter 375ms ease-in .2s;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+.prev-post.pull-left:hover #preimg {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.next-post.pull-right:hover #preimg {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+@media screen and (min-width: 768px) {
+    #pagination .next-post a {
+        border-left: var(--heo-main-op);
+        border-left-width: .5px;
+        border-left-style: solid;
+        display: flex;
+        align-items: flex-start;
+        height: 150px;
+    }
+
+    #pagination .next-post.pull-full a {
+        border-left-width: 0px;
+    }
+
+    #pagination .prev-post a {
+        border-right: var(--heo-main-op);
+        border-right-width: .5px;
+        border-right-style: solid
+    }
+
+    #pagination .pagination-info {
+        padding: 1rem 1.5rem 1rem 1.5rem;
+        position: relative;
+        display: flex;
+        top: 0;
+        transform: none;
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+        height: 100%;
+    }
+
+    #pagination .next-post a:hover div, #pagination .prev-post a:hover div {
+        color: var(--heo-white) !important
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    #pagination .next-post a:hover, #pagination .prev-post a:hover {
+        background: var(--heo-none)
+    }
+
+}
+
+
+#pagination img.prev-cover,
+#pagination img.next-cover {
+    opacity: 0.15;
+    transform: scale(1.03);
+    transition: 0.3s;
+    filter: blur(0px);
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+}
+
+#pagination .prev-post:hover img.prev-cover,
+#pagination .next-post:hover img.prev-cover,
+#pagination .prev-post:hover img.next-cover,
+#pagination .next-post:hover img.next-cover {
+    opacity: 0.25;
+    transform: scale(1.03);
+    filter: blur(5px);
+}
+
+#pagination .next_info, #post #pagination .prev_info {
+    font-weight: 700;
+    -webkit-line-clamp: 2;
+    white-space: normal;
+    line-height: 1.3;
+    font-size: .9rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 10px
+}
+
+#post #pagination {
+    overflow: hidden;
+    position: inherit;
+    border: var(--style-border-always)
+}
+
+#pagination.pagination-post {
+    background: var(--heo-card-bg);
+}
+
+@media screen and (min-width: 1300px) {
+    #post #pagination {
+        position: fixed;
+        width: 300px;
+        bottom: -100px;
+        right: 20px;
+        z-index: 1000;
+        height: fit-content;
+        transition: cubic-bezier(.42, 0, .3, 1.11) .3s;
+        border: var(--style-border);
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: pointer;
+        opacity: 0;
+        z-index: 999
+    }
+
+
+    #post #pagination.show-window {
+        bottom: 20px;
+        opacity: 1
+    }
+
+    #post #pagination:hover {
+        border: 1px solid var(--heo-main)
+    }
+
+    #pagination .next-post a, #pagination .prev-post a {
+        border: none;
+        height: fit-content;
+        padding: .5rem 0
+    }
+
+    #pagination.pagination-post {
+        border-radius: 0
+    }
+
+    #pagination .next_info, #post #pagination .prev_info {
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 0
+    }
+
+    #pagination .pagination-info {
+        padding: .5rem 1rem;
+        transform: none
+    }
+
+    #post #pagination {
+        background: 0 0
+    }
+
+    #pagination .next_info, #post #pagination .prev_info {
+        color: var(--heo-fontcolor);
+    }
+
+    #pagination .next-post, #pagination .prev-post, .next-post.pull-right, .prev-post.pull-left {
+        background: var(--heo-maskbgdeep);
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+        transform: translateZ(0)
+    }
+
+    #pagination .next-post a:hover, #pagination .prev-post a:hover {
+        background: var(--heo-main);
+    }
+
+    #pagination .next-post .label, #post #pagination .prev-post .label {
+        color: var(--heo-fontcolor)
+    }
+
+    #pagination.pagination-post .next-post.pull-full img, #pagination.pagination-post .next-post.pull-right img, #pagination.pagination-post .prev-post.pull-full img, #pagination.pagination-post .prev-post.pull-left img {
+        display: none;
+        top: 0
+    }
+
+
+    #post #pagination .prev-post .label,
+    #pagination .next-post .label {
+        color: var(--heo-fontcolor)
+    }
+
+
+    .prev-post.pull-left {
+        display: none
+    }
+
+    .next-post.pull-right {
+        width: 100% !important
+    }
+
+    #pagination .next-post .pagination-info {
+        text-align: left;
+        position: relative
+    }
+
+    #pagination .next-post .label, #post #pagination .prev-post .label {
+        color: var(--heo-fontcolor);
+        font-weight: 700;
+        font-size: 12px;
+        margin-bottom: .5rem;
+        border-bottom: var(--style-border);
+        line-height: 1;
+        padding-bottom: .5rem
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    .prev-post.pull-left {
+        border-bottom: var(--style-border-always);
+    }
+
+    #post #pagination {
+        border-radius: 12px;
+        border: var(--style-border-always);
+        box-shadow: var(--heo-shadow-border);
+    }
+
+    #post #pagination .prev-post .label,
+    #pagination .next-post .label {
+        text-align: left;
+    }
+
+    #post #pagination .prev_info,
+    #pagination .next_info {
+        text-align: left;
+    }
+}
+
+/* 翻页 */
+@media screen and (max-width: 768px) {
+    #pagination .page-number {
+        display: none;
+    }
+
+    #pagination .pagination .space {
+        display: none;
+    }
+
+    #pagination .pagination .extend {
+        width: 100%;
+        height: 2.5rem;
+        margin: .2rem 0 1rem 0;
+        border-radius: 12px;
+        line-height: 2.5rem;
+        background: var(--heo-card-bg);
+        border: var(--style-border-always);
+        box-shadow: var(--heo-shadow-border)
+    }
+
+    #pagination .pagination .extend i {
+        display: none;
+    }
+
+    #pagination .pagination .extend:hover {
+        background: var(--heo-theme);
+        color: var(--heo-white);
+    }
+
+    #pagination .pagination {
+        background: var(--heo-background);
+        transition: 0.3s;
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #pagination .page-number {
+        width: 2rem;
+        background: var(--heo-card-bg);
+        height: 2rem;
+        line-height: calc(2rem - 2px);
+        border-radius: 8px !important;
+        margin: 0 0.3rem;
+        box-shadow: var(--heo-shadow-border);
+        border: var(--style-border);
+        transition: 0.3s;
+    }
+
+    #pagination .page-number.current {
+        background: var(--heo-theme);
+        border: var(--style-border-hover);
+        box-shadow: var(--heo-shadow-theme);
+    }
+
+    #pagination .page-number.current:hover {
+        background: var(--heo-theme);
+        box-shadow: var(--heo-shadow-theme);
+        color: var(--heo-white);
+    }
+
+    #pagination .page-number:hover {
+        color: var(--heo-theme);
+        border: var(--style-border-hover);
+        box-shadow: var(--heo-shadow-main);
+        transform: scale(1.03);
+    }
+
+
+    #pagination a.extend.next:hover,
+    #pagination a.extend.prev:hover {
+        color: var(--heo-theme);
+        border: var(--style-border-hover);
+        box-shadow: var(--heo-shadow-main);
+        transform: scale(1.03);
+    }
+
+
+    @media screen and (min-width: 1300px) {
+        #pagination .page-number:hover {
+            transform: scale(1.03);
+        }
+
+
+        #pagination a.extend.next:hover,
+        #pagination a.extend.prev:hover {
+            transform: scale(1.03);
+        }
+
+        #pagination .page-number:active {
+            transform: scale(0.97);
+        }
+
+        #pagination a.extend.next:active,
+        #pagination a.extend.prev:active {
+            transform: scale(0.97);
+        }
+
+    }
+
+    #pagination span.space {
+        margin: 0 0.3rem;
+    }
+
+    #pagination a.extend.next,
+    #pagination a.extend.prev {
+        width: 4rem;
+        height: 2rem;
+        line-height: 1.9rem;
+        border-radius: 8px !important;
+        background: var(--heo-card-bg);
+        box-shadow: var(--heo-shadow-border);
+        position: absolute;
+        border: var(--style-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        transition: 0.3s;
+    }
+
+    #pagination a.extend.next i,
+    #pagination a.extend.prev i {
+        transition: 0.3s;
+    }
+
+    #pagination a.extend.next {
+        overflow: hidden;
+    }
+
+    #pagination a.extend.next .pagination_tips_next {
+        margin-left: -32px;
+        transition: .3s ease-out 0s;
+        opacity: 0;
+    }
+
+    #pagination a.extend.next:hover .pagination_tips_next {
+        margin-left: 2px;
+        opacity: 1;
+        white-space: nowrap;
+    }
+
+    #pagination a.extend.prev .pagination_tips_prev {
+        margin-right: -32px;
+        transition: .3s ease-out 0s;
+        opacity: 0;
+    }
+
+    #pagination a.extend.prev:hover .pagination_tips_prev {
+        margin-right: 2px;
+        opacity: 1;
+        white-space: nowrap;
+    }
+
+    #pagination {
+        overflow: visible;
+    }
+
+    #pagination .pagination {
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+/* 相关推荐 */
+
+.relatedPosts > .relatedPosts-list > div:hover #preimg {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+@media screen and (max-width: 768px) {
+    .relatedPosts {
+        display: none;
+    }
+
+    .relatedPosts > .relatedPosts-list > div {
+        border-radius: 4px;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .relatedPosts > .relatedPosts-list > div {
+        width: calc(25% - 8px);
+    }
+}
+
+.relatedPosts > .relatedPosts-list > div:hover a .title {
+    color: var(--heo-white);
+}
+
+/* 分割线 */
+#post > hr {
+    display: none;
+}
+
+/* 文章tips */
+.post-tips {
+    color: var(--heo-gray);
+    font-size: 14px;
+    position: absolute;
+    bottom: 1rem;
+    left: 2rem;
+}
+
+.post-tips a {
+    color: var(--heo-gray) !important;
+    border: none !important;
+}
+
+.post-tips a:hover {
+    color: var(--heo-main) !important;
+}
+
+@media screen and (max-width: 768px) {
+    .post-tips {
+        left: 1rem;
+    }
+}
+
+/* 评论 */
+/* ---------------------------------------------------------------- */
+/* ---------------------------------------------------------------- */
+/* ---------------------------------------------------------------- */
+/* ---------------------------------------------------------------- */
+/* ---------------------------------------------------------------- */
+div#post-comment {
+    margin-top: 2rem;
+}
+
+#post-comment > div.comment-head > div.comment-privacy {
+    display: block;
+    justify-content: space-between;
+    margin-left: 8px;
+    font-size: 13px;
+    margin-left: auto;
+}
+
+#post-comment > div.comment-head > div.comment-privacy a:hover {
+    color: var(--heo-theme);
+}
+
+#post-comment .comment-head {
+    font-size: 0.8em !important;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.comment-randomInfo {
+    margin-left: auto;
+    font-size: 13px;
+}
+
+/* 图片描述 */
+.img-alt {
+    font-size: 12px;
+    margin: 0;
+    color: var(--heo-secondtext);
+}
+
+/* 文章长图 */
+.long-img .img-alt {
+    display: none;
+}
+
+.long-img img {
+    border-radius: 0 !important;
+    margin: 0 !important;
+}
+
+/* 文章底部推荐 */
+
+@media screen and (min-width: 768px) {
+    #pagination.pagination-post {
+        border-radius: 12px;
+        margin-top: 1rem;
+    }
+
+    .relatedPosts {
+        margin-top: 1rem;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    #pagination.pagination-post {
+        border-radius: 12px;
+        margin-top: 1rem;
+    }
+
+    .relatedPosts {
+        margin-top: 1rem;
+    }
+}
+
+
+.post-reward {
+    margin-top: 0rem;
+    display: flex;
+    justify-content: center;
+}
+
+.post-reward:hover > .reward-main {
+    display: none;
+}
+
+.post-reward .reward-main {
+    z-index: 999;
+}
+
+.tk-meta-input .el-input .el-input-group__prepend {
+    -webkit-user-select: none;
+    border-radius: 10px 0 0 10px;
+    border-right: var(--style-border-always)
+}
+
+@media screen and (min-width: 768px) {
+    .post-reward:hover > .reward-main {
+        display: flex !important;
+        justify-content: left;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .post-reward .reward-main .reward-all {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 30px 0 60px 0;
+        border-radius: 12px 12px 0 0;
+    }
+
+    #post .tag_share .post-meta__tags {
+        margin: 0 0.5rem 0 0;
+    }
+
+    a.reward-main-btn {
+        margin: 4px auto;
+    }
+
+    .tk-meta-input .el-input .el-input-group__prepend {
+        padding: 0 8px !important
+    }
+
+    .tk-meta-input {
+        display: flex;
+        flex-direction: column;
+        top: 0px;
+        position: inherit !important;
+    }
+
+    .tk-meta-input .el-input {
+        margin-left: 0px !important;
+        width: 100% !important;
+        margin-bottom: 8px;
+    }
+
+    .tk-icon {
+        /* position: absolute;
+        right: 0; */
+    }
+}
+
+
+.post-reward .reward-main .reward-all:after {
+    display: none;
+}
+
+.reward-group {
+    display: flex;
+    margin-top: 0.5rem;
+}
+
+.post-reward .reward-main .reward-all .reward-item:first-child img {
+    border-color: var(--heo-green);
+}
+
+.post-reward .reward-main .reward-all .reward-item:last-child img {
+    border-color: var(--heo-blue);
+}
+
+.share-link {
+    margin-left: 0.5rem;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+}
+
+.share-button {
+    background: var(--heo-card-btn-bg);
+    color: var(--heo-fontcolor);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 56px;
+    height: 40px;
+}
+
+.share-button i {
+    line-height: 40px;
+}
+
+.share-button i.fab {
+    line-height: 42px;
+}
+
+@media screen and (min-width: 1300px) {
+    .share-button {
+        background: var(--heo-card-bg);
+        border: var(--style-border);
+    }
+
+    .share-button:hover {
+        transform: scale(1.03);
+    }
+
+    .share-button:active {
+        transform: scale(0.97);
+    }
+
+    .share-button i {
+        line-height: 38px;
+    }
+
+    .share-button i.fab {
+        line-height: 40px;
+    }
+}
+
+.share-button:hover {
+    background: var(--heo-theme);
+    border-color: var(--heo-theme);
+    color: var(--heo-white);
+    transition: 0.3s;
+    box-shadow: var(--heo-shadow-blue);
+}
+
+.share-link.weibo:hover .share-button {
+    background: var(--heo-red);
+    border-color: var(--heo-red);
+    box-shadow: var(--heo-shadow-red);
+}
+
+.share-link.mobile:hover .share-button {
+    background: var(--heo-green);
+    border-color: var(--heo-green);
+    box-shadow: var(--heo-shadow-green);
+    color: var(--heo-white);
+}
+
+.share-main {
+    position: absolute;
+    bottom: 40px;
+    z-index: 100;
+    display: none;
+    padding-bottom: 15px;
+}
+
+.share-main-all {
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--heo-background);
+    animation: donate_effcet 0.3s 0.1s ease both;
+    flex-direction: column;
+    border: var(--style-border-always);
+}
+
+#qrcode {
+    width: 150px;
+    height: 150px;
+    min-width: 150px;
+    min-height: 150px;
+    background: var(--heo-white);
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border: var(--style-border-always);
+}
+
+.share-link:hover .share-main {
+    display: flex;
+}
+
+.share-qrcode {
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+    .share-link.mobile {
+        display: none;
+    }
+
+    .share-button {
+        background: var(--heo-card-bg);
+        border: var(--style-border-always);
+        box-shadow: var(--heo-shadow-border);
+    }
+}
+
+

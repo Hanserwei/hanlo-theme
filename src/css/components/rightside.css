@@ -1,0 +1,9 @@
+#rightside.hanlo-rightside-disabled {
+    display: none;
+}
+
+@media screen and (min-width: 1300px) {
+    html:has(#rightside.hanlo-rightside-disabled) #post #pagination {
+        right: 20px;
+    }
+}

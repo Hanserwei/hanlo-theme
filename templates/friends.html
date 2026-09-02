@@ -8,8 +8,8 @@
                 _cover = '',
                 _excerpt = '友链朋友圈 - 发现更多精彩内容',
                 _type = 'website')}"></th:block>
-    <!-- 分离CSS文件 -->
-    <link rel="stylesheet" th:href="${assets_link + '/css/fmoments.css' + theme_version}" data-pjax>
+    <link rel="stylesheet" data-pjax
+          th:href="${assets_link + '/css/friend-moments-' + theme.spec.version + '.css' + theme_version}">
 </th:block>
 
 <th:block th:fragment="content">
@@ -92,7 +92,7 @@
                         <span class="fMomentsDisplayCount" id="totalCount">0</span>
                         <span>篇文章</span>
                     </div>
-                    <div class="fMomentsDisplayInfo" id="filterStatus" style="display: none;">
+                    <div class="fMomentsDisplayInfo hl:hidden" id="filterStatus">
                         <i class="fas fa-info-circle"></i>
                         <span id="filterText">已应用筛选条件</span>
                     </div>
@@ -108,12 +108,12 @@
                 <div id="fmomentsContainer"></div>
 
                 <!-- 加载更多按钮 -->
-                <div id="loadingStatus" style="display: none;">
+                <div class="hl:hidden" id="loadingStatus">
                     <button id="fmomentsMoreBtn" type="button">
                         <i class="fas fa-angle-double-down"></i>
                         <span>加载更多</span>
                     </button>
-                    <div class="fMomentsNoMore" id="noMoreTip" style="display: none;">
+                    <div class="fMomentsNoMore hl:hidden" id="noMoreTip">
                         <i class="fas fa-check-circle"></i>
                         <div>🎉 已显示全部内容</div>
                         <small>共找到 <span id="finalCount">0</span> 篇文章</small>
@@ -121,7 +121,7 @@
                 </div>
 
                 <!-- 错误状态 -->
-                <div class="fMomentsErrorState" id="errorState" style="display: none;">
+                <div class="fMomentsErrorState hl:hidden" id="errorState">
                     <i class="fas fa-exclamation-triangle"></i>
                     <h3>加载失败</h3>
                     <div id="errorMessage">请检查网络连接后重试</div>
@@ -129,7 +129,7 @@
                 </div>
 
                 <!-- 空状态 -->
-                <div class="fMomentsEmptyState" id="emptyState" style="display: none;">
+                <div class="fMomentsEmptyState hl:hidden" id="emptyState">
                     <i class="fas fa-search"></i>
                     <h3>没有找到匹配的文章</h3>
                     <p>尝试更换搜索词或调整筛选条件</p>

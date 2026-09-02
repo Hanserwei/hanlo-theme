@@ -1,7 +1,7 @@
 <!-- 爱好 -->
 <div class="author-content" >
-    <div class="author-content-item game-lol"
-         th:style="'background: url('+ @{${theme.config.about.game.game_bg}} +') top / cover no-repeat'">
+    <div class="author-content-item game-lol hanlo-dynamic-cover"
+         th:style="|--hanlo-dynamic-cover: url('${theme.config.about.game.game_bg}')|">
         <div class="card-content">
             <div class="author-content-item-tips" th:text="${theme.config.about.game.game_tips}">
 
@@ -9,14 +9,16 @@
                         th:text="${theme.config.about.game.game_title}"></span>
             <div class="content-bottom">
                 <div class="icon-group">
-                    <div class="loading-bar" role="presentation" aria-hidden="true"></div>
+                    <div class="loading-bar" role="presentation" aria-hidden="true"
+                         th:style="|--hanlo-loading-bar-image: url('${theme.config.about.game.loading_bar}')|"></div>
                 </div>
                 <div class="tips" th:text="${theme.config.about.game.game_uid}"></div>
             </div>
         </div>
     </div>
-    <div th:if="${#strings.equals(theme.config.about.game2.game2_type, 'img')}" class="author-content-item game-wolf"
-         th:style="'background: url('+ @{${theme.config.about.game2.game2_bg}} +') top / cover no-repeat'">
+    <div th:if="${#strings.equals(theme.config.about.game2.game2_type, 'img')}"
+         class="author-content-item game-wolf hanlo-dynamic-cover"
+         th:style="|--hanlo-dynamic-cover: url('${theme.config.about.game2.game2_bg}')|">
         <div class="card-content">
             <div class="author-content-item-tips" th:text="${theme.config.about.game2.game2_tips}">
 
@@ -48,18 +50,4 @@
             </div>
         </div>
     </div>
-    <style>
-        .loading-bar::after {
-            content: "";
-            position: absolute;
-            top: 500px;
-            left: 0;
-            filter: drop-shadow(0 -500px 0 #ece5d8);
-            width: 500px;
-            height: 62.5px;
-            background: url([[${theme.config.about.game.loading_bar}]]) no-repeat left 100%;
-            background-size: 500px 62.5px;
-            background-position-x: 0;
-        }
-    </style>
 </div>

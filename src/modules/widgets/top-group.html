@@ -54,8 +54,8 @@
             <div class="todayCard-title"
                  th:text="${theme.config.top.BannerRight.todayRecommendContent.todayRecommendTitle}"></div>
         </div>
-        <div class="todayCard-cover"
-             th:style="'background:url('+ ${theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover} +') no-repeat center/cover'">
+            <div class="todayCard-cover hanlo-today-cover"
+                 th:style="|--hanlo-today-cover: url('${theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover}')|">
         </div>
         <div class="banner-button-group">
             <a class="banner-button" data-hanlo-action="hide-today-card">

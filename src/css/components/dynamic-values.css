@@ -1,0 +1,36 @@
+/* Server-rendered values cross into the stylesheet only through scoped custom properties. */
+.hanlo-dynamic-background {
+    background: var(--hanlo-dynamic-background);
+}
+
+.hanlo-dynamic-color {
+    color: var(--hanlo-dynamic-color);
+}
+
+.hanlo-essay-cover {
+    background: var(--hanlo-essay-cover) left 28% / cover no-repeat !important;
+}
+
+.hanlo-profile-background {
+    background-image: var(--hanlo-profile-background, none);
+}
+
+.hanlo-card-cover {
+    background-image: var(--hanlo-card-cover);
+}
+
+.hanlo-label-color {
+    background-color: var(--hanlo-label-color);
+}
+
+.hanlo-today-cover {
+    background: var(--hanlo-today-cover) no-repeat center / cover;
+}
+
+#aside-content #flip-wrapper-card #flip-steam .stimg {
+    background: var(--hanlo-steam-cover) center center / 100% no-repeat;
+}
+
+#aside-content #flip-wrapper-card #flip-steam .back.stimg {
+    background: transparent;
+}

@@ -1,0 +1,670 @@
+/* 关于页面滚动 */
+
+.author-content-item.aboutsiteTips {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 39%;
+}
+
+.aboutsiteTips h2 {
+    margin-right: auto;
+    font-size: 36px;
+    font-family: Helvetica;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    color: var(--heo-fontcolor);
+    margin-top: 0;
+}
+
+.aboutsiteTips .mask {
+    height: 36px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.aboutsiteTips .mask span {
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    top: 36px;
+    padding-bottom: var(--offset);
+    background-size: 100% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-repeat: no-repeat;
+}
+
+.aboutsiteTips .mask span[data-show] {
+    transform: translateY(-100%);
+    transition: .5s transform ease-in-out;
+}
+
+.aboutsiteTips .mask span[data-up] {
+    transform: translateY(-200%);
+    transition: .5s transform ease-in-out;
+}
+
+.aboutsiteTips .mask span:nth-child(1) {
+    background-image: linear-gradient(45deg, #0ecffe 50%, #07a6f1);
+}
+
+.aboutsiteTips .mask span:nth-child(2) {
+    background-image: linear-gradient(45deg, #18e198 50%, #0ec15d);
+}
+
+.aboutsiteTips .mask span:nth-child(3) {
+    background-image: linear-gradient(45deg, #8a7cfb 50%, #633e9c);
+}
+
+.aboutsiteTips .mask span:nth-child(4) {
+    background-image: linear-gradient(45deg, #fa7671 50%, #f45f7f);
+}
+
+@media screen and (max-width: 768px) {
+
+    .author-content-item.map {
+        margin-bottom: 0;
+    }
+}
+
+/* 关于页面赞赏 */
+
+.author-content-item.single.reward .author-content-item .author-content-item-title {
+    color: var(--heo-red);
+}
+
+.author-content-item.single.reward .reward-list-all {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+}
+
+.author-content-item.single.reward .reward-list-all .reward-list-item {
+    padding: 1rem;
+    border-radius: 12px;
+    border: var(--style-border-always);
+    width: calc((100% / 6) - 0.5rem);
+    margin: 0rem 0.25rem 0.5rem 0.25rem;
+    box-shadow: var(--heo-shadow-border);
+}
+
+.author-content-item.single.reward .reward-list-all .reward-list-item:hover {
+    background-color: rgb(0, 108, 242);
+    color: #FFFFFF;
+}
+
+@media screen and (max-width: 1200px) {
+    .author-content-item.single.reward .reward-list-all .reward-list-item {
+        width: calc((100% / 4) - 0.5rem);
+    }
+    .author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-avatar {
+        width: 32%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .author-content-item.single.reward .reward-list-all .reward-list-item {
+        width: calc((100% / 2) - 0.5rem);
+    }
+    .author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-avatar {
+        width: 20%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .author-content-item.single.reward .reward-list-all .reward-list-item {
+        width: 100%;
+    }
+    .author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-avatar {
+        width: 9%;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .author-content-item.single.reward .reward-list-all .reward-list-item {
+        width: 100%;
+    }
+    .author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-avatar {
+        width: 20%;
+    }
+}
+
+.author-content-item.single.reward .author-content-item-description {
+    font-size: 16px;
+    margin-top: 0.5rem;
+}
+
+.author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-name {
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-bottom-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    float: left;
+    width: 100%;
+}
+
+.author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-avatar {
+    width: 32%;
+    float: left;
+    z-index: 10;
+    position: static;
+    height: 40px;
+    transform: translateY(-40%);
+}
+
+.author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-avatar img {
+    border-radius: 50%;
+    width: 80%;
+    margin-top: 0.2rem;
+}
+
+.author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-avatar-group {
+    width: 65%;
+    float: left;
+    z-index: 10;
+    position: static;
+    overflow: hidden;
+}
+
+.author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-money {
+    padding: 4px;
+    background: var(--heo-fontcolor);
+    color: var(--card-bg);
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 4px;
+    margin-right: 4px;
+    white-space: nowrap;
+}
+
+.author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-time {
+    font-size: 12px;
+    color: var(--heo-secondtext);
+    white-space: nowrap;
+}
+
+.author-content-item.single.reward .reward-list-all .reward-list-item .reward-list-item-time:hover {
+    font-size: 12px;
+    color: #FFFFFF;
+    white-space: nowrap;
+}
+
+.author-content-item.single.reward .reward-list-updateDate {
+    color: var(--heo-gray);
+    font-size: 14px;
+}
+
+.author-content-item.single.reward .post-reward {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+}
+
+.author-content-item.single.reward .post-reward .reward-button {
+    padding: 8px 12px;
+    background: var(--heo-red);
+    border-radius: 12px;
+    color: var(--heo-white);
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    transition: .3s;
+    cursor: pointer;
+    box-shadow: none;
+    width: fit-content;
+    height: fit-content;
+    line-height: 2;
+}
+
+@media screen and (max-width: 768px) {
+    .author-content-item.single.reward .post-reward .reward-button {
+        display: none;
+    }
+}
+
+.author-content-item.single.reward .post-reward .reward-button i {
+    margin-right: 8px;
+    font-size: 1rem;
+}
+
+.author-content-item.single.reward .post-reward .reward-main {
+    top: 60px;
+    right: 0;
+    left: auto;
+    bottom: auto;
+    width: fit-content;
+    box-shadow: var(--heo-shadow-border);
+}
+
+.author-content-item.single.reward .post-reward .reward-main .reward-all::before {
+    bottom: auto;
+    top: -16px;
+}
+
+.author-content-item.single.reward a.reward-main-btn {
+    display: none;
+}
+
+/* 喜欢的游戏 lol */
+.author-content-item.game-lol {
+    background: url(https://img.zhheo.com/i/2022/08/31/630efa7ae39fe.webp) no-repeat top;
+    background-size: cover;
+    min-height: 300px;
+    overflow: hidden;
+    color: var(--heo-white);
+    width: 59%;
+}
+
+.author-content-item .card-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 2rem;
+}
+
+@media screen and (max-width: 768px) {
+    .author-content-item .card-content {
+        padding: 1rem;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    .author-content-item {
+        animation: slide-in .6s 0s backwards
+    }
+}
+
+.author-content-item.game-lol::after {
+    box-shadow: 0 -69px 203px 11px #575d8b inset;
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.loading-bar {
+    position: absolute;
+    /* top: 50%;
+    left: 50%; */
+    width: 500px;
+    height: 62.5px;
+    transform: translate(-25%, -50%) scale(0.5);
+    transition: all 0.5s;
+    user-select: none;
+    overflow: hidden;
+}
+
+.author-content-item.game-lol:hover .loading-bar::after {
+    animation: loading-bar 3.5s cubic-bezier(0.28, 0.11, 0.32, 1) infinite forwards;
+}
+
+@keyframes loading-bar {
+    0% {
+        width: 0;
+        background-size: 500px 62.5px;
+    }
+    83% {
+        width: 475px;
+    }
+    83.1% {
+        width: 475px;
+    }
+    83.2% {
+        width: 475px;
+    }
+    83.3% {
+        width: 475px;
+    }
+    83.4% {
+        width: 475px;
+    }
+    83.5% {
+        width: 475px;
+    }
+    83.6% {
+        width: 475px;
+    }
+    83.7% {
+        width: 475px;
+    }
+    83.8% {
+        width: 475px;
+    }
+    83.9% {
+        width: 475px;
+    }
+    84% {
+        width: 475px;
+    }
+    85% {
+        width: 475px;
+    }
+    86% {
+        width: 475px;
+    }
+    87% {
+        width: 475px;
+    }
+    100% {
+        width: 500px;
+    }
+}
+
+.author-content-item .content-bottom {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.author-content-item .content-bottom .icon-group {
+    display: flex;
+}
+
+.author-content-item .content-bottom .icon-group i {
+    display: inline-block;
+    width: 22px;
+    height: 18px;
+    margin-right: 0.5rem;
+}
+
+.icon-pos-sup {
+    background: url('https://img.zhheo.com/i/2022/08/25/63074b68d9f4c.png');
+}
+
+.icon-pos-mid {
+    background: url('https://img.zhheo.com/i/2022/08/25/63074b54d2731.png');
+}
+
+/* 喜欢的游戏 狼人杀 */
+.author-content-item.game-wolf {
+    width: 39%;
+    background: url(https://img.zhheo.com/i/2022/08/31/630efa916a851.webp) no-repeat top;
+    background-size: cover;
+    min-height: 300px;
+    overflow: hidden;
+    color: var(--heo-white);
+}
+
+.author-content-item.game-wolf::after {
+    /* box-shadow: 0 -69px 203px 11px #415dc9 inset; */
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.author-content-item.comic-content {
+    width: 39%;
+    min-height: 300px;
+    overflow: hidden
+}
+
+.author-content-item.comic-content .comic-box {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: box;
+    display: flex;
+    width: 120%;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%)
+}
+
+.author-content-item.comic-content .author-content-item-tips, .author-content-item.comic-content .author-content-item-title {
+    z-index: 2;
+    color: var(--heo-white);
+    pointer-events: none
+}
+
+.author-content-item.comic-content .comic-item {
+    height: 100%;
+    color: #fff;
+    width: 20%;
+    -webkit-transform: skew(-10deg, 0deg);
+    -moz-transform: skew(-10deg, 0deg);
+    -o-transform: skew(-10deg, 0deg);
+    -ms-transform: skew(-10deg, 0deg);
+    transform: skew(-10deg, 0deg);
+    -webkit-transition: .8s;
+    -moz-transition: .8s;
+    -o-transition: .8s;
+    -ms-transition: .8s;
+    transition: .8s;
+    position: relative;
+    overflow: hidden
+}
+
+.author-content-item.comic-content .comic-item:hover {
+    width: 46%
+}
+
+.author-content-item.comic-content .comic-item:hover .comic-item-cover {
+    left: 16%;
+    -webkit-transform: skew(10deg, 0deg) scale(1.6);
+    -moz-transform: skew(10deg, 0deg) scale(1.6);
+    -o-transform: skew(10deg, 0deg) scale(1.6);
+    -ms-transform: skew(10deg, 0deg) scale(1.6);
+    transform: skew(10deg, 0deg) scale(1.6)
+}
+
+.author-content-item.comic-content .comic-item .comic-item-cover {
+    position: absolute;
+    top: 0;
+    left: -50%;
+    height: 100%;
+    -webkit-transform: skew(10deg, 0deg);
+    -moz-transform: skew(10deg, 0deg);
+    -o-transform: skew(10deg, 0deg);
+    -ms-transform: skew(10deg, 0deg);
+    transform: skew(10deg, 0deg);
+    object-fit: cover;
+    -webkit-transition: scale .2s, all .8s;
+    -moz-transition: scale .2s, all .8s;
+    -o-transition: scale .2s, all .8s;
+    -ms-transition: scale .2s, all .8s;
+    transition: scale .2s, all .8s
+}
+
+.author-content-item.comic-content .comic-item .comic-item-cover img {
+    height: 100%;
+    -webkit-transition: .8s;
+    -moz-transition: .8s;
+    -o-transition: .8s;
+    -ms-transition: .8s;
+    transition: .8s;
+    max-width: none;
+    border-radius: 0
+}
+
+.author-content-item.comic-content::after {
+    -webkit-box-shadow: 0 -48px 203px 11px #fbe9b8 inset;
+    box-shadow: 0 -48px 203px 11px #fbe9b8 inset;
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0
+}
+
+/* 关注领域 */
+.author-content-item.like-technology {
+    background: url(https://img.zhheo.com/i/2022/08/31/630efac3ecef3.webp) no-repeat;
+    background-size: cover;
+    min-height: 230px;
+    color: var(--heo-white);
+}
+
+/* 喜欢音乐 */
+.author-content-item.like-music {
+    background: url(https://img.zhheo.com/i/2022/08/31/630efae141e9a.webp) no-repeat top;
+    background-size: cover;
+    min-height: 400px;
+    color: var(--heo-white);
+    overflow: hidden;
+}
+
+.author-content-item.like-music::after {
+    box-shadow: 0 -69px 203px 11px #453e38 inset;
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.author-content-item .card-content .author-content-item-title {
+    margin-bottom: 0.5rem;
+}
+
+.author-content-item .card-content .banner-button-group {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
+}
+
+.author-content-item .card-content .banner-button-group .banner-button {
+    height: 40px;
+    width: 118px;
+    border-radius: 20px;
+    justify-content: center;
+    background: var(--heo-black-op);
+    color: var(--heo-white);
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    transition: .3s;
+    cursor: pointer;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.author-content-item .card-content .banner-button-group .banner-button:hover {
+    background: var(--heo-lighttext);
+    color: var(--heo-card-bg)
+}
+
+.author-content-item .card-content .banner-button-group .banner-button i {
+    margin-right: 8px;
+    font-size: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .author-content-item .card-content .banner-button-group {
+        right: 1rem;
+        bottom: 1rem;
+    }
+
+    .author-content-item .card-content .banner-button-group .banner-button {
+        background: none;
+        color: var(--heo-white);
+        padding: 0;
+        width: fit-content;
+    }
+
+    .author-content-item .card-content .banner-button-group .banner-button i {
+        margin-right: 0;
+        font-size: 1.5rem;
+    }
+
+    .author-content-item .card-content .banner-button-group .banner-button-text {
+        display: none;
+    }
+}
+
+/* 豆瓣电影页面 */
+.author-content-item.single.like-movie {
+    height: 19rem;
+    background: url(https://img.zhheo.com/i/2022/09/27/633289920d1c7.webp) no-repeat top;
+    background-size: cover;
+    color: var(--heo-white);
+    overflow: hidden;
+}
+
+.author-content-item.single.like-movie::after {
+    box-shadow: 0 21px 133px 81px #1c1c1c inset;
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+#article-container .author-content-item.single.like-movie .banner-button-group .banner-button {
+    padding: 8px 12px;
+    background: var(--heo-white);
+    border-radius: 12px;
+    color: var(--heo-black);
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    transition: 0.3s;
+    cursor: pointer;
+    border: none;
+}
+
+#article-container .author-content-item.single.like-movie .banner-button-group .banner-button:hover {
+    background: #d0b247;
+    color: var(--heo-white);
+}
+
+#article-container .author-content-item.single.like-movie .banner-button-group .banner-button i {
+    margin-right: 8px;
+    font-size: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+    #article-container .author-content-item.single.like-movie .banner-button-group {
+        right: 1rem;
+        bottom: 1rem;
+    }
+
+    #article-container .author-content-item.single.like-movie .banner-button-group .banner-button {
+        background: none;
+        color: var(--heo-white);
+        padding: 0;
+    }
+
+    #article-container .author-content-item.single.like-movie .banner-button-group .banner-button i {
+        margin-right: 0;
+        font-size: 1.5rem;
+    }
+
+    #article-container .author-content-item.single.like-movie .banner-button-group .banner-button-text {
+        display: none;
+    }
+}
