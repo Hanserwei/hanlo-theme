@@ -2,13 +2,15 @@
 
 ## 1. 状态
 
-阶段 5 的实现与本地验收已完成，主题实现版本为 `1.2.0`，Halo 兼容要求保持
-`>= 2.26.0`。CSS 已进入 Vite 源码构建链，Tailwind CSS 仅作为带前缀、无运行时的渐进式
-utility 层使用；现有视觉继续由语义 Design Tokens 和分层 CSS 所有。
+阶段 5 已完成。实现提交 [`f3e2f0d7`](https://github.com/Hanserwei/hanlo-theme/commit/f3e2f0d7b8f2610a1a62b2984dbb735b6ab749eb)
+及远端 [CI 33635471058](https://github.com/Hanserwei/hanlo-theme/actions/runs/33635471058) 已通过；
+收尾主题版本为 `1.2.1`，Halo 兼容要求保持 `>= 2.26.0`。CSS 已进入 Vite 源码构建链，
+Tailwind CSS 仅作为带前缀、无运行时的渐进式 utility 层使用；现有视觉继续由语义 Design Tokens
+和分层 CSS 所有。
 
 架构约束见 [`CSS_ARCHITECTURE.md`](CSS_ARCHITECTURE.md)，真实 Halo 验收见
-[`evidence/live/README.md`](evidence/live/README.md)。远端实现提交和 CI 通过后，完成结论将记录在
-`COMPLETION_AUDIT.md`。
+[`evidence/live/README.md`](evidence/live/README.md)，完成结论见
+[`COMPLETION_AUDIT.md`](COMPLETION_AUDIT.md)。
 
 ## 2. 技术决策
 
@@ -66,7 +68,7 @@ HALO_BASE_URL=http://127.0.0.1:8090 \
 PLAYWRIGHT_EXECUTABLE_PATH=/usr/sbin/google-chrome-stable \
 pnpm exec playwright test --grep @live
 pnpm build
-unzip -t dist/theme-hanlo-1.2.0.zip
+unzip -t dist/theme-hanlo-1.2.1.zip
 ```
 
 ## 6. 已知边界

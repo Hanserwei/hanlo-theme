@@ -48,19 +48,20 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 | 发布流程 | GitHub Actions 手动复制文件并压缩，仍使用 Node.js 16 和旧版 Actions |
 | 自动化测试 | 暂无单元测试、模板验证和浏览器端回归测试 |
 
-### 阶段 4 收尾后的当前状态
+### 阶段 5 收尾后的当前状态
 
 | 领域 | 当前状态 |
 | --- | --- |
-| 主题版本 | `1.1.1`；唯一版本来源为 `theme.yaml:spec.version` |
+| 主题版本 | `1.2.1`；唯一版本来源为 `theme.yaml:spec.version` |
 | 运行平台 | Halo `>= 2.26.0`，本地验证环境为 `2.26.0-SNAPSHOT` |
 | 模板源码 | `src/` 中运行时 Thymeleaf 模板和构建入口；`templates/` 继续由构建生成 |
 | 第一方脚本 | TypeScript ESM 入口生成版本化的 `hanlo-runtime-<version>.js` 与按功能拆分的动态分块，入口与分块共享同一模块 URL |
 | 第三方脚本 | 保留依赖均由 pnpm 精确锁定；仓库不再签入 `public/assets/libs/` vendor JavaScript |
 | 页面生命周期 | `PageControllerRegistry` + `PageResourceScope` 统一首次加载、PJAX、历史导航、挂载和销毁 |
+| CSS 架构 | 68 个 `src/css` 模块；Design Tokens、Cascade Layers、19 个按需入口和 Tailwind v4 前缀 utility；最大文件 1,259 行 |
 | 前端构建 | pnpm、严格 TypeScript、Vite Plus、Halo Vite 插件、冻结 lockfile 和主题打包 CLI |
-| 自动化测试 | Vitest 单元测试、Playwright 合成/真实 Halo 测试、YAML 与构建产物校验 |
-| 阶段 4 收尾 | 实现提交已进入 `master`；本地、真实 Halo 与远端 CI 质量门禁全部通过 |
+| 自动化测试 | Vitest、Stylelint/CSS 架构审计、Playwright 四象限视觉/合成/真实 Halo 测试、YAML 与构建产物校验 |
+| 阶段 5 收尾 | 实现 `f3e2f0d7` 已进入 `master`；本地、真实 Halo 与远端 CI 33635471058 全部通过 |
 
 阶段 1 的模板保真桥仍有意保留：现有 Thymeleaf 片段和首屏同步主题引导尚不能无差异地交给
 Vite HTML 转换。PJAX 已在阶段 4 进入本地 ESM；移除该桥仍需单独迁移模板构建
@@ -128,7 +129,7 @@ Vite HTML 转换。PJAX 已在阶段 4 进入本地 ESM；移除该桥仍需单�
 | 模块系统 | 原生 ES Modules |
 | UI 交互 | 原生 TypeScript 组件或控制器为主 |
 | 局部复杂组件 | 只有在确有收益时使用 Lit 或 Alpine.js |
-| 样式体系 | 原生 CSS、CSS Variables、Cascade Layers |
+| 样式体系 | 原生 CSS、CSS Variables、Cascade Layers；Tailwind v4 前缀 utility，不启用 Preflight |
 | 代码高亮 | 本地安装 Shiki 核心包，仅打包实际使用的语言和主题 |
 | 单元测试 | Vitest |
 | 浏览器测试 | Playwright |
@@ -375,7 +376,14 @@ export interface PageController {
 
 ### 阶段 5：CSS 架构与视觉系统
 
-**状态：未开始**
+**状态：已完成**
+
+执行说明、架构约定和完成审计见 [`docs/modernization/phase-5/README.md`](modernization/phase-5/README.md)、
+[`docs/modernization/phase-5/CSS_ARCHITECTURE.md`](modernization/phase-5/CSS_ARCHITECTURE.md) 和
+[`docs/modernization/phase-5/COMPLETION_AUDIT.md`](modernization/phase-5/COMPLETION_AUDIT.md)。实现提交
+[`f3e2f0d7`](https://github.com/Hanserwei/hanlo-theme/commit/f3e2f0d7b8f2610a1a62b2984dbb735b6ab749eb)
+已位于 `master`，远端 [CI 33635471058](https://github.com/Hanserwei/hanlo-theme/actions/runs/33635471058)
+通过源码检查、浏览器测试、构建、产物同步、ZIP 校验和 artifact 上传。
 
 目标是在保持现有视觉风格的基础上降低样式耦合，为后续定制提供稳定设计语言。
 
@@ -387,14 +395,14 @@ export interface PageController {
 
 任务：
 
-- [ ] 提取颜色、间距、圆角、阴影、字体和动画 Design Tokens。
-- [ ] 将浅色与深色主题统一映射到语义变量。
-- [ ] 按 reset、基础、布局、组件和页面拆分主样式。
-- [ ] 将模板内联样式迁移到对应模块。
-- [ ] 清理重复规则、废弃选择器和无效 `!important`。
-- [ ] 为组件建立命名约定，减少依赖 DOM 层级的选择器。
-- [ ] 增加 Playwright 视觉回归测试。
-- [ ] 在 CSS 稳定后，再评估是否只为新组件引入 Tailwind。
+- [x] 提取颜色、间距、圆角、阴影、字体和动画 Design Tokens。
+- [x] 将浅色与深色主题统一映射到语义变量。
+- [x] 按 reset、基础、布局、组件和页面拆分主样式。
+- [x] 将模板内联样式迁移到对应模块。
+- [x] 清理重复规则、废弃选择器和无效 `!important`。
+- [x] 为组件建立命名约定，减少依赖 DOM 层级的选择器。
+- [x] 增加 Playwright 视觉回归测试。
+- [x] 在 CSS 稳定后，再评估是否只为新组件引入 Tailwind。
 
 验收标准：
 
@@ -513,6 +521,8 @@ chore: establish Vite and TypeScript build pipeline
 | ADR-003 | 使用 TypeScript 和 ES Modules 逐步替换全局脚本 | 已接受 |
 | ADR-004 | 第一阶段不全量迁移 Tailwind CSS | 已接受 |
 | ADR-005 | 在建立统一生命周期前不直接替换 PJAX | 已接受 |
+| ADR-006 | Tailwind v4 仅用于带 `hl:` 前缀的新 utility，禁用 Preflight，不全量重写历史 CSS | 已接受 |
+| ADR-007 | 条件样式通过 `css-entries.json` 构建为版本化入口，模板按路由和配置加载 | 已接受 |
 
 ## 进度总览
 
@@ -523,10 +533,10 @@ chore: establish Vite and TypeScript build pipeline
 | 阶段 2 | 已完成 | 统一页面与 PJAX 生命周期；本地、CI 与合并门禁通过 |
 | 阶段 3 | 已完成 | JavaScript/TypeScript 模块化；本地、CI 与合并门禁通过 |
 | 阶段 4 | 已完成 | 第三方依赖治理与按需加载；本地、真实 Halo 与远端 CI 门禁通过 |
-| 阶段 5 | 未开始 | CSS 架构与视觉系统 |
+| 阶段 5 | 已完成 | CSS 架构与视觉系统；本地、四象限真实 Halo 与远端 CI 门禁通过 |
 | 阶段 6 | 未开始 | 测试、性能、可访问性和发布治理 |
 
-### 阶段 0–4 收尾复核（2026-09-01）
+### 阶段 0–5 收尾复核（2026-09-02）
 
 | 阶段 | 复核结论 | 关键证据 |
 | --- | --- | --- |
@@ -535,6 +545,7 @@ chore: establish Vite and TypeScript build pipeline
 | 阶段 2 | 已完成 | 实现 `ea0df66` 已进入 `master`；CI 33424572166 通过全部质量门禁 |
 | 阶段 3 | 已完成 | 实现 `0d5a2d11` 已进入 `master`；CI 33454750241 通过；18 张固定证据截图校验通过 |
 | 阶段 4 | 已完成 | 实现 `93d4cdb8` 已进入 `master`；CI 33523065226 通过；依赖、许可、按需加载、真实 Halo 与 18 张截图证据齐备 |
+| 阶段 5 | 已完成 | 实现 `f3e2f0d7` 已进入 `master`；CI 33635471058 通过；CSS 架构审计、4 张像素快照、真实 Halo 四象限与 36 张截图证据齐备 |
 
 本次以主题 `1.0.1` 重新执行了冻结安装、`pnpm check`、29 项 Vitest 断言、6 项合成 Playwright
 用例、构建与 ZIP 完整性检查。构建产物共 194 项，其中 98 个 HTML；安装包
@@ -545,12 +556,13 @@ chore: establish Vite and TypeScript build pipeline
 路由的桌面浅色与移动深色直接加载，以及两种视口下各 12 次 PJAX/历史导航；页面异常、Console
 error、失败主题请求和本地 HTTP 错误均为 0。
 
-以下项目明确不影响阶段 0–3 的完成结论：
+以下项目明确不影响阶段 0–5 的完成结论：
 
 - Halo 2.26 可选的 `templates/layout.html` 页面布局契约仍为 `MISSING`，插件页面会使用 Halo
   fallback；这是后续插件集成工作，不在现有阶段验收条件内。
-- jQuery、Vue 2、Shiki 远程运行时和其他 vendor 依赖仍由阶段 4 治理。
-- CSS 分层、视觉系统和性能预算仍分别属于阶段 5、6。
+- 历史 CSS 的深层选择器和剩余 `!important` 已由模块、级联顺序和视觉门禁约束；继续逐组件降权是
+  后续维护，不影响阶段 5 已定义的拆分和回归验收。
+- 性能预算、自动发布和更完整的可访问性门禁属于阶段 6。
 
 ## 参考资料
 
@@ -562,6 +574,8 @@ error、失败主题请求和本地 HTTP 错误均为 0。
 - [TypeScript 文档](https://www.typescriptlang.org/docs/)
 - [Vitest 文档](https://vitest.dev/)
 - [Playwright 文档](https://playwright.dev/)
+- [Tailwind CSS 文档](https://tailwindcss.com/docs/installation/using-vite)
+- [Stylelint 文档](https://stylelint.io/)
 
 ---
 

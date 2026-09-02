@@ -32,7 +32,7 @@ pnpm exec playwright test --grep @live
 本地 Halo 的 Theme 资源在文件同步后仍缓存登记版本 `1.1.1`，已有 PAT 和浏览器会话无主题管理权限。
 测试目录因此临时创建 `1.1.1` 文件名兼容别名；别名与 `1.2.0` CSS/JS 逐字节相同，SHA-256
 分别一致。别名只存在于 `/home/hanserwei/halo2-dev/themes/theme-hanlo`，未进入 Git 或主题 ZIP。
-安装/升级最终 ZIP 时，Halo 会按 `theme.yaml` 正常登记 `1.2.0`。
+安装/升级最终 ZIP 时，Halo 会按 `theme.yaml` 正常登记收尾版本 `1.2.1`。
 
 ## 截图与完整性
 
