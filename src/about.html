@@ -7,6 +7,8 @@
                 _cover = ${singlePage.spec.cover},
                 _excerpt = ${singlePage.status.excerpt},
                 _type = 'website')}"></th:block>
+    <link th:if="${theme.config.about.tenyear.tenyear_enable}" rel="stylesheet"
+          th:href="${assets_link + '/css/ten-year-' + theme.spec.version + '.css' + theme_version}">
 </th:block>
 <th:block th:fragment="content">
     
@@ -62,12 +64,6 @@
                 
                 </div>
                 
-                <th:block th:if="${theme.config.about.tenyear.tenyear_enable}">
-                    <link rel="stylesheet" th:href="${assets_link + '/css/tenyear.css' + theme_version}" media="all"
-                          onload="this.media='all'">
-                </th:block>
-            
-            
             </div>
         
         </main>

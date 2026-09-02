@@ -1,3 +1,4 @@
+import "../../css/index.css";
 import { installInternalLinkPrefetch, installPjaxNavigation } from "../core/navigation";
 import { installPageLifecycle } from "../core/runtime";
 import { createBrowserStorage } from "../core/storage";

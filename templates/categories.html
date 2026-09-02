@@ -7,6 +7,8 @@
                 _cover = ${theme.config.other.opengraph.image},
                 _excerpt = ${site.seo.description},
                 _type = 'website')}"></th:block>
+    <link th:if="${#strings.equals(theme.config.categories.use, '3D')}" rel="stylesheet"
+          th:href="${assets_link + '/css/categories-3d-' + theme.spec.version + '.css' + theme_version}">
 </th:block>
 <th:block th:fragment="content">
 
@@ -17,28 +19,28 @@
         <main class="layout hide-aside" id="content-inner">
 
             <div id="page">
-                <h1 class="page-title" style="display: inline;">分类</h1>
+                <h1 class="page-title hl:inline">分类</h1>
                 <div th:if="${#strings.equals(theme.config.categories.use, 'default')}" class="category-lists">
                     <div class="category-title is-center">分类 - <span class="category-amount">11</span></div>
                     <div class="tag-cloud-list is-center">
-                        <a style="font-size: 1em;" th:each="categoryItem : ${categoryFinder.listAll()}"
+                        <a class="hl:[font-size:1em]" th:each="categoryItem : ${categoryFinder.listAll()}"
                            th:href="@{${categoryItem.status.permalink}}" th:id="${categoryItem.spec.displayName}">
-                            <span style="font-size: 22px;"
-                                  class="tags-punctuation">[[${categoryItem.spec.displayName}]]</span>
+                            <span
+                                  class="tags-punctuation hl:[font-size:22px]">[[${categoryItem.spec.displayName}]]</span>
 
                             <span class="tagsPageCount">[[${categoryItem.status.visiblePostCount}]]</span></a>
                     </div>
-                </div>
-                <th:block th:if="${#strings.equals(theme.config.categories.use, '3D')}">
-                    <link rel="stylesheet" th:href="${assets_link + '/css/categories-3d.css' + theme_version}">
-                    <div id="libCategories">
+        </div>
+        <th:block th:if="${#strings.equals(theme.config.categories.use, '3D')}">
+            <div id="libCategories">
                         <div id="lib-cards" class="container">
                             <a class="card-wrap" data-hanlo-category-card
                                th:each="categoryItem : ${categoryFinder.listAll()}"
                                th:href="@{${categoryItem.status.permalink}}"
                                th:id="${categoryItem.spec.displayName}">
                                 <article class="card">
-                                    <div class="card-bg" th:style="|background-image: url('${categoryItem.spec.cover}')|"></div>
+                        <div class="card-bg hanlo-card-cover"
+                             th:style="|--hanlo-card-cover: url('${categoryItem.spec.cover}')|"></div>
                                     <div class="card-info">
                                         <h2>[[${categoryItem.spec.displayName}]]</h2>
                                         <p>[[${categoryItem.spec.description}]]</p>

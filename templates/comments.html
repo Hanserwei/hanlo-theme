@@ -7,6 +7,8 @@
                 _cover = ${singlePage.spec.cover},
                 _excerpt = ${singlePage.status.excerpt},
                 _type = 'website')}"></th:block>
+    <link th:if="${theme.config.envelope_comment.enable_envelope_comment}" rel="stylesheet"
+          th:href="${assets_link + '/css/comments-envelope-' + theme.spec.version + '.css' + theme_version}">
 </th:block>
 <th:block th:fragment="content">
 
@@ -24,121 +26,37 @@
                     <th:block th:if="${not #strings.isEmpty(theme.config.envelope_comment.title)}"
                               th:utext="${theme.config.envelope_comment.title}">
                     </th:block>
-                    <style>
-                        @media screen and (max-width: 600px) {
-
-                            #afterimg,
-                            #beforeimg {
-                                display: none !important
-                            }
-                        }
-
-                        @media screen and (min-width: 600px) {
-                            #article-container img {
-                                margin: 0 auto 0
-                            }
-
-                            #form-wrap {
-                                overflow: hidden;
-                                height: 447px;
-                                position: relative;
-                                top: 0;
-                                transition: all 1s ease-in-out .3s;
-                                z-index: 0
-                            }
-
-                            #form-wrap:hover {
-                                height: [[${theme.config.envelope_comment.height}]]px;
-                                top: -200px
-                            }
-
-                            #beforeimg {
-                                position: absolute;
-                                bottom: 126px;
-                                left: 0;
-                                background-repeat: no-repeat;
-                                width: 530px;
-                                height: 317px;
-                                z-index: -100;
-                                pointer-events: none
-                            }
-
-                            #afterimg {
-                                position: absolute;
-                                bottom: -2px;
-                                left: 0;
-                                background-repeat: no-repeat;
-                                width: 530px;
-                                height: 259px;
-                                z-index: 100;
-                                pointer-events: none
-                            }
-
-                            #envelope {
-                                position: relative;
-                                overflow: visible;
-                                width: 500px;
-                                margin: 0 auto;
-                                transition: all 1s ease-in-out .3s;
-                                padding-top: 200px
-                            }
-
-                            #maincontent {
-                                width: 530px;
-                                margin: 20px auto 0
-                            }
-
-                            .formmain {
-                                background: #fff;
-                                width: 95%;
-                                max-width: 800px;
-                                margin: auto auto;
-                                border-radius: 5px;
-                                border: 1px solid;
-                                overflow: hidden;
-                                -webkit-box-shadow: 0 0 20px 0 #000;
-                                box-shadow: 0 0 20px 0 #000
-                            }
-                        }
-
-                        [data-theme=dark] .formmain {
-                            background: #323232
-                        }
-
-                        [data-theme=dark] .comments {
-                            background: #5a5a5a !important
-                        }
-                    </style>
 
 
                     <div id="article-container">
                         <div id="maincontent">
-                            <div id="form-wrap">
+                            <div id="form-wrap"
+                                 th:style="|--hanlo-envelope-open-height: ${theme.config.envelope_comment.height}px|">
                                 <img class="no-lightbox entered loaded" id="beforeimg"
                                      th:src="@{${theme.config.envelope_comment.custom_pic.beforeimg}}">
                                 <div id="envelope">
                                     <form>
-                                        <div class="formmain" style="pointer-events:none">
-                                            <img class="headerimg no-lightbox entered loaded"
+                                        <div class="formmain hl:pointer-events-none">
+                                            <img class="headerimg no-lightbox entered loaded hl:w-full hl:overflow-hidden hl:pointer-events-none"
                                                  th:src="@{${theme.config.envelope_comment.custom_pic.cover}}"
-                                                 style="width:100%;overflow:hidden;pointer-events:none">
+                                                >
                                             <div class="comments-main">
-                                                <h3 class="title3"
-                                                    style="text-decoration:none;color:var(--heo-theme);text-align:center">
+                                                <h3 class="title3 hl:no-underline hl:[color:var(--heo-theme)] hl:text-center"
+                                                   >
                                                     来自[[${site.title}]]的留言:</h3>
-                                                <div class="comments"
-                                                     style="text-align:center;border-bottom:#ddd 1px solid;border-left:#ddd 1px solid;padding-bottom:20px;background-color:#eee;margin:15px 0;padding-left:20px;padding-right:20px;border-top:#ddd 1px solid;border-right:#ddd 1px solid;padding-top:20px"
+                                                <div class="comments hl:text-center hl:[border-bottom:#ddd_1px_solid] hl:[border-left:#ddd_1px_solid] hl:[padding-bottom:20px] hl:[background-color:#eee] hl:[margin:15px_0] hl:[padding-left:20px] hl:[padding-right:20px] hl:[border-top:#ddd_1px_solid] hl:[border-right:#ddd_1px_solid] hl:[padding-top:20px]"
+                                                    
                                                      th:with="message = ${theme.config.envelope_comment.message_list}">
 
                                                     <div th:each="data : ${message}">[[${data}]]</div>
 
                                                 </div>
-                                                <div class="bottomcontent" style="text-align:center;margin-top:40px">
-                                                    <img class="bottomimg no-lightbox entered loaded"
+                                                <div class="bottomcontent hl:text-center hl:[margin-top:40px]">
+                                                    <img class="bottomimg no-lightbox entered loaded hl:w-full hl:[margin:5px_auto_5px_auto] hl:block hl:pointer-events-none"
                                                          th:src="@{${theme.config.envelope_comment.custom_pic.line}}"
-                                                         style="width:100%;margin:5px auto 5px auto;display:block;pointer-events:none">
+                                                        >
                                                 </div>
-                                                <p class="bottomhr" style="font-size:12px;text-align:center;color:#999">
+                                                <p class="bottomhr hl:[font-size:12px] hl:text-center hl:[color:#999]">
                                                     [[${theme.config.envelope_comment.bottom}]]</p>
                                             </div>
                                         </div>

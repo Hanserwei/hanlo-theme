@@ -6,7 +6,7 @@
         <div class="sidebar-menu-item">
             <a class="darkmode_switchbutton menu-child" data-hanlo-action="toggle-theme" href="javascript:void(0);"
                rel="external nofollow" title="显示模式切换">
-                <i class="haofont hao-icon-moon" style="font-size: 0.9rem;"></i>
+                <i class="haofont hao-icon-moon hl:[font-size:0.9rem]"></i>
                 <span>显示模式</span>
             </a>
         </div>
@@ -71,7 +71,7 @@
              th:with="tags = ${tagFinder.list(1,theme.config.sidebar.tagQuantity)}">
             <div class="item-headline"></div>
             <div class="card-tag-cloud">
-                <a class="tag-item" style="font-size:1em" th:each="tag,iterStat : ${tags}"
+                <a class="tag-item hl:[font-size:1em]" th:each="tag,iterStat : ${tags}"
                    th:href="@{${tag.status.permalink}}"
                    th:title="${tag.spec.displayName}">
                     <!-- 角标 -->

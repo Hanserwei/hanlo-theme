@@ -1,0 +1,39 @@
+.copyright,
+#ghbdages,
+#workboard {
+    text-align: center;
+}
+
+#heo-footer.hanlo-footer-has-meta {
+    margin-bottom: 1rem;
+}
+
+#footer-banner {
+    padding: var(--hanlo-footer-banner-padding);
+}
+
+a.footer-banner-link.cloud {
+    display: flex;
+    align-items: center;
+}
+
+img.cloud-logo {
+    height: 32px;
+}
+
+@media screen and (min-width: 1300px) {
+    .hanlo-has-global-background #footer {
+        display: flex;
+        flex-direction: column;
+        margin-top: 0.5rem;
+        background: linear-gradient(180deg, var(--heo-card-bg-none) 0%, #fff0 25%);
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .hanlo-has-global-background #footer {
+        z-index: 3;
+        margin-top: 0;
+        background: linear-gradient(180deg, var(--heo-background) 0%, #fff0 25%);
+    }
+}

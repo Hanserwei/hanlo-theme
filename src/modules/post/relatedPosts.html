@@ -4,9 +4,13 @@
 recommandPosts = ${postFinder.listByCategory(1,recommendQuantity == 'six' ? 7 : recommendQuantity == 'two' ? 3 : 1,post.categories.get(0).metadata.name)},
 containsTitle = ${#strings.contains(recommandPosts,post.spec.title)},
 postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,'?') ? theme.config.layout.postRandomImg+'&' : theme.config.layout.postRandomImg+'?'}">
+    <link th:if="${recommandPosts.total>1 && #strings.equals(recommendQuantity, 'six')}" rel="stylesheet"
+          th:href="${assets_link + '/css/related-posts-six-' + theme.spec.version + '.css' + theme_version}">
+    <link th:if="${recommandPosts.total>1 && #strings.equals(recommendQuantity, 'two')}" rel="stylesheet"
+          th:href="${assets_link + '/css/related-posts-two-' + theme.spec.version + '.css' + theme_version}">
     <div class="relatedPosts" th:if="${recommandPosts.total>1}">
         <div class="headline">
-            <i class="haofont hao-icon-cainixihuan" style="font-size: 1.1rem;"></i>
+            <i class="haofont hao-icon-cainixihuan hl:[font-size:1.1rem]"></i>
             <span>阅读建议</span>
         </div>
         <!-- 六篇文章 -->
@@ -21,10 +25,10 @@ postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,'?') ? theme
                              th:src="${isLazyload ? '' : img}"
                              th:data-lazy-src="${ isLazyload ? img : ''}">
                         <div class="content is-center">
-                            <div class="date" style="color: white"><i class="far fa-calendar-alt fa-fw"></i>
+                            <div class="date hl:text-white"><i class="far fa-calendar-alt fa-fw"></i>
                                 [[${#dates.format(recommandPost.spec.publishTime,'yyyy-MM-dd')}]]
                             </div>
-                            <div class="title" style="color: white" th:text="${recommandPost.spec.title}"></div>
+                            <div class="title hl:text-white" th:text="${recommandPost.spec.title}"></div>
                         </div>
                     </a>
                 </div>
@@ -51,8 +55,4 @@ postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,'?') ? theme
             </th:block>
         </div>
     </div>
-    <link th:if="${#strings.equals(recommendQuantity, 'six')}" rel="stylesheet"
-          th:href="${assets_link + '/css/related-posts-six.css' + theme_version}">
-    <link th:if="${#strings.equals(recommendQuantity, 'two')}" rel="stylesheet"
-          th:href="${assets_link + '/css/related-posts-two.css' + theme_version}">
 </th:block>

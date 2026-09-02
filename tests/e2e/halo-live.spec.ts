@@ -4,7 +4,7 @@ import path from "node:path";
 import { expect, test } from "@playwright/test";
 
 const haloBaseUrl = process.env.HALO_BASE_URL;
-const evidenceRoot = path.resolve("docs/modernization/phase-4/evidence/live");
+const evidenceRoot = path.resolve("docs/modernization/phase-5/evidence/live");
 
 const liveRoutes = [
   { id: "home", route: "/", selector: "#body-wrap", screenshot: true },
@@ -37,6 +37,48 @@ const liveRoutes = [
   { id: "equipments", route: "/equipments", selector: "#page", screenshot: false },
 ] as const;
 
+async function loadedThemeStyles(
+  page: import("@playwright/test").Page,
+  route: string,
+): Promise<string[]> {
+  const response = await page.goto(route, { waitUntil: "networkidle" });
+  expect(response?.status(), `${route} should render successfully`).toBe(200);
+  return page.evaluate(() =>
+    performance
+      .getEntriesByType("resource")
+      .map(({ name }) => new URL(name).pathname)
+      .filter((pathname) => pathname.includes("/themes/theme-hanlo/assets/css/"))
+      .map((pathname) => pathname.split("/").at(-1) ?? "")
+      .map((filename) => filename.replace(/-\d+\.\d+\.\d+\.css$/, ""))
+      .sort(),
+  );
+}
+
+test("loads only the CSS entries eligible for each Halo route @live", async ({ page }) => {
+  test.setTimeout(120_000);
+  test.skip(!haloBaseUrl, "Set HALO_BASE_URL to run against a compatible Halo instance.");
+
+  const expectedByRoute = new Map([
+    ["/", ["full-page", "hanlo-theme", "profile-default", "read-mode", "shiki"]],
+    [
+      "/archives/react-dui-zhao-su-cheng-wen-dang",
+      [
+        "hanlo-theme",
+        "post-copyright",
+        "profile-default",
+        "read-mode",
+        "related-posts-six",
+        "shiki",
+      ],
+    ],
+    ["/album", ["album", "hanlo-theme", "read-mode", "shiki"]],
+  ]);
+
+  for (const [route, expected] of expectedByRoute) {
+    expect([...new Set(await loadedThemeStyles(page, route))]).toEqual(expected);
+  }
+});
+
 test("runs repeated PJAX and history navigation on Halo 2.26 @live", async ({ page }, testInfo) => {
   test.setTimeout(120_000);
   test.skip(!haloBaseUrl, "Set HALO_BASE_URL to run against a compatible Halo instance.");
@@ -50,7 +92,7 @@ test("runs repeated PJAX and history navigation on Halo 2.26 @live", async ({ pa
         JSON.stringify({ value: theme, expiry: Date.now() + 24 * 60 * 60 * 1_000 }),
       );
     },
-    testInfo.project.name.includes("mobile") ? "dark" : "light",
+    testInfo.project.name.endsWith("-dark") ? "dark" : "light",
   );
   await page.addInitScript(() => {
     window.__hanloLiveEvents = [];
@@ -172,7 +214,7 @@ test("renders the fixed Halo page matrix without theme runtime errors @live", as
   test.setTimeout(180_000);
   test.skip(!haloBaseUrl, "Set HALO_BASE_URL to run against a compatible Halo instance.");
 
-  const mode = testInfo.project.name.includes("mobile") ? "dark" : "light";
+  const mode = testInfo.project.name.endsWith("-dark") ? "dark" : "light";
   const viewport = testInfo.project.name.includes("mobile") ? "mobile" : "desktop";
   const pageErrors: string[] = [];
   const consoleErrors: string[] = [];
@@ -230,7 +272,7 @@ test("renders the fixed Halo page matrix without theme runtime errors @live", as
     if (item.screenshot) {
       await page.screenshot({
         animations: "disabled",
-        path: path.join(evidenceRoot, `phase4-live__P-${item.id}__${viewport}__${mode}.png`),
+        path: path.join(evidenceRoot, `phase5-live__P-${item.id}__${viewport}__${mode}.png`),
       });
     }
   }

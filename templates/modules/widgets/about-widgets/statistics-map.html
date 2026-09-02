@@ -1,7 +1,8 @@
 <!-- 数据统计&作者相关信息 -->
 <div class="author-content">
     <div class="author-content-item-group column mapAndInfo">
-        <div class="author-content-item map single">
+        <div class="author-content-item map single"
+             th:style="|--hanlo-map-background-light: url('${theme.config.about.map.background}'); --hanlo-map-background-dark: url('${theme.config.about.map.backgroundDark}')|">
             <span class="map-title">我现在住在
                 <b>[[${theme.config.about.map.StrengthenTitle}]]</b>
             </span>
@@ -12,82 +13,24 @@
             <div th:if="${theme.config.about.map.authorInfo.size()}>'0'">
                 <span class="selfInfo-title"
                       th:text="${texts[0].authorInfoTitle}">生于</span><span
-                    class="selfInfo-content"
-                    id="selfInfo-content-year" th:style="'color:' + ${texts[0].authorInfoColor}"
+                    class="selfInfo-content hanlo-dynamic-color"
+                    id="selfInfo-content-year" th:style="'--hanlo-dynamic-color:' + ${texts[0].authorInfoColor}"
                     th:text="${texts[0].authorInfoContent}">2000</span>
             </div>
             <div th:if="${theme.config.about.map.authorInfo.size()}>'1'">
                 <span class="selfInfo-title"
                       th:text="${texts[1].authorInfoTitle}">太原理工大学</span><span
-                    class="selfInfo-content"
-                    th:style="'color:' + ${texts[1].authorInfoColor}"
+                    class="selfInfo-content hanlo-dynamic-color"
+                    th:style="'--hanlo-dynamic-color:' + ${texts[1].authorInfoColor}"
                     th:text="${texts[1].authorInfoContent}">计算机科学</span>
             </div>
             <div th:if="${theme.config.about.map.authorInfo.size()}>'2'">
                 <span class="selfInfo-title"
                       th:text="${texts[2].authorInfoTitle}">现在职业</span><span
-                    class="selfInfo-content"
-                    th:style="'color:' + ${texts[2].authorInfoColor}"
+                    class="selfInfo-content hanlo-dynamic-color"
+                    th:style="'--hanlo-dynamic-color:' + ${texts[2].authorInfoColor}"
                     th:text="${texts[2].authorInfoContent}">BI工程师</span>
             </div>
         </div>
     </div>
-    <style>
-        .author-content-item.map {
-            background: url([[${theme.config.about.map.background}]]) no-repeat center;
-            min-height: 160px;
-            max-height: 400px;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-            height: 60%;
-            background-size: 100%;
-            transition: 1s ease-in-out;
-        }
-        
-        [data-theme=dark] .author-content-item.map {
-            background: url([[${theme.config.about.map.backgroundDark}]]) no-repeat center;
-            background-size: 100%;
-        }
-        
-        .author-content-item.map:hover {
-            background-size: 120%;
-            transition: 4s ease-in-out;
-            background-position-x: 0;
-            background-position-y: 36%;
-        }
-        
-        .author-content-item.map .map-title {
-            position: absolute;
-            bottom: 0px;
-            left: 0px;
-            width: 100%;
-            background: var(--heo-maskbg);
-            padding: 0.5rem 2rem;
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            transition: 1s ease-in-out;
-            font-size: 20px;
-            border-radius: 0 0 1rem 1rem;
-        }
-        
-        .author-content-item.map:hover .map-title {
-            bottom: -100%;
-            border-radius: 0 0 1rem 1rem;
-        }
-        
-        .author-content-item.map .map-title b {
-            color: var(--heo-fontcolor);
-        }
-        
-        @media screen and (max-width: 768px) {
-            .author-content-item.map.myphoto {
-                background-size: cover !important;
-            }
-            
-            .author-content-item.map .map-title {
-                padding: 1rem;
-            }
-        }
-    </style>
 </div>

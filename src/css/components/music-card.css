@@ -1,0 +1,16 @@
+/* Extracted from src/modules/widgets/aside/music.html. */
+#aside-content #flip-wrapper-card #flip-music .msimg {
+    background: var(--hanlo-music-front-light) center center / 100% no-repeat;
+}
+
+#aside-content #flip-wrapper-card #flip-music .back.msimg {
+    background: var(--hanlo-music-back-light) center center / 100% no-repeat;
+}
+
+[data-theme=dark] #aside-content #flip-wrapper-card #flip-music .msimg {
+            background: var(--hanlo-music-front-dark) center center/100% no-repeat !important
+        }
+
+        [data-theme=dark] #aside-content #flip-wrapper-card #flip-music .back.msimg {
+            background: var(--hanlo-music-back-dark) center center/100% no-repeat !important
+        }

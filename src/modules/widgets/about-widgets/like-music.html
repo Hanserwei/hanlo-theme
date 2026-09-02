@@ -1,8 +1,8 @@
 <!-- 关注偏好&音乐偏好 -->
 <div class="author-content" >
 
-    <div class="author-content-item like-technology"
-         th:style="'background: url('+ @{${theme.config.about.like.like_bg}} +') top / cover no-repeat;'">
+    <div class="author-content-item like-technology hanlo-dynamic-cover"
+         th:style="|--hanlo-dynamic-cover: url('${theme.config.about.like.like_bg}')|">
         <div class="card-content">
             <div class="author-content-item-tips" th:text="${theme.config.about.like.like_tips}">
 
@@ -15,8 +15,8 @@
         </div>
     </div>
 
-    <div class="author-content-item like-music"
-         th:style="'background: url('+ @{${theme.config.about.music.music_bg}} +') top / cover no-repeat'">
+    <div class="author-content-item like-music hanlo-dynamic-cover"
+         th:style="|--hanlo-dynamic-cover: url('${theme.config.about.music.music_bg}')|">
         <div class="card-content">
             <div class="author-content-item-tips" th:text="${theme.config.about.music.music_tips}">
 

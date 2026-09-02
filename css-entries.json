@@ -1,0 +1,21 @@
+{
+  "album": "src/css/pages/album.css",
+  "bangumi": "src/css/pages/bangumi.css",
+  "categories-3d": "src/css/pages/categories-3d.css",
+  "comments-envelope": "src/css/pages/comments-envelope.css",
+  "friend-links": "src/css/pages/friend-links.css",
+  "friend-moments": "src/css/pages/friend-moments.css",
+  "full-page": "src/css/components/full-page.css",
+  "photos": "src/css/pages/photos.css",
+  "post-copyright": "src/css/components/post-copyright.css",
+  "post-copyright-one": "src/css/components/post-copyright-one.css",
+  "profile-default": "src/css/components/profile-default.css",
+  "profile-one": "src/css/components/profile-one.css",
+  "read-mode": "src/css/components/read-mode.css",
+  "recent-comments": "src/css/pages/recent-comments.css",
+  "related-posts-six": "src/css/components/related-posts-six.css",
+  "related-posts-two": "src/css/components/related-posts-two.css",
+  "shiki": "src/css/components/shiki.css",
+  "ten-year": "src/css/components/ten-year.css",
+  "todolist": "src/css/pages/todolist.css"
+}

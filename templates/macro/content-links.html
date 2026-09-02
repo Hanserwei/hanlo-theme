@@ -71,12 +71,12 @@
                      class="site-card-group">
 
                     <div class="site-card" th:each="link : ${group.links}">
-                        <span th:if="${not #strings.isEmpty(#annotations.get(link, 'label'))}"
-                              th:style="'background-color:' + ${#annotations.get(link,'labelColor')}"
-                              class="site-card-tag">[[${#annotations.get(link, 'label')}]]</span>
+                            <span th:if="${not #strings.isEmpty(#annotations.get(link, 'label'))}"
+                                  th:style="'--hanlo-label-color:' + ${#annotations.get(link,'labelColor')}"
+                                  class="site-card-tag hanlo-label-color">[[${#annotations.get(link, 'label')}]]</span>
 
                         <a class="img" target="_blank" th:href="${link.spec.url}" th:title="${link.spec.displayName}">
-                            <img class="flink-avatar" style="pointer-events: none;" th:alt="${link.spec.displayName}"
+                            <img class="flink-avatar hl:pointer-events-none" th:alt="${link.spec.displayName}"
                                  th:with="img = @{${#strings.isEmpty(#annotations.get(link, 'siteshot')) ? link.spec.logo : #annotations.get(link,'siteshot') }}"
                                  th:src="${isLazyload ? '' : img}"
                                  th:data-src="${isLazyload ? img : ''}"
@@ -104,9 +104,9 @@
                 <div class="flink-list"
                      th:if="${#strings.equals(#annotations.get(group, 'displayStyle'),'default') && not #lists.isEmpty(group.links)}">
                     <div class="flink-list-item" th:each="link : ${group.links}">
-                        <span th:if="${not #strings.isEmpty(#annotations.get(link, 'label'))}"
-                              th:style="'background-color:' + ${#annotations.get(link,'labelColor')}"
-                              class="site-card-tag">[[${#annotations.get(link, 'label')}]]</span>
+                            <span th:if="${not #strings.isEmpty(#annotations.get(link, 'label'))}"
+                                  th:style="'--hanlo-label-color:' + ${#annotations.get(link,'labelColor')}"
+                                  class="site-card-tag hanlo-label-color">[[${#annotations.get(link, 'label')}]]</span>
                         <a class="cf-friends-link" rel="external nofollow" target="_blank" th:href="${link.spec.url}"
                            th:title="${link.spec.displayName}">
                             <img class="flink-avatar cf-friends-avatar" th:alt="${link.spec.displayName}"

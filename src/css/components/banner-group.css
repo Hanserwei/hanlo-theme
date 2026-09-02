@@ -1,0 +1,15 @@
+.hanlo-configurable-gradient {
+    background: var(--hanlo-gradient-light);
+    background-size: 200%;
+}
+
+[data-theme="dark"] .hanlo-configurable-gradient {
+    background: var(--hanlo-gradient-dark);
+    background-size: 200%;
+}
+
+.banners-link-btn.hanlo-configurable-gradient:hover {
+    color: var(--heo-white);
+    cursor: pointer;
+    background-position: 100% 0;
+}

@@ -7,6 +7,8 @@
                 _cover = ${singlePage.spec.cover},
                 _excerpt = ${singlePage.status.excerpt},
                 _type = 'website')}"></th:block>
+    <link rel="stylesheet"
+          th:href="${assets_link + '/css/todolist-' + theme.spec.version + '.css' + theme_version}">
 </th:block>
 <th:block th:fragment="content">
 
@@ -37,7 +39,7 @@
                                         <th:block th:if="${not #lists.isEmpty(todo.todo_list)}"
                                                   th:each="data : ${todo.todo_list}">
                                             <li th:class="${data.completed ? 'achieve' : ''}">
-                                                <i style="font-size: 19px;margin-right: 5px;"
+                                                <i class="hl:[font-size:19px] hl:[margin-right:5px]"
                                                    th:class="${data.completed ? 'haofont  hao-icon-check-circle' : 'haofont hao-icon-yuan'}">
                                                 </i>[[${data.content}]]
                                             </li>
@@ -56,7 +58,7 @@
                                         <th:block th:if="${not #lists.isEmpty(todo.todo_list)}"
                                                   th:each="data : ${todo.todo_list}">
                                             <li th:class="${data.completed ? 'achieve' : ''}">
-                                                <i style="font-size: 19px;margin-right: 5px;"
+                                                <i class="hl:[font-size:19px] hl:[margin-right:5px]"
                                                    th:class="${data.completed ? 'haofont  hao-icon-check-circle' : 'haofont hao-icon-yuan'}">
                                                 </i>[[${data.content}]]
                                             </li>
@@ -71,99 +73,6 @@
                 </div>
 
 
-                <style>
-                    :root {
-                        --todo-border: 1px solid #f7a796;
-                    }
-
-                    [data-theme=dark] {
-                        --todo-border: 1px solid #51908b;
-                    }
-
-                    .todolist-item i.haofont {
-                        display: var(--fa-display,inline-block);
-                    }
-
-                    #todolist-main {
-                        display: flex;
-                        flex-direction: row;
-                        flex-wrap: wrap;
-                        justify-content: space-between;
-                        margin: 16px 0 10px
-                    }
-
-                    #todolist-main li {
-                        list-style: none;
-                        font-size: 17px
-                    }
-
-                    #todolist-main ul {
-                        margin: 0;
-                        padding: 0
-                    }
-
-                    #todolist-left-container, #todolist-right-container {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: start;
-                        align-items: center;
-                        width: 50%;
-                    }
-
-                    #todolist-left {
-                        width: 100%;
-                        padding: 0 8px 0 0
-                    }
-
-                    #todolist-right {
-                        width: 100%;
-                        padding: 0 0 0 8px
-                    }
-
-                    .todolist-item {
-                        position: relative;
-                        background: #fae4df;
-                        border-radius: 12px;
-                        padding: 10px 1rem 1.2rem;
-                        border: 2px dashed #f7a796;
-                        margin-bottom: 1rem
-                    }
-
-                    @media screen and (max-width: 768px) {
-                        #todolist-left-container, #todolist-right-container {
-                            width: 100%;
-                        }
-
-                        #todolist-left, #todolist-right {
-                            padding: 0 0 0 0
-                        }
-                    }
-
-                    [data-theme=dark] .todolist-item {
-                        background: #242424;
-                        border: 2px dashed #51908b
-                    }
-
-
-                    h3.todolist-title {
-                        margin: 0 !important;
-                        border-bottom: var(--todo-border)
-                    }
-
-                    .todolist-item li {
-                        margin: 0 !important;
-                        border-bottom: var(--todo-border);
-                    }
-
-                    .todolist-item li::marker {
-                        content: none;
-                    }
-
-                    li.achieve {
-                        opacity: .8;
-                        text-decoration: line-through;
-                    }
-                </style>
 
                 <th:block
                         th:replace="~{modules/comment :: comment(group = 'content.halo.run',

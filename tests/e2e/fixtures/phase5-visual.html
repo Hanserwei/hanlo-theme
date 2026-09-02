@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phase 5 visual contract</title>
+    <link rel="stylesheet" href="/src/css/index.css" />
+  </head>
+  <body style="margin: 0; overflow: hidden">
+    <main
+      id="phase5-visual-root"
+      class="hl:flex hl:min-h-screen hl:flex-col hl:gap-6 hl:bg-hanlo-canvas hl:p-8 hl:text-hanlo-text"
+      style="min-height: 720px"
+    >
+      <header class="hl:flex hl:items-center hl:justify-between">
+        <div class="hl:flex hl:items-center hl:gap-3">
+          <span
+            class="hl:block hl:size-12 hl:rounded-hanlo-md hl:bg-hanlo-brand hl:shadow-hanlo-float"
+            aria-hidden="true"
+          ></span>
+          <div class="hanlo-stack" style="gap: 2px">
+            <strong
+              style="
+                font:
+                  700 24px/1 Arial,
+                  sans-serif;
+              "
+              >Hanlo</strong
+            >
+            <span
+              class="hl:text-hanlo-text-muted"
+              style="
+                font:
+                  14px/1 Arial,
+                  sans-serif;
+              "
+              >CSS visual system</span
+            >
+          </div>
+        </div>
+        <span
+          class="hl:rounded-full hl:bg-hanlo-brand-soft hl:px-4 hl:py-2 hl:text-hanlo-brand"
+          style="
+            font:
+              700 13px/1 Arial,
+              sans-serif;
+          "
+          >v1.2</span
+        >
+      </header>
+
+      <section class="hl:grid hl:flex-1 hl:grid-cols-2 hl:gap-6">
+        <article class="hanlo-surface hanlo-stack hl:p-6">
+          <div class="hl:flex hl:items-center hl:justify-between">
+            <span
+              class="hl:text-hanlo-text-muted"
+              style="
+                font:
+                  13px/1 Arial,
+                  sans-serif;
+              "
+              >SURFACE</span
+            >
+            <span class="hl:size-3 hl:rounded-full hl:bg-hanlo-brand"></span>
+          </div>
+          <div class="hl:rounded-hanlo-md hl:bg-hanlo-brand-soft" style="height: 180px"></div>
+          <div class="hanlo-stack" style="gap: 10px">
+            <span
+              class="hl:block hl:w-2/3 hl:rounded-full hl:bg-hanlo-text"
+              style="height: 14px"
+            ></span>
+            <span
+              class="hl:block hl:w-full hl:rounded-full hl:bg-hanlo-text-muted"
+              style="height: 8px; opacity: 0.45"
+            ></span>
+            <span
+              class="hl:block hl:w-4/5 hl:rounded-full hl:bg-hanlo-text-muted"
+              style="height: 8px; opacity: 0.3"
+            ></span>
+          </div>
+        </article>
+
+        <article class="hanlo-surface hanlo-stack hl:justify-between hl:p-6">
+          <div class="hanlo-stack" style="gap: 16px">
+            <span
+              class="hl:text-hanlo-text-muted"
+              style="
+                font:
+                  13px/1 Arial,
+                  sans-serif;
+              "
+              >TOKENS + UTILITIES</span
+            >
+            <div class="hl:grid hl:grid-cols-3 hl:gap-3">
+              <span class="hl:aspect-square hl:rounded-hanlo-sm hl:bg-hanlo-brand"></span>
+              <span class="hl:aspect-square hl:rounded-hanlo-md hl:bg-hanlo-surface-muted"></span>
+              <span
+                class="hl:aspect-square hl:rounded-hanlo-lg hl:border hl:border-hanlo-border"
+              ></span>
+            </div>
+          </div>
+          <div class="hanlo-cluster hl:justify-end">
+            <span
+              class="hl:rounded-full hl:border hl:border-hanlo-border hl:px-4 hl:py-2"
+              style="
+                font:
+                  13px/1 Arial,
+                  sans-serif;
+              "
+              >Secondary</span
+            >
+            <span
+              class="hl:rounded-full hl:bg-hanlo-brand hl:px-4 hl:py-2 hl:text-white hl:shadow-hanlo-card"
+              style="
+                font:
+                  700 13px/1 Arial,
+                  sans-serif;
+              "
+              >Primary</span
+            >
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

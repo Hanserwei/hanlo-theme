@@ -1,0 +1,378 @@
+/* Migrated from public/assets/zhheo/zhheoblog.css; keep module order in src/css/index.css. */
+/* 通用 */
+#toggle-sidebar {
+    bottom: 80px;
+}
+
+/* 按钮样式 */
+.button--animated {
+    border-radius: 8px !important;
+    transition: 0.3s;
+}
+
+#error-wrap .error-content .error-info a:hover {
+    background-color: var(--heo-blue);
+    transition: 0.3s;
+    box-shadow: var(--heo-shadow-blue);
+}
+
+.button--animated:before {
+    display: none;
+}
+
+/* hexo-widget-tree 侧边文章导航 */
+a.tree-list-post-link {
+    font-size: 0.8rem;
+    line-height: 1.2 !important;
+}
+
+li.tree-list-item {
+    line-height: 1.9;
+    margin: 0.3rem 0;
+}
+
+/* 通用标题 */
+.title-h2-a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+}
+
+.title-h2-a a {
+    margin-left: 0.5rem;
+    color: var(--heo-secondtext);
+    font-weight: bold;
+}
+
+.title-h2-a a:hover {
+    color: var(--heo-lighttext)
+}
+
+.title-h2-a-left {
+    display: flex;
+    align-items: center;
+}
+
+.title-h2-a-left h2 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* 基金 */
+
+#card-funds .funds-list::-webkit-scrollbar {
+    display: none !important;
+}
+
+.funds-tips {
+    font-size: 0.5rem;
+    width: 100%;
+    text-align: center;
+    color: var(--heo-secondtext);
+    margin: 0.5rem 0 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0px;
+    padding: 0 1rem;
+}
+
+.funds-list {
+    height: 200px;
+    overflow: scroll;
+}
+
+span.fund_name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.funds-info {
+    margin-left: 4px;
+    color: var(--heo-secondtext);
+}
+
+.funds-list-item .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.fund_dayGrowth {
+    display: inline;
+    float: right;
+}
+
+.fund-up {
+    color: var(--heo-red);
+}
+
+.fund-down {
+    color: var(--heo-green);
+}
+
+/* 音乐宣传 */
+#aside-content .card-widget#card-music {
+    background: var(--heo-pink);
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding: 0;
+    cursor: pointer;
+    border: none;
+}
+
+#aside-content .card-widget#card-music img {
+    max-height: 110px;
+    object-fit: cover;
+}
+
+#aside-content .card-widget#card-music:hover img {
+    transform: scale(1.03);
+    transition: 0.5s;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+}
+
+.music-link {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+/* 友情链接 */
+#aside-content .card-widget#card-friendlinks {
+    background: var(--heo-main);
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding: 0;
+    cursor: pointer;
+    border: none;
+}
+
+#aside-content .card-widget#card-friendlinks img {
+    max-height: 110px;
+    object-fit: cover;
+}
+
+#aside-content .card-widget#card-friendlinks:hover img {
+    transform: scale(1.03);
+    transition: 0.5s;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+}
+
+.friend-link {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+/* 开关 */
+#widget-tree-button {
+    background-color: var(--heo-secondbg) !important;
+    box-shadow: var(--heo-shadow-light2black) !important;
+    color: var(--heo-fontcolor);
+}
+
+#widget-tree:hover #widget-tree-button {
+    /* display: none!important; */
+    opacity: 0;
+    left: -1.5rem;
+}
+
+#widget-tree {
+    background-color: var(--heo-maskbg) !important;
+}
+
+#widget-tree:hover {
+    left: 0 !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+#widget-tree a {
+    -webkit-line-clamp: 2;
+    color: var(--heo-fontcolor) !important;
+}
+
+#widget-tree a:hover {
+    color: var(--heo-hovertext) !important;
+}
+
+.toggle-post-icon,
+.toggle-toc-icon {
+    color: var(--heo-fontcolor) !important;
+}
+
+@media screen and (max-width: 768px) {
+    #widget-tree {
+        display: none !important;
+    }
+}
+
+
+/* guli置顶 */
+
+.guli_top {
+    position: fixed;
+    z-index: 99;
+    right: 30px;
+    display: flex;
+    transition: 0.3s;
+    opacity: 0;
+    bottom: -25px;
+    width: 88px;
+    height: 123px;
+    user-select: none;
+}
+
+.guli_top.guli-fixed {
+    opacity: 1;
+    bottom: 25px;
+}
+
+#guli_top .guli_body {
+    position: relative;
+    height: 123px;
+    z-index: 1003;
+}
+
+#guli_top .guli_body:hover {
+    cursor: pointer;
+}
+
+#guli_top .guli_wing {
+    position: relative;
+    height: 64px;
+    z-index: 1002;
+    bottom: -120px;
+    transform: scale(0.01);
+    box-shadow: var(--heo-shadow-yellow);
+}
+
+#guli_top.open_wing .guli_wing {
+    transform: scale(1.03);
+}
+
+#guli_top.open_wing .guli_body {
+    transform: scale(1);
+}
+
+@media screen and (max-width: 1300px) {
+    #guli_top {
+        display: none;
+    }
+}
+
+/* cookies */
+#cookies-window {
+    min-width: 300px;
+    background: var(--heo-maskbgdeep);
+    color: var(--heo-fontcolor);
+    padding: 8px 16px;
+    display: flex;
+    flex-direction: column;
+    bottom: 20px;
+    right: 20px;
+    position: fixed;
+    border-radius: 12px;
+    transition: 0.3s;
+    z-index: 1002;
+    user-select: none;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    transform: translateZ(0);
+    border: var(--style-border);
+    animation: barrageIn 0.6s cubic-bezier(0.42, 0, 0.3, 1.11);
+}
+
+#cookies-window.cw-hide {
+    opacity: 0;
+    animation: barrageOut 0.6s cubic-bezier(0.42, 0, 0.3, 1.11);
+    z-index: -1;
+}
+
+#cookies-window .cookies-window-title {
+    padding-bottom: 4px;
+    border-bottom: var(--style-border);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#cookies-window .cookies-window-content {
+    font-size: 14px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cookie-to {
+    margin-right: 4px;
+    font-weight: bold;
+}
+
+.cookies-link {
+    margin-left: auto;
+    font-size: 16px;
+}
+
+.cookies-link i.heofont {
+    font-size: 16px;
+}
+
+@media screen and (max-width: 1300px) {
+    #cookies-window {
+        display: none;
+    }
+}
+
+.heo-tag {
+    padding: 1px 6px;
+    border-radius: 6px 6px 6px 0;
+    margin-left: 4px;
+    height: 20px;
+    line-height: 19px;
+}
+
+
+/* 主页导航栏让位偏移 */
+/* .layout_page .recent-posts{
+  margin-top: 2em;
+}
+.layout_page .aside_content{
+  margin-top: 2em;
+} */
+
+.layout > div:first-child {
+    width: calc(100% - 300px);
+}
+
+/* 当隐藏边栏时，显示 100% */
+.layout.hide-aside > div:first-child {
+    width: 100%;
+}
+
+@media screen and (min-width: 1200px) {
+    /* 侧边栏在左侧时，显示 100% */
+    .layout.left-aside > div:first-child {
+        -webkit-box-ordinal-group: 2;
+        -moz-box-ordinal-group: 2;
+        -o-box-ordinal-group: 2;
+        -ms-flex-order: 2;
+        -webkit-order: 2;
+        order: 2;
+    }
+
+    /* 侧栏在左侧时，关闭左边距，打开右边距 */
+    .layout.left-aside .aside-content {
+        padding-right: 15px;
+        padding-left: 0px !important;
+    }
+}

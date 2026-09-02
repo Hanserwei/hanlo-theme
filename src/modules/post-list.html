@@ -7,7 +7,8 @@
          th:classappend="${theme.config.layout.post.cols} + ' ' +
          ${theme.config.layout.post.postLocation} + ' ' +
          (${iStat.even} ? 'even' : 'odd') + ' ' +
-         (${post.spec.pinned} ? 'pinned-post-item' : '')"
+         (${post.spec.pinned} ? 'pinned-post-item' : '') +
+         (${theme.config.layout.articleCardPolish} ? ' post-card-polish' : '')"
          th:attr="onclick='pjax.loadUrl(\''+ @{${post.status.permalink}} +'\')'"
          th:each="post,iStat : ${postItems}">
         <div class="post_cover left_radius">
@@ -57,19 +58,19 @@
                 <!-- 创建时间 -->
                 <span class="post-meta-date" th:with="days=${(new java.util.Date().getTime()-post.spec.publishTime.toEpochMilli())/86400000}">
                     <i class="far fa-calendar-alt"></i>
-                    <time style="display: inline;"
+                    <time class="hl:inline"
                           th:datetime="${post.spec.publishTime}"
                           th:if="${days > 30}"
                           th:text="${#dates.format(post.spec.publishTime,'yyyy-MM-dd')}"
                           th:title="${#dates.format(post.spec.publishTime,'yyyy-MM-dd')}+创建">
                     </time>
-                    <time style="display: inline;"
+                    <time class="hl:inline"
                           th:datetime="${post.spec.publishTime}"
                           th:if="${days <= 30 && days > 0}"
                           th:text="${days}+天前"
                           th:title="${#dates.format(post.spec.publishTime,'yyyy-MM-dd')}+创建">
                     </time>
-                    <time style="display: inline;"
+                    <time class="hl:inline"
                           th:datetime="${post.spec.publishTime}"
                           th:if="${days == 0}"
                           th:text="最近"
@@ -80,25 +81,6 @@
         
         </div>
         
-        <!-- 文章卡片擦亮效果 -->
-        <style th:if="${theme.config.layout.articleCardPolish}">
-            #recent-posts > .recent-post-item:not(a)::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 200%;
-                background: linear-gradient(to right, transparent, white, transparent);
-                transform: translateX(-200%);
-                transition: transform 0.5s linear;
-                z-index: 1;
-            }
-            
-            #recent-posts > .recent-post-item:not(a):hover::before {
-                transform: translateX(100%) skewX(-60deg);
-            }
-        </style>
     </div>
     
     <!-- 分页 -->

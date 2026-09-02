@@ -1,5 +1,6 @@
 <th:block >
-    <div id="rightside">
+    <div id="rightside"
+         th:classappend="${!theme.config.tool.rightside.rightsideEnable} ? 'hanlo-rightside-disabled' : ''">
         <div id="rightside-config-hide">
             <button th:if="${htmlType == 'post' && theme.config.tool.rightside.readmode}" id="readmode" type="button" title="阅读模式"><i class="haofont hao-icon-book-open"></i></button>
             <button th:if="${theme.config.style.translate.translateEnable}" id="translateLink" type="button" title="简繁转换">繁</button>
@@ -10,7 +11,7 @@
             <button id="rightside-config" type="button" title="设置"><i class="haofont hao-icon-gear"></i></button>
             <button th:if="${htmlType == 'post'}" class="close" id="mobile-toc-button" type="button" title="目录"><i class="haofont hao-icon-list-ul"></i></button>
             <a th:if="${theme.config.comments.commentsEnable && pluginFinder.available('PluginCommentWidget')}"
-               id="to_comment" href="#post-comment" title="直达评论"><i class="haofont hao-icon-chat--fill" style="font-size: 17px;"></i></a>
+               id="to_comment" href="#post-comment" title="直达评论"><i class="haofont hao-icon-chat--fill hl:[font-size:17px]"></i></a>
             <button id="go-up" type="button" title="回到顶部"><i class="haofont hao-icon-arrow-up"></i></button>
             <a th:if="${htmlType == 'post' || htmlType == 'page'}"
                th:with="editor = ${htmlType == 'post' ? 'posts/editor?name='+ post.metadata.name : htmlType == 'page' ? 'single-pages/editor?name='+ singlePage.metadata.name : '' }"
@@ -21,17 +22,7 @@
             </a>
         </div>
     </div>
-    <style th:if="${!theme.config.tool.rightside.rightsideEnable}">
-        #rightside {
-            display: none;
-        }
-        @media screen and (min-width: 1300px) {
-            #post #pagination {
-                right: 20px;
-            }
-        }
-    </style>
-
     <link th:if="${theme.config.tool.rightside.readmode && theme.config.tool.rightside.rightsideEnable}"
-          rel="stylesheet" th:href="${assets_link + '/css/read-mode.css' + theme_version}">
+          rel="stylesheet"
+          th:href="${assets_link + '/css/read-mode-' + theme.spec.version + '.css' + theme_version}">
 </th:block>

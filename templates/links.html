@@ -7,12 +7,13 @@
                 _cover = ${theme.config.other.opengraph.image},
                 _excerpt = ${site.seo.description},
                 _type = 'website')}"></th:block>
+    <link rel="stylesheet"
+          th:href="${assets_link + '/css/friend-links-' + theme.spec.version + '.css' + theme_version}">
 </th:block>
 <th:block th:fragment="content">
     <div class="page" id="body-wrap">
         <header class="not-top-img" id="page-header">
             <nav th:replace="~{modules/nav :: nav(title = '友链')}"></nav>
-            <link rel="stylesheet" type="text/css" th:href="${assets_link + '/css/friend-circle.css' + theme_version}">
         </header>
         <main class="layout hide-aside" id="content-inner">
             <div id="page">

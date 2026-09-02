@@ -16,8 +16,8 @@
             </div>
             <div id="error-wrap">
                 <div class="error-content">
-                    <div class="error-img"
-                         th:style="'background-image: url('+${theme.config.other.error_404.background}+')'">
+                    <div class="error-img hanlo-card-cover"
+                         th:style="|--hanlo-card-cover: url('${theme.config.other.error_404.background}')|">
                     </div>
                     <div class="error-info">
                         <h1 class="error_title">404</h1>
@@ -56,10 +56,5 @@
     </div>
 </th:block>
 
-<style>
-    .div_border{
-        border-radius: 0.5rem;
-    }
-</style>
 
 </html>
