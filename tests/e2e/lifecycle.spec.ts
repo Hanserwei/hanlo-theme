@@ -90,6 +90,33 @@ test("serializes consecutive PJAX and history navigations without resource leaks
   ]);
 });
 
+test("synchronizes route styles and executes opted-in module scripts after PJAX", async ({
+  page,
+}) => {
+  const pageResource = () =>
+    page.evaluate(() =>
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--hanlo-e2e-page-resource")
+        .trim(),
+    );
+
+  await page.goto(pageOne);
+  await waitForLifecycle(page);
+  await expect.poll(pageResource).toBe("one");
+  await expect(page.locator("html")).toHaveAttribute("data-pjax-module-page", "one");
+
+  await page.locator("#next-page").click();
+  await waitForLifecycle(page);
+  await expect.poll(pageResource).toBe("two");
+  await expect(page.locator("html")).toHaveAttribute("data-pjax-module-page", "two");
+  await expect(page.locator("link[data-hanlo-page-style]")).toHaveCount(1);
+
+  await page.goBack();
+  await waitForLifecycle(page);
+  await expect.poll(pageResource).toBe("one");
+  await expect(page.locator("link[data-hanlo-page-style]")).toHaveCount(1);
+});
+
 test("preserves native download-anchor behavior outside PJAX", async ({ page }) => {
   await page.goto(pageOne);
   await waitForLifecycle(page);

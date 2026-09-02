@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Lifecycle page one</title>
+    <link rel="stylesheet" data-hanlo-page-style href="/tests/e2e/fixtures/page-one.css" />
     <script src="/tests/e2e/fixtures/config.js"></script>
     <script id="site-config">
       window.GLOBAL_CONFIG = window.createHanloTestConfig("page-one");
@@ -15,6 +16,7 @@
       <a id="download-file" href="/tests/e2e/fixtures/config.js" download>Download</a>
       <p>Page one</p>
       <div id="fmomentsContainer" hidden></div>
+      <script type="module" data-pjax src="/tests/e2e/fixtures/page-one-module.js"></script>
       <script>
         window.__newPageDestroyCount = 0;
         document.addEventListener("hanlo:page:destroy", () => window.__newPageDestroyCount++, {
