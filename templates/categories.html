@@ -7,7 +7,7 @@
                 _cover = ${theme.config.other.opengraph.image},
                 _excerpt = ${site.seo.description},
                 _type = 'website')}"></th:block>
-    <link th:if="${#strings.equals(theme.config.categories.use, '3D')}" rel="stylesheet"
+    <link th:if="${#strings.equals(theme.config.categories.use, '3D')}" rel="stylesheet" data-hanlo-page-style
           th:href="${assets_link + '/css/categories-3d-' + theme.spec.version + '.css' + theme_version}">
 </th:block>
 <th:block th:fragment="content">

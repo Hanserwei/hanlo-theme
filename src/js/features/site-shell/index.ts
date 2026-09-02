@@ -717,18 +717,28 @@ function initializeWaterfall(resources: PageResourceScope): void {
   let scheduled = false;
   const layout = (): void => {
     scheduled = false;
-    const minimumWidth = 280;
-    const gap = 16;
-    const columns = Math.max(1, Math.floor((waterfall.clientWidth + gap) / (minimumWidth + gap)));
-    const width = (waterfall.clientWidth - gap * (columns - 1)) / columns;
+    const firstItem = items[0]!;
+    const firstStyle = window.getComputedStyle(firstItem);
+    const width = Number.parseFloat(firstStyle.width) || firstItem.offsetWidth;
+    const marginLeft = Number.parseFloat(firstStyle.marginLeft) || 0;
+    const marginRight = Number.parseFloat(firstStyle.marginRight) || 0;
+    const stride = width + marginLeft + marginRight;
+    const columns = Math.max(
+      1,
+      Math.min(items.length, Math.floor((waterfall.clientWidth + marginRight) / stride)),
+    );
     const heights = Array.from({ length: columns }, () => 0);
     for (const item of items) {
       const column = heights.indexOf(Math.min(...heights));
+      const style = window.getComputedStyle(item);
+      const marginTop = Number.parseFloat(style.marginTop) || 0;
+      const marginBottom = Number.parseFloat(style.marginBottom) || 0;
+      const top = heights[column]! + marginTop;
       item.style.position = "absolute";
-      item.style.width = `${width}px`;
-      item.style.left = `${column * (width + gap)}px`;
-      item.style.top = `${heights[column]}px`;
-      heights[column] += item.offsetHeight + gap;
+      item.style.removeProperty("width");
+      item.style.left = `${column * stride + marginLeft}px`;
+      item.style.top = `${top}px`;
+      heights[column] = top + item.offsetHeight + marginBottom;
     }
     waterfall.style.position = "relative";
     waterfall.style.height = `${Math.max(...heights)}px`;
@@ -749,9 +759,21 @@ function initializeWaterfall(resources: PageResourceScope): void {
   if ("ResizeObserver" in window) {
     const observer = resources.observe(new ResizeObserver(schedule));
     observer.observe(waterfall);
+    items.forEach((item) => observer.observe(item));
   } else {
     resources.listen(window, "resize", schedule);
   }
+  resources.defer(() => {
+    waterfall.classList.remove("show");
+    waterfall.style.removeProperty("height");
+    waterfall.style.removeProperty("position");
+    items.forEach((item) => {
+      item.style.removeProperty("left");
+      item.style.removeProperty("position");
+      item.style.removeProperty("top");
+      item.style.removeProperty("width");
+    });
+  });
   schedule();
 }
 

@@ -101,11 +101,12 @@
 #bber .timeline ul li.item {
     position: relative;
     width: 32%;
+    min-width: 0;
     border: var(--style-border-always);
     border-radius: 12px;
     padding: 1rem;
     padding-bottom: 0.5rem;
-    transition: 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -202,6 +203,7 @@
     flex-wrap: wrap;
     border-radius: 12px;
     width: 100%;
+    min-width: 0;
     height: 100%;
 }
 
@@ -339,11 +341,21 @@
     font-weight: bold;
     color: var(--heo-fontcolor);
     width: 100%;
+    min-width: 0;
     line-height: 1.38;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     text-align: justify;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+#bber .bber-content .datacont pre,
+#bber .bber-content .datacont code {
+    max-width: 100%;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
 #bber .bber-content .datacont p {

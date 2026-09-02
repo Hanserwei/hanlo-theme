@@ -820,9 +820,11 @@ a.categoryButton:hover {
 }
 
 #bbtalk {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 25px;
     overflow: hidden;
     width: 100%;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }

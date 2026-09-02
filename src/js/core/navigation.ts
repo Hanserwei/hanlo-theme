@@ -21,6 +21,59 @@ const PJAX_SELECTORS = [
   'meta[name="twitter:image"]',
 ] as const;
 
+const PAGE_STYLE_SELECTOR = 'link[rel="stylesheet"][data-hanlo-page-style]';
+const PJAX_MODULE_SELECTOR = 'script[type="module"][data-pjax]';
+
+interface PjaxNavigationEvent extends Event {
+  readonly request?: XMLHttpRequest;
+}
+
+function copyAttributes(source: Element, target: Element): void {
+  for (const { name, value } of Array.from(source.attributes)) target.setAttribute(name, value);
+}
+
+function resourceSignature(element: Element): string {
+  return Array.from(element.attributes)
+    .map(({ name, value }) => `${name}=${value}`)
+    .sort()
+    .join(";");
+}
+
+/** Keep route-only styles in <head> while allowing #body-wrap to remain the PJAX boundary. */
+function synchronizePageStyles(responseText: string | undefined): void {
+  if (!responseText) return;
+  const incomingDocument = new DOMParser().parseFromString(responseText, "text/html");
+  const incoming = Array.from(
+    incomingDocument.querySelectorAll<HTMLLinkElement>(PAGE_STYLE_SELECTOR),
+  );
+  const current = Array.from(document.querySelectorAll<HTMLLinkElement>(PAGE_STYLE_SELECTOR));
+  if (
+    incoming.length === current.length &&
+    incoming.every((link, index) => resourceSignature(link) === resourceSignature(current[index]!))
+  ) {
+    return;
+  }
+
+  current.forEach((link) => link.remove());
+  for (const source of incoming) {
+    const link = document.createElement("link");
+    copyAttributes(source, link);
+    document.head.append(link);
+  }
+}
+
+/** Pjax 0.2 only evaluates classic scripts; recreate opted-in module scripts to execute them. */
+function executePjaxModuleScripts(root: ParentNode): void {
+  root.querySelectorAll<HTMLScriptElement>(PJAX_MODULE_SELECTOR).forEach((source) => {
+    if (source.dataset["hanloExecuted"] === "true") return;
+    const script = document.createElement("script");
+    copyAttributes(source, script);
+    script.dataset["hanloExecuted"] = "true";
+    script.textContent = source.textContent;
+    source.replaceWith(script);
+  });
+}
+
 function ensureProgress(): HTMLElement {
   let progress = document.querySelector<HTMLElement>("#hanlo-navigation-progress");
   if (progress) return progress;
@@ -90,7 +143,10 @@ export function installPjaxNavigation(): void {
     showProgress();
   });
 
-  document.addEventListener("pjax:complete", () => {
+  document.addEventListener("pjax:complete", (event) => {
+    synchronizePageStyles((event as PjaxNavigationEvent).request?.responseText);
+    const pageRoot = document.querySelector("#body-wrap");
+    if (pageRoot) executePjaxModuleScripts(pageRoot);
     runOptionalGlobal("chatBtnFn");
     runOptionalGlobal("gtag", "config", "", { page_path: window.location.pathname });
     const baidu = (window as unknown as { _hmt?: { push(value: unknown): void } })._hmt;

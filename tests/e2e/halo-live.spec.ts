@@ -208,6 +208,105 @@ test("runs repeated PJAX and history navigation on Halo 2.26 @live", async ({ pa
   expect(pageErrors).toEqual([]);
 });
 
+test("covers reported home, comments, envelope, moments, and about regressions @live", async ({
+  page,
+}) => {
+  test.setTimeout(120_000);
+  test.skip(!haloBaseUrl, "Set HALO_BASE_URL to run against a compatible Halo instance.");
+
+  const navigate = async (route: string): Promise<void> => {
+    await page.evaluate(
+      (url) =>
+        new Promise<void>((resolve, reject) => {
+          const timeout = window.setTimeout(
+            () => reject(new Error(`PJAX timeout: ${url}`)),
+            10_000,
+          );
+          document.addEventListener(
+            "hanlo:page:enter",
+            () => {
+              window.clearTimeout(timeout);
+              resolve();
+            },
+            { once: true },
+          );
+          window.pjax?.loadUrl(url);
+        }),
+      route,
+    );
+    await page.evaluate(() => window.HanloLifecycle?.whenIdle());
+  };
+  const themeStyleNames = () =>
+    page.evaluate(() =>
+      Array.from(document.styleSheets)
+        .map((sheet) => sheet.href)
+        .filter((href): href is string => Boolean(href))
+        .map((href) => new URL(href).pathname.split("/").at(-1) ?? ""),
+    );
+
+  await page.goto("/", { waitUntil: "networkidle" });
+  await page.evaluate(() => window.HanloLifecycle?.whenIdle());
+  expect(await page.locator("#bbtalk").evaluate((element) => element.clientHeight)).toBe(25);
+  expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBeLessThan(20_000);
+
+  await navigate("/album");
+  await expect
+    .poll(() =>
+      page
+        .locator('#post-comment div[id^="comment-"]')
+        .evaluate((element) => element.childElementCount),
+    )
+    .toBeGreaterThan(0);
+  await expect.poll(themeStyleNames).toContainEqual(expect.stringMatching(/^album-/));
+
+  await navigate("/liu-yan-ban");
+  await expect.poll(themeStyleNames).toContainEqual(expect.stringMatching(/^comments-envelope-/));
+  if ((page.viewportSize()?.width ?? 0) >= 600) {
+    await expect(page.locator("#form-wrap")).toHaveCSS("overflow", "hidden");
+  } else {
+    await expect(page.locator("#beforeimg")).toBeHidden();
+    await expect(page.locator("#afterimg")).toBeHidden();
+  }
+
+  await navigate("/about");
+  await expect.poll(themeStyleNames).toContainEqual(expect.stringMatching(/^ten-year-/));
+  await expect(page.locator(".timeline")).toHaveCSS("position", "relative");
+
+  await navigate("/moments");
+  await expect.poll(themeStyleNames).not.toContainEqual(expect.stringMatching(/^ten-year-/));
+  await expect(page.locator("#waterfall")).toHaveClass(/show/);
+  const measureWaterfall = () =>
+    page.locator("#waterfall").evaluate((element) => {
+      const items = Array.from(element.children).filter(
+        (item): item is HTMLElement => item instanceof HTMLElement,
+      );
+      return {
+        height: (element as HTMLElement).offsetHeight,
+        requiredHeight: Math.max(
+          ...items.map(
+            (item) =>
+              item.offsetTop +
+              item.offsetHeight +
+              (Number.parseFloat(getComputedStyle(item).marginBottom) || 0),
+          ),
+        ),
+        contentFits: items.every((item) => {
+          const content = item.querySelector<HTMLElement>(".datacont");
+          return !content || content.scrollWidth <= content.clientWidth;
+        }),
+      };
+    });
+  await expect
+    .poll(async () => {
+      const { height, requiredHeight } = await measureWaterfall();
+      return height >= requiredHeight - 1;
+    })
+    .toBe(true);
+  const waterfall = await measureWaterfall();
+  expect(waterfall.height).toBeGreaterThanOrEqual(waterfall.requiredHeight - 1);
+  expect(waterfall.contentFits).toBe(true);
+});
+
 test("renders the fixed Halo page matrix without theme runtime errors @live", async ({
   page,
 }, testInfo) => {
