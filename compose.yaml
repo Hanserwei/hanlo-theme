@@ -1,0 +1,20 @@
+services:
+  halo:
+    image: registry.fit2cloud.com/halo/halo:2.26
+    container_name: halo2-theme-dev
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8090:8090"
+    environment:
+      JVM_OPTS: "-Xms256m -Xmx512m"
+      SPRING_THYMELEAF_CACHE: "false"
+      TZ: Asia/Shanghai
+    command:
+      - "--halo.external-url=http://localhost:8090/"
+    volumes:
+      - halo-data:/root/.halo2
+      - ./:/root/.halo2/themes/theme-hanlo:ro,Z
+
+volumes:
+  halo-data:
+    name: halo2-theme-dev-data
