@@ -357,42 +357,48 @@ Setting Schema 的预览比例写成了 16:9，但模板在手机视口中使用
 
 ## 本次功能测试的图片映射
 
-本次原图目录：
+当前本地开发环境的原图目录：
 
 ```text
 /home/hanserwei/Pictures/Wallpapers/api-random-download/
 ```
 
-原始 PNG 未被覆盖。处理后的测试图上传到 Halo 后使用以下相对地址：
+目录中共有 40 张横向高清壁纸，其中 `wall_1780212462.png` 与
+`wall_1780824647.png` 像素完全相同，因此图库只导入前者。原图未被覆盖；主题用途图按实际
+展示比例单独裁剪，图库图则保持原始比例并限制最长边。
+
+处理后的主题用途图上传到 Halo 后使用以下相对地址：
 
 | 配置用途 | 原始文件 | 处理尺寸 | 当前 Halo 地址 | 最终状态 |
 | --- | --- | ---: | --- | --- |
-| PC 首屏 | `wall_1780495686.png` | 1920×1080 | `/upload/top-hero-desktop-1920x1080.jpg` | 已启用 |
-| 手机首屏 | `wall_1780750351.png` | 1080×1920 | `/upload/top-hero-mobile-1080x1920.jpg` | 已启用 |
-| 全局背景 | `wall_1780500113.png` | 1920×1080 | `/upload/top-global-background-1920x1080.jpg` | 已启用 |
-| 今日推荐 | `wall_1780750347.png` | 1200×675 | `/upload/top-today-recommend-1200x675.jpg` | 已启用 |
-| 宠物挂件 | `wall_1783701852.png` | 512×512 | `/upload/top-climb-512x512.jpg` | 已启用，测试用非透明图 |
-| 个人卡片背景 | `wall_1780750349.png` | 840×990 | `/upload/sidebar-profile-840x990.jpg` | 已启用 |
-| 个人卡片贴纸 | `wall_1780818583.png` | 256×256 | `/upload/sidebar-sticker-256x256.jpg` | 已配置；样式一时显示 |
-| 音乐浅色正面 | `wall_1780500113.png` | 600×810 | `/upload/sidebar-music-light-600x810.jpg` | 已启用 |
-| 音乐浅色背面 | `wall_1780750349.png` | 600×810 | `/upload/sidebar-music-back-light-600x810.jpg` | 已启用 |
-| 音乐深色正面 | `wall_1780818583.png` | 600×810 | `/upload/sidebar-music-dark-600x810.jpg` | 已启用 |
-| 音乐深色背面 | `wall_1783701852.png` | 600×810 | `/upload/sidebar-music-back-dark-600x810.jpg` | 已启用 |
-| Steam 卡片 | `wall_1780750351.png` | 600×810 | `/upload/sidebar-steam-600x810.jpg` | 已启用 |
-| 页脚 Logo | `wall_1780927039.png` | 200×200 | `/upload/footer-logo-200x200.jpg` | 已启用，正式版建议透明 Logo |
-| 上班徽标 | `wall_1780750347.png` | 700×400 | `/upload/footer-work-700x400.jpg` | 已启用 |
-| 下班徽标 | `wall_1780495686.png` | 700×400 | `/upload/footer-offduty-700x400.jpg` | 已启用 |
-| Halo 框架徽标 | `wall_1780818583.png` | 700×400 | `/upload/footer-badge-700x400.jpg` | 已启用 |
+| PC 首屏 | `wallhaven-yq8w67.jpg` | 2560×1440 | `/upload/hero-desktop-2560x1440.webp` | 已启用 |
+| 手机首屏 | `wallhaven-yq8w67.jpg` | 1080×1920 | `/upload/hero-mobile-1080x1920.webp` | 已启用，单独竖向裁剪 |
+| 全局背景 | `wall_1782612538.png` | 1920×1080 | `/upload/global-background-1920x1080.webp` | 已启用，降低亮度和饱和度并轻微柔化 |
+| 今日推荐 | `wall_1787397935.png` | 1200×675 | `/upload/today-recommend-1200x675.webp` | 已启用 |
+| 个人卡片背景 | `wall_1786853475.png` | 840×990 | `/upload/profile-background-840x990.webp` | 已启用 |
+| 个人卡片贴纸 | `wall_1787309807.png` | 256×256 | `/upload/profile-sticker-256x256.webp` | 已配置；样式一时显示 |
+| 音乐浅色正面 | `wall_1780224507.png` | 600×810 | `/upload/music-light-front-600x810.webp` | 已启用 |
+| 音乐浅色背面 | `wall_1780120059.png` | 600×810 | `/upload/music-light-back-600x810.webp` | 已启用 |
+| 音乐深色正面 | `wall_1782612538.png` | 600×810 | `/upload/music-dark-front-600x810.webp` | 已启用 |
+| 音乐深色背面 | `wall_1782612532.png` | 600×810 | `/upload/music-dark-back-600x810.webp` | 已启用 |
+| Steam 卡片 | `wall_1787309807.png` | 600×810 | `/upload/steam-card-600x810.webp` | 已启用 |
+| 瞬间 Banner | `wall_1780072267.png` | 1600×900 | `/upload/moments-banner-1600x900.webp` | 已启用 |
+| 图库 Banner | `wall_1780824644.png` | 1600×900 | `/upload/photos-banner-1600x900.webp` | 已启用 |
+| 装备 Banner | `wall_1780224510.png` | 1600×900 | `/upload/equipment-banner-1600x900.webp` | 已启用 |
+| 上班图片 | `wall_1780224512.png` | 700×400 | `/upload/footer-work-700x400.webp` | 已启用 |
+| 下班图片 | `wall_1780120074.png` | 700×400 | `/upload/footer-off-duty-700x400.webp` | 已启用 |
+| 默认 Open Graph | `wall_1787397935.png` | 1200×630 | `/upload/open-graph-1200x630.webp` | 已启用 |
 
-本次配置还做了以下功能测试调整：
+关于页另外使用独立的作者图、职业背景、游戏、音乐、偏好和明暗地图图片。图库共导入 39 张
+视觉唯一的 WebP，按以下分组展示：
 
-- 开启首页第一屏。
-- 开启全局背景。
-- 开启宠物挂件。
-- 首页侧栏加入音乐和 Steam 卡片。
-- 音乐和 Steam 测试卡片的点击地址暂设为 `/`。
-- 开启页脚自定义徽标。
-- 个人卡片最终保持 `profileStyle=default`；贴纸已用 `profileStyle=one` 单独验证。
+- `日光与旅途`：19 张。
+- `房间与日常`：12 张。
+- `夜色与幻想`：8 张。
+
+首页侧栏已加入音乐和 Steam 静态卡片，点击地址暂设为 `/`。个人卡片保持
+`profileStyle=default`，贴纸已为切换到 `profileStyle=one` 时预先配置。Logo、加载动画、错误页
+占位图以及留言板信封组件属于主题自身视觉资源，继续从主题本地路径加载，不使用壁纸替代。
 
 ## FFmpeg 裁剪模板
 
@@ -429,13 +435,15 @@ JPEG 4:2:0 要求宽高为偶数。像 1200×675 这样的奇数高度可使用�
 -pix_fmt yuvj444p
 ```
 
-本次完整处理脚本位于：
+本次临时处理产物与上传映射位于：
 
 ```text
-build/hanlo-image-assets/process-images.sh
+build/hanlo-wallpaper-assets/
+build/hanlo-wallpaper-assets/upload-result.json
 ```
 
-该目录被 Git 忽略，并且执行项目根目录的 `./gradlew clean` 后可能被删除。本文保留了核心命令，因此不依赖该临时文件也能重新制作。
+该目录被 Git 忽略，可以安全清理；Halo 实际使用的是已经上传到附件存储中的 WebP。本文保留了
+原图与用途映射，因此不依赖临时目录也能重新制作。
 
 ## 上传到 Halo
 

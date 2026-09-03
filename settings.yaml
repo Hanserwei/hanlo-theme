@@ -1819,28 +1819,28 @@ spec:
               placeholder: 请输入内容
               width: "15rem"
               aspectRatio: "20/15"
-              value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/violet.jpg"
+              value: "/themes/theme-hanlo/assets/images/envelope/cover.jpg"
             - $formkit: attachment
               name: line
               label: 底部图片
               placeholder: 请输入内容
               width: "15rem"
               aspectRatio: "20/15"
-              value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/line.png"
+              value: "/themes/theme-hanlo/assets/images/envelope/line.png"
             - $formkit: attachment
               name: beforeimg
               label: 前半部分图片
               placeholder: 请输入内容
               width: "15rem"
               aspectRatio: "20/15"
-              value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/before.png"
+              value: "/themes/theme-hanlo/assets/images/envelope/before.png"
             - $formkit: attachment
               name: afterimg
               label: 后半部分图片
               placeholder: 请输入内容
               width: "15rem"
               aspectRatio: "20/15"
-              value: "https://npm.elemecdn.com/hexo-butterfly-envelope/lib/after.png"
+              value: "/themes/theme-hanlo/assets/images/envelope/after.png"
         - $formkit: list
           if: $get(enable_envelope_comment).value
           name: message_list
