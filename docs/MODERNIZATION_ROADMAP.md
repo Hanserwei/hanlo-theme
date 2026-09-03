@@ -16,6 +16,10 @@ Halo 在运行时通过 Thymeleaf 渲染页面，并提供主题配置、Finder 
 
 > 保留 Halo + Thymeleaf 服务端渲染，引入 Halo 官方 Vite 主题工具链，使用 TypeScript、ES Modules、pnpm、按功能加载和自动化测试，逐步替换 jQuery、Vue 2、全局脚本以及手工维护的第三方库。
 
+在阶段 0–5 已完成工程化、统一生命周期、业务模块化和样式治理后，阶段 6 将进一步移除
+PJAX，恢复浏览器原生文档导航，并以 Cross-document View Transitions 作为渐进增强。主题不引入
+新的 AJAX 路由或 DOM 替换库；不支持过渡 API 的浏览器继续使用完整、可访问的普通页面跳转。
+
 ## 重构原则
 
 1. **保持 Halo 兼容性**：不得为了前端框架迁移而破坏 Finder API、主题设置、插件集成和服务端渲染。
@@ -127,6 +131,9 @@ Vite HTML 转换。PJAX 已在阶段 4 进入本地 ESM；移除该桥仍需单�
 | 包管理 | pnpm + `pnpm-lock.yaml` |
 | 开发语言 | TypeScript，开启严格类型检查 |
 | 模块系统 | 原生 ES Modules |
+| 页面导航 | 浏览器原生多页文档导航，不使用客户端 Router 或 AJAX DOM 替换 |
+| 导航动效 | Cross-document View Transitions；不支持时自动降级为普通导航 |
+| 导航预取 | 保守的 Speculation Rules `prefetch`，并提供非阻断回退；首版不启用 `prerender` |
 | UI 交互 | 原生 TypeScript 组件或控制器为主 |
 | 局部复杂组件 | 只有在确有收益时使用 Lit 或 Alpine.js |
 | 样式体系 | 原生 CSS、CSS Variables、Cascade Layers；Tailwind v4 前缀 utility，不启用 Preflight |
@@ -194,6 +201,10 @@ Vite HTML 转换。PJAX 已在阶段 4 进入本地 ESM；移除该桥仍需单�
 ### 不在第一阶段直接删除或替换 PJAX
 
 当前音乐、滚动状态、评论和组件初始化都依赖 PJAX。应先建立统一生命周期，再评估继续使用、迁移到其他导航方案或恢复普通页面跳转。
+
+阶段 2–5 已完成上述前置条件。阶段 6 的正式决策是恢复原生多页文档导航，并使用
+Cross-document View Transitions 提供渐进式动效；不以 Swup、Turbo、Barba 或自研 Router
+替换 PJAX，因为这些方案仍需维护 fetch、DOM 替换、`<head>` 同步和第三方脚本生命周期。
 
 ## 分阶段实施计划
 
@@ -411,39 +422,282 @@ export interface PageController {
 - 主样式不再依赖一个不可维护的超大单文件。
 - 删除样式时可以通过测试确认影响范围。
 
-### 阶段 6：测试、性能与发布治理
+### 阶段 6：原生导航、测试、性能与发布治理
 
-**状态：未开始**
+**状态：未开始（方案已确定）**
 
-目标是把“可持续维护”落实为合并和发布的固定质量门槛。
+目标是删除 PJAX 及其兼容层，将主题切换到浏览器原生多页文档导航，并使用 Cross-document
+View Transitions 和保守预取改善体验；同时把测试、性能、可访问性和发布要求落实为固定门禁。
+由于本阶段会删除 `window.pjax`、PJAX 事件和相关设置，建议作为主题 `2.0.0` 交付；
+`theme.yaml:spec.requires` 继续保持 Halo `>= 2.26.0`。
 
-任务：
+#### 6.1 目标架构
 
-- [ ] 使用 Vitest 覆盖工具函数、配置转换和生命周期逻辑。
-- [ ] 使用 Playwright 覆盖核心页面和关键交互。
-- [ ] 增加模板构建、主题 ZIP 和 YAML 配置验证。
-- [ ] 增加 Lighthouse 或等价性能预算。
-- [ ] 检查可访问性、键盘操作、颜色对比度和减少动画偏好。
-- [ ] 检查 SEO、Open Graph、结构化数据和错误页面。
-- [ ] 建立预发布版本和更新日志流程。
-- [ ] 自动生成并上传可安装主题包。
+```text
+Halo 2.26+ + Thymeleaf SSR
+          │
+          ▼
+语义化 <a href> / <button>
+          │
+          ▼
+浏览器原生 Document Navigation
+          │
+          ├── 原生 History / Scroll / Focus / Error / Download
+          ├── 完整目标文档的 <head>、HTML 属性和页面资源
+          └── BFCache 前进与后退恢复
+          │
+          ▼
+Cross-document View Transitions（渐进增强）
+          │
+          └── 不支持时自动退化为普通文档导航
+          │
+          ▼
+保守的 Speculation Rules / link prefetch（可选性能增强）
+```
 
-最低浏览器测试矩阵：
+架构不变量：
 
-- 首页、文章、独立页面、分类和标签。
-- 桌面端与移动端导航。
-- 浅色模式、深色模式和跟随系统。
-- PJAX 连续跳转、前进和后退。
-- 代码高亮、复制、折叠和评论动态插入。
-- 评论、音乐和图库等可选功能。
-- 对应 Halo 插件缺失时的安全降级。
+- [ ] 所有用户可见的站内导航都有真实 URL，并在禁用 JavaScript 时可用。
+- [ ] 站内页面切换产生 `document` 请求，不产生 PJAX XHR 或自定义 DOM 替换。
+- [ ] 不再手动同步 `<head>`、页面级 CSS、Open Graph 标签或重放 `<script>`。
+- [ ] `<halo:footer />`、`<halo:comment>` 和插件注入资源在每个文档中只初始化一次。
+- [ ] `PageControllerRegistry` 与 `PageResourceScope` 继续作为文档内组件边界。
+- [ ] View Transitions 和预取均为渐进增强，失败或不支持时不影响导航。
+- [ ] 只修改 `src/`、配置和测试源码；`templates/` 始终由现有构建生成。
+- [ ] 最终运行时代码、类型、模板、依赖图和第三方通知中不存在 PJAX。
 
-验收标准：
+#### 6.2 范围与非目标
 
-- Pull Request 必须通过检查、构建和核心 E2E 测试。
-- Release 自动生成可安装 ZIP，并记录对应源码提交。
-- 性能和可访问性退化超过预算时阻止合并。
-- 发布前不再依赖人工复制文件或手工修改版本号。
+本阶段包含：
+
+- 将模板内导航改为语义化链接和按钮。
+- 删除 `pjax@0.2.8`、`window.pjax`、PJAX 事件、标记和资源同步逻辑。
+- 将页面生命周期改为 `DOMContentLoaded`、`pageshow`、`pagehide` 和 BFCache 语义。
+- 添加根页面跨文档淡入淡出以及减少动态效果降级。
+- 将全屏加载动画限制为冷启动，删除 PJAX 模拟进度条。
+- 添加保守文档预取、跨浏览器测试、真实性能预算和发布验收。
+
+本阶段不包含：
+
+- 不改造成 React、Vue 或其他 SPA。
+- 不引入 Swup、Turbo、Barba、htmx boost 或自研客户端 Router。
+- 首个版本不启用 `prerender`，不把预取作为导航正确性的前提。
+- 首个版本不实现文章卡片、封面或标题的 shared-element transition。
+- 不恢复全局背景视频或宇宙 Canvas 的跨文档播放进度；页面切换后允许重新开始。
+- 不顺带重构页面视觉、Finder API、主题设置结构或 Halo 页面布局契约。
+- 不改写阶段 0–5 的历史 PJAX 验收证据。
+
+#### 6.3 当前迁移面
+
+阶段开始时以静态扫描重新确认以下基线：
+
+- 模板中约 11 处 `pjax.loadUrl()` 内联导航。
+- TypeScript 业务模块中 4 处 `window.pjax.loadUrl()` 程序化导航。
+- 模板中约 36 个 `data-pjax-state` 标记。
+- `src/js/core/navigation.ts` 中的 PJAX 实例、选择器、页面 CSS 同步、module script
+  重放、模拟进度和统计回调。
+- `src/js/core/runtime.ts` 中的 `pjax:send`、`pjax:complete`、`pjax:error` 适配和
+  `loadUrl()` monkey patch。
+- `src/js/core/global.d.ts`、`src/js/core/types.ts`、测试夹具和 Playwright 用例中的
+  PJAX 类型及事件契约。
+- 评论首次请求和 KaTeX 等模板中的 PJAX workaround 注释或加载逻辑。
+
+#### 6.4 实施批次
+
+| 批次 | 目标 | 主要结果 | 依赖 |
+| --- | --- | --- | --- |
+| N0 | 决策与基线 | 固化 ADR、网络/视觉/功能基线和回滚制品 | 无 |
+| N1 | 导航语义化 | 业务模板和功能模块不再直接调用 PJAX | N0 |
+| N2 | 原生导航切换 | 删除 PJAX 依赖和适配层，启用文档生命周期 | N1 |
+| N3 | 过渡与加载体验 | 根级跨文档过渡、减少动态效果、冷启动加载动画 | N2 |
+| N4 | 预取与性能 | 保守 prefetch、数据节省降级和性能预算 | N3 |
+| N5 | 发布治理 | 跨浏览器/真实 Halo/ZIP 安装升级验收 | N4 |
+
+N2 和 N3 必须在同一个发布版本中交付，避免长期保留只有整页跳转、但尚未完成视觉衔接的中间状态。
+
+##### N0：决策、基线和回滚点
+
+- [ ] 新增 ADR-008，记录候选方案、最终选择、浏览器降级和已接受的状态重建行为。
+- [ ] 记录开始实施时的 `master` 提交、主题版本、Halo 版本和已启用插件版本。
+- [ ] 保存上一正式版主题 ZIP、SHA-256、主题配置导出和 13 条真实路由证据。
+- [ ] 重新采集首页、文章和留言板的冷加载、暖缓存及当前 PJAX 导航数据。
+- [ ] 记录 title、canonical、Open Graph、页面级 CSS、脚本和统计请求基线。
+- [ ] 确认用户可配置的自定义代码是否引用 `window.pjax`，并在版本说明中标记破坏性变化。
+
+##### N1：导航语义化与业务解耦
+
+- [ ] 将真正导航的卡片、评论、相册、文章和返回入口改为带真实 `href` 的 `<a>`。
+- [ ] 卡片全区域点击使用合法的 stretched-link 或等价语义结构，禁止嵌套链接。
+- [ ] 将 `href="javascript:;"`、无 `href` 的动作链接和页内控件改为 `<button type="button">`。
+- [ ] 删除模板导航相关的内联 `onclick`，保留 Ctrl/Cmd 点击、中键、新窗口和复制链接行为。
+- [ ] 动态生成的推荐文章只设置 `href`，不拦截链接点击。
+- [ ] 为随机文章、延迟返回首页和分页输入等真正需要程序化跳转的场景提供最小
+  `navigateTo()` 接口；该接口不得负责 fetch、DOM 替换、History 或动画。
+- [ ] N1 中可由 `navigateTo()` 暂时委托现有 PJAX，以便此批次保持导航行为不变；N2 只在
+  这一处切换为 `location.assign()` / `location.replace()`。
+- [ ] 保留仍用于旧内核排除行为的 `data-pjax-state`，统一到 N2 删除，避免半迁移状态。
+
+N1 验收：模板和 `src/js/features/` 中不再直接出现 `pjax.loadUrl()`；禁用 JavaScript
+后所有真实导航可用；现有 PJAX、视觉和真实 Halo 页面矩阵继续通过。
+
+##### N2：删除 PJAX 并切换文档生命周期
+
+- [ ] 从 `package.json` 和 `pnpm-lock.yaml` 删除 `pjax`，重新生成第三方许可通知。
+- [ ] 删除 `installPjaxNavigation()`、`PJAX_SELECTORS`、XHR 事件监听和 `loadUrl()` patch。
+- [ ] 删除手动页面 CSS 同步、module script 重建、模拟进度和 PJAX analytics pageview。
+- [ ] `main.ts` 不再安装客户端导航器；普通 `<a>` 完全由浏览器处理。
+- [ ] 删除 `HanloPjax`、`window.pjax`、`NavigationSource = "pjax"` 和相关接口。
+- [ ] 删除所有 `data-pjax-state`、`data-pjax` 和只为选择器存在的 `.js-pjax` 包装。
+- [ ] 保留 `data-hanlo-page-style` 作为条件资源审计标记，但不再由 JavaScript 管理其生命周期。
+- [ ] 删除评论模板中过时的 PJAX 已知问题说明。
+- [ ] 在真实 Halo 中验证 KaTeX 脚本后，只移除 PJAX 专属 workaround；仍被插件直接加载需要的
+  资源不得仅因注释过时而删除。
+- [ ] 由构建更新 `templates/` 和版本化资产，禁止手工同步生成文件。
+
+文档生命周期契约：
+
+| 场景 | 控制器和事件行为 |
+| --- | --- |
+| 冷启动或新的文档导航 | 校验当前文档配置并挂载控制器一次，发出初始就绪事件 |
+| `pagehide.persisted == false` | 发出离开事件并尽力清理；浏览器随后销毁整个 JavaScript Realm |
+| `pagehide.persisted == true` | 不卸载控制器，允许页面进入 BFCache |
+| `pageshow.persisted == true` | 不重复挂载，只发出历史恢复信号并刷新必要的瞬时状态 |
+| 同文档 hash 跳转 | 使用浏览器原生行为，不重新挂载页面控制器 |
+| 控制器挂载失败 | 发出 `hanlo:page:error`，但不得劫持或回滚浏览器导航 |
+
+`HanloLifecycle.config`、`activeControllers`、`register()` 和 `whenIdle()` 继续保留，供功能模块和
+测试使用。禁止增加 `beforeunload` 监听，以免破坏 BFCache。
+
+N2 验收：内部导航请求类型为 `document`，不再发送 `X-PJAX` 或 `X-PJAX-Selectors`；
+目标页面的 title、canonical、Open Graph、HTML 属性、条件 CSS 和插件脚本均来自完整目标文档，
+且只生效一次。
+
+##### N3：Cross-document View Transitions 与加载体验
+
+- [ ] 在全局 CSS 中以顶层规则启用同源跨文档过渡：
+
+  ```css
+  @view-transition {
+    navigation: auto;
+  }
+  ```
+
+- [ ] 首版只提供根页面 180–220ms 淡入淡出，不添加路由方向和 shared-element 动画。
+- [ ] 使用 `prefers-reduced-motion: reduce` 禁止非必要动画。
+- [ ] View Transitions 不支持、跨域、重定向链不满足条件或浏览器拒绝过渡时，保持普通导航。
+- [ ] 保留 `<head>` 中的同步主题模式引导，确保目标文档首帧不会从错误的深浅色开始。
+- [ ] 将全屏 loading box 调整为冷启动或外部进入时显示；同源内部导航不应在目标快照中显示它。
+- [ ] 删除 `#hanlo-navigation-progress`、`ThemeConfig.loadProgressBar`、前端配置输出以及
+  `settings.yaml` 的“加载进度条”字段。
+- [ ] 保留 `loadingBoxEnable`，但将文案明确为“首次进入加载动画”。旧 ConfigMap 中多余的
+  `loadProgressBar` 值允许保留并被新版本忽略。
+- [ ] 明确验收全局背景视频和宇宙 Canvas 在新文档中重新开始；首版不保存播放进度。
+
+##### N4：渐进式文档预取
+
+- [ ] 支持 Speculation Rules 时只启用 `prefetch`，首版使用 `conservative`。
+- [ ] 只有经数据证明高概率访问的文章详情、上一篇/下一篇等链接才允许升级为 `moderate`。
+- [ ] 首个版本不启用 `prerender`，避免统计、LocalStorage 和插件脚本在用户访问前执行。
+- [ ] 不支持 Speculation Rules 或 CSP 不允许时，使用轻量 `<link rel="prefetch">` 或普通导航回退。
+- [ ] 遵守 `Save-Data` 和慢速网络，不把预取结果作为页面正确性的依赖。
+- [ ] 只预取同源、安全 GET 文档；排除新窗口、下载、`external` / `nofollow`、hash、登录、退出、
+  用户中心、管理入口、API、Feed、带副作用 URL 和显式 `data-no-prefetch`。
+- [ ] 通过 `Sec-Purpose`、Network 和统计请求确认预取不会增加浏览量或产生业务副作用。
+
+##### N5：测试、性能与发布治理
+
+自动化测试：
+
+- [ ] 使用真实 `<a>` 点击、`page.waitForURL()` 和新文档 `HanloLifecycle.whenIdle()` 替换
+  `window.pjax.loadUrl()` 测试辅助函数。
+- [ ] 跨文档累计事件存入 `sessionStorage` 或由 Playwright 侧采集，不依赖旧页面的 `window`。
+- [ ] 断言站内导航请求 `resourceType()` 为 `document`，并且没有 PJAX 请求头。
+- [ ] 覆盖直接加载、连续 10 次链接跳转、后退、前进、BFCache、滚动恢复和 hash 定位。
+- [ ] 覆盖 Ctrl/Cmd 点击、中键、新窗口、下载、外链、查询参数、重定向、404 和 500。
+- [ ] 覆盖页面级 CSS 自动切换、module script 单次执行、统计单次上报和未完成请求离页。
+- [ ] 使用 Vitest 覆盖预取资格、程序化导航和文档生命周期状态转换。
+- [ ] 保留并继续执行模板、YAML、CSS 架构、构建产物和 ZIP 完整性校验。
+
+浏览器矩阵：
+
+| 浏览器 | 最低验收 |
+| --- | --- |
+| Chromium | 原生导航、View Transition、BFCache、桌面/移动、浅色/深色 |
+| WebKit | 原生导航、View Transition、主题模式和插件组件 |
+| Firefox | 无 View Transition 时的普通导航、History、滚动、键盘和插件功能 |
+| Safari 18.2+ 真机 | 发布前执行一次跨文档过渡和主题模式冒烟测试 |
+| `reducedMotion: "reduce"` | 动画禁用，全部导航和焦点行为保持正常 |
+
+真实 Halo 页面矩阵继续覆盖首页、文章、独立页面、分类、标签、留言板、最近评论、关于、相册、
+瞬间、图库、追番和装备，并验证评论、搜索、Shiki、Tocbot、KaTeX、DPlayer / HLS、Swiper 以及
+插件未安装、已停用、版本不满足和正常启用状态。Console error、页面异常、失败主题请求、重复
+统计请求和本地 4xx/5xx 均必须为 0（主动访问的错误页除外）。
+
+建议性能预算：
+
+- [ ] 不增加新的导航运行时第三方依赖，主运行时压缩体积应下降。
+- [ ] 暖缓存导航只传输目标 HTML 和目标页面新增资源，不重复传输主 CSS、运行时 ESM 和字体。
+- [ ] 冷加载 LCP 相对阶段开始基线退化不超过 5%，CLS 不高于 0.1。
+- [ ] 同环境暖缓存点击到目标文档可交互的中位数，相对现有 PJAX 基线最多增加 250ms；超过时，
+  N4 预取优化转为发布阻塞项。
+- [ ] 每个真实页面访问只产生一次统计 pageview。
+- [ ] 可进入 BFCache 的页面通过后退/前进恢复时不重新下载文档。
+
+#### 6.5 Pull Request 与发布边界
+
+建议拆为三个 Pull Request：
+
+1. `refactor: make theme navigation semantic`
+   - 只处理 N1；PJAX 暂时保留，当前导航和视觉行为不变。
+2. `refactor: replace pjax with native document navigation`
+   - 原子完成 N2、N3、生命周期测试和根级 View Transition。
+3. `perf: add progressive document prefetching`
+   - 完成 N4、跨浏览器矩阵、性能证据、发布文档和 N5 收尾。
+
+不增加长期存在的“PJAX / Native”主题开关。双内核会让生命周期、插件组合和回归矩阵翻倍；
+灰度发布应通过独立 Halo 测试实例、预发布 ZIP 和明确回滚点完成。
+
+发布前执行：
+
+```bash
+pnpm install --frozen-lockfile
+pnpm check
+pnpm test:unit
+pnpm test:e2e
+pnpm build
+```
+
+真实 Halo 环境执行：
+
+```bash
+HALO_BASE_URL="https://测试站点地址" pnpm exec playwright test tests/e2e/halo-live.spec.ts
+```
+
+同时在干净 Halo 实例和已安装上一正式版主题的实例中验证全新安装、升级、重载配置、切换主题、
+停用和重新启用。最低 Halo `2.26.x` 与计划支持的当前 Halo 版本都必须完成关键路径验证。
+
+#### 6.6 回滚方案
+
+- [ ] 开始前保存上一正式版 ZIP、源码提交、主题配置导出和 SHA-256。
+- [ ] N1 可独立 revert，不影响导航内核。
+- [ ] N2 与 N3 形成一个可整体 revert 的提交组和预发布 ZIP。
+- [ ] 本阶段不迁移数据库或内容模型；失败时重新安装上一正式版 ZIP 即可恢复。
+- [ ] 已移除设置对应的旧 ConfigMap 字段允许保留，因此不会阻止版本回滚。
+- [ ] 评论或搜索插件无法初始化、目标 `<head>` 错误、脚本重复执行、Firefox 普通导航失效、
+  主题资源出现异常 4xx/5xx 或性能超过预算且无法改善时，停止发布并回滚。
+
+#### 6.7 阶段验收标准
+
+- [ ] `src/`、当前测试、`package.json`、lockfile 和第三方通知中无 PJAX；历史证据目录除外。
+- [ ] 所有真实导航使用浏览器文档请求，禁用 JavaScript 后核心链接仍可访问。
+- [ ] Chromium 与 WebKit 显示跨文档过渡；Firefox 和减少动态效果模式安全降级。
+- [ ] 前进、后退、BFCache、滚动、hash、下载、外链和错误页行为符合浏览器原生语义。
+- [ ] Halo 评论、搜索及保留插件在完整页面矩阵中无重复实例、失败请求或控制台错误。
+- [ ] title、canonical、Open Graph、页面级 CSS 和脚本均来自当前文档并正确更新。
+- [ ] Pull Request 通过检查、单元测试、跨浏览器 E2E、真实 Halo、构建和 ZIP 门禁。
+- [ ] 性能和可访问性退化未超过预算，或存在经过评审的明确例外记录。
+- [ ] Release 自动生成可安装 ZIP，记录源码提交、Halo 版本、浏览器、插件、已知限制和 SHA-256。
+- [ ] 从上一正式版升级与全新安装均通过，`master` 恢复到可发布状态。
 
 ## 推荐迭代方式
 
@@ -461,7 +715,8 @@ export interface PageController {
 ```text
 chore: establish Vite build pipeline
 refactor: migrate theme mode to TypeScript
-test: cover PJAX lifecycle navigation
+refactor: replace pjax with native document navigation
+test: cover document navigation and bfcache
 perf: lazy-load comment providers
 style: split post component styles
 docs: update modernization roadmap
@@ -473,7 +728,7 @@ docs: update modernization roadmap
 - [ ] 通过格式化、类型检查和构建。
 - [ ] 为行为变化补充测试或手工验证记录。
 - [ ] 检查桌面端、移动端、浅色和深色模式。
-- [ ] 检查普通加载和 PJAX 导航。
+- [ ] 检查直接加载、原生文档导航、前进/后退和无过渡降级。
 - [ ] 不引入新的未声明全局变量或无版本 vendor 文件。
 - [ ] 更新相关文档、设置说明和迁移状态。
 - [ ] 产物可以安装到受支持的 Halo 版本。
@@ -503,7 +758,12 @@ chore: establish Vite and TypeScript build pipeline
 | 风险 | 控制措施 |
 | --- | --- |
 | 模板构建后 Thymeleaf 表达式被错误处理 | 为所有页面建立构建快照，并在真实 Halo 环境验证 |
-| PJAX 重复初始化或资源泄漏 | 先建立生命周期接口，再迁移组件；增加连续导航测试 |
+| 原生导航切换后控制器重复挂载或 BFCache 状态错误 | 以 `pageshow` / `pagehide` 的 `persisted` 状态驱动生命周期，并增加连续导航与恢复测试 |
+| Halo 插件脚本、评论或页面级资源在新导航下异常 | 使用完整文档加载，覆盖插件启停、`<head>`、`<halo:footer />` 和 `<halo:comment>` 的真实 Halo 测试 |
+| View Transitions 浏览器覆盖不完整 | 仅作为渐进增强；Firefox、减少动态效果和 API 失败时保留普通文档导航 |
+| 全屏加载动画出现在目标页面快照中 | 将 loading box 限制为冷启动，内部导航使用 View Transition 或浏览器原生反馈 |
+| 预取触发统计或其他副作用 | 首版只启用保守 `prefetch`，排除敏感 URL，检查 `Sec-Purpose` 和统计请求，不启用 `prerender` |
+| 用户自定义代码依赖 `window.pjax` | 作为破坏性变化写入版本说明，提供语义化链接和 `location.assign()` 迁移示例，并保留上一版 ZIP 回滚 |
 | CSS 拆分造成大范围视觉回归 | 建立截图基线，按组件迁移，禁止首轮同时重构 HTML |
 | 删除依赖后冷门功能失效 | 先建立功能清单，按配置组合验证，记录废弃决策 |
 | 依赖升级引入破坏性变化 | 使用 lockfile，单独提交升级，保留回滚点 |
@@ -523,6 +783,7 @@ chore: establish Vite and TypeScript build pipeline
 | ADR-005 | 在建立统一生命周期前不直接替换 PJAX | 已接受 |
 | ADR-006 | Tailwind v4 仅用于带 `hl:` 前缀的新 utility，禁用 Preflight，不全量重写历史 CSS | 已接受 |
 | ADR-007 | 条件样式通过 `css-entries.json` 构建为版本化入口，模板按路由和配置加载 | 已接受 |
+| ADR-008 | 删除 PJAX，采用原生多页文档导航，以 Cross-document View Transitions 和保守 prefetch 渐进增强 | 已接受 |
 
 ## 进度总览
 
@@ -534,7 +795,7 @@ chore: establish Vite and TypeScript build pipeline
 | 阶段 3 | 已完成 | JavaScript/TypeScript 模块化；本地、CI 与合并门禁通过 |
 | 阶段 4 | 已完成 | 第三方依赖治理与按需加载；本地、真实 Halo 与远端 CI 门禁通过 |
 | 阶段 5 | 已完成 | CSS 架构与视觉系统；本地、四象限真实 Halo 与远端 CI 门禁通过 |
-| 阶段 6 | 未开始 | 测试、性能、可访问性和发布治理 |
+| 阶段 6 | 未开始（方案已确定） | 移除 PJAX，完成原生导航、跨文档过渡、测试、性能、可访问性和发布治理 |
 
 ### 阶段 0–5 收尾复核（2026-09-02）
 
@@ -576,6 +837,12 @@ error、失败主题请求和本地 HTTP 错误均为 0。
 - [Playwright 文档](https://playwright.dev/)
 - [Tailwind CSS 文档](https://tailwindcss.com/docs/installation/using-vite)
 - [Stylelint 文档](https://stylelint.io/)
+- [MDN View Transition API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API)
+- [MDN 跨文档 View Transitions 使用指南](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API/Using#basic_mpa_view_transition)
+- [MDN Speculation Rules API](https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API)
+- [Halo 主题与插件集成](https://docs.halo.run/developer-guide/theme/plugin-integration)
+- [Halo 主题调试与测试](https://docs.halo.run/developer-guide/theme/testing)
+- [Halo 主题发布验收清单](https://docs.halo.run/developer-guide/theme/release-checklist)
 
 ---
 
