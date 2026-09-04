@@ -60,6 +60,7 @@
 @import "./overrides/components.css" layer(overrides);
 @import "./overrides/pages.css" layer(overrides);
 @import "./overrides/integrations.css" layer(overrides);
+@import "./overrides/footer.css" layer(overrides);
 @import "./overrides/semantic-navigation.css" layer(overrides);
 
 @view-transition {

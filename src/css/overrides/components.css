@@ -1,4 +1,14 @@
 /* Migrated from public/assets/zhheo/custom.css; keep module order in src/css/index.css. */
+.default-tech-icons :is(.tags-group-icon, .skill-icon) {
+    background: #fff;
+}
+
+.default-tech-icons .tags-group-icon img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+
 /* 分类3D */
 #libCategories .card-info p{
     font-size: 0.9rem;

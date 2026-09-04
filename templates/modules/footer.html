@@ -1,5 +1,5 @@
 <!-- 页脚模块 -->
-<footer id="footer" xmlns:th="http://www.w3.org/1999/xhtml">
+<footer class="hanlo-site-footer" id="footer" xmlns:th="http://www.w3.org/1999/xhtml">
 
     <div id="heo-footer-bar" th:if="${theme.config.footer.footer_bar.footer_bar_enable}">
         <div class="footer-logo"><th:block th:utext="${theme.config.footer.footer_bar.logo}"></th:block></div>
@@ -8,7 +8,8 @@
     </div>
 
     <!-- 社交链接，需要填入 href class title -->
-    <div id="footer_deal">
+    <div id="footer_deal"
+         th:if="${not #lists.isEmpty(theme.config.footer.social_media.socialMediaLeft) || not #lists.isEmpty(theme.config.footer.social_media.socialMediaRight) || (not theme.config.footer.footerContent.style_one.runtime_enable && not #strings.isEmpty(footerCenterImage))}">
         <th:block th:with="socialMedias = ${theme.config.footer.social_media.socialMediaLeft}">
             <a th:class="${socialMedia.option_social_data == 'custom' ? 'custom_socials' : 'deal_link'}" rel="external nofollow" target="_blank" th:each="socialMedia : ${socialMedias}"
                th:href="${socialMedia.url}" th:title="${socialMedia.name}">
@@ -18,7 +19,8 @@
             </a>
         </th:block>
 
-        <img th:if="${not #strings.isEmpty(footerCenterImage)}" class="footer_mini_logo"
+        <img th:if="${not theme.config.footer.footerContent.style_one.runtime_enable && not #strings.isEmpty(footerCenterImage)}"
+             class="footer_mini_logo"
              th:with="img = @{${footerCenterImage}}" th:src="${isLazyload ? '' : img}"
              th:data-lazy-src="${ isLazyload ? img : ''}" title="返回顶部" data-hanlo-action="scroll-top">
 
@@ -71,7 +73,8 @@
          th:if="${#strings.isEmpty(theme.config.basics.siteStartTime) && theme.config.footer.footerContent.style_one.owner_enable}">
         ©[[${#dates.format(new java.util.Date(), 'yyyy')}]] By [[${site.title}]]
     </div>
-    <div th:if="${theme.config.footer.footerContent.style_one.runtime_enable}" id="workboard"></div>
+    <div class="hanlo-footer-runtime"
+         th:if="${theme.config.footer.footerContent.style_one.runtime_enable}" id="workboard"></div>
     <p class="hl:[width:60%] hl:[margin:0_auto_0]" th:if="${theme.config.footer.footerContent.style_one.bdageitem_enable && not #lists.isEmpty(theme.config.footer.footerContent.style_one.bdageitem)}"
        th:with="bdageitem = ${theme.config.footer.footerContent.style_one.bdageitem}"
        id="ghbdages">
@@ -81,11 +84,43 @@
                  th:data-lazy-src="${ isLazyload ? img : ''}" th:alt="${data.message}" />
         </a>
     </p>
+    <div class="hanlo-footer-badges" aria-label="站点信息"
+         th:if="${theme.config.footer.footerContent.default_enable_group.default_enable}">
+        <a class="hanlo-footer-badge is-frame" href="https://halo.run/" target="_blank"
+           rel="noopener external nofollow noreferrer" title="由 Halo 驱动">
+            <span class="hanlo-footer-badge-label">
+                <span class="hanlo-footer-badge-mark" aria-hidden="true">H</span>
+                Frame
+            </span>
+            <span class="hanlo-footer-badge-value">Halo</span>
+        </a>
+        <span class="hanlo-footer-badge is-theme" title="当前主题版本">
+            <span class="hanlo-footer-badge-label">Theme</span>
+            <span class="hanlo-footer-badge-value" th:text="|Hanlo ${theme.spec.version}|">Hanlo</span>
+        </span>
+        <a class="hanlo-footer-badge is-rss" href="/rss.xml"
+           th:if="${pluginFinder.available('PluginFeed')} and ${theme.config.footer.footerContent.default_enable_group.dingyue}"
+           title="订阅 RSS">
+            <span class="hanlo-footer-badge-label">
+                <i class="haofont hao-icon-rss" aria-hidden="true"></i>
+                RSS
+            </span>
+            <span class="hanlo-footer-badge-value">Subscribe</span>
+        </a>
+        <span class="hanlo-footer-badge is-since"
+              th:if="${not #strings.isEmpty(theme.config.basics.siteStartTime)}"
+              title="建站年份">
+            <span class="hanlo-footer-badge-label">Since</span>
+            <span class="hanlo-footer-badge-value"
+                  th:text="${#strings.arraySplit(theme.config.basics.siteStartTime, '-')[0]}">2023</span>
+        </span>
+    </div>
     <span class="hl:[padding:5px_5px]" th:if="${!theme.config.footer.footerContent.default_enable_group.default_enable}">
 
     </span>
 
-    <div th:if="${theme.config.footer.footerContent.default_enable_group.default_enable}" id="footer-banner"
+    <div class="hanlo-footer-meta"
+         th:if="${theme.config.footer.footerContent.default_enable_group.default_enable}" id="footer-banner"
          th:style="|--hanlo-footer-banner-padding: ${theme.config.footer.footerContent.default_enable_group.footer_banner_padding}rem|">
         <div class="footer-banner-links">
             <div class="footer-banner-left">
@@ -104,49 +139,14 @@
             </div>
             <div class="footer-banner-right">
                 
-                <!-- 又拍云 -->
-                <a th:if="${theme.config.footer.footerContent.default_enable_group.yunzhichi && theme.config.footer.footerContent.default_enable_group.yunzhichi_list == 'upyun_cloud'}"
-                   class="footer-banner-link cloud" href="https://www.upyun.com/"
-                   rel="noopener external nofollow noreferrer noopener"
-                   target="_blank">
-                    <span>本网站由</span>&nbsp;&nbsp;
-                    <img th:src="${assets_link + '/images/footer/upyun-5.png'}" alt="upyun" class="cloud-logo" />
-                    &nbsp;&nbsp;<span>提供CDN加速/云存储服务</span>
-                </a>
-                <!-- 阿里云 -->
-                <a th:if="${theme.config.footer.footerContent.default_enable_group.yunzhichi && theme.config.footer.footerContent.default_enable_group.yunzhichi_list == 'aliyun_cloud'}"
-                   class="footer-banner-link cloud" href="https://www.aliyun.com/"
-                   rel="noopener external nofollow noreferrer noopener"
-                   target="_blank">
-                    <span>本网站由</span>&nbsp;&nbsp;
-                    <img th:src="${assets_link + '/images/footer/aliyun.png'}" alt="aliyun_cloud" class="cloud-logo" />
-                    &nbsp;&nbsp;<span>提供CDN加速/云存储服务</span>
-                </a>
                 <!-- 腾讯云 -->
-                <a th:if="${theme.config.footer.footerContent.default_enable_group.yunzhichi && theme.config.footer.footerContent.default_enable_group.yunzhichi_list == 'tencent_cloud'}"
+                <a th:if="${theme.config.footer.footerContent.default_enable_group.yunzhichi}"
                    class="footer-banner-link cloud" href="https://cloud.tencent.com/"
                    rel="noopener external nofollow noreferrer noopener"
                    target="_blank">
                     <span>本网站由</span>&nbsp;&nbsp;
-                    <img th:src="${assets_link + '/images/footer/tencent.png'}" alt="tencent_cloud" class="cloud-logo" />
-                    &nbsp;&nbsp;<span>提供CDN加速/云存储服务</span>
-                </a>
-                <!-- 华为云 -->
-                <a th:if="${theme.config.footer.footerContent.default_enable_group.yunzhichi && theme.config.footer.footerContent.default_enable_group.yunzhichi_list == 'huawei_cloud'}"
-                   class="footer-banner-link cloud" href="https://www.huaweicloud.com/"
-                   rel="noopener external nofollow noreferrer noopener"
-                   target="_blank">
-                    <span>本网站由</span>&nbsp;&nbsp;
-                    <img th:src="${assets_link + '/images/footer/huawei.png'}" alt="huawei_cloud" class="cloud-logo" />
-                    &nbsp;&nbsp;<span>提供CDN加速/云存储服务</span>
-                </a>
-                <!-- 自定义云服务信息 -->
-                <a th:if="${theme.config.footer.footerContent.default_enable_group.yunzhichi && theme.config.footer.footerContent.default_enable_group.yunzhichi_list == 'custom_cloud' && not #strings.isEmpty(theme.config.footer.footerContent.default_enable_group.yunzhichi_url)}"
-                   class="footer-banner-link cloud" th:href="@{${theme.config.footer.footerContent.default_enable_group.yunzhichi_url_link}}"
-                   rel="noopener external nofollow noreferrer noopener"
-                   target="_blank">
-                    <span>本网站由</span>&nbsp;&nbsp;
-                    <img th:src="@{${theme.config.footer.footerContent.default_enable_group.yunzhichi_url}}" alt="custom_cloud" class="cloud-logo"/>
+                    <img th:src="${assets_link + '/images/footer/tencentcloud-color.svg'}"
+                         alt="腾讯云" class="cloud-logo" />
                     &nbsp;&nbsp;<span>提供CDN加速/云存储服务</span>
                 </a>
                 

@@ -8,12 +8,17 @@ interface GreetingItem {
   readonly end: number;
 }
 
-const DEFAULT_FOOTER_RUNTIME_IMAGE = "/themes/theme-hanlo/assets/images/hanlo-logo.png";
+const DEFAULT_FOOTER_RUNTIME_IMAGE = "/themes/theme-hanlo/assets/images/footer/shiba.svg";
+const LEGACY_FOOTER_RUNTIME_IMAGE = "/themes/theme-hanlo/assets/images/hanlo-logo.png";
 const RETIRED_FOOTER_RUNTIME_IMAGE =
   "/upload/%E5%9B%B0%E5%9B%B0%E9%B1%BC-%E4%B8%8B%E7%8F%AD%E5%95%A6-yellowgreen.svg";
 
 function normalizeFooterRuntimeImage(source: string): string {
-  return source === RETIRED_FOOTER_RUNTIME_IMAGE ? DEFAULT_FOOTER_RUNTIME_IMAGE : source;
+  return !source ||
+    source === LEGACY_FOOTER_RUNTIME_IMAGE ||
+    source === RETIRED_FOOTER_RUNTIME_IMAGE
+    ? DEFAULT_FOOTER_RUNTIME_IMAGE
+    : source;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -87,12 +92,21 @@ function mountFooterRuntime(config: Readonly<ThemeConfig>, resources: PageResour
       .toString()
       .padStart(2, "0");
     const working = now.getHours() >= 9 && now.getHours() < 18;
+    const mascot = document.createElement("button");
+    mascot.className = "hanlo-footer-mascot hanlo-button-reset";
+    mascot.type = "button";
+    mascot.dataset.hanloAction = "scroll-top";
+    mascot.setAttribute("aria-label", "返回顶部");
     const image = document.createElement("img");
     image.className = "workSituationImg boardsign";
     image.src = normalizeFooterRuntimeImage(working ? runtime.workImage : runtime.offDutyImage);
-    image.alt = image.title = working ? runtime.workDescription : runtime.offDutyDescription;
+    image.alt = "";
+    image.decoding = "async";
+    mascot.title = working ? runtime.workDescription : runtime.offDutyDescription;
+    mascot.append(image);
     const tip = document.createElement("div");
     tip.id = "runtimeTextTip";
+    tip.className = "hanlo-footer-runtime-text";
     const voyagerDistance = Math.trunc(23_400_000 + (elapsed / 1_000) * 17);
     tip.append(
       document.createTextNode(`本站居然运行了 ${days} 天 `),
@@ -108,7 +122,7 @@ function mountFooterRuntime(config: Readonly<ThemeConfig>, resources: PageResour
         `旅行者 1 号当前距离地球 ${voyagerDistance} 千米，约为 ${(voyagerDistance / 149_600_000).toFixed(6)} 个天文单位 🚀`,
       ),
     );
-    target.replaceChildren(image, tip);
+    target.replaceChildren(mascot, tip);
   };
   update();
   resources.interval(update, 1_000);
