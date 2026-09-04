@@ -13,6 +13,11 @@
 
 验收完成后两个容器和数据卷均已删除，原 `halo2-theme-dev` 保持 running。
 
+这里刻意不使用 `8090` 开发站验证上传升级。该实例把源码仓库只读挂载为活动主题目录，Halo
+无法覆盖其中的文件；在该实例上传同名 ZIP 会以 `Read-only file system` 返回 500。此限制只
+属于本地热更新拓扑，不代表 ZIP 无法在普通可写 Halo 实例升级。可复现的独立验收服务与命令见
+[阶段 1 本地开发环境](../phase-1/LOCAL_DEVELOPMENT.md#4-在-console-验证最终-zip)。
+
 ## 从 1.2.1 升级
 
 1. Console 本地安装 `theme-hanlo-1.2.1.zip` 并激活，详情显示 1.2.1。

@@ -6,8 +6,10 @@
 | --- | --- |
 | Halo | 社区版 `2.26.x`，最低兼容目标为 `2.26.0` |
 | 站点 | `http://localhost:8090/` |
+| 制品验收站点 | `http://localhost:8091/`（按需启动） |
 | 运行方式 | Rootless Podman + Compose，配置位于仓库根目录 `compose.yaml` |
 | 开发数据 | Podman 命名卷 `halo2-theme-dev-data` |
+| 制品验收数据 | Podman 命名卷 `halo2-theme-package-test-data` |
 | 主题 | `theme-hanlo` |
 | Node.js | 24.x |
 | pnpm | 以 `package.json` 的 `packageManager` 为准 |
@@ -16,6 +18,10 @@
 `8090` 端口发布到本机回环地址，并将当前仓库只读挂载到
 `/root/.halo2/themes/theme-hanlo`。命名卷与现有的 `~/.halo2` 完全隔离，不会修改原有
 Halo 数据。
+
+因此，`8090` 开发站不能通过 Console 上传同名 ZIP 来升级主题：Halo 升级时需要覆盖主题目录，
+只读挂载会返回 `Read-only file system`。这不是主题 ZIP 损坏。需要验证真实上传安装或升级时，
+使用第 4 节的独立可写实例。
 
 容器通过以下环境变量关闭 Thymeleaf 缓存，使重新生成的模板无需重启 Halo 即可生效：
 
@@ -81,7 +87,32 @@ podman compose logs -f halo
 
 `pnpm dev` 只监听并生成 `templates/`，不会启动 Halo，也不会自动安装或启用主题。
 
-## 4. 容器与数据管理
+## 4. 在 Console 验证最终 ZIP
+
+`halo-package-test` 服务不挂载源码，主题目录位于独立可写数据卷，专门用于验证 Halo Console
+中的“本地安装 / 升级”流程：
+
+```bash
+podman compose -p hanlo-theme-package-test \
+  -f tests/compose.package-test.yaml up -d
+podman compose -p hanlo-theme-package-test \
+  -f tests/compose.package-test.yaml logs -f halo-package-test
+```
+
+访问 [http://localhost:8091/console](http://localhost:8091/console) 完成初始化。验证全新安装时直接
+上传最终 ZIP；验证升级时先安装旧版 ZIP，再上传最终 ZIP 并确认覆盖。`8091` 与 `8090` 使用不同
+数据卷，上传过程不会覆盖源码仓库，也不会修改开发站数据。
+
+验证结束后可停止并删除测试容器，同时保留测试数据：
+
+```bash
+podman compose -p hanlo-theme-package-test \
+  -f tests/compose.package-test.yaml down
+```
+
+仅当确认不再需要测试站数据时，才删除 `halo2-theme-package-test-data` 数据卷。
+
+## 5. 容器与数据管理
 
 ```bash
 # 停止后保留容器
@@ -101,7 +132,7 @@ podman compose up -d
 不要在仍需保留站点数据时运行 `podman compose down -v`，该命令会删除
 `halo2-theme-dev-data`。可通过 `podman volume inspect halo2-theme-dev-data` 查看数据卷信息。
 
-## 5. 提交前检查
+## 6. 提交前检查
 
 ```bash
 pnpm install --frozen-lockfile
