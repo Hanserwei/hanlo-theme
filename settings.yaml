@@ -61,7 +61,7 @@ spec:
             - $formkit: switch
               name: enable_ali_iconfont_symbol_header
               label: 阿里巴巴IconFont Symbol
-              help: '开启后，可以使用阿里IconFont的Symbol彩色图标。语法为 #icon-xxx，例如 #icon-shouye'
+              help: "开启后，可以使用阿里IconFont的Symbol彩色图标。语法为 #icon-xxx，例如 #icon-shouye"
         - $formkit: menuRadio
           name: leftMenu
           if: $get(pc_leftMenu).value
@@ -127,7 +127,7 @@ spec:
               name: typed
               if: $get(enable_above).value
               label: 打字机显示的文字
-              value: [ ]
+              value: []
               children:
                 - $formkit: text
                   name: text
@@ -282,7 +282,7 @@ spec:
               if: $get(bannersBackground).value == 'techStack'
               label: 个人技术栈
               help: 需要选择上方“个人技术栈”
-              value: [ ]
+              value: []
               itemLabels:
                 - type: text
                   label: $value.name
@@ -491,7 +491,7 @@ spec:
               name: navCustomUrl
               key: navCustomUrl
               label: 自定义路径
-              value: [ ]
+              value: []
               itemLabels:
                 - type: text
                   label: $value.title
@@ -936,7 +936,7 @@ spec:
               label: 社交媒体
               help: 此处社交媒体最多设置两个
               max: 2
-              value: [ ]
+              value: []
               itemLabels:
                 - type: image
                   label: $value.logo
@@ -1087,7 +1087,7 @@ spec:
             - $formkit: array
               name: socialMediaLeft
               label: 左侧
-              value: [ ]
+              value: []
               itemLabels:
                 - type: text
                   label: $value.name
@@ -1107,7 +1107,7 @@ spec:
                       label: 自定义
                 - $formkit: textarea
                   name: icon
-                  key:  icon
+                  key: icon
                   if: $get(left_option_social_data).value == 'icon'
                   help: "icon图标，svg代码，图片(如果使用图片请输入完整img标签)"
                   label: 图标
@@ -1115,7 +1115,7 @@ spec:
                 - $formkit: iconify
                   if: $get(left_option_social_data).value == 'custom'
                   name: icon
-                  key:  custom_icon
+                  key: custom_icon
                   label: svg图标
                   format: svg # svg / dataurl / url / name
                 - $formkit: text
@@ -1129,7 +1129,7 @@ spec:
             - $formkit: array
               name: socialMediaRight
               label: 右侧
-              value: [ ]
+              value: []
               itemLabels:
                 - type: text
                   label: $value.name
@@ -1149,14 +1149,14 @@ spec:
                 - $formkit: textarea
                   if: $get(right_option_social_data).value == 'icon'
                   name: icon
-                  key:  icon
+                  key: icon
                   help: "icon图标或者图片(如果使用图片请输入完整img标签)"
                   label: 图标
                   validation: "required"
                 - $formkit: iconify
                   if: $get(right_option_social_data).value == 'custom'
                   name: icon
-                  key:  custom_icon
+                  key: custom_icon
                   label: svg图标
                   format: svg # svg / dataurl / url / name
                 - $formkit: text
@@ -1550,7 +1550,7 @@ spec:
           value:
             enable: true
             content: '本文是原创文章，采用 <a target="_blank" href="/cc">CC BY-NC-ND 4.0</a> 协议，完整转载请注明来自 <a href="/" target="_blank" >程序员小航</a>'
-            reprintContent: '本文是转载文章，版权归原作者所有。建议访问原文，转载本文请联系原作者。'
+            reprintContent: "本文是转载文章，版权归原作者所有。建议访问原文，转载本文请联系原作者。"
           children:
             - $formkit: switch
               name: enable
@@ -1573,7 +1573,7 @@ spec:
             - $formkit: code
               name: reprintContent
               label: 转载声明内容
-              placeholder: '本文是转载文章，版权归原作者所有。建议访问原文，转载本文请联系原作者。'
+              placeholder: "本文是转载文章，版权归原作者所有。建议访问原文，转载本文请联系原作者。"
               height: 120px
               language: html
               help: 支持 HTML 语法
@@ -1671,7 +1671,6 @@ spec:
           help: "填写每页（滚动加载）展示的友链数量,"
           value: 12
 
-
     - group: photos
       label: 图库
       formSchema:
@@ -1718,7 +1717,7 @@ spec:
         - $formkit: array
           name: list
           label: 待办清单列表
-          value: [ ]
+          value: []
           itemLabels:
             - type: text
               label: $value.seat
@@ -1741,7 +1740,7 @@ spec:
             - $formkit: array
               name: todo_list
               label: 内容列表
-              value: [ ]
+              value: []
               itemLabels:
                 - type: text
                   label: $value.completed
@@ -1965,7 +1964,7 @@ spec:
             - $formkit: array
               name: authorCareersTags
               label: 标签
-              value: [ ]
+              value: []
               itemLabels:
                 - type: text
                   label: $value.desc
@@ -2240,7 +2239,7 @@ spec:
                   name: authorInfoColor
                   label: 内容颜色
                   placeholder: 请输入内容
-                  value: '#ffffff'
+                  value: "#ffffff"
         - $formkit: code
           name: xjlc
           label: 心路历程
@@ -2357,7 +2356,7 @@ spec:
           if: $get(aboutRewardEnable).value
           name: reward_list
           label: 打赏名单
-          value: [ ]
+          value: []
           itemLabels:
             - type: image
               label: $value.avatar
@@ -2559,7 +2558,7 @@ spec:
               if: $get(switch).value
               name: introductionTitle
               label: 标题
-              value: '协议提醒助手'
+              value: "协议提醒助手"
             - $formkit: text
               if: $get(switch).value
               name: introductionTip
@@ -2602,8 +2601,8 @@ spec:
               if: "$get(use).value == 'custom'"
               label: cdn地址，外链地址
               validation: required
-              value: 'https://npm.onmicrosoft.cn/hao-theme-static@1.3.7/templates/assets'
-              help: '默认为npmJs的onmicrosoft加速地址，如果你有自己的cdn地址（请确保链接下assets文件夹下主题静态资源文件），可以填写，否则请勿修改！ '
+              value: "https://npm.onmicrosoft.cn/hao-theme-static@1.3.7/templates/assets"
+              help: "默认为npmJs的onmicrosoft加速地址，如果你有自己的cdn地址（请确保链接下assets文件夹下主题静态资源文件），可以填写，否则请勿修改！ "
         - $formkit: group
           name: opengraph
           label: Open Graph

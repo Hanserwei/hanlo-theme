@@ -295,7 +295,7 @@
 
 #page-header.nav-visible #nav {
     transition: all 0.5s ease 0s;
-    transform: translate3d(0px, 100%, 0px);
+    transform: translate3d(0px, 0px, 0px);
 }
 
 #page-header.nav-visible + .layout > .aside-content > .sticky_layout {
