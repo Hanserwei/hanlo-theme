@@ -30,7 +30,7 @@
 
                     <div class="card-album">
                         <th:block th:each="group : ${photoFinder.groupBy()}">
-                            <div class="card" th:onclick="pjax.loadUrl([['/photos?group='+${group.metadata.name}]])">
+                            <a class="card" th:href="@{/photos(group=${group.metadata.name})}">
                                 <img class="card_cover"
                                      th:src="${isLazyload ? '' : #annotations.get(group, 'cover')}"
                                      th:data-lazy-src="${ isLazyload ? #annotations.get(group, 'cover') : ''}"
@@ -39,7 +39,7 @@
                                     <p class="card__category" th:text="${group.spec.displayName}"></p>
                                     <h3 class="card__heading" th:text="${#annotations.get(group, 'description')}"></h3>
                                 </div>
-                            </div>
+                            </a>
                         </th:block>
                         <th:block th:each="photos : ${photoFinder.groupBy()}">
                             <div class="album-content-nocover"></div>
@@ -57,8 +57,9 @@
                                      alt="Group Image Gallery">
                                 <figcaption>
                                     <div class="gallery-group-name">[[${group.spec.displayName}]]</div>
-                                    <p>[[${#annotations.get(group, 'description')}]]</p><a target="_blank"
-                                                                                           rel="noopener" th:onclick="pjax.loadUrl([['/photos?group='+${group.metadata.name}]])"></a>
+                                    <p>[[${#annotations.get(group, 'description')}]]</p>
+                                    <a th:href="@{/photos(group=${group.metadata.name})}"
+                                       th:aria-label="|'查看 ${group.spec.displayName} 相册'|"></a>
                                 </figcaption>
                             </figure>
                         </th:block>

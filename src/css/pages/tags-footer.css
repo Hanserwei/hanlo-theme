@@ -86,7 +86,7 @@
     margin-left: 8px
 }
 
-#heo-footer .footer-title-group a {
+#heo-footer .footer-title-group .random-friends-btn {
     margin-left: 8px;
 }
 
@@ -98,7 +98,7 @@
 }
 
 
-#heo-footer .footer-title-group a:hover i {
+#heo-footer .footer-title-group .random-friends-btn:hover i {
     color: var(--heo-main);
 }
 

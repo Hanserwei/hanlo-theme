@@ -16,6 +16,12 @@ samp {
     font-family: var(--hanlo-font-mono);
 }
 
+html,
+body {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
 .hanlo-scrollbar-gradient *::-webkit-scrollbar-thumb {
     background-color: var(--heo-main);
     background-image: linear-gradient(

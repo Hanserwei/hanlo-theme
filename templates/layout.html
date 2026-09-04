@@ -1,0 +1,5 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:fragment="html(head, content)"
+      th:replace="~{modules/layouts/layout :: layout(content = ${content}, htmlType = 'plugin', title = '', head = ${head})}">
+</html>

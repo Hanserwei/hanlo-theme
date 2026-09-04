@@ -23,6 +23,8 @@ Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/hal
 - 支持文章、独立页面、友链、瞬间、图库等内容类型
 - 使用 Halo 官方评论组件，并支持搜索以及多种 Halo 插件集成
 - 使用 Shiki 渲染代码高亮
+- 使用浏览器原生文档导航，并以 View Transitions 和保守预取渐进增强
+- 使用 Design Tokens、语义 Cascade Layers 和零 `!important` 的现代 CSS 架构
 - 提供关于、留言板、待办清单、相册等自定义页面模板
 
 ## 环境要求
@@ -42,6 +44,9 @@ Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/hal
 4. 安装完成后启用 Hanlo Theme，并进入主题设置完成初始化。
 
 首次启用时请填写“建站时间”等必填项，并保存各个设置分组。如果启用后出现 `500` 错误，请先确认 Halo 版本符合要求，再重新保存全部主题设置。
+
+从 1.x 升级到 2.0.0 时，自定义代码若使用 `window.pjax` 或旧 PJAX 事件，需要改为真实链接、
+`location.assign()` 或原生文档生命周期。完整说明见[阶段 6 迁移文档](./docs/modernization/phase-6/README.md#5-200-迁移说明)。
 
 ### 本地打包
 

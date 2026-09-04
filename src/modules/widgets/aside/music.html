@@ -2,10 +2,11 @@
 <div th:style="|--hanlo-music-front-light: url('${theme.config.sidebar.music.lightMsimg}'); --hanlo-music-back-light: url('${theme.config.sidebar.music.lightBackMsimg}'); --hanlo-music-front-dark: url('${theme.config.sidebar.music.darkMsimg}'); --hanlo-music-back-dark: url('${theme.config.sidebar.music.darkBackMsimg}')|">
     <div class="item-headline-music"><i class="haofont hao-icon-music"></i><span>音乐天地</span></div>
 
-    <div class="card-widget card-music"
-         th:attr="onclick='javascript:window.open(\''+ ${theme.config.sidebar.music.musicUrl} +'\')'">
-        <div id="flip-wrapper-card">
-            <div id="flip-music">
+    <a class="card-widget card-music" th:if="${not #strings.isEmpty(theme.config.sidebar.music.musicUrl)}"
+       th:href="${theme.config.sidebar.music.musicUrl}"
+       aria-label="打开音乐天地" target="_blank" rel="noopener noreferrer external">
+        <div class="flip-wrapper-card">
+            <div class="flip-music">
                 <div class="msimg">
                 </div>
                 <div class="back msimg">
@@ -13,6 +14,14 @@
             </div>
         </div>
 
+    </a>
+    <div class="card-widget card-music" th:unless="${not #strings.isEmpty(theme.config.sidebar.music.musicUrl)}">
+        <div class="flip-wrapper-card">
+            <div class="flip-music">
+                <div class="msimg"></div>
+                <div class="back msimg"></div>
+            </div>
+        </div>
     </div>
 
 </div>

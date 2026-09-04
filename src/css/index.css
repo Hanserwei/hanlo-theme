@@ -6,42 +6,22 @@
 
 @import "./base.css" layer(base);
 
-/* Preserve the legacy cascade byte order while keeping each responsibility editable. */
+/* Legacy foundations stay isolated while modern modules use their semantic cascade layer. */
 @import "./legacy/foundation.css" layer(base);
-@import "./pages/archive-taxonomy.css" layer(base);
-@import "./pages/error-legacy.css" layer(base);
-@import "./components/sidebar-legacy.css" layer(base);
-@import "./layout/shell-legacy.css" layer(base);
-@import "./components/article-content.css" layer(base);
-@import "./components/article-extensions.css" layer(base);
-@import "./layout/navigation.css" layer(base);
-@import "./layout/footer-sidebar.css" layer(base);
-@import "./components/general.css" layer(base);
-@import "./pages/home-categories.css" layer(base);
-@import "./pages/home-post-list.css" layer(base);
-@import "./pages/home-aside.css" layer(base);
-@import "./pages/post-header.css" layer(base);
-@import "./pages/post-content.css" layer(base);
-@import "./pages/post-footer.css" layer(base);
-@import "./pages/listing.css" layer(base);
-@import "./pages/links.css" layer(base);
-@import "./pages/social.css" layer(base);
-@import "./pages/tags-footer.css" layer(base);
-@import "./pages/about-profile.css" layer(base);
-@import "./pages/about-sections.css" layer(base);
-@import "./pages/widgets.css" layer(base);
-@import "./pages/content-tools.css" layer(base);
-@import "./overrides/global.css" layer(base);
-@import "./overrides/sidebar.css" layer(base);
-@import "./overrides/components.css" layer(base);
-@import "./overrides/pages.css" layer(base);
-@import "./overrides/integrations.css" layer(base);
 
+@import "./layout/shell-legacy.css" layer(layout);
+@import "./layout/navigation.css" layer(layout);
+@import "./layout/footer-sidebar.css" layer(layout);
 @import "./layout/footer-template.css" layer(layout);
 @import "./layout/global-background.css" layer(layout);
 @import "./layout/nav-menu.css" layer(layout);
 
+@import "./components/sidebar-legacy.css" layer(components);
+@import "./components/article-content.css" layer(components);
+@import "./components/article-extensions.css" layer(components);
+@import "./components/general.css" layer(components);
 @import "./components/runtime.css" layer(components);
+@import "./components/semantic-navigation.css" layer(components);
 @import "./components/banner-group.css" layer(components);
 @import "./components/dynamic-values.css" layer(components);
 @import "./components/greeting.css" layer(components);
@@ -51,6 +31,22 @@
 @import "./components/music-card.css" layer(components);
 @import "./components/rightside.css" layer(components);
 
+@import "./pages/archive-taxonomy.css" layer(pages);
+@import "./pages/error-legacy.css" layer(pages);
+@import "./pages/home-categories.css" layer(pages);
+@import "./pages/home-post-list.css" layer(pages);
+@import "./pages/home-aside.css" layer(pages);
+@import "./pages/post-header.css" layer(pages);
+@import "./pages/post-content.css" layer(pages);
+@import "./pages/post-footer.css" layer(pages);
+@import "./pages/listing.css" layer(pages);
+@import "./pages/links.css" layer(pages);
+@import "./pages/social.css" layer(pages);
+@import "./pages/tags-footer.css" layer(pages);
+@import "./pages/about-profile.css" layer(pages);
+@import "./pages/about-sections.css" layer(pages);
+@import "./pages/widgets.css" layer(pages);
+@import "./pages/content-tools.css" layer(pages);
 @import "./pages/about-game.css" layer(pages);
 @import "./pages/about-hello.css" layer(pages);
 @import "./pages/about-map.css" layer(pages);
@@ -59,4 +55,28 @@
 @import "tailwindcss/utilities.css" layer(utilities) prefix(hl) source("../");
 @import "./utilities.css" layer(utilities);
 
+@import "./overrides/global.css" layer(overrides);
+@import "./overrides/sidebar.css" layer(overrides);
+@import "./overrides/components.css" layer(overrides);
+@import "./overrides/pages.css" layer(overrides);
+@import "./overrides/integrations.css" layer(overrides);
+@import "./overrides/semantic-navigation.css" layer(overrides);
+
 @source "../../tests/e2e/fixtures/phase5-visual.html";
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-group(root) {
+  animation-duration: 200ms;
+  animation-timing-function: var(--hanlo-ease-standard, ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

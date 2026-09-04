@@ -1,0 +1,58 @@
+.hanlo-button-reset {
+  appearance: none;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+:where(.recent-post-item, .todayCard, .bbTimeList .swiper-container) {
+  position: relative;
+}
+
+.hanlo-stretched-link::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: "";
+}
+
+:where(.recent-post-item, .todayCard, .bbTimeList)
+  :where(a:not(.hanlo-stretched-link), button) {
+  position: relative;
+  z-index: 2;
+}
+
+:where(.card-album .card, .comment-card) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hanlo-moment-link {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.hanlo-moment-action {
+  display: inline-grid;
+  place-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.recent-post-info-top-tips :where(.original, .unvisited-post) {
+  align-items: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding-inline: 4px;
+}
+
+.todayCard .banner-button {
+  min-height: 44px;
+}

@@ -1,3 +1,4 @@
+@layer components {
 /* Extracted from src/modules/widgets/aside/profile.html. */
 /* 社交按钮 */
             #aside-content .card-info #card-info-btn {
@@ -79,4 +80,4 @@
                 margin-top: 0.8rem;
                 margin-bottom: 0.4rem;
             }
-
+}

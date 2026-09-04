@@ -8,6 +8,14 @@ interface GreetingItem {
   readonly end: number;
 }
 
+const DEFAULT_FOOTER_RUNTIME_IMAGE = "/themes/theme-hanlo/assets/images/hanlo-logo.png";
+const RETIRED_FOOTER_RUNTIME_IMAGE =
+  "/upload/%E5%9B%B0%E5%9B%B0%E9%B1%BC-%E4%B8%8B%E7%8F%AD%E5%95%A6-yellowgreen.svg";
+
+function normalizeFooterRuntimeImage(source: string): string {
+  return source === RETIRED_FOOTER_RUNTIME_IMAGE ? DEFAULT_FOOTER_RUNTIME_IMAGE : source;
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -81,7 +89,7 @@ function mountFooterRuntime(config: Readonly<ThemeConfig>, resources: PageResour
     const working = now.getHours() >= 9 && now.getHours() < 18;
     const image = document.createElement("img");
     image.className = "workSituationImg boardsign";
-    image.src = working ? runtime.workImage : runtime.offDutyImage;
+    image.src = normalizeFooterRuntimeImage(working ? runtime.workImage : runtime.offDutyImage);
     image.alt = image.title = working ? runtime.workDescription : runtime.offDutyDescription;
     const tip = document.createElement("div");
     tip.id = "runtimeTextTip";
@@ -269,4 +277,8 @@ export function createPageWidgetsController(): PageControllerDefinition {
   };
 }
 
-export const pageWidgetTestables = Object.freeze({ parseGreetingItems, parseTypedTexts });
+export const pageWidgetTestables = Object.freeze({
+  normalizeFooterRuntimeImage,
+  parseGreetingItems,
+  parseTypedTexts,
+});

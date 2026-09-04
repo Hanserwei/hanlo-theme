@@ -1,15 +1,14 @@
 <!-- 推荐文章 -->
 <div class="topGroup" id="topGroup"
      th:with='topGroupPosts = ${postFinder.list(1,6)},
-    postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,"?") ? theme.config.layout.postRandomImg+"&" : theme.config.layout.postRandomImg+"?"}'>
+    postRandomImg=${#strings.contains(postRandomImgSource,"?") ? postRandomImgSource+"&" : postRandomImgSource+"?"}'>
     <div class="recent-post-group">
         <div class="recent-post-item" th:each="post,iter : ${topGroupPosts}"
              th:if="${#strings.equals(theme.config.top.BannerRight.recommendPost, 'latest')}">
 
             <div class="post_cover" th:classappend="${iter.index % 2 == 0 ? 'left_radius' : 'right_radius'}">
                 <a th:href="@{${post.status.permalink}}" th:title="${post.spec.title}">
-                    <span class="recent-post-top-text"
-                          th:attr="onclick='pjax.loadUrl(\''+ @{${post.status.permalink}} +'\')'">荐</span>
+                    <span class="recent-post-top-text">荐</span>
                     <img class="post_bg"
                          th:with=' img = ${#strings.isEmpty(post.spec.cover) ? postRandomImg+post.spec.title : thumbnail.gen(post.spec.cover, "s")}'
                          th:alt="${post.spec.title}" th:src="${isLazyload ? '' : img}"
@@ -28,8 +27,7 @@
             <th:block th:with="post = ${postFinder.getByName(cuscomPost.post)}">
                 <div class="post_cover" th:classappend="${iter.index % 2 == 0 ? 'left_radius' : 'right_radius'}">
                     <a th:href="@{${post.status.permalink}}" th:title="${post.spec.title}">
-                        <span class="recent-post-top-text"
-                              th:attr="onclick='pjax.loadUrl(\''+ @{${post.status.permalink}} +'\')'">荐</span>
+                        <span class="recent-post-top-text">荐</span>
                         <img class="post_bg"
                              th:with='img = ${#strings.isEmpty(post.spec.cover) ? postRandomImg+post.spec.title : thumbnail.gen(post.spec.cover, "s")}'
                              th:alt="${post.spec.title}" th:src="${isLazyload ? '' : img}"
@@ -46,8 +44,11 @@
     </div>
 
     <!-- 今日推荐 -->
-    <div class="todayCard" id="todayCard" th:if="${theme.config.top.BannerRight.todayRecommend}"
-         th:attr="onclick='javascript:window.open(\''+ ${theme.config.top.BannerRight.todayRecommendContent.todayRecommendUrl} +'\')'">
+    <div class="todayCard" id="todayCard" th:if="${theme.config.top.BannerRight.todayRecommend}">
+        <a class="hanlo-stretched-link"
+           th:href="${theme.config.top.BannerRight.todayRecommendContent.todayRecommendUrl}"
+           th:aria-label="|查看推荐：${theme.config.top.BannerRight.todayRecommendContent.todayRecommendTitle}|"
+           target="_blank" rel="noopener noreferrer"></a>
         <div class="todayCard-info">
             <div class="todayCard-tips"
                  th:text="${theme.config.top.BannerRight.todayRecommendContent.todayRecommendxTitle}"></div>
@@ -55,13 +56,13 @@
                  th:text="${theme.config.top.BannerRight.todayRecommendContent.todayRecommendTitle}"></div>
         </div>
             <div class="todayCard-cover hanlo-today-cover"
-                 th:style="|--hanlo-today-cover: url('${theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover}')|">
+                 th:style="|--hanlo-today-cover: url('${todayRecommendCover}')|">
         </div>
         <div class="banner-button-group">
-            <a class="banner-button" data-hanlo-action="hide-today-card">
+            <button class="banner-button hanlo-button-reset" data-hanlo-action="hide-today-card" type="button">
                 <i class="haofont hao-icon-circle-plus"></i>
                 <span class="banner-button-text">更多推荐</span>
-            </a>
+            </button>
         </div>
     </div>
 </div>

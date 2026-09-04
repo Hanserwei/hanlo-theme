@@ -12,25 +12,26 @@
     </div>
 
     <div class="nav-button" id="randomPost_button" th:if="${theme.config.nav.right.article}">
-        <a class="site-page" data-hanlo-action="random-post" href="javascript:void(0);" title="随机文章">
+        <button class="site-page hanlo-button-reset" data-hanlo-action="random-post"
+                type="button" title="随机文章">
             <i class="haofont hao-icon-signal-tower-fill"></i>
-        </a>
+        </button>
     </div>
 
     <!-- 切换模式 -->
     <div class="nav-button" id="darkmode_button" th:if="${theme.config.nav.right.darkMode}">
-        <a class="console_switchbutton" data-hanlo-action="toggle-theme" href="javascript:void(0);" rel="external nofollow"
-           title="切换模式 - 日夜交替，黑白互换。">
+        <button class="console_switchbutton hanlo-button-reset" data-hanlo-action="toggle-theme"
+                type="button" title="切换模式 - 日夜交替，黑白互换。">
             <i class="haofont hao-icon-moon-clear-fill hl:[font-size:1rem]"></i>
-        </a>
+        </button>
     </div>
 
     <!-- 搜索使用搜索插件 -->
     <div class="nav-button" id="search-button" th:if="${pluginFinder.available('PluginSearchWidget')}">
-        <a class="site-page social-icon search" href="javascript:SearchWidget.open();" rel="external nofollow"
-           title="站内搜索">
+        <button class="site-page social-icon search hanlo-button-reset" data-hanlo-action="open-search"
+                type="button" title="站内搜索">
             <i class="haofont hao-icon-search--line"></i>
-        </a>
+        </button>
     </div>
 
     <div th:if="${theme.config.nav.right.navLogin}" class="console-button" tabindex="-1"
@@ -53,8 +54,7 @@
                         </a>
                     </th:block>
                     <a sec:authorize="isAnonymous()" class="back-menu-item" rel="external nofollow" target="_blank"
-                       href="/login"
-                       onclick="this.href = '/login?redirect_uri=' + encodeURIComponent(window.location.href)">
+                       href="/login" data-hanlo-login-link>
                         <span class="back-menu-item-text">登录</span>
                     </a>
                 </div>
@@ -62,21 +62,21 @@
         </div>
     </div>
     <div th:if="${theme.config.nav.right.console.consoleEnable}" class="nav-button" id="nav-console">
-        <a class="console_switchbutton" data-hanlo-action="show-console" href="javascript:void(0);" rel="external nofollow"
-           title="显示中控台">
+        <button class="console_switchbutton hanlo-button-reset" data-hanlo-action="show-console"
+                type="button" title="显示中控台">
             <i class="haofont hao-icon-dashboard"></i>
-        </a>
+        </button>
     </div>
 
     <div class="nav-button" data-hanlo-action="scroll-top" id="nav-totop">
-        <a class="totopbtn">
+        <button class="totopbtn hanlo-button-reset" type="button" aria-label="返回顶部">
             <i class="haofont hao-icon-arrow-up hl:[font-size:1rem]"></i><span id="percent">0</span>
-        </a>
+        </button>
     </div>
 
     <div id="toggle-menu">
-        <a class="site-page">
+        <button class="site-page hanlo-button-reset" type="button" aria-label="打开导航菜单">
             <i class="haofont hao-icon-bars"></i>
-        </a>
+        </button>
     </div>
 </div>

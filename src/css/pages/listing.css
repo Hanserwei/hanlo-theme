@@ -61,8 +61,8 @@
 #page .tag-cloud-list a {
     display: flex;
     width: fit-content;
-    color: var(--heo-fontcolor) !important;
-    font-size: 1.4em !important;
+    color: var(--heo-fontcolor);
+    font-size: 1.4em;
     padding: 0.2em .5em;
     background: var(--heo-card-bg);
     margin: .5em .5em;
@@ -75,9 +75,9 @@
 }
 
 #page .tag-cloud-list a:hover {
-    background: var(--heo-theme) !important;
+    background: var(--heo-theme);
     box-shadow: var(--heo-shadow-blue);
-    color: var(--heo-card-bg) !important;
+    color: var(--heo-card-bg);
     border: var(--style-border-hover);
 }
 
@@ -135,7 +135,7 @@
 
 span.tags-punctuation::before {
     content: "\e663";
-    font-family: "haofont" !important;
+    font-family: "haofont";
     opacity: 0.4;
     margin-right: 2px;
 }
@@ -224,7 +224,7 @@ figure.gallery-group:hover .gallery-group-name::after {
 }
 
 .tk-replies .tk-content {
-    margin-top: 0rem !important;
+    margin-top: 0rem;
 }
 
 #tag #tag-page-tags {
@@ -263,7 +263,7 @@ figure.gallery-group:hover .gallery-group-name::after {
     margin: 0.25rem 0.25rem;
     line-height: 1.6;
     border-radius: 8px;
-    color: var(--heo-fontcolor) !important;
+    color: var(--heo-fontcolor);
     border: var(--style-border-always);
     display: flex;
     align-items: center;
@@ -271,13 +271,13 @@ figure.gallery-group:hover .gallery-group-name::after {
 }
 
 #tag #tag-page-tags a.select {
-    color: var(--heo-card-bg) !important;
+    color: var(--heo-card-bg);
     background: var(--heo-theme);
     box-shadow: var(--heo-shadow-theme);
 }
 
 #tag #tag-page-tags a:hover {
-    color: var(--heo-card-bg) !important;
+    color: var(--heo-card-bg);
     background: var(--heo-theme);
     box-shadow: var(--heo-shadow-theme);
 }
@@ -326,7 +326,7 @@ figure.gallery-group:hover .gallery-group-name::after {
 
 @media screen and (max-width: 768px) {
     .article-sort-item-info a {
-        white-space: inherit !important;
+        white-space: inherit;
     }
 }
 

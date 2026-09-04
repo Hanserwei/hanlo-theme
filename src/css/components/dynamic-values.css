@@ -8,7 +8,7 @@
 }
 
 .hanlo-essay-cover {
-    background: var(--hanlo-essay-cover) left 28% / cover no-repeat !important;
+    background: var(--hanlo-essay-cover) left 28% / cover no-repeat;
 }
 
 .hanlo-profile-background {
@@ -27,10 +27,10 @@
     background: var(--hanlo-today-cover) no-repeat center / cover;
 }
 
-#aside-content #flip-wrapper-card #flip-steam .stimg {
+#aside-content .flip-wrapper-card .flip-steam .stimg {
     background: var(--hanlo-steam-cover) center center / 100% no-repeat;
 }
 
-#aside-content #flip-wrapper-card #flip-steam .back.stimg {
+#aside-content .flip-wrapper-card .flip-steam .back.stimg {
     background: transparent;
 }

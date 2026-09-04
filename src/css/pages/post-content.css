@@ -11,7 +11,7 @@
 }
 
 #article-container .tabs {
-    margin: 1rem 0 !important;
+    margin: 1rem 0;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: var(--heo-shadow-border);
@@ -70,7 +70,7 @@
 
 /* tab边框 */
 #article-container .tabs {
-    border: 3px solid var(--heo-secondbg) !important;
+    border: 3px solid var(--heo-secondbg);
 }
 
 
@@ -126,7 +126,7 @@ details:not(.tk-admin-config-group):not(.card-friend-class-name) summary {
 }
 
 details:not(.tk-admin-config-group):not(.card-friend-class-name) > *:nth-child(2) {
-    margin-top: calc(54px + 1rem) !important;
+    margin-top: calc(54px + 1rem);
 }
 
 details[open]:not(.tk-admin-config-group):not(.card-friend-class-name) summary {
@@ -290,12 +290,12 @@ strong {
 /* 链接外挂标签 */
 #article-container .tag-Link {
     background: var(--heo-secondbg);
-    border-radius: 8px !important;
+    border-radius: 8px;
     display: flex;
     border: var(--style-border);
     flex-direction: column;
     padding: 0.5rem 1rem;
-    border-width: 1px !important;
+    border-width: 1px;
     margin-top: 1rem;
 }
 
@@ -382,7 +382,7 @@ h5,
 h6 {
     margin-top: 1rem;
     padding-top: 0;
-    padding-left: 0 !important;
+    padding-left: 0;
     font-weight: weight;
 }
 
@@ -418,7 +418,7 @@ blockquote p {
 /* 文章内标题 */
 #article-container .headerlink::before {
     content: "\e621";
-    font-family: haofont !important;
+    font-family: haofont;
 }
 
 #article-container .headerlink {
@@ -429,18 +429,18 @@ blockquote p {
     position: relative;
     padding: 0px;
     border: none;
-    border-radius: 8px !important;
+    border-radius: 8px;
     line-height: 1;
     font-size: 1rem;
 }
 
 #article-container .headerlink:hover {
-    background: none !important;
+    background: none;
     opacity: 1;
-    border-bottom: none !important;
-    box-shadow: none !important;
+    border-bottom: none;
+    box-shadow: none;
     background: var(--heo-none);
-    color: var(--heo-lighttext) !important;
+    color: var(--heo-lighttext);
     text-decoration: none;
 }
 
@@ -462,7 +462,7 @@ blockquote p {
 
 /* 文章视频 */
 .doge-inner-player {
-    border-radius: 12px !important;
+    border-radius: 12px;
 }
 
 /* 文章数字头 */
@@ -545,7 +545,7 @@ blockquote p {
 }
 
 .relatedPosts > .headline {
-    margin-bottom: 0.8rem !important;
+    margin-bottom: 0.8rem;
     font-size: 1.2em;
 }
 
@@ -799,7 +799,7 @@ a.reward-main-btn:hover {
     left: 0;
     display: none;
     z-index: 109;
-    margin: 0 !important
+    margin: 0
 }
 
 .post-tools-left #quit-box {
@@ -809,6 +809,6 @@ a.reward-main-btn:hover {
 @media screen and (max-width: 768px) {
     #quit-box {
         z-index: 109;
-        display: none !important;
+        display: none;
     }
 }

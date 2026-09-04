@@ -22,8 +22,7 @@
                     <div class="error-info">
                         <h1 class="error_title">404</h1>
                         <div class="error_subtitle">[[${theme.config.other.error_404.subtitle}]]</div>
-                        <a class="button--animated" href="/"
-                           data-pjax-state=""><i class="fas fa-rocket"></i>回到主页</a>
+                        <a class="button--animated" href="/"><i class="fas fa-rocket"></i>回到主页</a>
                     </div>
                 </div>
             </div>
@@ -32,7 +31,7 @@
             <div class="aside-list">
                 <div class="aside-list-group"
                      th:with='topGroupPosts = ${postFinder.list(1,6)},
-                postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,"?") ? theme.config.layout.postRandomImg+"&" : theme.config.layout.postRandomImg+"?"}'>
+                postRandomImg=${#strings.contains(postRandomImgSource,"?") ? postRandomImgSource+"&" : postRandomImgSource+"?"}'>
                     <div th:each="post : ${topGroupPosts}" class="aside-list-item">
                         <a class="thumbnail div_border"
                            th:href="@{${post.status.permalink}}"
@@ -42,8 +41,7 @@
                                 th:alt="${post.spec.title}"></a>
                         <div class="content">
                             <a class="title" th:href="@{${post.status.permalink}}"
-                               th:title="${post.spec.title}"
-                               data-pjax-state="">[[${post.spec.title}]]</a>
+                               th:title="${post.spec.title}">[[${post.spec.title}]]</a>
                             <!-- <time datetime="2023-06-08T04:08:22.000Z" title="创建 2023-06-08 12:08:22">2023-06-08</time> -->
                         </div>
                     </div>

@@ -1,96 +1,133 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page, type Request } from "@playwright/test";
 
 const pageOne = "/tests/e2e/fixtures/page-one.html";
+const pageTwo = "/tests/e2e/fixtures/page-two.html";
+const legacyNavigationHeaderPrefix = `x-${["p", "j", "a", "x"].join("")}`;
 
-async function waitForLifecycle(page: import("@playwright/test").Page): Promise<void> {
-  await page.waitForFunction(() => window.HanloLifecycle?.activeControllers.includes("e2e-probe"));
-  await page.evaluate(() => window.HanloLifecycle?.whenIdle());
+interface StoredProbeEvent {
+  readonly type: string;
 }
 
-test("serializes consecutive PJAX and history navigations without resource leaks", async ({
+async function waitForLifecycle(page: Page): Promise<void> {
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          window.HanloLifecycle?.activeControllers.includes("e2e-probe") ||
+          document.documentElement.dataset["hanloSetupError"] !== undefined,
+      ),
+    )
+    .toBe(true);
+  const setupError = await page.locator("html").getAttribute("data-hanlo-setup-error");
+  expect(setupError).toBeNull();
+  await page.evaluate(() => window.HanloLifecycle?.whenIdle());
+  await page.waitForTimeout(250);
+}
+
+async function followLink(page: Page, selector: string, destination: string): Promise<void> {
+  await Promise.all([
+    page.waitForURL(`**${destination}`),
+    page.locator(selector).evaluate((link) => {
+      if (!(link instanceof HTMLAnchorElement)) throw new TypeError("Expected an anchor link.");
+      link.click();
+    }),
+  ]);
+  await waitForLifecycle(page);
+}
+
+function isFixtureDocument(request: Request): boolean {
+  return (
+    request.resourceType() === "document" &&
+    /\/tests\/e2e\/fixtures\/page-(?:one|two)\.html$/.test(new URL(request.url()).pathname)
+  );
+}
+
+test("performs ten native document navigations without legacy partial requests", async ({
+  page,
+}) => {
+  const documentRequests: Request[] = [];
+  const xhrDocuments: Request[] = [];
+  page.on("request", (request) => {
+    if (isFixtureDocument(request)) documentRequests.push(request);
+    if (
+      request.resourceType() === "xhr" &&
+      /\/tests\/e2e\/fixtures\/page-(?:one|two)\.html$/.test(new URL(request.url()).pathname)
+    ) {
+      xhrDocuments.push(request);
+    }
+  });
+
+  await page.goto(pageOne);
+  await waitForLifecycle(page);
+
+  for (let index = 0; index < 10; index++) {
+    const onFirstPage = index % 2 === 0;
+    await followLink(
+      page,
+      onFirstPage ? "#next-page" : "#previous-page",
+      onFirstPage ? pageTwo : pageOne,
+    );
+    await page.evaluate(() => document.dispatchEvent(new Event("hanlo:e2e:probe")));
+    expect(await page.locator("#body-wrap").count()).toBe(1);
+    expect(await page.evaluate(() => window.__hanloCurrentMounts)).toBe(1);
+    expect(await page.evaluate(() => new Set(window.HanloLifecycle?.activeControllers).size)).toBe(
+      await page.evaluate(() => window.HanloLifecycle?.activeControllers.length),
+    );
+  }
+
+  const probe = await page.evaluate(() =>
+    JSON.parse(sessionStorage.getItem("hanlo-e2e-probe") ?? "null"),
+  );
+  expect(documentRequests).toHaveLength(11);
+  expect(xhrDocuments).toEqual([]);
+  expect(
+    documentRequests.some((request) =>
+      Object.keys(request.headers()).some((name) =>
+        name.toLowerCase().startsWith(legacyNavigationHeaderPrefix),
+      ),
+    ),
+  ).toBe(false);
+  expect(probe.documents).toBe(11);
+  expect(probe.clicks).toBe(10);
+  expect(
+    probe.events.filter(({ type }: StoredProbeEvent) => type === "hanlo:page:initial"),
+  ).toHaveLength(11);
+  expect(probe.events.filter(({ type }: StoredProbeEvent) => type === "hanlo:page:error")).toEqual(
+    [],
+  );
+});
+
+test("uses native history and models a persisted BFCache restore without remounting", async ({
   page,
 }) => {
   await page.goto(pageOne);
   await waitForLifecycle(page);
+  await followLink(page, "#next-page", pageTwo);
 
-  await page.evaluate(() => document.dispatchEvent(new Event("hanlo:e2e:probe")));
-  await page.locator("#next-page").click();
-  await expect(page.locator("#body-wrap")).toHaveAttribute("data-page", "two");
+  await page.goBack({ waitUntil: "domcontentloaded" });
+  await expect(page).toHaveURL(new RegExp(`${pageOne.replaceAll(".", "\\.")}$`));
   await waitForLifecycle(page);
-  expect(await page.evaluate(() => window.__newPageDestroyCount)).toBe(0);
-  await page.evaluate(() => document.dispatchEvent(new Event("hanlo:e2e:probe")));
-
-  await page.goBack();
-  await expect(page.locator("#body-wrap")).toHaveAttribute("data-page", "one");
+  await page.goForward({ waitUntil: "domcontentloaded" });
+  await expect(page).toHaveURL(new RegExp(`${pageTwo.replaceAll(".", "\\.")}$`));
   await waitForLifecycle(page);
-  expect(await page.evaluate(() => window.__newPageDestroyCount)).toBe(0);
-  await page.evaluate(() => document.dispatchEvent(new Event("hanlo:e2e:probe")));
 
-  await page.goForward();
-  await expect(page.locator("#body-wrap")).toHaveAttribute("data-page", "two");
-  await waitForLifecycle(page);
-  expect(await page.evaluate(() => window.__newPageDestroyCount)).toBe(0);
-  await page.evaluate(() => document.dispatchEvent(new Event("hanlo:e2e:probe")));
-
-  const result = await page.evaluate(() => ({
-    active: window.HanloLifecycle?.activeControllers,
-    configFrozen: Object.isFrozen(window.GLOBAL_CONFIG),
-    lazyloadFrozen: Object.isFrozen(window.GLOBAL_CONFIG.lazyload),
-    configType: window.HanloLifecycle?.config.htmlType,
-    probe: window.__hanloProbe,
+  const mountsBeforeRestore = await page.evaluate(() => window.__hanloCurrentMounts);
+  // Headless automation does not reliably admit pages to BFCache; exercise the persisted-event
+  // state transition here, while headed Chrome evidence verifies a real browser restoration.
+  await page.evaluate(() =>
+    window.dispatchEvent(new PageTransitionEvent("pageshow", { persisted: true })),
+  );
+  await page.evaluate(() => window.HanloLifecycle?.whenIdle());
+  const state = await page.evaluate(() => ({
+    mounts: window.__hanloCurrentMounts,
+    events: JSON.parse(sessionStorage.getItem("hanlo-e2e-probe") ?? "null").events,
   }));
 
-  expect(result.active).toEqual([
-    "theme-mode",
-    "content-elements",
-    "categories-3d",
-    "site-shell",
-    "translation",
-    "page-widgets",
-    "e2e-probe",
-  ]);
-  expect(result.configFrozen).toBe(true);
-  expect(result.lazyloadFrozen).toBe(true);
-  expect(result.configType).toBe("page-two");
-  expect(result.probe.clicks).toBe(4);
-  expect(result.probe.mounts).toBe(4);
-  expect(result.probe.unmounts).toBe(3);
-  expect(result.probe.cleanups).toBe(3);
-  expect(result.probe.observerDisconnects).toBe(3);
-  expect(result.probe.events.filter(({ type }) => type === "hanlo:page:initial")).toHaveLength(1);
-  expect(
-    result.probe.events.filter(
-      ({ type, source }) => type === "hanlo:page:enter" && source === "history",
-    ),
-  ).toHaveLength(2);
-  expect(result.probe.events.map(({ type }) => type)).toEqual([
-    "hanlo:page:initial",
-    "hanlo:page:leave",
-    "hanlo:page:destroy",
-    "hanlo:page:enter",
-    "hanlo:page:leave",
-    "hanlo:page:destroy",
-    "hanlo:page:enter",
-    "hanlo:page:leave",
-    "hanlo:page:destroy",
-    "hanlo:page:enter",
-  ]);
-  expect(
-    result.probe.events
-      .filter(({ type, source }) => type === "hanlo:page:enter" && source === "history")
-      .map(({ direction }) => direction),
-  ).toEqual(["backward", "forward"]);
-  const enteredUrls = result.probe.events
-    .filter(({ type }) => type === "hanlo:page:enter")
-    .map(({ url }) => new URL(url).pathname);
-  expect(enteredUrls).toEqual([
-    "/tests/e2e/fixtures/page-two.html",
-    "/tests/e2e/fixtures/page-one.html",
-    "/tests/e2e/fixtures/page-two.html",
-  ]);
+  expect(state.mounts).toBe(mountsBeforeRestore);
+  expect(state.events.at(-1)).toMatchObject({ type: "hanlo:page:restore", source: "history" });
 });
 
-test("synchronizes route styles and executes opted-in module scripts after PJAX", async ({
+test("lets complete documents own head metadata, route styles and module execution", async ({
   page,
 }) => {
   const pageResource = () =>
@@ -103,55 +140,180 @@ test("synchronizes route styles and executes opted-in module scripts after PJAX"
   await page.goto(pageOne);
   await waitForLifecycle(page);
   await expect.poll(pageResource).toBe("one");
-  await expect(page.locator("html")).toHaveAttribute("data-pjax-module-page", "one");
+  await expect(page.locator("html")).toHaveAttribute("data-document", "one");
+  await expect(page.locator("html")).toHaveAttribute("data-hanlo-module-page", "one");
+  await expect(page.locator("html")).toHaveAttribute("data-hanlo-module-executions", "1");
 
-  await page.locator("#next-page").click();
-  await waitForLifecycle(page);
+  await followLink(page, "#next-page", pageTwo);
   await expect.poll(pageResource).toBe("two");
-  await expect(page.locator("html")).toHaveAttribute("data-pjax-module-page", "two");
-  await expect(page.locator("link[data-hanlo-page-style]")).toHaveCount(1);
-
-  await page.goBack();
-  await waitForLifecycle(page);
-  await expect.poll(pageResource).toBe("one");
+  await expect(page).toHaveTitle("Lifecycle page two");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /page-two\.html$/);
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+    "content",
+    "Lifecycle page two",
+  );
+  await expect(page.locator("html")).toHaveAttribute("data-document", "two");
+  await expect(page.locator("html")).toHaveAttribute("data-hanlo-module-page", "two");
+  await expect(page.locator("html")).toHaveAttribute("data-hanlo-module-executions", "1");
   await expect(page.locator("link[data-hanlo-page-style]")).toHaveCount(1);
 });
 
-test("preserves native download-anchor behavior outside PJAX", async ({ page }) => {
+test("installs conservative prefetch as a progressive enhancement", async ({ page }) => {
   await page.goto(pageOne);
   await waitForLifecycle(page);
-  const downloadPromise = page.waitForEvent("download");
-  await page.locator("#download-file").click();
-  const download = await downloadPromise;
-  expect(download.suggestedFilename()).toBe("config.js");
-  await expect(page).toHaveURL(new RegExp(`${pageOne.replaceAll(".", "\\.")}$`));
+
+  const supportsSpeculationRules = await page.evaluate(
+    () =>
+      typeof HTMLScriptElement.supports === "function" &&
+      HTMLScriptElement.supports("speculationrules"),
+  );
+  if (supportsSpeculationRules) {
+    const rule = await page
+      .locator('script[type="speculationrules"][data-hanlo-prefetch="conservative"]')
+      .textContent();
+    expect(rule).not.toContain("prerender");
+    expect(JSON.parse(rule ?? "{}")).toEqual({
+      prefetch: [
+        {
+          source: "list",
+          urls: [expect.stringContaining(`${pageTwo}?from=prefetch`)],
+          eagerness: "conservative",
+        },
+      ],
+    });
+  } else {
+    await page.locator("#prefetch-candidate").dispatchEvent("pointerdown");
+    const href = await page
+      .locator('link[rel="prefetch"][data-hanlo-prefetch="fallback"]')
+      .getAttribute("href");
+    const url = new URL(href ?? "", "http://127.0.0.1:4173");
+    expect(`${url.pathname}${url.search}`).toBe(`${pageTwo}?from=prefetch`);
+  }
 });
 
-test("falls back to a document navigation when PJAX fails", async ({ page }) => {
-  let xhrFailures = 0;
-  await page.route("**/tests/e2e/fixtures/missing.html", async (route) => {
-    if (route.request().resourceType() === "xhr") {
-      xhrFailures++;
-      await route.fulfill({ status: 500, contentType: "text/html", body: "PJAX failed" });
-      return;
+test("enables a root document transition with a reduced-motion fallback", async ({
+  page,
+}, testInfo) => {
+  await page.goto(pageOne);
+  await waitForLifecycle(page);
+
+  const transition = await page.evaluate(() => {
+    const rules = Array.from(document.styleSheets).flatMap((sheet) => {
+      try {
+        return Array.from(sheet.cssRules, (rule) => rule.cssText);
+      } catch {
+        return [];
+      }
+    });
+    return {
+      duration: rules.some(
+        (rule) =>
+          rule.includes("::view-transition-group(root)") &&
+          (rule.includes("animation-duration: 0.2s") || rule.includes("animation-duration: 200ms")),
+      ),
+      optIn: rules.some(
+        (rule) => rule.includes("@view-transition") && rule.includes("navigation: auto"),
+      ),
+      reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
+      reducedRule: rules.some(
+        (rule) =>
+          rule.includes("prefers-reduced-motion: reduce") &&
+          rule.includes("::view-transition-old(root)"),
+      ),
+    };
+  });
+
+  if (/^(?:chromium|webkit)/.test(testInfo.project.name)) {
+    expect(transition).toMatchObject({ duration: true, optIn: true });
+  }
+  expect(transition.reducedRule).toBe(true);
+  expect(transition.reducedMotion).toBe(testInfo.project.name === "chromium-reduced-motion");
+});
+
+test("activates cross-document transitions where the browser supports them", async ({
+  page,
+}, testInfo) => {
+  await page.addInitScript(() => {
+    for (const type of ["pageswap", "pagereveal"]) {
+      window.addEventListener(type, (event) => {
+        const events = JSON.parse(sessionStorage.getItem("hanlo-view-transition-events") ?? "[]");
+        events.push({
+          type,
+          hasTransition: "viewTransition" in event && Boolean(event.viewTransition),
+        });
+        sessionStorage.setItem("hanlo-view-transition-events", JSON.stringify(events));
+      });
     }
+  });
+
+  await page.goto(pageOne);
+  await waitForLifecycle(page);
+  await followLink(page, "#next-page", pageTwo);
+  const events: Array<{ type: string; hasTransition: boolean }> = await page.evaluate(() =>
+    JSON.parse(sessionStorage.getItem("hanlo-view-transition-events") ?? "[]"),
+  );
+
+  if (/^(?:chromium|webkit)/.test(testInfo.project.name)) {
+    expect(events).toContainEqual({ type: "pageswap", hasTransition: true });
+  } else {
+    expect(events).toEqual([]);
+  }
+});
+
+test("keeps same-document hashes, downloads and new tabs native", async ({ page }) => {
+  const documents: string[] = [];
+  page.on("request", (request) => {
+    if (request.resourceType() === "document") documents.push(request.url());
+  });
+  await page.goto(pageOne);
+  await waitForLifecycle(page);
+  const documentsAfterLoad = documents.length;
+
+  await page.locator("#hash-link").click();
+  await expect(page).toHaveURL(/page-one\.html#hash-target$/);
+  expect(documents).toHaveLength(documentsAfterLoad);
+
+  const downloadPromise = page.waitForEvent("download");
+  await page.locator("#download-file").click();
+  expect((await downloadPromise).suggestedFilename()).toBe("config.js");
+
+  const popupPromise = page.waitForEvent("popup");
+  await page.locator("#new-tab").click();
+  const popup = await popupPromise;
+  await popup.waitForLoadState("domcontentloaded");
+  await expect(popup).toHaveURL(new RegExp(`${pageTwo.replaceAll(".", "\\.")}$`));
+  await popup.close();
+  await expect(page).toHaveURL(/page-one\.html#hash-target$/);
+});
+
+test("renders HTTP failures as native document responses", async ({ page }) => {
+  let requestType = "";
+  await page.route("**/tests/e2e/fixtures/missing.html", async (route) => {
+    requestType = route.request().resourceType();
     await route.fulfill({
-      status: 200,
+      status: 500,
       contentType: "text/html",
-      body: "<!doctype html><title>Fallback</title><h1 id='fallback-loaded'>Fallback loaded</h1>",
+      body: "<!doctype html><title>Native error</title><h1 id='native-error'>Native error</h1>",
     });
   });
 
   await page.goto(pageOne);
   await waitForLifecycle(page);
-  await page.evaluate(() => window.pjax?.loadUrl("/tests/e2e/fixtures/missing.html"));
+  const responsePromise = page.waitForResponse("**/tests/e2e/fixtures/missing.html");
+  await Promise.all([
+    page.waitForURL("**/tests/e2e/fixtures/missing.html"),
+    page.locator("#broken-page").click(),
+  ]);
+  const response = await responsePromise;
 
-  await page.waitForURL("**/tests/e2e/fixtures/missing.html");
-  await expect(page.locator("#fallback-loaded")).toHaveText("Fallback loaded");
-  expect(xhrFailures).toBe(1);
+  expect(requestType).toBe("document");
+  expect(response.status()).toBe(500);
+  await expect(page.locator("#native-error")).toHaveText("Native error");
 });
 
-test("does not block navigation while an optional friend request is pending", async ({ page }) => {
+test("does not block document navigation while an optional request is pending", async ({
+  page,
+}) => {
   let releaseRequest: (() => void) | undefined;
   let markRequestStarted: (() => void) | undefined;
   const requestStarted = new Promise<void>((resolve) => {
@@ -169,8 +331,8 @@ test("does not block navigation while an optional friend request is pending", as
   await page.goto(pageOne);
   await requestStarted;
   await waitForLifecycle(page);
-  await page.locator("#next-page").click();
-  await expect(page.locator("#body-wrap")).toHaveAttribute("data-page", "two");
-  await waitForLifecycle(page);
+  await Promise.all([page.waitForURL(`**${pageTwo}`), page.locator("#next-page").click()]);
   releaseRequest?.();
+  await waitForLifecycle(page);
+  await expect(page.locator("#body-wrap")).toHaveAttribute("data-page", "two");
 });

@@ -1,6 +1,4 @@
 <th:block th:if="${theme.config.top.above.enable_above}">
-    <link rel="stylesheet"
-          th:href="${assets_link + '/css/full-page-' + theme.spec.version + '.css' + theme_version}">
     <div class="pl-container"
          th:style="|--hanlo-index-image: url('${theme.config.top.above.index_img}'); --hanlo-index-image-mobile: url('${theme.config.top.above.phone_index_img}')|">
         <th:block th:if="!${theme.config.top.above.enable_above_video}">

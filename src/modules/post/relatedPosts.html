@@ -3,7 +3,7 @@
 <th:block  th:if="${not #lists.isEmpty(post.categories)}" th:with="recommendQuantity = ${theme.config.post.recommendQuantity},
 recommandPosts = ${postFinder.listByCategory(1,recommendQuantity == 'six' ? 7 : recommendQuantity == 'two' ? 3 : 1,post.categories.get(0).metadata.name)},
 containsTitle = ${#strings.contains(recommandPosts,post.spec.title)},
-postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,'?') ? theme.config.layout.postRandomImg+'&' : theme.config.layout.postRandomImg+'?'}">
+postRandomImg=${#strings.contains(postRandomImgSource,'?') ? postRandomImgSource+'&' : postRandomImgSource+'?'}">
     <link th:if="${recommandPosts.total>1 && #strings.equals(recommendQuantity, 'six')}" rel="stylesheet"
           th:href="${assets_link + '/css/related-posts-six-' + theme.spec.version + '.css' + theme_version}">
     <link th:if="${recommandPosts.total>1 && #strings.equals(recommendQuantity, 'two')}" rel="stylesheet"
@@ -20,7 +20,7 @@ postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,'?') ? theme
                       th:if="${not #strings.equals(post.spec.title, recommandPost.spec.title)}">
                 <div th:if="${!containsTitle ? iterStat.index <6 : true}">
                     <a th:href="@{${recommandPost.status.permalink}}" th:title="${recommandPost.spec.title}">
-                        <img alt="cover" class="cover" id="preimg"
+                        <img alt="cover" class="cover"
                              th:with="img = ${#strings.isEmpty(recommandPost.spec.cover) ? postRandomImg+recommandPost.spec.title : thumbnail.gen(recommandPost.spec.cover, 'm')}"
                              th:src="${isLazyload ? '' : img}"
                              th:data-lazy-src="${ isLazyload ? img : ''}">

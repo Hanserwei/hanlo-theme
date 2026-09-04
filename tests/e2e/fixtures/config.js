@@ -6,7 +6,6 @@ window.createHanloTestConfig = function createHanloTestConfig(htmlType) {
     isHome: htmlType === "page-one",
     lazyload: { enable: false, error: "/error.png" },
     loadingBox: false,
-    loadProgressBar: false,
     rightMenuEnable: false,
     colorScheme: "system",
     Snackbar: { bgLight: "#fff", bgDark: "#111", position: "top-center" },

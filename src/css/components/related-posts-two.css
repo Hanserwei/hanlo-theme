@@ -1,3 +1,4 @@
+@layer components {
 .relatedPosts-list {
     display: flex;
     flex-wrap: wrap;
@@ -88,4 +89,4 @@
     filter: brightness(.9);
     max-width: 45%;
 }
-
+}

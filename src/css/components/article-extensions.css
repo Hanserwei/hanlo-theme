@@ -5,7 +5,7 @@
 
 .fb-comments iframe,
 .utterances {
-    width: 100% !important;
+    width: 100%;
 }
 
 #gitalk-container .gt-meta {
@@ -110,7 +110,7 @@ mjx-container[jax="CHTML"][display="true"] {
 }
 
 #article-container .btn-beautify.outline:hover {
-    color: rgb(255, 255, 255) !important;
+    color: rgb(255, 255, 255);
 }
 
 #article-container .btn-beautify.outline.blue {
@@ -168,7 +168,7 @@ mjx-container[jax="CHTML"][display="true"] {
 }
 
 .gallery-group {
-    width: calc(33.33% - 8px) !important;
+    width: calc(33.33% - 8px);
 }
 
 figure.gallery-group {
@@ -664,6 +664,6 @@ blockquote.pullquote.right {
 }
 
 [data-theme="dark"] #gitalk-container svg {
-    fill: rgba(255, 255, 255, 0.9) !important;
+    fill: rgba(255, 255, 255, 0.9);
 }
 

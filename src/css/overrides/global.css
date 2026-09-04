@@ -28,7 +28,7 @@ i.haofont.hao-icon-arrow-right.banner-righticon{
 }
 
 #article-container pre > code {
-    background: transparent !important;
+    background: transparent;
 }
 
 /* 导航子菜单闪跳 */
@@ -54,7 +54,7 @@ i.haofont.hao-icon-arrow-right.banner-righticon{
 }
 
 .card-widget.card-friend-link {
-    padding: 0.4rem 0.6rem !important;
+    padding: 0.4rem 0.6rem;
 }
 
 
@@ -160,7 +160,7 @@ i.haofont.hao-icon-arrow-right.banner-righticon{
 }
 
 .card-widget.card-friend-link a.card-friend-item:hover .card-friend-name  {
-    color: var(--heo-card-bg) !important;
+    color: var(--heo-card-bg);
 }
 
 .card-widget.card-friend-link .card-friend-name {

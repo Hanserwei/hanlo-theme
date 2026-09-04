@@ -1,0 +1,8 @@
+/* Legacy page rules position article titles; keep the semantic card link stretched instead. */
+.recent-post-item .hanlo-stretched-link {
+  position: static;
+}
+
+.recent-post-item.post-card-polish::before {
+  pointer-events: none;
+}

@@ -133,7 +133,7 @@
 @media screen and (max-width: 768px) {
     #page-header.post-bg {
         height: 18rem;
-        background-color: var(--heo-main) !important;
+        background-color: var(--heo-main);
         transition: 0s;
     }
 }
@@ -175,11 +175,11 @@
 }
 
 #page-header.not-top-img #travellings_button::after {
-    background: var(--heo-main) !important;
+    background: var(--heo-main);
 }
 
 #body-wrap .nav-fixed #travellings_button::after {
-    background: var(--heo-main) !important
+    background: var(--heo-main)
 }
 
 #body-wrap #travellings_button {
@@ -233,7 +233,7 @@
     -webkit-align-items: center;
     align-items: center;
     color: var(--heo-card-bg);
-    background: var(--heo-white-op) !important;
+    background: var(--heo-white-op);
     -webkit-box-shadow: var(--heo-shadow-nav);
     box-shadow: var(--heo-shadow-nav);
     border-radius: var(--heo-radius-full);
@@ -276,7 +276,7 @@
 }
 
 #body-wrap .page #travellings_button:hover::after {
-    background: var(--heo-main) !important
+    background: var(--heo-main)
 }
 
 #page-header.nav-fixed #nav {
@@ -444,7 +444,7 @@
 }
 
 #nav .menus_items .menus_item:hover i.expand {
-    transform: rotate(180deg) !important;
+    transform: rotate(180deg);
 }
 
 #nav .menus_items .menus_item i.expand {
@@ -478,7 +478,7 @@
 }
 
 #nav.hide-menu #toggle-menu {
-    display: inline-block !important;
+    display: inline-block;
 }
 
 #nav.hide-menu #toggle-menu .site-page {
@@ -493,7 +493,7 @@
 }
 
 #nav.hide-menu #search-button span {
-    display: none !important;
+    display: none;
 }
 
 #nav #search-button {
@@ -667,7 +667,7 @@ ul {
 }
 
 #pagination .pull-full {
-    width: 100% !important;
+    width: 100%;
 }
 
 #pagination .next-post .label,

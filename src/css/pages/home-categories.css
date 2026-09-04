@@ -53,7 +53,7 @@ a.categoryButton img {
     .categoryItem {
         border-radius: 0px;
         height: 47%;
-        box-shadow: none !important;
+        box-shadow: none;
     }
 }
 
@@ -104,7 +104,7 @@ a.categoryButton i {
     }
 
     .recent-post-top .categoryGroup {
-        min-width: 130px!important;
+        min-width: 130px;
         margin-bottom: .5rem;
         margin-left: 1rem;
         max-height: 164px;
@@ -502,7 +502,7 @@ div#banners {
 }
 
 .tags-group-icon-pair a img {
-    border-radius: 50%!important
+    border-radius: 50%
 }
 
 .tags-group-icon {
@@ -811,7 +811,7 @@ a.categoryButton:hover {
     color: var(--heo-lighttext)
 }
 /* 主页哔哔bb */
-#bber-talk {
+.hanlo-moment-track {
     width: 100%;
     height: 25px;
     line-height: 25px;
@@ -819,7 +819,7 @@ a.categoryButton:hover {
     flex-direction: column;
 }
 
-#bbtalk {
+.hanlo-moment-swiper {
     flex: 1 1 auto;
     min-width: 0;
     height: 25px;
@@ -829,7 +829,7 @@ a.categoryButton:hover {
     white-space: nowrap;
 }
 
-#bber-talk .li-style {
+.hanlo-moment-track .li-style {
     width: 90%;
     max-width: 80%;
     height: 25px;
@@ -927,6 +927,6 @@ li {
 
 @media screen and (max-width: 1200px) {
     .climb {
-        display: none !important
+        display: none
     }
 }

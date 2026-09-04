@@ -26,7 +26,7 @@ div#footer_deal {
 #card-poem {
     display: flex;
     flex-direction: column;
-    padding: 0.5rem !important;
+    padding: 0.5rem;
     min-height: 130px;
 }
 
@@ -163,7 +163,7 @@ img.footer_mini_logo:hover {
     justify-content: center;
 }
 
-#menus > div.menus_items > div > a {
+#menus > div.menus_items > div > .site-page {
     letter-spacing: 0.3rem;
     padding-left: 0.7rem;
     font-weight: bold;
@@ -174,19 +174,19 @@ img.footer_mini_logo:hover {
     border-radius: 40px;
 }
 
-.page #menus > div.menus_items > .menus_item:hover > a {
-    color: var(--heo-card-bg) !important;
+.page #menus > div.menus_items > .menus_item:hover > .site-page {
+    color: var(--heo-card-bg);
 }
 
-#nav .menus_items .menus_item .menus_item_child > .recursion_menus_item > a {
+#nav .menus_items .menus_item .menus_item_child > .recursion_menus_item > .site-page {
     letter-spacing: 0rem;
     display: flex;
     align-items: center;
     border-radius: 100px;
     padding: 0.2rem 0.5rem;
     width: 100%;
-    color: var(--heo-fontcolor) !important;
-    text-shadow: none !important;
+    color: var(--heo-fontcolor);
+    text-shadow: none;
 }
 
 #page-header.nav-fixed #nav #menus[style*="padding-right: 300px;"] .menus_items {
@@ -306,7 +306,7 @@ img.footer_mini_logo:hover {
     left: 0;
     display: none;
     z-index: 101;
-    margin: 0 !important;
+    margin: 0;
     z-index: 99993;
 }
 
@@ -324,21 +324,21 @@ img.footer_mini_logo:hover {
     color: var(--heo-yellow);
 }
 
-a.darkmode_switchbutton {
-    padding: 4px 8px !important;
+.darkmode_switchbutton {
+    padding: 4px 8px;
     cursor: pointer;
-    margin: 0 !important;
+    margin: 0;
     font-size: 0.9rem;
     color: var(--heo-fontcolor);
 }
 
-[data-theme=dark] a.darkmode_switchbutton {
-    background: var(--heo-orange) !important;
-    color: var(--heo-white) !important;
+[data-theme=dark] .darkmode_switchbutton {
+    background: var(--heo-orange);
+    color: var(--heo-white);
 }
 
-a.console_switchbutton {
-    padding: 4px 8px !important;
+.console_switchbutton {
+    padding: 4px 8px;
     cursor: pointer;
 }
 
@@ -507,7 +507,7 @@ body[data-type=music] .page #nav #site-name span {
 }
 
 .read-mode #rightside {
-    display: none !important
+    display: none
 }
 
 #rightside > div > button {
@@ -601,9 +601,9 @@ body[data-type=music] .page #nav #site-name span {
 
 /* 其他页面封面移除 */
 .not-index-bg {
-    height: 2rem !important;
-    background-image: none !important;
-    background-color: var(--heo-none) !important;
+    height: 2rem;
+    background-image: none;
+    background-color: var(--heo-none);
 }
 
 
@@ -756,7 +756,7 @@ body[data-type=music] .page #nav #site-name span {
 
 /* 最新文章侧边栏 */
 .card-widget.card-recent-post {
-    padding: 0.4rem 0.6rem !important;
+    padding: 0.4rem 0.6rem;
 }
 
 /* 最新文章侧边栏时间显示 */
@@ -774,8 +774,8 @@ body[data-type=music] .page #nav #site-name span {
 /* 最新文章侧边栏悬浮 */
 #aside-content .aside-list > .aside-list-item {
     padding: 8px;
-    padding-top: 6px !important;
-    padding-bottom: 6px !important;
+    padding-top: 6px;
+    padding-bottom: 6px;
     border-radius: 12px;
     transition: 0.3s;
     margin: 4px 0;
@@ -794,7 +794,7 @@ body[data-type=music] .page #nav #site-name span {
 }
 
 #aside-content .aside-list > .aside-list-item:not(:last-child) {
-    border-bottom: 0px dashed var(--heo-background) !important;
+    border-bottom: 0px dashed var(--heo-background);
 }
 
 #aside-content .aside-list > .aside-list-item .thumbnail {
@@ -811,7 +811,7 @@ body[data-type=music] .page #nav #site-name span {
 }
 
 #aside-content .aside-list > .aside-list-item:hover a {
-    color: var(--heo-card-bg) !important;
+    color: var(--heo-card-bg);
 }
 
 /* 文章顶部波浪效果 */
@@ -878,7 +878,7 @@ body[data-type=music] .page #nav #site-name span {
 
 /* 侧边栏按钮文字 */
 a.card-archive-list-link-more {
-    color: var(--heo-white) !important;
+    color: var(--heo-white);
     background: var(--heo-card-btn-bg);
     margin-top: 8px;
 }
@@ -966,11 +966,11 @@ li.card-archive-list-item {
 }
 
 .card-category-list-count {
-    display: none !important;
+    display: none;
 }
 
 .card-category-list-name {
-    width: 100% !important;
+    width: 100%;
     text-align: center;
 }
 
@@ -1020,8 +1020,8 @@ li.card-archive-list-item {
 
 /* madium-zoom */
 .medium-zoom-overlay {
-    background: var(--heo-maskbg) !important;
-    z-index: 99998 !important;
+    background: var(--heo-maskbg);
+    z-index: 99998;
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }

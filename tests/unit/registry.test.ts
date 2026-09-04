@@ -11,7 +11,6 @@ const config = parseThemeConfig({
   isHome: true,
   lazyload: { enable: false, error: "" },
   loadingBox: false,
-  loadProgressBar: false,
   rightMenuEnable: false,
   colorScheme: "system",
   date_suffix: { just: "刚刚", min: "分钟前", hour: "小时前", day: "天前" },

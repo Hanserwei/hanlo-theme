@@ -5,7 +5,7 @@
             position: relative;
             color: rgba(255, 255, 255, 0);
             animation: 1.5s linear 1s 1 normal both running show;
-            margin: 0px auto !important;
+            margin: 0px auto;
         }
 
         #site-title::after {
@@ -22,13 +22,13 @@
 
         @media screen and (max-width: 768px) {
             #site-title::after {
-                background: rgb(255, 255, 255) !important;
+                background: rgb(255, 255, 255);
             }
         }
 
         @media screen and (max-width: 768px) {
             #site-subtitle::after {
-                background: rgb(255, 255, 255) !important;
+                background: rgb(255, 255, 255);
             }
         }
 
@@ -37,7 +37,7 @@
             max-width: 100%;
             position: relative;
             animation: 1.5s linear 1s 1 normal both running show;
-            margin: 0px auto !important;
+            margin: 0px auto;
         }
 
         #site-subtitle::after {

@@ -373,7 +373,7 @@ spec:
             todayRecommendContent:
               todayRecommendUrl: /
               todayRecommendTitle: Hanlo Theme
-              todayRecommendCover: https://liuzhihang.com/upload/hao_dark.jpg
+              todayRecommendCover: /themes/theme-hanlo/assets/images/home.webp
               todayRecommendxTitle: 今日推荐
             recommendPost: latest
           children:
@@ -412,7 +412,7 @@ spec:
                   name: todayRecommendCover
                   label: 背景图
                   placeholder: 请输入地址
-                  value: https://liuzhihang.com/upload/hao_dark.jpg
+                  value: /themes/theme-hanlo/assets/images/home.webp
                   width: "15rem"
                   aspectRatio: "16/9"
             - $formkit: select
@@ -556,7 +556,7 @@ spec:
         - $formkit: url
           name: postRandomImg
           label: 随机封面
-          value: https://source.unsplash.com/random/600x400/?blog,scenery,night,desert,sea
+          value: /themes/theme-hanlo/assets/images/home.webp
           help: 未设置文章封面时，将使用随机封面 (二次元随机图地址：https://www.dmoe.cc/random.php)
         - $formkit: switch
           name: articleCardPolish
@@ -1076,14 +1076,14 @@ spec:
           label: 社交媒体
           value:
             socialMediaLeft:
-            centerImg: https://liuzhihang.com/upload/logo.png
+            centerImg: /themes/theme-hanlo/assets/images/hanlo-logo.png
             socialMediaRight:
           children:
             - $formkit: attachment
               name: centerImg
               label: 中间 logo
               placeholder: 请填写 logo 图片地址
-              value: https://liuzhihang.com/upload/logo.png
+              value: /themes/theme-hanlo/assets/images/hanlo-logo.png
             - $formkit: array
               name: socialMediaLeft
               label: 左侧
@@ -1204,9 +1204,9 @@ spec:
             style_one:
               owner_enable: false
               runtime_enable: true
-              work_img: "/upload/%E5%9B%B0%E5%9B%B0%E9%B1%BC-%E4%B8%8B%E7%8F%AD%E5%95%A6-yellowgreen.svg"
+              work_img: /themes/theme-hanlo/assets/images/hanlo-logo.png
               work_description: "距离月入25k也就还差一个大佬带我~"
-              offduty_img: "/upload/%E5%9B%B0%E5%9B%B0%E9%B1%BC-%E4%B8%8B%E7%8F%AD%E5%95%A6-yellowgreen.svg"
+              offduty_img: /themes/theme-hanlo/assets/images/hanlo-logo.png
               offduty_description: "下班了就该开开心心的玩耍，嘿嘿~"
               bdageitem_enable: false
               bdageitem:
@@ -2667,16 +2667,16 @@ spec:
               value: ♪(^∇^*)欢迎肥来！
         - $formkit: group
           name: loadingBoxs
-          label: 加载动画
+          label: 直接或跨站进入加载动画
           value:
             loadingBoxEnable: true
-            loadingBoxImg: https://liuzhihang.com/upload/logo.png
-            loadProgressBar: true
+            loadingBoxImg: /themes/theme-hanlo/assets/images/hanlo-logo.png
           children:
             - $formkit: switch
               name: loadingBoxEnable
               id: loadingBoxEnable
               key: loadingBoxEnable
+              help: 无 referrer 或从其他站点进入时显示；带同源 referrer 的导航、刷新或新标签页不显示。
             - $formkit: attachment
               name: loadingBoxImg
               if: $get(loadingBoxEnable).value
@@ -2684,9 +2684,6 @@ spec:
               width: "15rem"
               aspectRatio: "16/9"
               placeholder: 请输入图片 url
-            - $formkit: switch
-              name: loadProgressBar
-              label: 加载进度条
         - $formkit: group
           name: error_404
           label: 404 页面

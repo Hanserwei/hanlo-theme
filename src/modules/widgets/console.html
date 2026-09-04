@@ -1,8 +1,9 @@
 <!-- TODO 控制台功能 -->
 <div id="console" >
-  <div class="close-btn" data-hanlo-action="hide-console" href="javascript:void(0);">
+  <button class="close-btn hanlo-button-reset" data-hanlo-action="hide-console"
+          type="button" aria-label="关闭中控台">
     <i class="haofont hao-icon-circle-xmark"></i>
-  </div>
+  </button>
   <div class="console-card-group">
     <!-- 评论，需要使用评论插件，获取最近评论 -->
     <div class="console-card-group-left">
@@ -19,7 +20,7 @@
                   comment.spec.subjectRef.kind == 'SinglePage' && not #strings.contains('photos,links,moments', comment.spec.subjectRef.name) ? singlePageFinder.getByName(comment.spec.subjectRef.name) : null},
                   url = ${page == null? '/' : page.status.permalink + '#comment-' + comment.metadata.name}"
                  th:if="${iterStat.index  < 6}" >
-              <a th:href="${url}" class="thumbnail"  data-pjax-state="">
+              <a th:href="${url}" class="thumbnail">
                 <img th:with="img = ${#strings.isEmpty(comment.owner.avatar)?'https://cravatar.cn/avatar/?d=mp':comment.owner.avatar}"
                      th:src="${isLazyload ? '' : img}"
                      th:data-lazy-src="${ isLazyload ? img : ''}"
@@ -27,7 +28,7 @@
                 <div class="name"><span>stonewu</span></div>
               </a>
               <div class="content">
-                <a class="comment" th:href="${url}" th:title="${comment.spec.content}" data-pjax-state="" th:text="${comment.spec.content}"></a>
+                <a class="comment" th:href="${url}" th:title="${comment.spec.content}" th:text="${comment.spec.content}"></a>
                 <time th:datetime="${#dates.format(comment.metadata.creationTimestamp, 'yyyy-MM-dd HH:mm:ss')}"></time>
               </div>
             </div>
@@ -56,8 +57,7 @@
         <ul class="card-archive-list" th:with="archives = ${postFinder.archives(1,0)}">
           <th:block th:each="archive : ${archives.items}">
             <li class="card-archive-list-item" th:each="month,monthStat : ${archive.months}">
-              <a class="card-archive-list-link" th:href="@{'/archives/'+${archive.year}+'/'+${month.month}}"
-                 data-pjax-state="load"><span
+              <a class="card-archive-list-link" th:href="@{'/archives/'+${archive.year}+'/'+${month.month}}"><span
                       class="card-archive-list-date">
                   [[${(month.month=='01') ? '一月' :
                             (month.month == '02') ? "二月"  :
@@ -102,12 +102,17 @@
   </div>
   <div class="button-group">
     <div class="console-btn-item">
-      <a class="darkmode_switchbutton" data-hanlo-action="toggle-theme" href="javascript:void(0);" rel="external nofollow"
-         title="显示模式切换"><i class="haofont hao-icon-moon-clear-fill hl:[font-size:1rem]"></i>
-      </a>
+      <button class="darkmode_switchbutton hanlo-button-reset" data-hanlo-action="toggle-theme"
+              type="button" title="显示模式切换">
+        <i class="haofont hao-icon-moon-clear-fill hl:[font-size:1rem]"></i>
+      </button>
     </div>
-    <div class="console-btn-item" data-hanlo-action="toggle-aside" id="consoleHideAside" title="边栏显示控制"><a
-            class="asideSwitch" data-pjax-state=""><i class="haofont hao-icon-arrows-left-right"></i></a></div>
+    <div class="console-btn-item" id="consoleHideAside" title="边栏显示控制">
+      <button class="asideSwitch hanlo-button-reset" data-hanlo-action="toggle-aside"
+              type="button" aria-label="切换边栏显示">
+        <i class="haofont hao-icon-arrows-left-right"></i>
+      </button>
+    </div>
     <!--<div class="console-btn-item" id="consoleKeyboard" title="快捷键开关"><a-->
     <!--        class="keyboard-switch"><i class="fa-duotone fa-keyboard"></i></a>-->
     <!--</div>-->
@@ -115,6 +120,6 @@
     <!--        class="assist-btn"><i class="fa-duotone fa-wheelchair"></i></a>-->
     <!--</div>-->
   </div>
-  <div class="console-mask" data-hanlo-action="hide-console" href="javascript:void(0);" rel="external nofollow">
-  </div>
+  <button class="console-mask hanlo-button-reset" data-hanlo-action="hide-console"
+          type="button" aria-label="关闭中控台"></button>
 </div>

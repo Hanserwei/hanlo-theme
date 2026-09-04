@@ -19,7 +19,7 @@
             <div id="archive">
                 <div class="article-sort-title">文章<sup>[[${siteStatsFinder.getStats().post}]]</sup></div>
                 <div class="article-sort" th:each="archive : ${archives.items}"
-                     th:with='postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,"?") ? theme.config.layout.postRandomImg+"&" : theme.config.layout.postRandomImg+"?"}'>
+                     th:with='postRandomImg=${#strings.contains(postRandomImgSource,"?") ? postRandomImgSource+"&" : postRandomImgSource+"?"}'>
                     <div class="article-sort-item year" th:text="${archive.year}"></div>
                     <div class="article-sort" th:each="month : ${archive.months}">
                         <!-- 月份没有样式所以不显示 -->
@@ -38,8 +38,7 @@
                                           th:title="'创建于' + ${#dates.format(post.spec.publishTime,'yyyy-MM-dd HH:mm:ss')}">
                                     </time>
                                 </div>
-                                <a class="article-sort-item-title" onclick="window.event.cancelBubble=!0"
-                                   th:href="@{${post.status.permalink}}" th:text="${post.spec.title}"
+                                <a class="article-sort-item-title" th:href="@{${post.status.permalink}}" th:text="${post.spec.title}"
                                    th:title="${post.spec.title}"></a>
                                 <div class="article-sort-item-tags">
                                     <a class="article-meta__tags"

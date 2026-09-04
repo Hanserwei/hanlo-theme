@@ -29,7 +29,6 @@ export interface ThemeConfig {
     [key: string]: unknown;
   }>;
   readonly loadingBox: boolean;
-  readonly loadProgressBar: boolean;
   readonly rightMenuEnable: boolean;
   readonly colorScheme: "dark" | "light" | "system";
   readonly Snackbar?: Readonly<{
@@ -135,7 +134,6 @@ export function validateThemeConfig(value: unknown): asserts value is ThemeConfi
   assertField(value, "isPost", "boolean");
   assertField(value, "isHome", "boolean");
   assertField(value, "loadingBox", "boolean");
-  assertField(value, "loadProgressBar", "boolean");
   assertField(value, "rightMenuEnable", "boolean");
 
   if (!(["dark", "light", "system"] as const).includes(value.colorScheme as never)) {

@@ -288,15 +288,15 @@
     margin-right: 0.5rem;
 }
 
-#console .button-group .console-btn-item:hover a {
+#console .button-group .console-btn-item:hover > :is(a, button) {
     background: var(--heo-main);
 }
 
-#console .button-group .console-btn-item a i {
+#console .button-group .console-btn-item > :is(a, button) i {
     font-size: 24px
 }
 
-#console .button-group .console-btn-item a {
+#console .button-group .console-btn-item > :is(a, button) {
     width: 100%;
     height: 100%;
     background: var(--card-bg);
@@ -308,17 +308,17 @@
     color: var(--heo-fontcolor);
 }
 
-#console .button-group .console-btn-item.on a {
+#console .button-group .console-btn-item.on > :is(a, button) {
     background: var(--heo-orange);
     color: var(--heo-white);
     transition: 0.3s;
 }
 
-#console .button-group .console-btn-item a:hover {
-    background: var(--heo-main) !important;
+#console .button-group .console-btn-item > :is(a, button):hover {
+    background: var(--heo-main);
 }
 
-#console .button-group .console-btn-item:hover a {
+#console .button-group .console-btn-item:hover > :is(a, button) {
     color: var(--heo-white);
 }
 
@@ -329,19 +329,19 @@
 }
 
 .console-card.tags .card-tag-cloud a {
-    color: var(--heo-fontcolor) !important;
+    color: var(--heo-fontcolor);
     margin: 6px 4px;
     padding: 2px 8px;
     border-radius: 8px;
     background: var(--heo-card-bg);
     border: var(--style-border);
-    font-size: 14px !important;
+    font-size: 14px;
     font-weight: bold;
 }
 
 .console-card.tags .card-tag-cloud a:hover {
     background: var(--heo-main);
-    color: var(--heo-card-bg) !important;
+    color: var(--heo-card-bg);
 }
 
 .console-card.tags .card-tag-cloud a sup {
@@ -541,7 +541,7 @@
 @media screen and (min-width: 768px) {
     /* 隐藏弹窗 */
     .needEndHide.hide {
-        bottom: -200px !important;
+        bottom: -200px;
         opacity: 0;
     }
 }
@@ -710,7 +710,7 @@ img.rss-plan-icon {
     margin: 0 .3rem
 }
 
-a#toPageButton {
+#toPageButton {
     display: flex;
     position: absolute;
     width: 40px;
@@ -727,7 +727,7 @@ a#toPageButton {
     pointer-events: none
 }
 
-.toPageGroup:focus-within a#toPageButton, .toPageGroup:hover a#toPageButton {
+.toPageGroup:focus-within #toPageButton, .toPageGroup:hover #toPageButton {
     width: 30px;
     height: 30px;
     right: 4px;
@@ -738,18 +738,18 @@ a#toPageButton {
     opacity: .2
 }
 
-.toPageGroup:focus-within a#toPageButton.haveValue {
+.toPageGroup:focus-within #toPageButton.haveValue {
     opacity: 1;
     cursor: pointer
 }
 
-a#toPageButton.haveValue {
-    opacity: 1 !important;
-    cursor: pointer !important;
+#toPageButton.haveValue {
+    opacity: 1;
+    cursor: pointer;
     pointer-events: all
 }
 
-a#toPageButton.haveValue:hover {
+#toPageButton.haveValue:hover {
     background: var(--heo-theme);
     color: var(--heo-white)
 }

@@ -1,3 +1,4 @@
+@layer components {
 [data-theme='light'] {
     --shiki-code-bar-shadow: 0 5px 10px 0 rgba(144, 164, 174, 0.4);
 }
@@ -185,7 +186,7 @@
 .shiki-code-block.is-code-collapsed pre.shiki {
     height: 35px;
     min-height: 35px;
-    max-height: 35px !important;
+    max-height: 35px;
     padding: 0;
     overflow: hidden;
 }
@@ -234,4 +235,14 @@
     .shiki-code-block pre.shiki.line-numbers .line::before {
         color: #888;
     }
+}
+
+/* Keep low-contrast dark-theme tokens readable without changing the selected Shiki palette. */
+[data-theme="dark"] .shiki-code-block pre.shiki span[style*="--shiki-dark:#7F848E"] {
+  color: #9aa0aa;
+}
+
+[data-theme="dark"] .shiki-code-block pre.shiki span[style*="--shiki-dark:#E06C75"] {
+  color: #e78088;
+}
 }

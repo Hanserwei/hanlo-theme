@@ -6,7 +6,7 @@
 
 /* 按钮样式 */
 .button--animated {
-    border-radius: 8px !important;
+    border-radius: 8px;
     transition: 0.3s;
 }
 
@@ -23,7 +23,7 @@
 /* hexo-widget-tree 侧边文章导航 */
 a.tree-list-post-link {
     font-size: 0.8rem;
-    line-height: 1.2 !important;
+    line-height: 1.2;
 }
 
 li.tree-list-item {
@@ -55,14 +55,14 @@ li.tree-list-item {
 }
 
 .title-h2-a-left h2 {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* 基金 */
 
 #card-funds .funds-list::-webkit-scrollbar {
-    display: none !important;
+    display: none;
 }
 
 .funds-tips {
@@ -176,44 +176,44 @@ span.fund_name {
 
 /* 开关 */
 #widget-tree-button {
-    background-color: var(--heo-secondbg) !important;
-    box-shadow: var(--heo-shadow-light2black) !important;
+    background-color: var(--heo-secondbg);
+    box-shadow: var(--heo-shadow-light2black);
     color: var(--heo-fontcolor);
 }
 
 #widget-tree:hover #widget-tree-button {
-    /* display: none!important; */
+    /* display: none; */
     opacity: 0;
     left: -1.5rem;
 }
 
 #widget-tree {
-    background-color: var(--heo-maskbg) !important;
+    background-color: var(--heo-maskbg);
 }
 
 #widget-tree:hover {
-    left: 0 !important;
+    left: 0;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
 
 #widget-tree a {
     -webkit-line-clamp: 2;
-    color: var(--heo-fontcolor) !important;
+    color: var(--heo-fontcolor);
 }
 
 #widget-tree a:hover {
-    color: var(--heo-hovertext) !important;
+    color: var(--heo-hovertext);
 }
 
 .toggle-post-icon,
 .toggle-toc-icon {
-    color: var(--heo-fontcolor) !important;
+    color: var(--heo-fontcolor);
 }
 
 @media screen and (max-width: 768px) {
     #widget-tree {
-        display: none !important;
+        display: none;
     }
 }
 
@@ -373,6 +373,6 @@ span.fund_name {
     /* 侧栏在左侧时，关闭左边距，打开右边距 */
     .layout.left-aside .aside-content {
         padding-right: 15px;
-        padding-left: 0px !important;
+        padding-left: 0px;
     }
 }

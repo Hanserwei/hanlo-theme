@@ -19,8 +19,8 @@ Tailwind CSS 仅作为带前缀、无运行时的渐进式 utility 层使用；�
   `hl:` 前缀。
 - 设计语言继续以原生 CSS Variables 为核心。`tokens.css` 定义颜色、间距、圆角、阴影、字体、
   动画时长和缓动，并把原 `--heo-*` 变量映射到新的 `--hanlo-*` 语义变量。
-- 顶层顺序为 `reset, tokens, base, layout, components, pages, utilities, overrides`。迁移中的历史规则
-  保持在同一兼容层并严格维持原始字节顺序，防止拆文件改变级联；新样式按职责进入目标层。
+- 顶层顺序为 `reset, tokens, base, layout, components, pages, utilities, overrides`。阶段 6 二次收尾后，
+  仅 `legacy/foundation.css` 保留在 base，布局、组件、页面和覆盖模块均进入对应语义层。
 - 体积大或只在特定路由/配置启用的样式由 `css-entries.json` 声明为 19 个独立、版本化 CSS 入口，
   模板按条件加载。
 - 仅运行时可知的图片、颜色和尺寸通过局部 `--hanlo-*` 自定义属性传入；模板不再直接声明布局或
@@ -35,8 +35,8 @@ Tailwind CSS 仅作为带前缀、无运行时的渐进式 utility 层使用；�
 - 94 个模板中的 176 处静态 `style` 属性全部迁移为 `hl:` utility 或语义类；31 个模板 `<style>`
   块收敛为 1 个集中式 Halo 配置变量块。
 - 35 个动态样式点全部限制为 `--hanlo-*` 自定义属性边界。
-- 总 `!important` 数由阶段开始前的 470 个降至 460 个；同时删除重复 min CSS、废弃评论弹幕 CSS、
-  两个空 `nth-child()` 选择器、错误的 `var(-highlight-bg)`、空动画帧和空规则。
+- 阶段 5 首次收尾把 `!important` 从 470 降至 460；阶段 6 使用 PostCSS AST 重新确认 446 个生效声明
+  并全部清零，同时用 `css-quality-budget.json` 阻止高权重选择器债务回增。
 - 主 CSS 构建产物为 295,923 bytes（gzip 52,096 bytes），较原全局三文件
   `zhheoblog.css + custom.css + phase4-runtime.css` 的 403,117 bytes 减少 26.6%。
 - 19 个条件入口合计 53,339 bytes；首页、文章和相册的真实网络请求均有自动断言，不加载其他页面
@@ -71,9 +71,12 @@ pnpm build
 unzip -t dist/theme-hanlo-1.2.1.zip
 ```
 
-## 6. 已知边界
+## 6. 阶段 6 二次收尾
 
-- 历史样式仍包含深层 DOM 选择器和 460 个 `!important`。本阶段先固定级联顺序、文件归属和视觉
-  门禁，后续应在修改对应组件 HTML 时逐模块降权，不能跨模块批量删除。
+- 生效 `!important` 已清零；Stylelint 与 PostCSS AST 双门禁阻止新增。
+- 主入口模块已从 base 兼容层迁入真实语义层；目录与 layer 映射由架构脚本校验。
+- ID selector entry 从 1,866 降至 1,807；剩余深层 DOM 兼容选择器建立只减不增预算。
+- 语义按钮/链接、重复 ID 清理、四象限截图、Chrome/Firefox/WebKit 和真实 Halo 回归均已通过。
 - Tailwind 只用于模板中的静态 utility 和新组件，不要求把历史选择器全量转换为 utility class。
 - `templates/` 是构建产物；只编辑 `src/`、`public/`、`css-entries.json` 与根构建配置。
+- 完整数据见 [`../phase-6/COMPLETION_AUDIT.md`](../phase-6/COMPLETION_AUDIT.md)。

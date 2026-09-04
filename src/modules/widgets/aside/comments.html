@@ -1,7 +1,7 @@
 <!-- 最新评论 -->
 <div class="card-widget card-recent-post" >
     <a th:if="${not #strings.isEmpty(theme.config.sidebar.newcomment.newcommentUrl)}"
-       th:onclick="pjax.loadUrl([[${theme.config.sidebar.newcomment.newcommentUrl}]])"
+       th:href="${theme.config.sidebar.newcomment.newcommentUrl}"
        title="查看更多"
        class="card-more-btn hl:cursor-pointer"
        draggable="false"><i class="haofont hao-icon-chevron-right"></i></a>
@@ -13,7 +13,7 @@
                 comment.spec.subjectRef.kind == 'SinglePage' && not #strings.contains('photos,links,moments,equipment', comment.spec.subjectRef.name) ? singlePageFinder.getByName(comment.spec.subjectRef.name) : null},
                 url = ${page == null? '/' : page.status.permalink + '#comment-' + comment.metadata.name}">
                 <span th:text="${commentIndex}"></span>
-                <a class="thumbnail" th:href="${url}" data-pjax-state="">
+                <a class="thumbnail" th:href="${url}">
                     <img alt="头像"
                          th:with=" img =${#strings.isEmpty(comment.owner.avatar)? theme.config.sidebar.newcomment.providerMirror+'/avatar/'+comment.spec.owner.annotations['email-hash'] :comment.owner.avatar}"
                          th:src="${isLazyload ? '' : img}" th:data-lazy-src="${ isLazyload ? img : ''}">
@@ -21,8 +21,7 @@
                 <div class="content">
                     <a class="comment hl:[display:-webkit-box] hl:[-webkit-line-clamp:2] hl:[-webkit-box-orient:vertical] hl:overflow-hidden"
                       
-                       th:href="${url}" th:title="${comment.spec.content}" th:text="${comment.spec.content}"
-                       data-pjax-state="">
+                       th:href="${url}" th:title="${comment.spec.content}" th:text="${comment.spec.content}">
 
                     </a>
                     <div class="name">

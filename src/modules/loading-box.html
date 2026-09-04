@@ -1,9 +1,10 @@
 <!-- loading页面 -->
 <th:block
-          th:if="${theme.config.other.loadingBoxs.loadingBoxEnable} and not ${#strings.isEmpty(theme.config.other.loadingBoxs.loadingBoxImg)}">
-    <div data-hanlo-action="hide-loading" id="loading-box">
+          th:if="${theme.config.other.loadingBoxs.loadingBoxEnable} and not ${#strings.isEmpty(loadingBoxImage)}">
+    <div class="hanlo-loading-box" data-hanlo-action="hide-loading" id="loading-box">
         <div class="loading-bg">
-            <img class="loading-img hl:rounded-full" th:src="${theme.config.other.loadingBoxs.loadingBoxImg}">
+            <img alt="页面加载中" class="loading-img hl:rounded-full"
+                 th:src="${loadingBoxImage}">
             <div class="loading-image-dot"></div>
         </div>
     </div>
