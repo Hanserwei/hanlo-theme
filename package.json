@@ -8,11 +8,13 @@
     "check": "pnpm run validate && tsc --noEmit && pnpm run check:css && vp check vite.config.ts vite-env.d.ts scripts/*.mjs src/js tests vitest.config.ts stylelint.config.mjs",
     "check:css": "stylelint \"src/css/**/*.css\" && node scripts/validate-css-architecture.mjs",
     "dev": "vp build --watch",
+    "icons:check": "node scripts/sync-dashboard-icons.mjs --check",
+    "icons:sync": "node scripts/sync-dashboard-icons.mjs",
     "notices": "node scripts/generate-third-party-notices.mjs",
     "package": "node scripts/package-theme.mjs",
     "test": "pnpm run test:unit",
     "test:unit": "vitest run",
-    "validate": "node scripts/validate-theme.mjs && node scripts/generate-third-party-notices.mjs --check",
+    "validate": "node scripts/validate-theme.mjs && node scripts/sync-dashboard-icons.mjs --check && node scripts/generate-third-party-notices.mjs --check",
     "verify-build": "node scripts/verify-build.mjs"
   },
   "dependencies": {

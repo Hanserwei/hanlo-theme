@@ -12,6 +12,8 @@
 
 :where(.recent-post-item, .todayCard, .bbTimeList .swiper-container) {
   position: relative;
+  /* Keep interactive child layers inside their card instead of crossing sibling overlays. */
+  isolation: isolate;
 }
 
 .hanlo-stretched-link::after {

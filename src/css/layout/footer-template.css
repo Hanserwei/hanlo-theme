@@ -18,7 +18,9 @@ a.footer-banner-link.cloud {
 }
 
 img.cloud-logo {
+    width: 32px;
     height: 32px;
+    object-fit: contain;
 }
 
 @media screen and (min-width: 1300px) {
