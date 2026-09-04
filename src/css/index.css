@@ -62,8 +62,6 @@
 @import "./overrides/integrations.css" layer(overrides);
 @import "./overrides/semantic-navigation.css" layer(overrides);
 
-@source "../../tests/e2e/fixtures/phase5-visual.html";
-
 @view-transition {
   navigation: auto;
 }

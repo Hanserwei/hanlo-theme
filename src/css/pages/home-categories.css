@@ -848,8 +848,7 @@ a.categoryButton:hover {
     transition: 0.3s;
 }
 
-ul,
-li {
+.bbTimeList :is(ul, li) {
     list-style: none;
     display: block;
     margin: 0;
