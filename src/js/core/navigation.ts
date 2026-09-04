@@ -1,185 +1,107 @@
-import Pjax from "pjax";
+import {
+  createPrefetchRule,
+  isEligiblePrefetch,
+  isPrefetchAllowedByConnection,
+  type NetworkConnection,
+} from "./prefetch";
 
-import { isEligiblePrefetch } from "./prefetch";
-
-const PJAX_SELECTORS = [
-  "title",
-  "#config-diff",
-  "#body-wrap",
-  "#rightside-config-hide",
-  "#rightside-config-show",
-  ".js-pjax",
-  "#site-config",
-  'meta[property="og:type"]',
-  'meta[property="og:image"]',
-  'meta[property="og:title"]',
-  'meta[property="og:url"]',
-  'meta[property="og:description"]',
-  'meta[name="twitter:title"]',
-  'meta[name="twitter:url"]',
-  'meta[name="twitter:description"]',
-  'meta[name="twitter:image"]',
-] as const;
-
-const PAGE_STYLE_SELECTOR = 'link[rel="stylesheet"][data-hanlo-page-style]';
-const PJAX_MODULE_SELECTOR = 'script[type="module"][data-pjax]';
-
-interface PjaxNavigationEvent extends Event {
-  readonly request?: XMLHttpRequest;
+export interface NavigateOptions {
+  readonly replace?: boolean;
 }
 
-function copyAttributes(source: Element, target: Element): void {
-  for (const { name, value } of Array.from(source.attributes)) target.setAttribute(name, value);
+export interface LocationNavigator {
+  readonly href: string;
+  assign(url: string): void;
+  replace(url: string): void;
 }
 
-function resourceSignature(element: Element): string {
-  return Array.from(element.attributes)
-    .map(({ name, value }) => `${name}=${value}`)
-    .sort()
-    .join(";");
-}
-
-/** Keep route-only styles in <head> while allowing #body-wrap to remain the PJAX boundary. */
-function synchronizePageStyles(responseText: string | undefined): void {
-  if (!responseText) return;
-  const incomingDocument = new DOMParser().parseFromString(responseText, "text/html");
-  const incoming = Array.from(
-    incomingDocument.querySelectorAll<HTMLLinkElement>(PAGE_STYLE_SELECTOR),
-  );
-  const current = Array.from(document.querySelectorAll<HTMLLinkElement>(PAGE_STYLE_SELECTOR));
-  if (
-    incoming.length === current.length &&
-    incoming.every((link, index) => resourceSignature(link) === resourceSignature(current[index]!))
-  ) {
-    return;
-  }
-
-  current.forEach((link) => link.remove());
-  for (const source of incoming) {
-    const link = document.createElement("link");
-    copyAttributes(source, link);
-    document.head.append(link);
+export function resolveHttpUrl(url: string, base?: string | URL): URL | undefined {
+  try {
+    const resolved = base === undefined ? new URL(url) : new URL(url, base);
+    return resolved.protocol === "http:" || resolved.protocol === "https:" ? resolved : undefined;
+  } catch {
+    return undefined;
   }
 }
 
-/** Pjax 0.2 only evaluates classic scripts; recreate opted-in module scripts to execute them. */
-function executePjaxModuleScripts(root: ParentNode): void {
-  root.querySelectorAll<HTMLScriptElement>(PJAX_MODULE_SELECTOR).forEach((source) => {
-    if (source.dataset["hanloExecuted"] === "true") return;
-    const script = document.createElement("script");
-    copyAttributes(source, script);
-    script.dataset["hanloExecuted"] = "true";
-    script.textContent = source.textContent;
-    source.replaceWith(script);
-  });
+export function openExternalUrl(url: string, base = window.location.href): boolean {
+  const resolvedUrl = resolveHttpUrl(url, base);
+  if (!resolvedUrl) return false;
+  const link = document.createElement("a");
+  link.href = resolvedUrl.href;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer external";
+  link.hidden = true;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  return true;
 }
 
-function ensureProgress(): HTMLElement {
-  let progress = document.querySelector<HTMLElement>("#hanlo-navigation-progress");
-  if (progress) return progress;
-  progress = document.createElement("div");
-  progress.id = "hanlo-navigation-progress";
-  progress.setAttribute("role", "progressbar");
-  progress.setAttribute("aria-label", "页面加载进度");
-  progress.setAttribute("aria-hidden", "true");
-  document.body.append(progress);
-  return progress;
+interface NavigatorWithConnection extends Navigator {
+  readonly connection?: NetworkConnection;
 }
 
-let progressGeneration = 0;
-let progressAdvanceTimer: number | undefined;
-let progressResetTimer: number | undefined;
-
-function showProgress(): void {
-  const generation = ++progressGeneration;
-  window.clearTimeout(progressAdvanceTimer);
-  window.clearTimeout(progressResetTimer);
-  const progress = ensureProgress();
-  progress.classList.remove("complete");
-  progress.classList.add("active");
-  progress.style.setProperty("--hanlo-progress", "35%");
-  progressAdvanceTimer = window.setTimeout(() => {
-    if (generation === progressGeneration && progress.classList.contains("active")) {
-      progress.style.setProperty("--hanlo-progress", "82%");
-    }
-  }, 180);
-}
-
-function completeProgress(): void {
-  const generation = ++progressGeneration;
-  window.clearTimeout(progressAdvanceTimer);
-  window.clearTimeout(progressResetTimer);
-  const progress = document.querySelector<HTMLElement>("#hanlo-navigation-progress");
-  if (!progress) return;
-  progress.style.setProperty("--hanlo-progress", "100%");
-  progress.classList.add("complete");
-  progressResetTimer = window.setTimeout(() => {
-    if (generation !== progressGeneration) return;
-    progress.classList.remove("active", "complete");
-    progress.style.removeProperty("--hanlo-progress");
-  }, 240);
-}
-
-function runOptionalGlobal(name: string, ...arguments_: unknown[]): void {
-  const callback = (window as unknown as Record<string, unknown>)[name];
-  if (typeof callback === "function") Reflect.apply(callback, window, arguments_);
-}
-
-export function installPjaxNavigation(): void {
-  if (window.pjax) return;
-
-  window.pjax = new Pjax({
-    elements: 'a:not([target="_blank"]):not([download])',
-    selectors: PJAX_SELECTORS.filter((selector) => document.querySelector(selector)),
-    cacheBust: false,
-    analytics: false,
-    scrollRestoration: false,
-    scrollTo: false,
-  });
-
-  document.addEventListener("pjax:send", () => {
-    document.querySelector("#loading-box")?.classList.remove("loaded");
-    document.body.classList.remove("read-mode");
-    showProgress();
-  });
-
-  document.addEventListener("pjax:complete", (event) => {
-    synchronizePageStyles((event as PjaxNavigationEvent).request?.responseText);
-    const pageRoot = document.querySelector("#body-wrap");
-    if (pageRoot) executePjaxModuleScripts(pageRoot);
-    runOptionalGlobal("chatBtnFn");
-    runOptionalGlobal("gtag", "config", "", { page_path: window.location.pathname });
-    const baidu = (window as unknown as { _hmt?: { push(value: unknown): void } })._hmt;
-    baidu?.push(["_trackPageview", window.location.pathname]);
-    document.querySelector("#loading-box")?.classList.add("loaded");
-    completeProgress();
-  });
-
-  document.addEventListener("pjax:error", completeProgress);
+/** Perform a normal document navigation without fetching or replacing DOM in JavaScript. */
+export function navigateTo(
+  url: string,
+  options: NavigateOptions = {},
+  locationObject: LocationNavigator = window.location,
+): void {
+  const currentUrl = resolveHttpUrl(locationObject.href);
+  const resolvedUrl = currentUrl && resolveHttpUrl(url, currentUrl);
+  if (!currentUrl || !resolvedUrl || resolvedUrl.origin !== currentUrl.origin) {
+    throw new TypeError("Document navigation requires a same-origin HTTP(S) URL.");
+  }
+  if (options.replace) locationObject.replace(resolvedUrl.href);
+  else locationObject.assign(resolvedUrl.href);
 }
 
 function eligibleLink(target: EventTarget | null): HTMLAnchorElement | undefined {
   const link = target instanceof Element ? target.closest<HTMLAnchorElement>("a[href]") : null;
-  if (!link || link.target === "_blank" || link.hasAttribute("download")) return undefined;
-  if (link.dataset["noPrefetch"] !== undefined || link.rel.split(/\s+/).includes("external")) {
-    return undefined;
-  }
+  if (!link) return undefined;
+  const rel = new Set(link.rel.split(/\s+/).filter(Boolean));
+  const connection = (navigator as NavigatorWithConnection).connection;
   return isEligiblePrefetch({
     currentUrl: window.location.href,
     href: link.href,
     target: link.target,
     download: link.hasAttribute("download"),
-    external: link.rel.split(/\s+/).includes("external"),
+    external: rel.has("external"),
+    nofollow: rel.has("nofollow"),
     noPrefetch: link.dataset["noPrefetch"] !== undefined,
+    saveData: connection?.saveData,
+    effectiveType: connection?.effectiveType,
   })
     ? link
     : undefined;
 }
 
-export function installInternalLinkPrefetch(): void {
-  const prefetched = new Set<string>();
-  let pending: number | undefined;
+function eligibleDocumentUrls(): string[] {
+  const urls = new Set<string>();
+  document.querySelectorAll<HTMLAnchorElement>("a[href]").forEach((link) => {
+    if (eligibleLink(link)) urls.add(link.href);
+  });
+  return [...urls];
+}
 
+function supportsSpeculationRules(): boolean {
+  return (
+    typeof HTMLScriptElement.supports === "function" &&
+    HTMLScriptElement.supports("speculationrules")
+  );
+}
+
+function installSpeculationRules(urls: readonly string[]): void {
+  const script = document.createElement("script");
+  script.type = "speculationrules";
+  script.dataset["hanloPrefetch"] = "conservative";
+  script.textContent = JSON.stringify(createPrefetchRule(urls));
+  document.head.append(script);
+}
+
+function installFallbackPrefetch(): void {
+  const prefetched = new Set<string>();
   const prefetch = (target: EventTarget | null): void => {
     const link = eligibleLink(target);
     if (!link || prefetched.has(link.href)) return;
@@ -187,18 +109,20 @@ export function installInternalLinkPrefetch(): void {
     const hint = document.createElement("link");
     hint.rel = "prefetch";
     hint.href = link.href;
-    hint.as = "document";
+    hint.dataset["hanloPrefetch"] = "fallback";
     document.head.append(hint);
   };
 
-  document.addEventListener(
-    "pointerover",
-    (event) => {
-      window.clearTimeout(pending);
-      pending = window.setTimeout(() => prefetch(event.target), 80);
-    },
-    { passive: true },
-  );
-  document.addEventListener("pointerout", () => window.clearTimeout(pending), { passive: true });
-  document.addEventListener("touchstart", (event) => prefetch(event.target), { passive: true });
+  document.addEventListener("pointerdown", (event) => prefetch(event.target), { passive: true });
+  document.addEventListener("focusin", (event) => prefetch(event.target), { passive: true });
+}
+
+/** Add optional, conservative document hints; navigation correctness never depends on them. */
+export function installDocumentPrefetch(): void {
+  const connection = (navigator as NavigatorWithConnection).connection;
+  if (!isPrefetchAllowedByConnection(connection)) return;
+  const urls = eligibleDocumentUrls();
+  if (urls.length === 0) return;
+  if (supportsSpeculationRules()) installSpeculationRules(urls);
+  else installFallbackPrefetch();
 }

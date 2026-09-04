@@ -50,7 +50,7 @@
 
 /* 目录卡片边距 */
 #card-toc {
-    padding: 0.5rem 0.5rem !important;
+    padding: 0.5rem 0.5rem;
 }
 
 /* 不显示分割线 */
@@ -153,25 +153,25 @@
 
 /* sketch */
 #aside-content .card-tag-cloud a[href*="/tags/Sketch/"] {
-    color: var(--heo-lighttext) !important;
+    color: var(--heo-lighttext);
     font-weight: 500;
 }
 
 /* 设计 */
 #aside-content .card-tag-cloud a[href*="/tags/%E8%AE%BE%E8%AE%A1/"] {
-    color: var(--heo-lighttext) !important;
+    color: var(--heo-lighttext);
     font-weight: 500;
 }
 
 /* 干货 */
 #aside-content .card-tag-cloud a[href*="/tags/%E5%B9%B2%E8%B4%A7/"] {
-    color: var(--heo-lighttext) !important;
+    color: var(--heo-lighttext);
     font-weight: 500;
 }
 
 /* 教程 */
 #aside-content .card-tag-cloud a[href*="/tags/%E6%95%99%E7%A8%8B/"] {
-    color: var(--heo-lighttext) !important;
+    color: var(--heo-lighttext);
     font-weight: 500;
 }
 
@@ -207,7 +207,7 @@
 
     @media screen and (max-width: 1300px) {
         #recent-posts > .post-card-large > .recent-post-info > .content {
-            opacity: 1 !important;
+            opacity: 1;
         }
 
         #recent-posts > .post-card-large:hover > .recent-post-info > .content {
@@ -215,16 +215,16 @@
         }
 
         #recent-posts > .post-card-large > .recent-post-info > .content {
-            -webkit-line-clamp: 3 !important;
+            -webkit-line-clamp: 3;
         }
 
         #recent-posts > .post-card-large:hover > .recent-post-info > .content {
-            -webkit-line-clamp: 5 !important;
+            -webkit-line-clamp: 5;
         }
 
         /* 大文章高度 */
         #recent-posts > .post-card-large {
-            height: 20em !important;
+            height: 20em;
         }
     }
 }
@@ -247,7 +247,7 @@
 }
 
 /* 作者打招呼 */
-div#author-info__sayhi {
+.author-info__sayhi {
     text-align: left;
     color: var(--heo-white);
     background: var(--heo-white-op);
@@ -261,7 +261,7 @@ div#author-info__sayhi {
     transition: 0.3s;
 }
 
-div#author-info__sayhi:hover {
+.author-info__sayhi:hover {
     background: var(--heo-white-op);
     color: var(--heo-white);
     transform: scale(1.1)
@@ -406,7 +406,7 @@ div#author-info__sayhi:hover {
 }
 
 .card-widget.card-info {
-    padding: 0 !important;
+    padding: 0;
 }
 
 #aside-content > div.card-widget.card-info > div.card-content {
@@ -502,24 +502,24 @@ div#author-info__sayhi:hover {
     margin-top: 8px;
     background: var(--heo-card-btn-bg);
     border-radius: 8px;
-    transition: .3s ease-out !important
+    transition: .3s ease-out
 }
 
 #aside-content > div.sticky_layout > div.card-widget.card-archives > div > ul > li.card-archive-list-item.more.is-center :hover {
     color: var(--heo-white);
     background: var(--heo-blue);
     border-radius: 8px;
-    transition: .3s ease-out !important
+    transition: .3s ease-out
 }
 
 #aside-content .card-archives ul.card-archive-list > .card-archive-list-item.more span,
 #aside-content .card-categories ul.card-category-list > .card-category-list-item.more span {
-    transition: .3s ease-out !important
+    transition: .3s ease-out
 }
 
 #aside-content .card-archives ul.card-archive-list > .card-archive-list-item:hover.more span,
 #aside-content .card-categories ul.card-category-list > .card-category-list-item.more span {
-    transition: .3s ease-out !important
+    transition: .3s ease-out
 }
 
 #aside-content > div.sticky_layout > div.card-widget.card-archives > div > ul > li.card-archive-list-item.more.is-center :hover span {
@@ -547,17 +547,17 @@ div#author-info__sayhi:hover {
 
 #aside-content .card-tag-cloud a:hover {
     background: var(--heo-theme);
-    color: var(--heo-card-bg) !important;
+    color: var(--heo-card-bg);
     box-shadow: var(--heo-shadow-theme);
 }
 
 #aside-content .card-tag-cloud a.tags-cloud-more {
     width: 100%;
     text-align: center;
-    border-radius: 8px !important;
+    border-radius: 8px;
     border: var(--style-border);
     margin-top: 8px;
-    font-size: var(--global-font-size) !important;
+    font-size: var(--global-font-size);
 }
 
 

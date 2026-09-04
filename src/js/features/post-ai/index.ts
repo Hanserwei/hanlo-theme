@@ -1,3 +1,4 @@
+import { navigateTo, openExternalUrl, resolveHttpUrl } from "../../core/navigation";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
 
@@ -90,12 +91,13 @@ class PostAiController {
     });
     this.#resources.listen(this.#refresh, "click", () => this.#refreshSummary());
 
-    const tag = this.#panel.querySelector<HTMLElement>("#ai-tag");
+    const tag = this.#panel.querySelector<HTMLElement>(".ai-tag");
     if (tag) this.#resources.listen(tag, "click", () => this.#describeMode());
     const external = this.#panel.querySelector<HTMLElement>("#go-tianli-blog");
     if (external) {
       this.#resources.listen(external, "click", () => {
-        window.open(this.#config.buttonLink, "_blank", "noopener");
+        const targetUrl = resolveHttpUrl(this.#config.buttonLink, window.location.href);
+        if (targetUrl) openExternalUrl(targetUrl.href);
       });
     }
     const toggle = this.#panel.querySelector<HTMLElement>("#ai-Toggle");
@@ -258,7 +260,7 @@ class PostAiController {
 
   #toggleMode(): void {
     this.#mode = this.#mode === "tianli" ? "local" : "tianli";
-    const tag = this.#panel.querySelector<HTMLElement>("#ai-tag");
+    const tag = this.#panel.querySelector<HTMLElement>(".ai-tag");
     if (tag) tag.textContent = this.#mode === "tianli" ? "Tianli GPT" : `${this.#config.name} GPT`;
     this.#showDefaultButtons();
     void this.#generateSummary(this.#config.wordLimit);
@@ -295,11 +297,6 @@ class PostAiController {
       link.href = candidate.href;
       link.title = candidate.title;
       link.textContent = candidate.title;
-      this.#resources.listen(link, "click", (event) => {
-        if (!window.pjax) return;
-        event.preventDefault();
-        void window.pjax.loadUrl(link.href);
-      });
       item.append(label, link);
       list.append(item);
     });
@@ -309,8 +306,7 @@ class PostAiController {
   #goHome(): void {
     this.#write("正在返回本站首页...", false);
     this.#resources.timeout(() => {
-      if (window.pjax) void window.pjax.loadUrl("/");
-      else window.location.assign("/");
+      navigateTo("/");
     }, 1_000);
   }
 }

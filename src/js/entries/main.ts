@@ -1,5 +1,5 @@
 import "../../css/index.css";
-import { installInternalLinkPrefetch, installPjaxNavigation } from "../core/navigation";
+import { installDocumentPrefetch } from "../core/navigation";
 import { installPageLifecycle } from "../core/runtime";
 import { createBrowserStorage } from "../core/storage";
 import { createBangumiController } from "../features/bangumi";
@@ -15,8 +15,6 @@ import { createSiteShellController } from "../features/site-shell";
 import { createThemeModeController } from "../features/theme-mode";
 import { createTranslationController } from "../features/translation";
 
-installPjaxNavigation();
-installInternalLinkPrefetch();
 const storage = createBrowserStorage();
 const lifecycle = installPageLifecycle();
 lifecycle.register(createThemeModeController(storage));
@@ -31,3 +29,4 @@ lifecycle.register(createFriendMomentsController());
 lifecycle.register(createPostAiController());
 lifecycle.register(createPageWidgetsController());
 lifecycle.register(createBangumiController());
+installDocumentPrefetch();

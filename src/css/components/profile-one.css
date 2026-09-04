@@ -1,3 +1,4 @@
+@layer components {
 /* Extracted from src/modules/widgets/aside/profile.html. */
 .card-info-avatar.is-center {
                 flex-direction: column;
@@ -167,7 +168,7 @@
                 color: var(--heo-white)
             }
 
-            div#author-info__sayhi {
+.author-info__sayhi {
                 text-align: center;
                 width: fit-content;
                 color: var(--heo-white);
@@ -183,13 +184,13 @@
                 min-width: 100px
             }
 
-            div#author-info__sayhi:hover {
+.author-info__sayhi:hover {
                 background: var(--heo-white);
                 color: var(--heo-main);
                 transform: scale(1.1)
             }
 
-            [data-theme=dark] .page div#author-info__sayhi {
+[data-theme=dark] .page .author-info__sayhi {
                 background: var(--heo-black-op);
                 color: var(--heo-black)
             }
@@ -282,4 +283,4 @@
                 content: '';
                 animation: gradient 15s ease infinite;
             }
-
+}

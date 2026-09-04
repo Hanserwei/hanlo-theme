@@ -1,25 +1,3 @@
-#hanlo-navigation-progress {
-  --hanlo-progress: 0%;
-  position: fixed;
-  inset: 0 auto auto 0;
-  z-index: 10001;
-  width: var(--hanlo-progress);
-  height: 3px;
-  pointer-events: none;
-  opacity: 0;
-  background: var(--heo-main, #425aef);
-  box-shadow: 0 0 10px var(--heo-main, #425aef);
-  transition: width 180ms ease, opacity 180ms ease;
-}
-
-#hanlo-navigation-progress.active {
-  opacity: 1;
-}
-
-#hanlo-navigation-progress.complete {
-  opacity: 0;
-}
-
 #hanlo-snackbar.snackbar-container {
   position: fixed;
   z-index: 10002;
@@ -43,10 +21,10 @@
 }
 
 .hanlo-native-gallery {
-  display: grid !important;
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
   gap: 4px;
-  opacity: 1 !important;
+  opacity: 1;
 }
 
 .hanlo-native-gallery .fj-gallery-item,
@@ -149,7 +127,6 @@ body.hanlo-lightbox-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #hanlo-navigation-progress,
   #hanlo-snackbar.snackbar-container,
   .hanlo-lightbox {
     transition: none;

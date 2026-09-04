@@ -89,7 +89,7 @@
 }
 
 .flink#article-container .flink-list > .flink-list-item:hover a .flink-item-name {
-    color: var(--heo-card-bg) !important;
+    color: var(--heo-card-bg);
 }
 
 .flink#article-container .flink-list > .flink-list-item a {
@@ -129,17 +129,17 @@
 /* 友链右侧图标 */
 
 #article-container .flink-list > .flink-list-item:hover .flink-item-info > img {
-    opacity: .8 !important;
+    opacity: .8;
 }
 
 #article-container .flink-list > .flink-list-item .flink-item-info > img {
     position: absolute;
-    opacity: 0 !important;
-    right: -30px !important;
-    bottom: -40px !important;
-    width: 100px !important;
-    height: 100px !important;
-    border-radius: 50% !important;
+    opacity: 0;
+    right: -30px;
+    bottom: -40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
     z-index: -1;
     -webkit-transition: all .5s ease;
     -moz-transition: all .5s ease;
@@ -183,7 +183,7 @@
 }
 
 .gallery-group figcaption p {
-    line-height: 1.5 !important;
+    line-height: 1.5;
 }
 
 @media screen and (min-width: 1300px) {
@@ -372,14 +372,14 @@
     width: 100%;
     display: flex;
     border: none;
-    padding: 0 !important;
+    padding: 0;
 }
 
 
 /* 头像 */
 .flink#article-container .site-card .info img {
     border-radius: 32px;
-    transition: .3s ease-out !important;
+    transition: .3s ease-out;
     margin: 2px 8px 0 0;
     width: 20px;
     height: 20px;
@@ -417,16 +417,16 @@
 
 @media screen and (max-width: 768px) {
     #letlink {
-        flex-direction: column !important;
-        text-align: center !important;
+        flex-direction: column;
+        text-align: center;
     }
 
     #letlogo {
-        display: none !important;
+        display: none;
     }
 
     #footer-wrap {
-        margin-top: 1rem !important;
+        margin-top: 1rem;
     }
 }
 
@@ -442,7 +442,7 @@
     flex-wrap: wrap;
     justify-content: space-around;
     padding: 20px 50px 0px 50px;
-    text-align: left !important;
+    text-align: left;
     max-width: 1200px;
     margin: 0px auto;
 }
@@ -559,10 +559,10 @@
 
 /* 页脚底层背景 */
 #footer:before {
-    position: absolute !important;
-    width: 100% !important;
-    height: 100% !important;
-    content: '' !important;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: '';
     z-index: -1;
 }
 

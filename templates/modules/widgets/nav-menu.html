@@ -47,14 +47,15 @@
                 <span th:text="${menuItem.status.displayName}"></span>
             </a>
             
-            <a th:if="${not #lists.isEmpty(menuItem.children)}" class="site-page" rel="external nofollow">
+            <button th:if="${not #lists.isEmpty(menuItem.children)}"
+                    class="site-page hanlo-button-reset" type="button" aria-haspopup="true">
                 <th:block th:if="${theme.config.nav.menus.enable_ali_iconfont_symbol_header}">
                     <svg class="ali_icon" aria-hidden="true">
                         <use th:href="${#annotations.getOrDefault(menuItem, 'icon','jiewen joe-icon-zuzhijiagou')}"></use>
                     </svg>
                 </th:block>
                 <span th:text="${menuItem.status.displayName}"></span>
-            </a>
+            </button>
             <!--递归调用-->
             <div th:replace="~{modules/widgets/nav-menu :: nav-menu-recursion(menuItem=${menuItem})}"></div>
             

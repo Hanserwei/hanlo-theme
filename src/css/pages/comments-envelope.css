@@ -1,9 +1,10 @@
+@layer pages {
 /* Extracted from src/comments.html. */
 @media screen and (max-width: 600px) {
 
                             #afterimg,
                             #beforeimg {
-                                display: none !important
+                                display: none
                             }
                         }
 
@@ -80,5 +81,6 @@
                         }
 
                         [data-theme=dark] .comments {
-                            background: #5a5a5a !important
+                            background: #5a5a5a
                         }
+}

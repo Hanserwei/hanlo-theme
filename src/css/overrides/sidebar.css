@@ -31,19 +31,19 @@
     margin-left: 6px
 }
 
-#flip-wrapper-card {
+.flip-wrapper-card {
     -webkit-perspective: 1000;
     perspective: 1000
 }
 
-#flip-wrapper-card {
+.flip-wrapper-card {
     position: relative;
     width: 100%;
     height: 100%;
     z-index: 1
 }
 
-#flip-music {
+.flip-music {
     width: 100%;
     height: 100%;
     -webkit-transform-style: preserve-3d;
@@ -51,7 +51,7 @@
     transition: cubic-bezier(0, 0, 0, 1.29) .3s
 }
 
-#aside-content #flip-wrapper-card #flip-music .msimg {
+#aside-content .flip-wrapper-card .flip-music .msimg {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -60,7 +60,7 @@
     background-size: 100%
 }
 
-#aside-content #flip-wrapper-card #flip-music .back.msimg {
+#aside-content .flip-wrapper-card .flip-music .back.msimg {
     display: block;
     -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg);
@@ -68,14 +68,14 @@
     background-size: 100%
 }
 
-#flip-wrapper-card:hover #flip-music {
+.flip-wrapper-card:hover .flip-music {
     -webkit-transform: rotateY(180deg);
     transform: rotateY(180deg)
 }
 
 @media screen and (max-width: 768px) {
     .card-music {
-        height: 520px !important
+        height: 520px
     }
 }
 
@@ -83,12 +83,12 @@
     display: flex;
     justify-content: center;
     align-content: center;
-    padding: 0 !important;
+    padding: 0;
     cursor: pointer;
-    border: none !important;
+    border: none;
     height: 405px;
-    margin-top: 0 !important;
-    background: 0 0 !important
+    margin-top: 0;
+    background: 0 0
 }
 
 /* Steam卡片 */
@@ -118,13 +118,13 @@
 }
 
 
-#flip-steam {
+.flip-steam {
     width: 100%;
     height: 100%;
     transition: transform .3s
 }
 
-#flip-steam::before {
+.flip-steam::before {
     content: "";
     position: absolute;
     top: 0;
@@ -137,11 +137,11 @@
     z-index: 1
 }
 
-#flip-steam:hover::before {
+.flip-steam:hover::before {
     transform: translateX(100%) skewX(-60deg)
 }
 
-#aside-content #flip-wrapper-card #flip-steam .stimg {
+#aside-content .flip-wrapper-card .flip-steam .stimg {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -149,13 +149,13 @@
     z-index: 0
 }
 
-#aside-content #flip-wrapper-card #flip-steam .back.stimg {
+#aside-content .flip-wrapper-card .flip-steam .back.stimg {
     display: none
 }
 
 @media screen and (max-width: 768px) {
     .card-steam {
-        height:130px!important
+        height:130px
     }
 }
 
@@ -163,12 +163,12 @@
     display: flex;
     justify-content: center;
     align-content: center;
-    padding: 0!important;
+    padding: 0;
     cursor: pointer;
-    border: none!important;
+    border: none;
     height: 105px;
-    margin-top: 0!important;
-    background: 0 0!important
+    margin-top: 0;
+    background: 0 0
 }
 
 /* Steam卡片 */

@@ -804,7 +804,7 @@ h3 code,
 h4 code,
 h5 code,
 h6 code {
-    font-size: inherit !important;
+    font-size: inherit;
 }
 
 * {
@@ -937,7 +937,7 @@ img[src=""] {
 }
 
 .img-alt:hover {
-    text-decoration: none !important;
+    text-decoration: none;
 }
 
 :root {
@@ -965,7 +965,7 @@ blockquote a {
 
 blockquote p {
     padding: 0.5rem 0px;
-    margin: 0px !important;
+    margin: 0px;
 }
 
 blockquote footer {

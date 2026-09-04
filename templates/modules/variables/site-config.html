@@ -2,73 +2,72 @@
 <script id="site-config" th:inline="javascript">
     window.GLOBAL_CONFIG = {
         // 页面类型 index,page,post,tag,category
-        htmlType: [[${ htmlType }]],
-        postTitle: [[${ htmlType == 'post' ? post.spec.title : htmlType == 'page' ? singlePage.spec.title : ''}]],
-        isPost: [[${htmlType == 'post'}]],
-        isHome: [[${ htmlType == 'index'}]],
+        htmlType: (/*[[${ htmlType }]]*/ null),
+        postTitle: (/*[[${ htmlType == 'post' ? post.spec.title : htmlType == 'page' ? singlePage.spec.title : ''}]]*/ null),
+        isPost: (/*[[${htmlType == 'post'}]]*/ null),
+        isHome: (/*[[${ htmlType == 'index'}]]*/ null),
         copyright: undefined,
         lightbox: 'native',
         lazyload: {
-            enable: [[${theme.config.other.vanillaLazyload.enable}]],
-            error: [[@{${theme.config.other.vanillaLazyload.errorImg}}]]
+            enable: (/*[[${theme.config.other.vanillaLazyload.enable}]]*/ null),
+            error: (/*[[@{${theme.config.other.vanillaLazyload.errorImg}}]]*/ null)
         },
-        isFriendLinksInFooter: [[${theme.config.footer.footer_group.enable_footer_group}]],
-        loadingBox: [[${theme.config.other.loadingBoxs.loadingBoxEnable}]],
-        loadProgressBar: [[${theme.config.other.loadingBoxs.loadProgressBar}]],
-        helloText: [[${#strings.listSplit(theme.config.sidebar.profile.helloText, ',')}]],
-        profileStyle: [[${theme.config.sidebar.profile.profileStyle}]],
-        rightMenuEnable: [[${theme.config.tool.rightMenu.rightMenuEnable}]],
-        colorScheme: [[${theme.config.style.colorScheme}]],
+        isFriendLinksInFooter: (/*[[${theme.config.footer.footer_group.enable_footer_group}]]*/ null),
+        loadingBox: (/*[[${theme.config.other.loadingBoxs.loadingBoxEnable}]]*/ null),
+        helloText: (/*[[${#strings.listSplit(theme.config.sidebar.profile.helloText, ',')}]]*/ null),
+        profileStyle: (/*[[${theme.config.sidebar.profile.profileStyle}]]*/ null),
+        rightMenuEnable: (/*[[${theme.config.tool.rightMenu.rightMenuEnable}]]*/ null),
+        colorScheme: (/*[[${theme.config.style.colorScheme}]]*/ null),
         effects: {
-            bubble: [[${theme.config.other.bubbleEnable}]],
-            universe: [[${theme.config.style.universe}]]
+            bubble: (/*[[${theme.config.other.bubbleEnable}]]*/ null),
+            universe: (/*[[${theme.config.style.universe}]]*/ null)
         },
         friends: {
             apiUrl: '/apis/api.friend.moony.la/v1alpha1/friendposts',
-            pageSize: Number([[${theme.config.link.fmomentsPageSize}]]),
-            errorImage: [[@{${theme.config.other.error_404.background}}]]
+            pageSize: Number((/*[[${theme.config.link.fmomentsPageSize}]]*/ null)),
+            errorImage: (/*[[@{${theme.config.other.error_404.background}}]]*/ null)
         },
         postAi: {
-            summary: [[${htmlType != 'post' || !theme.config.post.aiDescription.aiDescriptionEnable ? '' :
+            summary: (/*[[${htmlType != 'post' || !theme.config.post.aiDescription.aiDescriptionEnable ? '' :
                         theme.config.post.aiDescription.mode != 'local' && !theme.config.post.aiDescription.switchBtn ? '' :
                         post.spec.excerpt.autoGenerate ? '本地模式需要自己填写文章摘要' :
-                        #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt}]],
-            randomRange: Number([[${theme.config.post.aiDescription.randomNum}]]),
-            wordLimit: Number([[${theme.config.post.aiDescription.basicWordCount}]]),
+                        #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt}]]*/ null),
+            randomRange: Number((/*[[${theme.config.post.aiDescription.randomNum}]]*/ null)),
+            wordLimit: Number((/*[[${theme.config.post.aiDescription.basicWordCount}]]*/ null)),
             buttonLink: "[(${theme.config.post.aiDescription.btnLink})]",
             name: "[(${theme.config.post.aiDescription.gptName})]",
-            mode: [[${theme.config.post.aiDescription.mode}]],
-            switchable: [[${theme.config.post.aiDescription.switchBtn}]],
+            mode: (/*[[${theme.config.post.aiDescription.mode}]]*/ null),
+            switchable: (/*[[${theme.config.post.aiDescription.switchBtn}]]*/ null),
             key: "[(${theme.config.post.aiDescription.key})]",
             referer: "[(${theme.config.post.aiDescription.Referer})]"
         },
         widgets: {
             dynamicTitle: {
-                enabled: Boolean([[${theme.config.other.diytitle.diytitleEnable}]]),
-                leave: [[${theme.config.other.diytitle.leaveTitle}]] || '',
-                back: [[${theme.config.other.diytitle.backTitle}]] || ''
+                enabled: Boolean((/*[[${theme.config.other.diytitle.diytitleEnable}]]*/ null)),
+                leave: (/*[[${theme.config.other.diytitle.leaveTitle}]]*/ null) || '',
+                back: (/*[[${theme.config.other.diytitle.backTitle}]]*/ null) || ''
             },
             footerRuntime: {
-                enabled: [[${theme.config.footer.footerContent.style_one.runtime_enable}]],
-                startedAt: [[${theme.config.basics.siteStartTime}]],
-                workImage: [[${theme.config.footer.footerContent.style_one.work_img}]],
-                workDescription: [[${theme.config.footer.footerContent.style_one.work_description}]],
-                offDutyImage: [[${theme.config.footer.footerContent.style_one.offduty_img}]],
-                offDutyDescription: [[${theme.config.footer.footerContent.style_one.offduty_description}]]
+                enabled: (/*[[${theme.config.footer.footerContent.style_one.runtime_enable}]]*/ null),
+                startedAt: (/*[[${theme.config.basics.siteStartTime}]]*/ null),
+                workImage: (/*[[${theme.config.footer.footerContent.style_one.work_img}]]*/ null),
+                workDescription: (/*[[${theme.config.footer.footerContent.style_one.work_description}]]*/ null),
+                offDutyImage: (/*[[${theme.config.footer.footerContent.style_one.offduty_img}]]*/ null),
+                offDutyDescription: (/*[[${theme.config.footer.footerContent.style_one.offduty_description}]]*/ null)
             },
             greeting: {
-                enabled: Boolean([[${theme.config.other.greeting.enable_greeting}]]),
-                items: [[${theme.config.other.greeting.setting}]] || []
+                enabled: Boolean((/*[[${theme.config.other.greeting.enable_greeting}]]*/ null)),
+                items: (/*[[${theme.config.other.greeting.setting}]]*/ null) || []
             },
             typed: {
-                random: Boolean([[${theme.config.top.above.enable_typed_random}]]),
-                items: [[${theme.config.top.above.typed}]] || []
+                random: Boolean((/*[[${theme.config.top.above.enable_typed_random}]]*/ null)),
+                items: (/*[[${theme.config.top.above.typed}]]*/ null) || []
             },
             tenYear: {
-                startedAt: [[${theme.config.about.tenyear.start_time}]],
-                endedAt: [[${theme.config.about.tenyear.end_time}]]
+                startedAt: (/*[[${theme.config.about.tenyear.start_time}]]*/ null),
+                endedAt: (/*[[${theme.config.about.tenyear.end_time}]]*/ null)
             },
-            randomTagColors: [[${theme.config.other.tagRandomColorEnable}]]
+            randomTagColors: (/*[[${theme.config.other.tagRandomColorEnable}]]*/ null)
         },
         date_suffix: {
             just: '刚刚',
@@ -87,7 +86,7 @@
             position: "top-center",
         },
         translate: {
-            defaultEncoding: [[${theme.config.style.translate.defaultEncoding}]],
+            defaultEncoding: (/*[[${theme.config.style.translate.defaultEncoding}]]*/ null),
             translateDelay: 0,
             msgToTraditionalChinese: "繁",
             msgToSimplifiedChinese: "简",
@@ -95,51 +94,51 @@
             rightMenuMsgToSimplifiedChinese: "转为简体"
         },
         shiki: {
-            enable: [[${theme.config.code.shiki_enable == null || theme.config.code.shiki_enable}]],
-            enable_title: [[${ theme.config.code.enable_title }]],
-            enable_hr: [[${ theme.config.code.enable_hr }]],
-            enable_line: [[${ theme.config.code.enable_line }]],
-            enable_copy: [[${ theme.config.code.enable_copy }]],
-            enable_expander: [[${ theme.config.code.enable_expander }]],
-            height_limit: Number([[${#strings.isEmpty(theme.config.code.height_limit) ? 300 : theme.config.code.height_limit}]]),
-            enable_height_limit: [[${theme.config.code.enable_height_limit}]],
+            enable: (/*[[${theme.config.code.shiki_enable == null || theme.config.code.shiki_enable}]]*/ null),
+            enable_title: (/*[[${ theme.config.code.enable_title }]]*/ null),
+            enable_hr: (/*[[${ theme.config.code.enable_hr }]]*/ null),
+            enable_line: (/*[[${ theme.config.code.enable_line }]]*/ null),
+            enable_copy: (/*[[${ theme.config.code.enable_copy }]]*/ null),
+            enable_expander: (/*[[${ theme.config.code.enable_expander }]]*/ null),
+            height_limit: Number((/*[[${#strings.isEmpty(theme.config.code.height_limit) ? 300 : theme.config.code.height_limit}]]*/ null)),
+            enable_height_limit: (/*[[${theme.config.code.enable_height_limit}]]*/ null),
             theme_light: "[(${theme.config.code.theme_light})]",
             theme_dark: "[(${theme.config.code.theme_dark})]"
         },
         source: {
             links: {
-                linksUrl: [[${ theme.config.link.linksUrl }]],
-                linksNum: [[${theme.config.footer.footer_group.num}]],
+                linksUrl: (/*[[${ theme.config.link.linksUrl }]]*/ null),
+                linksNum: (/*[[${theme.config.footer.footer_group.num}]]*/ null),
             },
             post: {
-                dynamicBackground: [[${ theme.config.post.dynamicBackground }]]
+                dynamicBackground: (/*[[${ theme.config.post.dynamicBackground }]]*/ null)
             },
             tool: {
-                switch: [[${ theme.config.tool.snackbar.switch }]]
+                switch: (/*[[${ theme.config.tool.snackbar.switch }]]*/ null)
             },
             postAi: {
-                ai: [[${htmlType != 'post' || !theme.config.post.aiDescription.aiDescriptionEnable  ?  ''  :
+                ai: (/*[[${htmlType != 'post' || !theme.config.post.aiDescription.aiDescriptionEnable  ?  ''  :
                                     theme.config.post.aiDescription.mode != 'local' && !theme.config.post.aiDescription.switchBtn ? '' :
                                     post.spec.excerpt.autoGenerate ? '本地模式需要自己填写文章摘要' :
-                                    #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt  }]],
-                randomNum: [[${theme.config.post.aiDescription.randomNum}]],
-                basicWordCount: [[${theme.config.post.aiDescription.basicWordCount}]],
+                                    #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt  }]]*/ null),
+                randomNum: (/*[[${theme.config.post.aiDescription.randomNum}]]*/ null),
+                basicWordCount: (/*[[${theme.config.post.aiDescription.basicWordCount}]]*/ null),
                 btnLink: "[(${theme.config.post.aiDescription.btnLink})]",
                 gptName: "[(${theme.config.post.aiDescription.gptName})]",
-                modeName: [[${theme.config.post.aiDescription.mode}]],
-                switchBtn: [[${theme.config.post.aiDescription.switchBtn}]],
+                modeName: (/*[[${theme.config.post.aiDescription.mode}]]*/ null),
+                switchBtn: (/*[[${theme.config.post.aiDescription.switchBtn}]]*/ null),
                 keys: "[(${theme.config.post.aiDescription.key})]",
                 Referers: "[(${theme.config.post.aiDescription.Referer})]",
             },
             img: {
-                src: [[${isLazyload ? 'data-lazy-src' : 'src' }]]
+                src: (/*[[${isLazyload ? 'data-lazy-src' : 'src' }]]*/ null)
             },
             footer: {
-                default_enable: [[${theme.config.footer.footerContent.default_enable_group.default_enable}]]
+                default_enable: (/*[[${theme.config.footer.footerContent.default_enable_group.default_enable}]]*/ null)
             },
             about: {
-                rewardList: [[${theme.config.aboutReward.reward_list}]],
-                rewardAmount: [[${theme.config.aboutReward.rewardNumber}]]
+                rewardList: (/*[[${theme.config.aboutReward.reward_list}]]*/ null),
+                rewardAmount: (/*[[${theme.config.aboutReward.rewardNumber}]]*/ null)
             }
         }
     };

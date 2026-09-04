@@ -1,3 +1,4 @@
+@layer pages {
 /* Extracted from src/photos.html. */
 .gallery-groups {
                         box-shadow: var(--heo-shadow-border);
@@ -28,7 +29,7 @@ background-image:
     radial-gradient(circle, #ffa500 0 30px, transparent 31px)
 }
 
-                    #article-container .type-gallery {
+                    .hanlo-article-container .type-gallery {
                         overflow: hidden;
                         margin-top: 40px;
                     }
@@ -99,7 +100,7 @@ background-image:
                         margin-left: 2px
                     }
 
-                    #article-container .tag-address {
+                    .hanlo-article-container .tag-address {
                         display: flex;
                         position: absolute;
                         left: 8px;
@@ -121,3 +122,4 @@ background-image:
                         transition: all .2s ease 0s;
                         -webkit-user-drag: none
                     }
+}

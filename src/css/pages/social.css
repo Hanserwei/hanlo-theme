@@ -1,9 +1,9 @@
 /* Migrated from public/assets/zhheo/zhheoblog.css; keep module order in src/css/index.css. */
 /* 404页面 */
 #error-wrap .error-content {
-    box-shadow: none !important;
+    box-shadow: none;
     border-radius: 12px;
-    background: var(--heo-card-bg) !important;
+    background: var(--heo-card-bg);
 }
 
 #body-wrap.page .errors {
@@ -364,9 +364,9 @@
 
 /* 标签 */
 #bber .bber-content .datacont a.tag {
-    background-image: none !important;
-    background-color: #f2f2f2 !important;
-    color: #999 !important;
+    background-image: none;
+    background-color: #f2f2f2;
+    color: #999;
     border-radius: 4px;
     text-decoration: none;
     font-weight: 400;
@@ -446,11 +446,11 @@
     border-radius: 32px;
     overflow: hidden;
     background: var(--heo-secondbg);
-    padding: 0 !important;
+    padding: 0;
 }
 
 .friendlink-avatar:hover {
-    border-radius: 32px !important;
+    border-radius: 32px;
     background: var(--heo-secondbg);
 }
 
@@ -464,31 +464,31 @@
 
 a.bb-link {
     margin-left: 8px;
-    color: var(--heo-secondtext) !important;
+    color: var(--heo-secondtext);
     display: inline;
-    border: none !important;
+    border: none;
 }
 
 a.bb-link-info {
     display: inline;
     float: right;
-    border: none !important;
-    color: var(--heo-secondtext) !important;
+    border: none;
+    color: var(--heo-secondtext);
     line-height: 2.7rem;
 }
 
 a.bb-link-info:hover {
-    color: var(--heo-fontcolor) !important;
-    background: none !important;
+    color: var(--heo-fontcolor);
+    background: none;
 }
 
 #friend_link_moments {
-    border: none !important;
+    border: none;
 }
 
 .moments-article-img {
     height: 100%;
-    margin: 0 !important;
+    margin: 0;
 }
 
 .tab-item-content #moments_container .moments-item a {
@@ -524,35 +524,35 @@ a.bb-link-info:hover {
 
 .moments-sort-item-title {
     color: var(--heo-lighttext);
-    border-bottom: none !important;
-    padding: 0 !important;
+    border-bottom: none;
+    padding: 0;
 }
 
 .moments-sort-item-title:hover {
-    color: var(--heo-hovertext) !important;
-    background: none !important;
-    box-shadow: none !important;
+    color: var(--heo-hovertext);
+    background: none;
+    box-shadow: none;
 }
 
 .friendlink-avatar {
-    border-bottom: none !important;
+    border-bottom: none;
 }
 
 .moments_load_button {
-    color: var(--heo-fontcolor) !important;
-    background: var(--heo-card-btn-bg) !important;
-    padding: 12px 16px !important;
-    border-radius: 12px !important;
+    color: var(--heo-fontcolor);
+    background: var(--heo-card-btn-bg);
+    padding: 12px 16px;
+    border-radius: 12px;
     transition: 0.3s;
     width: 100%;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    border: 0 !important;
+    border: 0;
 }
 
 .moments_load_button:hover {
-    color: var(--heo-white) !important;
-    background: var(--heo-main) !important;
+    color: var(--heo-white);
+    background: var(--heo-main);
     transition: 0.3s;
 }
 
@@ -562,7 +562,7 @@ a.bb-link-info:hover {
     order: 0;
     width: 100%;
     font-weight: bold;
-    -webkit-line-clamp: 1 !important;
+    -webkit-line-clamp: 1;
     overflow: hidden;
     -webkit-box-orient: vertical;
 }
@@ -612,8 +612,8 @@ a.bb-link-info:hover {
 }
 
 .moments-item-img {
-    width: 60px !important;
-    height: 60px !important;
+    width: 60px;
+    height: 60px;
 }
 
 .moments-item-img img {
@@ -625,26 +625,26 @@ a.bb-link-info:hover {
 
 #info_user_pool {
     background: var(--heo-secondbg);
-    border-radius: 12px !important;
+    border-radius: 12px;
     margin-top: 1rem;
-    box-shadow: none !important;
+    box-shadow: none;
 }
 
 .moments-item {
-    margin-left: 0 !important;
-    box-shadow: none !important;
+    margin-left: 0;
+    box-shadow: none;
 }
 
 /* 豆瓣 */
 .hexo-douban-item {
-    border-bottom: none !important;
+    border-bottom: none;
     background: var(--heo-card-bg);
     border: var(--style-border);
     box-shadow: var(--heo-shadow-border);
     border-radius: 12px;
     margin: 8px 0;
     height: 160px;
-    min-height: 160px !important;
+    min-height: 160px;
     width: 49%;
     overflow: hidden;
 }
@@ -663,12 +663,12 @@ a.bb-link-info:hover {
 }
 
 .hexo-douban-item .hexo-douban-picture a {
-    padding: 0 !important;
+    padding: 0;
 }
 
 .hexo-douban-item .hexo-douban-picture img {
-    margin: 0px !important;
-    height: 100% !important;
+    margin: 0px;
+    height: 100%;
 }
 
 .hexo-douban-tabs {
@@ -676,7 +676,7 @@ a.bb-link-info:hover {
 }
 
 .hexo-douban-title a {
-    border-bottom: 0px !important;
+    border-bottom: 0px;
 }
 
 .hexo-douban-title {
@@ -686,8 +686,8 @@ a.bb-link-info:hover {
 }
 
 .hexo-douban-title a:hover {
-    color: var(--heo-lighttext) !important;
-    background: var(--heo-none) !important;
+    color: var(--heo-lighttext);
+    background: var(--heo-none);
 }
 
 .hexo-douban-pagination {
@@ -708,16 +708,16 @@ span.hexo-douban-pagenum {
 }
 
 .hexo-douban-title a {
-    padding: 0 !important;
+    padding: 0;
 }
 
 .hexo-douban-info {
-    padding-left: 130px !important;
+    padding-left: 130px;
     margin-right: 0.5rem;
 }
 
 .hexo-douban-meta {
-    font-size: 0.7rem !important;
+    font-size: 0.7rem;
     color: var(--heo-secondtext);
     margin-top: 0.3rem;
     line-height: 1.05;
@@ -726,7 +726,7 @@ span.hexo-douban-pagenum {
 .hexo-douban-comments {
     line-height: 1.2;
     margin-top: 0.5rem;
-    font-size: 0.8rem !important;
+    font-size: 0.8rem;
     -webkit-line-clamp: 3;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -736,22 +736,22 @@ span.hexo-douban-pagenum {
 
 .hexo-douban-picture {
     height: 100%;
-    top: 0 !important;
+    top: 0;
     padding: 10px 0 10px 10px;
 }
 
 .hexo-douban-picture a img {
-    border-radius: 8px !important;
+    border-radius: 8px;
 }
 
 .hexo-douban-button {
     width: 4rem;
     height: 2rem;
     line-height: 1.9rem;
-    border-radius: 8px !important;
+    border-radius: 8px;
     background: var(--heo-card-bg);
     box-shadow: var(--heo-shadow-lightblack);
     border: var(--style-border);
     margin: 0 0.2rem;
-    border-bottom: var(--style-border) !important;
+    border-bottom: var(--style-border);
 }

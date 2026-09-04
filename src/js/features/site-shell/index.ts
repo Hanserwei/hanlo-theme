@@ -8,6 +8,7 @@ import {
   throttle,
   wrapElement,
 } from "../../core/dom";
+import { navigateTo, openExternalUrl, resolveHttpUrl } from "../../core/navigation";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { ExpiringStorage } from "../../core/storage";
 import type { PageControllerDefinition } from "../../core/types";
@@ -43,7 +44,7 @@ function updateAsideState(storage: ExpiringStorage): void {
 }
 
 function changeGreeting(config: Readonly<ThemeConfig>): void {
-  const element = document.querySelector<HTMLElement>("#author-info__sayhi");
+  const element = document.querySelector<HTMLElement>(".author-info__sayhi");
   if (!element) return;
   const greetings =
     config.helloText && config.helloText.length > 0
@@ -83,7 +84,7 @@ function timeGreeting(profileStyle: string | undefined, date = new Date()): stri
 }
 
 function initializeGreeting(config: Readonly<ThemeConfig>): void {
-  const element = document.querySelector<HTMLElement>("#author-info__sayhi");
+  const element = document.querySelector<HTMLElement>(".author-info__sayhi");
   if (!element) return;
   const greeting = timeGreeting(config.profileStyle);
   element.textContent = config.profileStyle === "default" ? `${greeting}！我是` : greeting;
@@ -175,8 +176,7 @@ async function refreshFooterLinks(
 function randomPost(): void {
   const url = document.querySelector<HTMLElement>("#hanlo-page-data")?.dataset["randomPostUrl"];
   if (!url) return;
-  if (window.pjax) void window.pjax.loadUrl(url);
-  else window.location.assign(url);
+  navigateTo(url);
 }
 
 function goToPage(): void {
@@ -186,14 +186,14 @@ function goToPage(): void {
   const page = Number.parseInt(input.value, 10);
   const lastPage = Number.parseInt(pages.item(pages.length - 1).textContent ?? "", 10);
   if (!Number.isInteger(page) || page <= 0 || page > lastPage) return;
-  const current = new URL(window.location.href);
+  const current = resolveHttpUrl(window.location.href);
+  if (!current) return;
   const suffix = current.search;
   current.search = "";
   const base = current.href.replace(/\/page\/\d+\/?$/, "").replace(/\/$/, "");
   const target = `${page === 1 ? base : `${base}/page/${page}`}${suffix}`;
   if (document.querySelector(".pl-container")) sessionStorage.setItem(SCROLL_POSTS_KEY, "1");
-  if (window.pjax) void window.pjax.loadUrl(target);
-  else window.location.assign(target);
+  navigateTo(target);
 }
 
 function copyText(text: string, message: string): void {
@@ -218,9 +218,14 @@ async function showRandomFriend(storage: ExpiringStorage, signal: AbortSignal): 
   try {
     const [item] = randomItems(await getFriendLinks(storage, signal), 1);
     if (!item) return;
+    const targetUrl = resolveHttpUrl(item.spec.url, window.location.href);
+    if (!targetUrl) {
+      snackbarShow("该友链地址不是有效的 HTTP(S) 链接");
+      return;
+    }
     snackbarShow(
       `点击前往按钮进入随机一个友链，不保证跳转网站的安全性和可用性。本次随机到的是本站友链：「${item.spec.displayName}」`,
-      () => window.open(item.spec.url, "_blank", "noopener"),
+      () => openExternalUrl(targetUrl.href),
       8_000,
       "前往",
     );
@@ -301,6 +306,14 @@ function handleAction(
       event.preventDefault();
       void showRandomFriend(storage, resources.signal);
       break;
+    case "open-search":
+      event.preventDefault();
+      window.SearchWidget?.open();
+      break;
+    case "open-link-submit":
+      event.preventDefault();
+      window.LinkSubmitWidget?.open();
+      break;
     case "go-to-page":
       event.preventDefault();
       goToPage();
@@ -336,6 +349,13 @@ function initializeNavigation(
   const body = document.body;
   const sidebar = document.querySelector<HTMLElement>("#sidebar-menus");
   const mask = document.querySelector<HTMLElement>("#menu-mask");
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-hanlo-login-link]").forEach((link) => {
+    const loginUrl = resolveHttpUrl(link.href);
+    if (!loginUrl || loginUrl.origin !== window.location.origin) return;
+    loginUrl.searchParams.set("redirect_uri", window.location.href);
+    link.href = loginUrl.href;
+  });
 
   const closeSidebar = () => {
     body.style.overflow = "";
@@ -685,7 +705,7 @@ async function initializeQrCode(resources: PageResourceScope): Promise<void> {
 }
 
 async function initializeIndexEssay(resources: PageResourceScope): Promise<void> {
-  if (!document.querySelector("#bber-talk")) return;
+  if (!document.querySelector(".hanlo-moment-track")) return;
   document.querySelectorAll<HTMLElement>(".swiper-wrapper .swiper-slide").forEach((slide) => {
     slide.textContent = changeContent(slide.textContent ?? "");
   });
@@ -774,7 +794,7 @@ function initializeWaterfall(resources: PageResourceScope): void {
       item.style.removeProperty("width");
     });
   });
-  schedule();
+  layout();
 }
 
 async function initializeCoverColor(

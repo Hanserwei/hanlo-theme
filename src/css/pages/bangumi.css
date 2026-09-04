@@ -1,3 +1,4 @@
+@layer pages {
 /* Extracted from src/bangumis.html. */
 .bangumi-tabs {
                             margin-bottom: 15px;
@@ -8,7 +9,7 @@
                             padding: 5px
                         }
 
-                        a.bangumi-tab {
+                        .bangumi-tab {
                             text-decoration: none
                         }
 
@@ -146,8 +147,8 @@
                             color: transparent;
                             opacity: 0;
                             visibility: hidden;
-                            line-height: 6px !important;
-                            padding: 0 !important
+                            line-height: 6px;
+                            padding: 0
                         }
 
                         @media (max-width: 650px) {
@@ -287,33 +288,33 @@
                             border-radius: 10px;
                         }
 
-                        #page #article-container .bangumi-tabs a.bangumi-tab:hover {
-                            text-decoration: none !important;
+                        #page #article-container .bangumi-tabs .bangumi-tab:hover {
+                            text-decoration: none;
                             border-radius: 10px;
                             column-gap: var(--heo-ahoverbg);
                         }
 
-                        #page #article-container .bangumi-pagination a.bangumi-button {
+                        #page #article-container .bangumi-pagination .bangumi-button {
                             border-bottom: none;
                             border-radius: 10px;
                         }
 
                         .bangumi-button:hover {
-                            background: var(--heo-theme) !important;
-                            border-radius: 10px !important;
-                            color: var(--heo-ahoverbg) !important;
+                            background: var(--heo-theme);
+                            border-radius: 10px;
+                            color: var(--heo-ahoverbg);
                         }
 
-                        a.bangumi-button.bangumi-nextpage:hover {
-                            text-decoration: none !important;
+                        .bangumi-button.bangumi-nextpage:hover {
+                            text-decoration: none;
                         }
 
                         .bangumi-button {
-                            padding: 5px 10px !important;
+                            padding: 5px 10px;
                         }
 
-                        a.bangumi-tab {
-                            padding: 5px 10px !important;
+                        .bangumi-tab {
+                            padding: 5px 10px;
                         }
 
                         svg.icon.faa-tada {
@@ -331,3 +332,4 @@
                         .bangumi-info-item em {
                             color: #f2b94b;
                         }
+}

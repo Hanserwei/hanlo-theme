@@ -4,11 +4,11 @@
     <div id="sidebar-menus">
         <span class="sidebar-menu-item-title">功能</span>
         <div class="sidebar-menu-item">
-            <a class="darkmode_switchbutton menu-child" data-hanlo-action="toggle-theme" href="javascript:void(0);"
-               rel="external nofollow" title="显示模式切换">
+            <button class="darkmode_switchbutton menu-child hanlo-button-reset"
+                    data-hanlo-action="toggle-theme" type="button" title="显示模式切换">
                 <i class="haofont hao-icon-moon hl:[font-size:0.9rem]"></i>
                 <span>显示模式</span>
-            </a>
+            </button>
         </div>
         <th:block th:if="${not #strings.isEmpty(theme.config.nav.leftMenu) && theme.config.nav.menus.phone_leftMenu}"
                   th:with="leftMenu = ${menuFinder.getByName(theme.config.nav.leftMenu)}">
@@ -41,9 +41,9 @@
             <div class="menus_items">
                 <div class="menus_item" th:each="menuItem : ${menuFinder.getPrimary().menuItems}">
                     <th:block th:if="${not #lists.isEmpty(menuItem.children)}">
-                        <a class="site-page" href="javascript:void(0);" rel="external nofollow">
+                        <button class="site-page expand hanlo-button-reset" type="button">
                             <span th:text="${menuItem.status.displayName}"></span>
-                        </a>
+                        </button>
                         <th:block th:if="${not #lists.isEmpty(menuItem.children)}">
                             <ul class="menus_item_child">
                                 <li th:each="childMenu : ${menuItem.children}">

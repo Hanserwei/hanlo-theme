@@ -157,7 +157,7 @@ div.btns a {
 }
 
 div.btns a>i {
-    background: #2196f3!important
+    background: #2196f3
 }
 
 div.btns a>i:first-child {
@@ -171,7 +171,7 @@ div.btns a b {
 }
 
 div.btns a img {
-    margin: .4em auto!important
+    margin: .4em auto
 }
 
 div.btns a:not([href]) {
@@ -181,7 +181,7 @@ div.btns a:not([href]) {
 
 div.btns a[href]:hover {
     background: var(--heo-main);
-    color: var(--heo-white)!important
+    color: var(--heo-white)
 }
 
 div.btns a[href]:hover>i:first-child {
@@ -325,7 +325,7 @@ div.btns.rounded a>i:first-child,div.btns.rounded a>img:first-child {
 }
 
 .group-two {
-    width: calc(50% - 8px) !important;
+    width: calc(50% - 8px);
 }
 
 #article-container figure.gallery-group figcaption p {
@@ -356,7 +356,7 @@ div.btns.rounded a>i:first-child,div.btns.rounded a>img:first-child {
 #article-container p.p.subtitle {
     font-weight: 700;
     color: #44b299;
-    font-size: 1.25rem!important;
+    font-size: 1.25rem;
     padding-top: 1.5rem
 }
 
@@ -796,8 +796,8 @@ p.p.gray,span.p.gray {
 
 .checkbox p {
     display: inline-block;
-    margin-top: 2px!important;
-    margin-bottom: 0!important
+    margin-top: 2px;
+    margin-bottom: 0
 }
 
 .checkbox input[type=checkbox]:after,.checkbox input[type=checkbox]:before {

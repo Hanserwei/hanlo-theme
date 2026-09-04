@@ -1,8 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-document="two">
   <head>
     <meta charset="UTF-8" />
     <title>Lifecycle page two</title>
+    <link rel="canonical" href="http://127.0.0.1:4173/tests/e2e/fixtures/page-two.html" />
+    <meta property="og:title" content="Lifecycle page two" />
     <link rel="stylesheet" data-hanlo-page-style href="/tests/e2e/fixtures/page-two.css" />
     <script src="/tests/e2e/fixtures/config.js"></script>
     <script id="site-config">
@@ -11,15 +13,9 @@
   </head>
   <body>
     <main id="body-wrap" data-page="two">
-      <a id="previous-page" data-pjax-test href="/tests/e2e/fixtures/page-one.html">Previous</a>
+      <a id="previous-page" data-no-prefetch href="/tests/e2e/fixtures/page-one.html">Previous</a>
       <p>Page two</p>
-      <script type="module" data-pjax src="/tests/e2e/fixtures/page-two-module.js"></script>
-      <script>
-        window.__newPageDestroyCount = 0;
-        document.addEventListener("hanlo:page:destroy", () => window.__newPageDestroyCount++, {
-          once: true,
-        });
-      </script>
+      <script type="module" src="/tests/e2e/fixtures/page-two-module.js"></script>
     </main>
     <script src="/tests/e2e/fixtures/setup.js"></script>
   </body>

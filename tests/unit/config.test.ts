@@ -10,7 +10,6 @@ function createConfig() {
     isHome: true,
     lazyload: { enable: true, error: "/error.png" },
     loadingBox: true,
-    loadProgressBar: false,
     rightMenuEnable: true,
     colorScheme: "system",
     date_suffix: { just: "刚刚", min: "分钟前", hour: "小时前", day: "天前" },

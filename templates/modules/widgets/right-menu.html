@@ -1,55 +1,56 @@
 <!-- 右键菜单 -->
-<div class="js-pjax"  th:if="${theme.config.tool.rightMenu.rightMenuEnable}">
+<div th:if="${theme.config.tool.rightMenu.rightMenuEnable}">
     <div id="rightMenu">
         <div class="rightMenu-group rightMenu-small">
-            <div class="rightMenu-item" id="menu-backward"><i class="haofont hao-icon-arrow-left"></i></div>
-            <div class="rightMenu-item" id="menu-forward"><i class="haofont hao-icon-arrow-right"></i></div>
-            <div class="rightMenu-item" id="menu-refresh"><i class="haofont hao-icon-arrow-rotate-right"></i></div>
-            <div class="rightMenu-item" id="menu-top"><i class="haofont hao-icon-arrow-up"></i></div>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-backward" type="button" aria-label="后退"><i class="haofont hao-icon-arrow-left"></i></button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-forward" type="button" aria-label="前进"><i class="haofont hao-icon-arrow-right"></i></button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-refresh" type="button" aria-label="刷新"><i class="haofont hao-icon-arrow-rotate-right"></i></button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-top" type="button" aria-label="返回顶部"><i class="haofont hao-icon-arrow-up"></i></button>
         </div>
         <div class="rightMenu-group rightMenu-line rightMenuPlugin">
-            <div class="rightMenu-item" id="menu-copytext">
+            <button class="rightMenu-item hanlo-button-reset" id="menu-copytext" type="button">
                 <i class="haofont hao-icon-copy"></i>
                 <span>复制选中文本</span>
-            </div>
-            <div class="rightMenu-item" id="menu-pastetext">
+            </button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-pastetext" type="button">
                 <i class="haofont hao-icon-paste"></i>
                 <span>粘贴文本</span>
-            </div>
-            <div class="rightMenu-item" id="menu-newwindow">
+            </button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-newwindow" type="button">
                 <i class="haofont hao-icon-window-restore"></i>
                 <span>新窗口打开</span>
-            </div>
-            <div class="rightMenu-item" id="menu-copylink">
+            </button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-copylink" type="button">
                 <i class="haofont hao-icon-link"></i>
                 <span>复制链接地址</span>
-            </div>
-            <div class="rightMenu-item" id="menu-copyimg">
+            </button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-copyimg" type="button">
                 <i class="haofont hao-icon-images"></i>
                 <span>复制此图片</span>
-            </div>
-            <div class="rightMenu-item" id="menu-downloadimg">
+            </button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-downloadimg" type="button">
                 <i class="haofont hao-icon-download"></i>
                 <span>下载此图片</span>
-            </div>
-            <div class="rightMenu-item" id="menu-newwindowimg" >
+            </button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-newwindowimg" type="button">
                 <i class="haofont hao-icon-window-restore"></i>
                 <span>新窗口打开图片</span>
-            </div>
-            <div class="rightMenu-item" id="menu-search">
+            </button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-search" type="button">
                 <i class="haofont hao-icon-search--line"></i>
                 <span>站内搜索</span>
-            </div>
-            <div class="rightMenu-item" id="menu-searchBaidu">
+            </button>
+            <button class="rightMenu-item hanlo-button-reset" id="menu-searchBaidu" type="button">
                 <i class="haofont hao-icon-baidu"></i>
                 <span>百度搜索</span>
-            </div>
+            </button>
         </div>
         <div class="rightMenu-group rightMenu-line rightMenuOther">
-            <a class="rightMenu-item menu-link" data-hanlo-action="random-post" id="menu-randomPost">
+            <button class="rightMenu-item menu-link hanlo-button-reset" data-hanlo-action="random-post"
+                    id="menu-randomPost" type="button">
                 <i class="haofont hao-icon-shuffle"></i>
                 <span>随便逛逛</span>
-            </a>
+            </button>
             <a class="rightMenu-item menu-link" href="../categories">
                 <i class="haofont hao-icon-cube"></i>
                 <span>博客分类</span>
@@ -70,18 +71,20 @@
             </a>
         </div> -->
         <div class="rightMenu-group rightMenu-line rightMenuOther">
-            <div class="rightMenu-item" id="menu-copy">
+            <button class="rightMenu-item hanlo-button-reset" id="menu-copy" type="button">
                 <i class="haofont hao-icon-copy"></i>
                 <span>复制地址</span>
-            </div>
-            <div class="rightMenu-item" data-hanlo-action="toggle-theme" id="menu-darkmode">
+            </button>
+            <button class="rightMenu-item hanlo-button-reset" data-hanlo-action="toggle-theme"
+                    id="menu-darkmode" type="button">
                 <i class="haofont hao-icon-moon-clear-fill hl:[font-size:19px]"></i>
                 <span class="menu-darkmode-text">深色模式</span>
-            </div>
-            <div th:if="${theme.config.style.translate.translateEnable}" class="rightMenu-item" id="menu-translate">
+            </button>
+            <button th:if="${theme.config.style.translate.translateEnable}"
+                    class="rightMenu-item hanlo-button-reset" id="menu-translate" type="button">
                 <i class="haofont hao-icon-fanti hl:[font-size:19px]"></i>
                 <span>轉為繁體</span>
-            </div>
+            </button>
         </div>
     </div>
     <div id="rightmenu-mask"></div>

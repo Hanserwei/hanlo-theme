@@ -5,13 +5,17 @@
       theme_version = ${ theme.config.other.staticResource.use == 'local' ? '?v='+ theme.spec.version : ''},
       isLazyload = ${theme.config.other.vanillaLazyload.enable},
       loadingImg = ${theme.config.other.vanillaLazyload.loadingImg},
+      loadingBoxImage = ${#strings.equals(theme.config.other.loadingBoxs.loadingBoxImg, 'https://liuzhihang.com/upload/logo.png') ? '/themes/theme-hanlo/assets/images/hanlo-logo.png' : theme.config.other.loadingBoxs.loadingBoxImg},
+      footerCenterImage = ${#strings.equals(theme.config.footer.social_media.centerImg, 'https://liuzhihang.com/upload/logo.png') ? '/themes/theme-hanlo/assets/images/hanlo-logo.png' : theme.config.footer.social_media.centerImg},
+      todayRecommendCover = ${#strings.equals(theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover, 'https://liuzhihang.com/upload/hao_dark.jpg') ? '/themes/theme-hanlo/assets/images/home.webp' : theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover},
+      postRandomImgSource = ${#strings.equals(theme.config.layout.postRandomImg, 'https://source.unsplash.com/random/600x400/?blog,scenery,night,desert,sea') ? '/themes/theme-hanlo/assets/images/home.webp' : theme.config.layout.postRandomImg},
       siteTitle = ${not #strings.isEmpty(title) ?  title  :  #strings.isEmpty(site.subtitle) ? site.title :  site.title +' - ' +site.subtitle }">
 
 <!-- head 中自定义的  -->
 
 <head>
-    <th:block th:replace="~{modules/head :: head(htmlType = ${htmlType})}"/>
-    <!--  解决 katex pjax问题 -->
+    <th:block th:replace="~{modules/head :: head(htmlType = ${htmlType}, customHead = ${head != null})}"/>
+    <!-- KaTeX plugin runtime required by server-rendered formula markup. -->
     <script th:if="${pluginFinder.available('plugin-katex')}" defer=""
             src="/plugins/plugin-katex/assets/static/katex.min.js"></script>
     <th:block th:if="${head != null}">
@@ -30,6 +34,7 @@
     <div th:if="${theme.config.top.global_background.enable_global_background_img}">
         <img th:if="${theme.config.top.global_background.enable_global_background_above_video == false}"
              class="global_background_img"
+             alt=""
              th:src="${theme.config.top.global_background.global_background_img}"
         />
         <video th:if="${theme.config.top.global_background.enable_global_background_above_video}"
@@ -72,8 +77,8 @@
 <div th:replace="~{modules/widgets/right-menu}"/>
 
 <div>
-    <div class="js-pjax">
-        <script th:replace="~{modules/common/diytitle}"/>
+    <div>
+        <script th:replace="~{modules/common/diytitle}"></script>
     </div>
 
     <canvas th:if="${theme.config.style.universe}" id="universe" width="1312" height="880"></canvas>

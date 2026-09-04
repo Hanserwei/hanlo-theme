@@ -1,3 +1,4 @@
+@layer components {
 /* 版权信息 */
 /* 背景 */
 #post .post-copyright {
@@ -17,7 +18,7 @@
     right: 22px;
     top: -77px;
     content: "\e668";
-    font-family: "haofont" !important;
+    font-family: "haofont";
     font-size: 180px;
     font-family: "Font Awesome 5 Brands";
     color: var(--heo-fontcolor);
@@ -197,7 +198,7 @@
 
 @media screen and (max-width: 768px) {
     .post-reward .reward-main {
-        justify-content: center !important;
+        justify-content: center;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -211,4 +212,5 @@
 
 .post-reward .reward-main .reward-all {
     background:var(--heo-card-bg);
+}
 }

@@ -4,7 +4,7 @@
     <div id="heo-footer-bar" th:if="${theme.config.footer.footer_bar.footer_bar_enable}">
         <div class="footer-logo"><th:block th:utext="${theme.config.footer.footer_bar.logo}"></th:block></div>
         <div class="footer-bar-description">[[${theme.config.footer.footer_bar.description}]]</div>
-        <a class="footer-bar-link" href="/" data-pjax-state="">了解更多</a>
+        <a class="footer-bar-link" href="/">了解更多</a>
     </div>
 
     <!-- 社交链接，需要填入 href class title -->
@@ -18,8 +18,8 @@
             </a>
         </th:block>
 
-        <img th:if="${not #strings.isEmpty(theme.config.footer.social_media.centerImg)}" class="footer_mini_logo"
-             th:with="img = @{${theme.config.footer.social_media.centerImg}}" th:src="${isLazyload ? '' : img}"
+        <img th:if="${not #strings.isEmpty(footerCenterImage)}" class="footer_mini_logo"
+             th:with="img = @{${footerCenterImage}}" th:src="${isLazyload ? '' : img}"
              th:data-lazy-src="${ isLazyload ? img : ''}" title="返回顶部" data-hanlo-action="scroll-top">
 
         <th:block th:with="socialMedias = ${theme.config.footer.social_media.socialMediaRight}">
@@ -49,9 +49,10 @@
             <div th:if="${theme.config.footer.footer_group.enable_footer_group}" class="footer-group">
                 <div class="footer-title-group">
                     <h3 class="footer-title">友链</h3>
-                    <a class="random-friends-btn" id="footer-random-friends-btn"
-                       data-hanlo-action="refresh-footer-links" href="javascript:void(0);" rel="external nofollow" title="换一批友情链接"
-                       data-pjax-state="external"><i class="haofont hao-icon-arrow-rotate-right hl:[font-size:16px]"></i></a>
+                    <button class="random-friends-btn hanlo-button-reset" id="footer-random-friends-btn"
+                            data-hanlo-action="refresh-footer-links" type="button" title="换一批友情链接">
+                        <i class="haofont hao-icon-arrow-rotate-right hl:[font-size:16px]"></i>
+                    </button>
                 </div>
                 <div class="footer-links" id="friend-links-in-footer"></div>
             </div>
@@ -189,7 +190,7 @@
         <div class="cookies-window-content"><span class="cookies-tip"
                                                   th:text="${theme.config.tool.snackbar.introductionTip}"></span>
             <a class="cookies-link" th:href="@{${theme.config.tool.snackbar.introductionUrl}}"
-               th:title="${theme.config.tool.snackbar.introductionName}" data-pjax-state=""><i
+               th:title="${theme.config.tool.snackbar.introductionName}"><i
                     class="bber-gotobb haofont hao-icon-circle-arrow-right"></i></a>
         </div>
     </div>

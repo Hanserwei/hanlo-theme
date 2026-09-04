@@ -28,7 +28,7 @@
 ::-webkit-scrollbar-thumb:hover {
     background: var(--heo-main);
     opacity: 1;
-    display: block!important
+    display: block
 }
 
 ::-webkit-scrollbar-track {
@@ -111,27 +111,27 @@ html {
 }
 
 /* #menus > div.menus_items > div:nth-child(1) > ul{
-  right: -200px!important;
+  right: -200px;
 }
 
 #menus > div.menus_items > div:nth-child(2) > ul{
-  right: -250px!important;
+  right: -250px;
 }
 
 #menus > div.menus_items > div:nth-child(3) > ul{
-  right: -140px!important;
+  right: -140px;
 }
 
 #menus > div.menus_items > div:nth-child(4) > ul{
-  right: -200px!important;
+  right: -200px;
 } */
 
 #nav .menus_items .menus_item .menus_item_child > .recursion_menus_item:hover > a {
-    background: var(--heo-lighttext) !important;
-    color: var(--heo-card-bg) !important;
+    background: var(--heo-lighttext);
+    color: var(--heo-card-bg);
     box-shadow: var(--heo-shadow-main);
     margin: 0 auto;
-    transform: scale(1) !important;
+    transform: scale(1);
     padding: 0.3rem 0.5rem;
 }
 
@@ -214,12 +214,12 @@ html {
 /*-------上级菜单为竖向菜单时END------*/
 
 /* 导航栏按钮悬浮 */
-#nav a {
+#nav :is(a, button) {
     border-radius: 8px;
     color: var(--heo-white);
 }
 
-.nav-fixed #nav a {
+.nav-fixed #nav :is(a, button) {
     color: var(--heo-fontcolor);
     transition: 0.3s;
 }
@@ -235,7 +235,7 @@ html {
 }
 
 #assist-open:hover {
-    color: var(--heo-white) !important;
+    color: var(--heo-white);
     background: var(--heo-white-op);
 }
 
@@ -253,7 +253,7 @@ html {
 }
 
 .topbar-html {
-    background: #aeaeae !important;
+    background: #aeaeae;
 }
 
 /* 无障碍 */
@@ -269,13 +269,13 @@ html {
 }
 
 .topbar-html-content {
-    height: 160px !important;
+    height: 160px;
     align-items: flex-end;
     padding-bottom: 12px;
 }
 
 .topbar-html {
-    box-shadow: none !important;
+    box-shadow: none;
 }
 
 .bigtext-html-btn {
@@ -285,7 +285,7 @@ html {
 }
 
 .topbar-html-content-item img {
-    border-radius: 12px !important;
+    border-radius: 12px;
 }
 
 
@@ -306,7 +306,7 @@ html {
     transition: 0.3s;
     display: flex;
     justify-content: center;
-    z-index: 999 !important;
+    z-index: 999;
     -webkit-user-select: none;
 }
 
@@ -362,8 +362,8 @@ html {
     cursor: pointer;
 }
 
-#page-header #nav #nav-right .nav-button a,
-#page-header #nav #nav-left .nav-button a {
+#page-header #nav #nav-right .nav-button > :is(a, button),
+#page-header #nav #nav-left .nav-button > :is(a, button) {
     height: 35px;
     width: 35px;
     display: flex;
@@ -372,8 +372,8 @@ html {
     border-radius: 40px;
 }
 
-#page-header #nav #nav-right .nav-button a i,
-#page-header #nav #nav-left .nav-button a i {
+#page-header #nav #nav-right .nav-button > :is(a, button) i,
+#page-header #nav #nav-left .nav-button > :is(a, button) i {
     line-height: 1;
     font-size: 22px;
 }
@@ -388,7 +388,7 @@ html {
 
 @media screen and (max-width: 768px) {
     #nav #menus {
-        display: none !important;
+        display: none;
     }
 
     #nav.hide-menu #toggle-menu .site-page {
@@ -412,7 +412,7 @@ html {
 }
 
 #nav.show {
-    transform: translate3d(0px, 0px, 0px) !important;
+    transform: translate3d(0px, 0px, 0px);
     top: 0;
     transition: 0.2s;
     position: fixed;
@@ -427,19 +427,19 @@ html {
 
 @media screen and (max-width: 768px) {
     #page-header.not-top-img #nav {
-        background: var(--heo-card-bg) !important;
+        background: var(--heo-card-bg);
     }
 
     #page-header.not-top-img:not(.nav-fixed) #nav {
-        background: var(--heo-background) !important;
+        background: var(--heo-background);
     }
 
     div#travellings_button {
-        display: none !important
+        display: none
     }
 
     div#darkmode_button {
-        display: none !important
+        display: none
     }
 }
 
@@ -557,7 +557,7 @@ html {
     width: 0;
     transform: scale(0);
     transition: 0.3s;
-    margin-left: 0 !important;
+    margin-left: 0;
     overflow: hidden;
     transition: 0.3s ease-in;
 }
@@ -567,7 +567,7 @@ html {
     font-weight: bold;
 }
 
-#page-header #nav #nav-right .nav-button a.totopbtn {
+#page-header #nav #nav-right .nav-button .totopbtn {
     width: 25px;
     height: 25px;
     border-radius: 40px;
@@ -579,15 +579,15 @@ html {
     transition: 0.3s;
 }
 
-#page-header #nav #nav-right .nav-button.long a.totopbtn {
+#page-header #nav #nav-right .nav-button.long .totopbtn {
     width: 70px;
 }
 
-#page-header #nav #nav-right .nav-button:hover a.totopbtn {
+#page-header #nav #nav-right .nav-button:hover .totopbtn {
     background: var(--heo-lighttext);
 }
 
-#page-header #nav #nav-right .nav-button:not(.long):hover a.totopbtn {
+#page-header #nav #nav-right .nav-button:not(.long):hover .totopbtn {
     width: 35px;
     height: 35px;
     top: 0;
@@ -702,7 +702,7 @@ html {
     display: flex;
     width: 35px;
     height: 35px;
-    padding: 0 !important;
+    padding: 0;
     align-items: center;
     justify-content: center;
     margin-right: 4px;
@@ -770,14 +770,14 @@ html {
     display: flex;
     align-items: center;
     margin: 4px 8px;
-    padding: 4px 8px !important;
+    padding: 4px 8px;
     transition: 0.3s;
     border-radius: 8px;
 }
 
 .back-menu-list-groups .back-menu-list .back-menu-item:hover {
-    background: var(--heo-lighttext) !important;
-    transform: scale(1) !important;
+    background: var(--heo-lighttext);
+    transform: scale(1);
 }
 
 .back-menu-list-groups .back-menu-list .back-menu-item .back-menu-item-icon {
@@ -921,7 +921,7 @@ html {
         z-index: 1;
         content: "\e69a";
         transition: .1s;
-        font-family: haofont !important;
+        font-family: haofont;
         align-items: center;
         justify-content: center;
         font-size: 22px;
@@ -965,7 +965,7 @@ html {
     }
 
     #nav #page-name-text:hover {
-        color: var(--heo-main) !important;
+        color: var(--heo-main);
         background: var(--heo-none);
         box-shadow: none;
     }
@@ -1052,7 +1052,7 @@ html {
 
 @media screen and (max-width: 899px) {
     #nav #page-name-mask {
-        display: none !important;
+        display: none;
     }
 }
 
@@ -1071,50 +1071,50 @@ i.fab {
 
 /* 去除header背景 */
 #body-wrap .full_page:before {
-    background-color: var(--heo-none) !important;
-    transition: 0ms !important;
+    background-color: var(--heo-none);
+    transition: 0ms;
 }
 
 .full_page #page-header:before {
-    display: none !important;
+    display: none;
 }
 
 /* 消息弹窗 */
 .snackbar-container {
-    background: var(--heo-lighttext) !important;
-    color: var(--heo-card-bg) !important;
-    border-radius: 0 !important;
+    background: var(--heo-lighttext);
+    color: var(--heo-card-bg);
+    border-radius: 0;
     display: flex;
-    justify-content: center !important;
-    max-width: none !important;
-    min-width: 100% !important;
-    margin: 0px !important;
-    left: 0px !important;
-    height: 60px !important;
-    transform: none !important;
+    justify-content: center;
+    max-width: none;
+    min-width: 100%;
+    margin: 0px;
+    left: 0px;
+    height: 60px;
+    transform: none;
 }
 
 .snackbar-container p {
-    color: var(--heo-card-bg) !important;
-    font-weight: bold !important;
-    text-align: center !important;
-    font-size: 0.8rem !important;
-    display: flex !important;
-    justify-content: center !important;
+    color: var(--heo-card-bg);
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
 }
 
 .snackbar-container .action {
-    color: var(--heo-card-bg) !important;
-    padding: 4px 6px !important;
+    color: var(--heo-card-bg);
+    padding: 4px 6px;
     font-weight: bold;
-    border-radius: 8px !important;
+    border-radius: 8px;
     transition: 0.3s;
-    border: var(--style-border) !important;
+    border: var(--style-border);
 }
 
 .snackbar-container .action:hover {
-    color: var(--heo-lighttext) !important;
-    background: var(--heo-card-bg) !important
+    color: var(--heo-lighttext);
+    background: var(--heo-card-bg)
 }
 
 .snackbar-container::after {
@@ -1141,45 +1141,45 @@ i.fab {
 }
 
 /* 导航栏按钮 */
-#nav a {
+#nav :is(a, button) {
     transition: 0.3s;
 }
 
-#nav a:hover {
+#nav :is(a, button):hover {
     color: var(--heo-white);
     background: var(--heo-white-op);
     transition: 0.3s;
 }
 
-.page #nav a:hover {
-    color: var(--heo-card-bg) !important;
+.page #nav :is(a, button):hover {
+    color: var(--heo-card-bg);
     background: var(--heo-lighttext);
     transition: 0.3s;
     box-shadow: var(--heo-shadow-main);
 }
 
-.nav-fixed #nav a:hover {
+.nav-fixed #nav :is(a, button):hover {
     background: var(--heo-lighttext);
     color: var(--heo-card-bg);
     transition: 0.3s;
 }
 
 @media screen and (min-width: 768px) {
-    .menus_item:hover > a.site-page {
+.menus_item:hover > .site-page {
         color: var(--heo-card-bg);
         background: var(--heo-white-op);
         transition: 0.3s;
         box-shadow: var(--heo-shadow-main);
     }
 
-    .page .menus_item:hover > a.site-page {
+.page .menus_item:hover > .site-page {
         color: var(--heo-card-bg);
         background: var(--heo-main);
         transition: 0.3s;
         box-shadow: var(--heo-shadow-main);
     }
 
-    .nav-fixed .menus_item:hover > a.site-page {
+.nav-fixed .menus_item:hover > .site-page {
         background-color: var(--heo-lighttext);
     }
 }

@@ -1,3 +1,4 @@
+@layer components {
 /* 相关推荐 */
 
 .relatedPosts-list {
@@ -65,4 +66,5 @@
 .relatedPosts > .relatedPosts-list > div:hover .cover {
     opacity: 0.8;
     transform: scale(1.1);
+}
 }

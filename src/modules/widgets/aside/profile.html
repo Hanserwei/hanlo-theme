@@ -15,9 +15,9 @@
              th:style="${#strings.isEmpty(theme.config.sidebar.profile.backgroundImg) ? '' : '--hanlo-profile-background: url(' + theme.config.sidebar.profile.backgroundImg + ');'}">
             <div class="card-info-avatar is-center">
                 <div class="author-info__top-group">
-                    <div class="author-info__sayhi" data-hanlo-action="change-greeting" id="author-info__sayhi">你好啊！我是
+                    <div class="author-info__sayhi" data-hanlo-action="change-greeting">你好啊！我是
                     </div>
-                    <img class="avatar-img"
+                    <img class="avatar-img" alt="站点头像"
                          th:with=" img = @{${#strings.isEmpty(site.logo) ? assets_link + '/images/hanlo-logo.png' : site.logo}}"
 
                          th:src="${isLazyload ? '' : img}"
@@ -62,7 +62,7 @@
         <div class="card-content">
             <div class="card-info-avatar is-center">
                 <div class="author-info__top-group">
-                    <div class="author-info__sayhi" data-hanlo-action="change-greeting" id="author-info__sayhi">你好啊！
+                    <div class="author-info__sayhi" data-hanlo-action="change-greeting">你好啊！
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
             </div>
             <div class="author-info__bottom-group">
                 <a th:if="${not #strings.isEmpty(theme.config.sidebar.profile.profileName)}"
-                   class="author-info__bottom-group-left" href="/about" data-pjax-state="">
+                   class="author-info__bottom-group-left" href="/about">
                     <div class="author-info__name">[[${theme.config.sidebar.profile.profileName}]]</div>
                     <div class="author-info__desc">[[${theme.config.sidebar.profile.desc}]]</div>
                 </a>

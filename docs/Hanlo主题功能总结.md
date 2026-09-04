@@ -145,7 +145,7 @@
 - 一键复制
 - 代码折叠
 - 超高代码块限制与展开
-- PJAX 切页后重新高亮
+- 原生文档导航后按页面自动高亮
 
 相关源码位于 [`src/js/features/shiki/index.ts`](../src/js/features/shiki/index.ts)。
 
@@ -280,8 +280,8 @@
 
 主题在体验层面还实现了：
 
-- PJAX 无刷新切页
-- 统一生命周期在 PJAX/历史导航后挂载代码、目录、相册和其他页面控制器
+- 浏览器原生文档导航，使用 Cross-document View Transitions 渐进增强
+- 统一生命周期在首次加载与 BFCache 恢复时管理代码、目录、相册和其他页面控制器
 - InstantPage 链接预加载
 - Vanilla LazyLoad 图片懒加载
 - Halo 缩略图生成

@@ -668,3 +668,10 @@
         display: none;
     }
 }
+
+@media screen and (max-width: 768px) {
+    .hanlo-about-page .author-content-item,
+    .hanlo-about-page .author-content-item-group.column {
+        width: 100%;
+    }
+}

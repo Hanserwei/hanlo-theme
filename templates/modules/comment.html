@@ -1,6 +1,5 @@
 <th:block th:fragment="comment(group, kind, name, allowComment)"
           th:if="${allowComment && theme.config.comments.commentsEnable && pluginFinder.available('PluginCommentWidget')}">
-    <!-- 已知问题 PJAX 下，comment 首次请求会出错。当前的临时解决办法是使用 js 重试 -->
     <div id="post-comment">
         <div class="comment-head">
             <div class="comment-headline"><i class="haofont hao-icon-chat--fill hl:[font-size:20px]"></i> <span>评论</span></div>

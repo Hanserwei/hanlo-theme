@@ -15,7 +15,7 @@
             <nav th:replace="~{modules/nav :: nav(title = ${post.spec.title})}"></nav>
             <div class="coverdiv loaded" id="coverdiv">
                 <img alt="cover" class="nolazyload" id="post-cover"
-                     th:src="${#strings.isEmpty(post.spec.cover) ? theme.config.layout.postRandomImg : post.spec.cover}">
+                     th:src="${#strings.isEmpty(post.spec.cover) ? postRandomImgSource : post.spec.cover}">
             </div>
 
             <div id="post-info">
@@ -95,12 +95,12 @@
                                 <i class="haofont hao-icon-weixin1 post-meta-icon"></i>公众号同步
                             </th:block>
                         </span>
-                        <a class="post-meta-pv" data-flag-title="热度"
-                           title="热度" >
+                        <span class="post-meta-pv" data-flag-title="热度"
+                              title="热度">
                             <i class="haofont hao-icon-fire post-meta-icon"></i>
                             <span class="post-meta-label">热度:</span>
                             <span id="visit" th:text="${post.stats.visit}"></span>
-                        </a>
+                        </span>
                         <a th:if="${post.spec.allowComment && theme.config.comments.commentsEnable && pluginFinder.available('PluginCommentWidget')}"
                            class="post-meta-commentcount"  data-flag-title="评论数"
                            title="评论数"
@@ -113,7 +113,7 @@
                             <a class="post-meta-editor" sec:authorize="isAuthenticated()" data-flag-title="编辑文章"
                                title="编辑文章"
                                th:if="${contributorLogin.name} == ${post.spec.owner}"
-                               th:attr="onclick='javascript:window.open(\''+ '/console/posts/editor?name='+${post.metadata.name}+'&returnToView=true\''+ ',' +'\'_self'+'\')'">
+                               th:href="@{/console/posts/editor(name=${post.metadata.name},returnToView=true)}">
                                 <i class="haofont hao-icon-bianji post-meta-icon hl:[margin-top:2px]"></i>
                                 <span>编辑</span>
                             </a>
@@ -150,8 +150,8 @@
                         <div class="ai-title-text">AI-摘要</div>
                         <div th:if="${theme.config.post.aiDescription.switchBtn}" id="ai-Toggle">切换</div>
                         <i class="haofont hao-icon-arrow-rotate-right"></i>
-                        <div th:if="${#strings.equals(theme.config.post.aiDescription.mode, 'local')}" class="ai-tag" id="ai-tag">[[${theme.config.post.aiDescription.gptName}]] GPT</div>
-                        <div th:if="${#strings.equals(theme.config.post.aiDescription.mode, 'tianli')}" class="ai-tag" id="ai-tag">Tianli GPT</div>
+                        <div th:if="${#strings.equals(theme.config.post.aiDescription.mode, 'local')}" class="ai-tag">[[${theme.config.post.aiDescription.gptName}]] GPT</div>
+                        <div th:if="${#strings.equals(theme.config.post.aiDescription.mode, 'tianli')}" class="ai-tag">Tianli GPT</div>
                     </div>
                     <div class="ai-explanation hl:block">AI初始化中...</div>
                     <div class="ai-btn-box">
@@ -181,10 +181,10 @@
 
                 <nav class="pagination-post needEndHide" id="pagination"
                      th:with="postCursor = ${postFinder.cursor(post.metadata.name)},
-                     postRandomImg=${#strings.contains(theme.config.layout.postRandomImg,'?') ? theme.config.layout.postRandomImg+'&' : theme.config.layout.postRandomImg+'?'}">
+                     postRandomImg=${#strings.contains(postRandomImgSource,'?') ? postRandomImgSource+'&' : postRandomImgSource+'?'}">
                     <div th:if="${postCursor.hasPrevious()}" th:class="${postCursor.hasNext()==false} ? 'prev-post pull-full ' : 'prev-post pull-left'">
                         <a th:href="@{${postCursor.previous.status.permalink}}">
-                            <img alt="cover" id="preimg" class="nolazyload"
+                            <img alt="cover" class="post-navigation-cover nolazyload"
                                  th:with="img = ${#strings.isEmpty(postCursor.previous.spec.cover) ? postRandomImg+postCursor.previous.spec.title : thumbnail.gen(postCursor.previous.spec.cover, 'm')}"
                                  th:src="${isLazyload ? '' : img}"
 
@@ -197,7 +197,7 @@
                     </div>
                     <div th:if="${postCursor.hasNext()}" th:class="${postCursor.hasPrevious()==false} ? 'next-post pull-full ':'next-post pull-right'">
                         <a th:href="@{${postCursor.next.status.permalink}}">
-                            <img alt="cover" id="preimg" class="nolazyload"
+                            <img alt="cover" class="post-navigation-cover nolazyload"
                                  th:with="img = ${#strings.isEmpty(postCursor.next.spec.cover) ? postRandomImg+postCursor.next.spec.title : thumbnail.gen(postCursor.next.spec.cover, 'm')}"
                                  th:src="${isLazyload ? '' : img}"
                                  th:data-lazy-src="${ isLazyload ? img : ''}">

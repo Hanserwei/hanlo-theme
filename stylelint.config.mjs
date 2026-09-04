@@ -49,6 +49,7 @@ export default {
     "color-function-notation": null,
     "custom-property-pattern": null,
     "declaration-block-no-redundant-longhand-properties": null,
+    "declaration-no-important": true,
     "declaration-property-value-no-unknown": null,
     "font-family-no-missing-generic-family-keyword": null,
     "function-url-quotes": null,

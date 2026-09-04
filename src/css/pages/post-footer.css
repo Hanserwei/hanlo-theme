@@ -8,7 +8,7 @@
     background: #363636;
 }
 
-#preimg {
+:where(.post-navigation-cover, .relatedPosts .cover) {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -22,12 +22,12 @@
     border-radius: 0;
 }
 
-.prev-post.pull-left:hover #preimg {
+.prev-post.pull-left:hover .post-navigation-cover {
     opacity: 1;
     transform: scale(1.1);
 }
 
-.next-post.pull-right:hover #preimg {
+.next-post.pull-right:hover .post-navigation-cover {
     opacity: 1;
     transform: scale(1.1);
 }
@@ -65,7 +65,7 @@
     }
 
     #pagination .next-post a:hover div, #pagination .prev-post a:hover div {
-        color: var(--heo-white) !important
+        color: var(--heo-white)
     }
 }
 
@@ -207,7 +207,7 @@
     }
 
     .next-post.pull-right {
-        width: 100% !important
+        width: 100%
     }
 
     #pagination .next-post .pagination-info {
@@ -292,7 +292,7 @@
         background: var(--heo-card-bg);
         height: 2rem;
         line-height: calc(2rem - 2px);
-        border-radius: 8px !important;
+        border-radius: 8px;
         margin: 0 0.3rem;
         box-shadow: var(--heo-shadow-border);
         border: var(--style-border);
@@ -359,7 +359,7 @@
         width: 4rem;
         height: 2rem;
         line-height: 1.9rem;
-        border-radius: 8px !important;
+        border-radius: 8px;
         background: var(--heo-card-bg);
         box-shadow: var(--heo-shadow-border);
         position: absolute;
@@ -417,7 +417,7 @@
 
 /* 相关推荐 */
 
-.relatedPosts > .relatedPosts-list > div:hover #preimg {
+.relatedPosts > .relatedPosts-list > div:hover .cover {
     opacity: 1;
     transform: scale(1.1);
 }
@@ -457,12 +457,12 @@
 }
 
 .post-tips a {
-    color: var(--heo-gray) !important;
-    border: none !important;
+    color: var(--heo-gray);
+    border: none;
 }
 
 .post-tips a:hover {
-    color: var(--heo-main) !important;
+    color: var(--heo-main);
 }
 
 @media screen and (max-width: 768px) {
@@ -494,7 +494,7 @@ div#post-comment {
 }
 
 #post-comment .comment-head {
-    font-size: 0.8em !important;
+    font-size: 0.8em;
     margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
@@ -519,8 +519,8 @@ div#post-comment {
 }
 
 .long-img img {
-    border-radius: 0 !important;
-    margin: 0 !important;
+    border-radius: 0;
+    margin: 0;
 }
 
 /* 文章底部推荐 */
@@ -570,7 +570,7 @@ div#post-comment {
 
 @media screen and (min-width: 768px) {
     .post-reward:hover > .reward-main {
-        display: flex !important;
+        display: flex;
         justify-content: left;
     }
 }
@@ -595,19 +595,19 @@ div#post-comment {
     }
 
     .tk-meta-input .el-input .el-input-group__prepend {
-        padding: 0 8px !important
+        padding: 0 8px
     }
 
     .tk-meta-input {
         display: flex;
         flex-direction: column;
         top: 0px;
-        position: inherit !important;
+        position: inherit;
     }
 
     .tk-meta-input .el-input {
-        margin-left: 0px !important;
-        width: 100% !important;
+        margin-left: 0px;
+        width: 100%;
         margin-bottom: 8px;
     }
 
@@ -754,5 +754,4 @@ div#post-comment {
         box-shadow: var(--heo-shadow-border);
     }
 }
-
 

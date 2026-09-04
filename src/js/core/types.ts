@@ -1,7 +1,7 @@
 import type { ThemeConfig } from "./config";
 import type { PageResourceScope } from "./resource-scope";
 
-export type NavigationSource = "initial" | "pjax" | "history" | "document";
+export type NavigationSource = "initial" | "history" | "document";
 export type NavigationDirection = "forward" | "backward" | "unknown";
 
 export interface NavigationContext {

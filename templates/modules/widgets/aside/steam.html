@@ -2,13 +2,22 @@
 <div th:style="|--hanlo-steam-cover: url('${theme.config.sidebar.steam.cardSteam}')|">
     <div class="item-headline-steam"><i class="fa-brands fa-steam"></i><span>Steam卡片</span></div>
 
-    <div class="card-widget card-steam"
-         th:attr="onclick='javascript:window.open(\''+ ${theme.config.sidebar.steam.steamUrl} +'\')'">
-        <div id="flip-wrapper-card">
-            <div id="flip-steam">
+    <a class="card-widget card-steam" th:if="${not #strings.isEmpty(theme.config.sidebar.steam.steamUrl)}"
+       th:href="${theme.config.sidebar.steam.steamUrl}"
+       aria-label="打开 Steam 主页" target="_blank" rel="noopener noreferrer external">
+        <div class="flip-wrapper-card">
+            <div class="flip-steam">
                 <div class="stimg">
 
                 </div>
+                <div class="back stimg"></div>
+            </div>
+        </div>
+    </a>
+    <div class="card-widget card-steam" th:unless="${not #strings.isEmpty(theme.config.sidebar.steam.steamUrl)}">
+        <div class="flip-wrapper-card">
+            <div class="flip-steam">
+                <div class="stimg"></div>
                 <div class="back stimg"></div>
             </div>
         </div>

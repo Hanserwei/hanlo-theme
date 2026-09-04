@@ -1,75 +1,87 @@
-/* Extracted from src/modules/loading-box.html. */
-#loading-box {
-            -webkit-user-select: none;
-        }
+.hanlo-loading-box {
+  display: none;
+  user-select: none;
+}
 
-        #loading-box .loading-bg {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            background: var(--heo-card-bg);
-            z-index: 1999;
-            opacity: 1;
-            transition: 0.2s;
-            pointer-events: all;
-            animation: showLoading 0.3s 0s backwards;
-        }
+.hanlo-js .hanlo-loading-box {
+  display: block;
+}
 
-        #loading-box.loaded .loading-bg {
-            pointer-events: none;
-            transition: 0.2s;
-            animation: hideLoading 0.3s 0s forwards;
-        }
+.hanlo-internal-navigation .hanlo-loading-box {
+  display: none;
+}
 
-        #loading-box .loading-img {
-            width: 100px;
-            margin: auto;
-            animation-duration: 0.2s;
-            animation-name: loadingAction;
-            animation-iteration-count: infinite;
-            animation-direction: alternate;
-        }
+.hanlo-loading-box .loading-bg {
+  position: fixed;
+  z-index: 1999;
+  inset: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  opacity: 1;
+  background: var(--hanlo-color-surface, var(--heo-card-bg));
+  animation: hanlo-loading-show 300ms backwards;
+  transition: opacity var(--hanlo-duration-fast, 200ms) var(--hanlo-ease-standard, ease);
+}
 
-        #loading-box .loading-image-dot {
-            width: 30px;
-            height: 30px;
-            background: #6bdf8f;
-            position: absolute;
-            border-radius: 50%;
-            border: 6px solid #fff;
-            top: 50%;
-            left: 50%;
-            -webkit-transform: translate(18px, 24px);
-            -moz-transform: translate(18px, 24px);
-            -o-transform: translate(18px, 24px);
-            -ms-transform: translate(18px, 24px);
-            transform: translate(18px, 24px);
-        }
+.hanlo-loading-box.loaded .loading-bg {
+  pointer-events: none;
+  animation: hanlo-loading-hide 300ms forwards;
+}
 
-        @keyframes loadingAction {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0.6;
-            }
-        }
+.hanlo-loading-box .loading-img {
+  width: 100px;
+  margin: auto;
+  animation: hanlo-loading-pulse 200ms infinite alternate;
+}
 
-        @keyframes hideLoading {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-            }
-        }
+.hanlo-loading-box .loading-image-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  border: 6px solid #fff;
+  border-radius: 50%;
+  background: #6bdf8f;
+  translate: 18px 24px;
+}
 
-        @keyframes showLoading {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+@keyframes hanlo-loading-pulse {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.6;
+  }
+}
+
+@keyframes hanlo-loading-hide {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes hanlo-loading-show {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hanlo-loading-box .loading-bg,
+  .hanlo-loading-box .loading-img {
+    animation: none;
+    transition: none;
+  }
+}

@@ -16,7 +16,7 @@
 
 @media screen and (max-width: 768px) {
     #page-header.post-bg {
-        height: 30rem !important;
+        height: 30rem;
         margin-bottom: -12px;
     }
 
@@ -25,9 +25,9 @@
     }
 
     .post-bg #post-cover {
-        min-height: 15rem !important;
-        height: 70% !important;
-        opacity: 1 !important;
+        min-height: 15rem;
+        height: 70%;
+        opacity: 1;
     }
 }
 
@@ -49,7 +49,7 @@
 
     #post-info .post-title {
         width: 1100px;
-        font-size: 2.6rem !important;
+        font-size: 2.6rem;
     }
 }
 
@@ -170,7 +170,7 @@
 }
 
 #page-header {
-    background-image: none !important;
+    background-image: none;
     display: flex;
     justify-content: center;
 }
@@ -178,8 +178,8 @@
 /* 顶部遮罩 */
 #post-cover-rgb {
     position: absolute;
-    width: 100% !important;
-    height: 100% !important;
+    width: 100%;
+    height: 100%;
     background: var(--heo-lighttext);
 }
 
@@ -219,11 +219,17 @@
     box-shadow: var(--heo-shadow-border);
 }
 
+@media screen and (max-width: 1200px) {
+    .layout > div:first-child:not(.recent-posts) {
+        width: 100%;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .layout > div:first-child:not(.recent-posts) {
         border-radius: 0;
-        padding: 0rem 1rem !important;
-        box-shadow: none !important;
+        padding: 0rem 1rem;
+        box-shadow: none;
         background: var(--heo-background);
     }
 
@@ -411,8 +417,8 @@ span.post-meta-categories:hover a.post-meta-categories {
 }
 
 a.post-meta-original {
-    background: var(--heo-white-op) !important;
-    color: var(--heo-white) !important;
+    background: var(--heo-white-op);
+    color: var(--heo-white);
     padding: 0 0.5rem;
     font-size: 0.7rem;
     margin: auto;
@@ -426,8 +432,8 @@ a.post-meta-original {
 }
 
 a.post-meta-original:hover {
-    color: var(--heo-main) !important;
-    background: var(--heo-white) !important;
+    color: var(--heo-main);
+    background: var(--heo-white);
 }
 
 .meta-avatar img:hover {
@@ -436,7 +442,7 @@ a.post-meta-original:hover {
 
 @media screen and (max-width: 768px) {
     .meta-share-time {
-        display: none !important;
+        display: none;
     }
 
     #post-info #post-meta {
@@ -455,7 +461,7 @@ a.post-meta-original:hover {
     }
 
     .meta-secondline {
-        justify-content: center !important;
+        justify-content: center;
     }
 
     .post-meta__tag-list {
@@ -467,7 +473,7 @@ a.post-meta-original:hover {
     }
 
     .meta-avatar {
-        display: none !important;
+        display: none;
     }
 
     #post-firstinfo {
@@ -487,12 +493,12 @@ a.post-meta-original:hover {
 }
 
 .meta-share-time a:hover {
-    background: none !important;
+    background: none;
 }
 
 .meta-share-time .meta-avatar-name {
     opacity: 1;
-    color: var(--heo-white) !important;
+    color: var(--heo-white);
     font-weight: bold;
 }
 
@@ -601,10 +607,10 @@ span.post-meta-position {
 }
 
 .el-textarea .el-input__count {
-    color: var(--heo-secondtext) !important;
+    color: var(--heo-secondtext);
     -webkit-user-select: none;
-    bottom: 8px !important;
-    right: 12px !important
+    bottom: 8px;
+    right: 12px
 }
 
 .post-meta-commentcount i {
@@ -620,14 +626,14 @@ span.post-meta-position {
 }
 
 .inline-image a:hover {
-    background: 0 0 !important;
-    box-shadow: none !important;
+    background: 0 0;
+    box-shadow: none;
 }
 
 .inline-image img {
     margin: 0;
     display: inline-flex;
-    margin-bottom: 0 !important;
+    margin-bottom: 0;
 }
 
 /* 文章标题 */
@@ -637,7 +643,7 @@ span.post-meta-position {
     font-size: 2.3rem;
     line-height: 1.2;
     text-align: left;
-    margin: 1rem 0 1rem 0 !important;
+    margin: 1rem 0 1rem 0;
     -webkit-line-clamp: 2;
     padding: 0;
     overflow: hidden;
@@ -647,7 +653,7 @@ span.post-meta-position {
     #post-info .post-title {
         font-size: 1.2rem;
         -webkit-line-clamp: 3;
-        margin: 0.2rem auto !important;
+        margin: 0.2rem auto;
         text-align: center;
         z-index: 1;
     }

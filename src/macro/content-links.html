@@ -7,20 +7,22 @@
                 <div class="banners-title-big">[[${theme.config.link.bigTitle}]]</div>
             </div>
             <div class="banner-button-group">
-                <a class="banner-button secondary" data-hanlo-action="random-friend" data-pjax-state="">
+                <button class="banner-button secondary hanlo-button-reset"
+                        data-hanlo-action="random-friend" type="button">
                     <i class="haofont hao-icon-paper-plane1"></i>
                     <span class="banner-button-text">随机访问</span>
-                </a>
+                </button>
                 <a th:unless="${pluginFinder.available('link-submit')}"
                         class="banner-button" href="#post-comment" rel="external nofollow">
                     <i class="haofont hao-icon-link"></i>
                     <span class="banner-button-text">申请友链</span>
                 </a>
-                <a th:if="${pluginFinder.available('link-submit')}"
-                   class="banner-button" href="javascript:LinkSubmitWidget.open()" rel="external nofollow">
+                <button th:if="${pluginFinder.available('link-submit')}"
+                        class="banner-button hanlo-button-reset" data-hanlo-action="open-link-submit"
+                        type="button">
                     <i class="haofont hao-icon-link"></i>
                     <span class="banner-button-text">申请友链</span>
-                </a>
+                </button>
             </div>
             <div class="tags-group-all nowrapMove">
                 <div class="tags-group-wrapper">

@@ -48,7 +48,7 @@
         
         @media screen and (max-width: 768px) {
             .author-content-item.map.myphoto {
-                background-size: cover !important;
+                background-size: cover;
             }
             
             .author-content-item.map .map-title {

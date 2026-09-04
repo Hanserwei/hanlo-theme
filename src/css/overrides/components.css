@@ -44,7 +44,7 @@
 }
 
 .introduction-card:active .introduction-card-bottom .left .info .subTitle {
-    color: #fff!important
+    color: #fff
 }
 
 .introduction-card:active .introduction-card-bottom {
@@ -140,8 +140,8 @@
 .introduction-card .introduction-card-top img {
     width: 100%;
     height: 100%;
-    border-radius: 0!important;
-    margin: 0!important
+    border-radius: 0;
+    margin: 0
 }
 
 .introduction-card .introduction-card-bottom {
@@ -196,8 +196,8 @@
 .introduction-card .introduction-card-bottom .left img {
     width: 2.875rem;
     height: 2.875rem;
-    margin: 0 20px!important;
-    border-radius: 12px!important
+    margin: 0 20px;
+    border-radius: 12px
 }
 
 .introduction-card .introduction-card-bottom .right {
@@ -234,7 +234,7 @@
     width: 100%;
     text-align: center;
     background: #efeef2;
-    color: var(--heo-main)!important;
+    color: var(--heo-main);
     border-radius: 50px;
     height: 35px;
     line-height: 35px;
@@ -243,7 +243,7 @@
 
 .introduction-card .introduction-card-bottom .right a:hover {
     background: var(--heo-main);
-    color: var(--heo-white)!important
+    color: var(--heo-white)
 }
 
 u {
@@ -392,20 +392,20 @@ details.folding-tag[red]>summary {
 }
 
 .note.blue.disabled {
-    background: #e3eef7!important
+    background: #e3eef7
 }
 
 .note.blue:not(.disabled) {
-    border-left-color: #428bca!important
+    border-left-color: #428bca
 }
 
 .note.blue:not(.disabled).modern {
-    border-left-color: transparent!important;
+    border-left-color: transparent;
     color: #428bca
 }
 
 .note.blue:not(.disabled):not(.simple) {
-    background: #e3eef7!important
+    background: #e3eef7
 }
 
 .note.blue::before {
@@ -421,20 +421,20 @@ details.folding-tag[red]>summary {
 }
 
 .note.pink.disabled {
-    background: #ffe9f4!important
+    background: #ffe9f4
 }
 
 .note.pink:not(.disabled) {
-    border-left-color: #ff69b4!important
+    border-left-color: #ff69b4
 }
 
 .note.pink:not(.disabled).modern {
-    border-left-color: transparent!important;
+    border-left-color: transparent;
     color: #ff69b4
 }
 
 .note.pink:not(.disabled):not(.simple) {
-    background: #ffe9f4!important
+    background: #ffe9f4
 }
 
 .note.pink::before {
@@ -450,20 +450,20 @@ details.folding-tag[red]>summary {
 }
 
 .note.red.disabled {
-    background: #ffd9d9!important
+    background: #ffd9d9
 }
 
 .note.red:not(.disabled) {
-    border-left-color: red!important
+    border-left-color: red
 }
 
 .note.red:not(.disabled).modern {
-    border-left-color: transparent!important;
+    border-left-color: transparent;
     color: red
 }
 
 .note.red:not(.disabled):not(.simple) {
-    background: #ffd9d9!important
+    background: #ffd9d9
 }
 
 .note.red::before {
@@ -479,20 +479,20 @@ details.folding-tag[red]>summary {
 }
 
 .note.purple.disabled {
-    background: #e9e3f6!important
+    background: #e9e3f6
 }
 
 .note.purple:not(.disabled) {
-    border-left-color: #6f42c1!important
+    border-left-color: #6f42c1
 }
 
 .note.purple:not(.disabled).modern {
-    border-left-color: transparent!important;
+    border-left-color: transparent;
     color: #6f42c1
 }
 
 .note.purple:not(.disabled):not(.simple) {
-    background: #e9e3f6!important
+    background: #e9e3f6
 }
 
 .note.purple::before {
@@ -508,20 +508,20 @@ details.folding-tag[red]>summary {
 }
 
 .note.orange.disabled {
-    background: #ffeed9!important
+    background: #ffeed9
 }
 
 .note.orange:not(.disabled) {
-    border-left-color: #ff8c00!important
+    border-left-color: #ff8c00
 }
 
 .note.orange:not(.disabled).modern {
-    border-left-color: transparent!important;
+    border-left-color: transparent;
     color: #ff8c00
 }
 
 .note.orange:not(.disabled):not(.simple) {
-    background: #ffeed9!important
+    background: #ffeed9
 }
 
 .note.orange::before {
@@ -537,20 +537,20 @@ details.folding-tag[red]>summary {
 }
 
 .note.green.disabled {
-    background: #e7f4e7!important
+    background: #e7f4e7
 }
 
 .note.green:not(.disabled) {
-    border-left-color: #5cb85c!important
+    border-left-color: #5cb85c
 }
 
 .note.green:not(.disabled).modern {
-    border-left-color: transparent!important;
+    border-left-color: transparent;
     color: #5cb85c
 }
 
 .note.green:not(.disabled):not(.simple) {
-    background: #e7f4e7!important
+    background: #e7f4e7
 }
 
 .note.green::before {
@@ -568,7 +568,7 @@ details.folding-tag[red]>summary {
 }
 
 .note.modern {
-    border: 1px solid transparent!important;
+    border: 1px solid transparent;
     background-color: #f5f5f5;
     color: #4c4948
 }
@@ -581,22 +581,22 @@ details.folding-tag[red]>summary {
 }
 
 .note.flat a {
-    color: #4c4948!important
+    color: #4c4948
 }
 
 .note.flat a:hover {
-    color: var(--anzhiyu-white)!important
+    color: var(--anzhiyu-white)
 }
 
 .note h2,.note h3,.note h4,.note h5,.note h6 {
     margin-top: 3px;
     margin-bottom: 0;
-    padding-top: 0!important;
+    padding-top: 0;
     border-bottom: initial
 }
 
 .note blockquote:first-child,.note img:first-child,.note ol:first-child,.note p:first-child,.note pre:first-child,.note table:first-child,.note ul:first-child {
-    margin-top: 0!important
+    margin-top: 0
 }
 
 .note blockquote:last-child,
@@ -606,8 +606,8 @@ details.folding-tag[red]>summary {
 .note pre:last-child,
 .note table:last-child,
 .note ul:last-child {
-    margin-bottom: 0px !important;
-    font-size: 16px !important;
+    margin-bottom: 0px;
+    font-size: 16px;
 }
 
 .note:not(.no-icon) {
@@ -847,7 +847,7 @@ details.folding-tag[red]>summary {
 }
 
 .tip p {
-    margin: 0!important;
+    margin: 0;
     padding: .5rem 0;
     line-height: 1.6;
 }

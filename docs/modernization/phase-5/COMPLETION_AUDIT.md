@@ -1,5 +1,8 @@
 # 阶段 5 完成审计
 
+> 本文记录 2026-09-02 首次收尾的历史事实。阶段 6 已继续完成语义 Cascade Layer 迁移、
+> `!important` 清零与 CSS AST 预算；当前状态见 [`../phase-6/COMPLETION_AUDIT.md`](../phase-6/COMPLETION_AUDIT.md)。
+
 ## 1. 审计结论
 
 阶段 5 已完成。CSS 已从 `public/` 中不可维护的单体文件迁入 Vite 源码链，建立 Design Tokens、

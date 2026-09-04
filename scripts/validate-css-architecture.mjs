@@ -1,6 +1,9 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 
+import postcss from "postcss";
+import selectorParser from "postcss-selector-parser";
+
 function collectFiles(directory, extension) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const entryPath = path.join(directory, entry.name);
@@ -13,12 +16,27 @@ function fail(message) {
   throw new Error(`CSS architecture validation failed: ${message}`);
 }
 
-const packageManifest = JSON.parse(readFileSync("package.json", "utf8"));
-const conditionalStyleSources = JSON.parse(readFileSync("css-entries.json", "utf8"));
+function readJson(file) {
+  try {
+    return JSON.parse(readFileSync(file, "utf8"));
+  } catch (error) {
+    fail(`${file} is not valid JSON: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+const packageManifest = readJson("package.json");
+const conditionalStyleSources = readJson("css-entries.json");
+const qualityBudget = readJson("css-quality-budget.json");
 const conditionalStyles = new Set(
   Object.values(conditionalStyleSources).map((source) => path.resolve(source)),
 );
-for (const dependency of ["@tailwindcss/vite", "stylelint", "tailwindcss"]) {
+for (const dependency of [
+  "@tailwindcss/vite",
+  "postcss",
+  "postcss-selector-parser",
+  "stylelint",
+  "tailwindcss",
+]) {
   const version = packageManifest.devDependencies?.[dependency];
   if (typeof version !== "string" || !/^\d+\.\d+\.\d+$/.test(version)) {
     fail(`${dependency} must use an exact devDependency version.`);
@@ -41,11 +59,21 @@ if (!/tailwindcss\/utilities\.css[^;]+prefix\(hl\)/.test(indexCss)) {
 }
 
 const importedCss = new Map();
-for (const match of indexCss.matchAll(/@import\s+"(\.\/.+?\.css)"/g)) {
+const importedLayers = new Map();
+for (const match of indexCss.matchAll(/@import\s+"(\.\/.+?\.css)"\s+layer\(([^)]+)\)/g)) {
   const importedPath = path.resolve(cssRoot, match[1]);
   importedCss.set(importedPath, (importedCss.get(importedPath) ?? 0) + 1);
+  importedLayers.set(importedPath, match[2]);
   if (!existsSync(importedPath))
     fail(`missing imported module ${path.relative(".", importedPath)}.`);
+}
+
+function expectedLayer(file) {
+  const relativePath = path.relative(cssRoot, file).replaceAll(path.sep, "/");
+  if (relativePath === "tokens.css") return "tokens";
+  if (relativePath === "base.css" || relativePath.startsWith("legacy/")) return "base";
+  if (relativePath === "utilities.css") return "utilities";
+  return relativePath.split("/", 1)[0];
 }
 
 const sourceCss = collectFiles("src/css", ".css").map((file) => path.resolve(file));
@@ -59,7 +87,31 @@ for (const file of sourceCss) {
         `found ${importCount + entryCount}.`,
     );
   }
-  const lineCount = readFileSync(file, "utf8").split("\n").length;
+  if (importCount === 1 && importedLayers.get(file) !== expectedLayer(file)) {
+    fail(
+      `${path.relative(".", file)} must use layer(${expectedLayer(file)}), found ` +
+        `layer(${importedLayers.get(file) ?? "none"}).`,
+    );
+  }
+  const css = readFileSync(file, "utf8");
+  if (entryCount === 1) {
+    const root = postcss.parse(css, { from: file });
+    const rules = root.nodes.filter((node) => node.type !== "comment");
+    const layer = rules[0];
+    if (
+      rules.length !== 1 ||
+      layer?.type !== "atrule" ||
+      layer.name !== "layer" ||
+      layer.params !== expectedLayer(file) ||
+      layer.nodes === undefined
+    ) {
+      fail(
+        `${path.relative(".", file)} must wrap its conditional entry in one ` +
+          `@layer ${expectedLayer(file)} block.`,
+      );
+    }
+  }
+  const lineCount = css.split("\n").length;
   if (lineCount > 1_300) fail(`${path.relative(".", file)} has ${lineCount} lines (limit 1300).`);
 }
 
@@ -101,14 +153,67 @@ for (const file of htmlFiles) {
 
 if (dynamicStyleCount > 40) fail(`dynamic style boundary grew to ${dynamicStyleCount} (limit 40).`);
 
+const quality = {
+  importantDeclarations: 0,
+  idSelectorEntries: 0,
+  complexSelectorEntries: 0,
+  maxIdsPerSelector: 0,
+  maxCombinatorsPerSelector: 0,
+};
+
 for (const file of sourceCss) {
   const css = readFileSync(file, "utf8");
+  const root = postcss.parse(css, { from: file });
+  root.walkDecls((declaration) => {
+    if (declaration.important) quality.importantDeclarations += 1;
+  });
+  root.walkRules((rule) => {
+    try {
+      selectorParser((selectors) => {
+        selectors.each((selector) => {
+          let combinators = 0;
+          let ids = 0;
+          selector.walk((node) => {
+            if (node.type === "combinator") combinators += 1;
+            if (node.type === "id") ids += 1;
+          });
+          if (ids > 0) quality.idSelectorEntries += 1;
+          if (combinators >= 4) quality.complexSelectorEntries += 1;
+          quality.maxIdsPerSelector = Math.max(quality.maxIdsPerSelector, ids);
+          quality.maxCombinatorsPerSelector = Math.max(
+            quality.maxCombinatorsPerSelector,
+            combinators,
+          );
+        });
+      }).processSync(rule.selector);
+    } catch (error) {
+      fail(
+        `${path.relative(".", file)} contains an invalid selector "${rule.selector}": ` +
+          `${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+  });
+  if (quality.importantDeclarations > qualityBudget.importantDeclarations) {
+    fail(
+      `active !important declarations grew to ${quality.importantDeclarations} ` +
+        `(budget ${qualityBudget.importantDeclarations}).`,
+    );
+  }
   if (/nth-child\(\)|var\(-[^-]/.test(css)) {
     fail(`${path.relative(".", file)} contains a known-invalid legacy selector or variable.`);
   }
 }
 
+for (const [metric, budget] of Object.entries(qualityBudget)) {
+  if (quality[metric] > budget) {
+    fail(`${metric} grew to ${quality[metric]} (budget ${budget}).`);
+  }
+}
+
 process.stdout.write(
   `Validated ${sourceCss.length} CSS modules and ${htmlFiles.length} templates ` +
-    `(${dynamicStyleCount} dynamic custom-property boundaries).\n`,
+    `(${dynamicStyleCount} dynamic custom-property boundaries, ` +
+    `${quality.importantDeclarations} !important declarations, ` +
+    `${quality.idSelectorEntries} ID selector entries, ` +
+    `${quality.complexSelectorEntries} complex selector entries).\n`,
 );
