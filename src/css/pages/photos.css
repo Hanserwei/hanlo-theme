@@ -1,125 +1,93 @@
 @layer pages {
-/* Extracted from src/photos.html. */
-.gallery-groups {
-                        box-shadow: var(--heo-shadow-border);
-                        padding: 1rem 2rem;
-                        border-radius: 12px;
-                        background: var(--heo-card-bg);
-                        border: var(--style-border);
-                        width: 100%;
-                        align-self: flex-start;
-                        animation: slide-in 0.6s 0.1s backwards;
-                    }
+  .gallery-groups {
+    width: 100%;
+    padding: 1rem 2rem;
+    align-self: flex-start;
+    border: var(--style-border);
+    border-radius: 12px;
+    background: var(--heo-card-bg);
+    box-shadow: var(--heo-shadow-border);
+    animation: slide-in 0.6s 0.1s backwards;
+  }
 
-                    #content-inner .loadings .type-gallery {
-                        opacity: 0
-                    }
+  /* Columns keep each photo intact and follow its intrinsic height, without row stretching. */
+  .hanlo-photo-masonry {
+    margin: 2rem 0 1rem;
+    columns: 16rem;
+    column-gap: 1rem;
+    line-height: 0;
+  }
 
-                    .loadings {
-                        height: 60px;
-                        background-position: center;
-                        background-repeat: no-repeat;
-                        color: #504e4e;
-                        border: none;
-                        background-size: auto 100%;
-                        box-shadow: none;
-                        background-color: inherit;
-background-image:
-    radial-gradient(circle at 50% 25%, #fff8eb 0 7px, transparent 8px),
-    radial-gradient(circle, #ffa500 0 30px, transparent 31px)
-}
+  .hanlo-photo-masonry__item {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 1rem;
+    overflow: hidden;
+    break-inside: avoid;
+    vertical-align: top;
+    border-radius: 12px;
+    background: var(--heo-card-bg);
+    line-height: 0;
+  }
 
-                    .hanlo-article-container .type-gallery {
-                        overflow: hidden;
-                        margin-top: 40px;
-                    }
+  #article-container .hanlo-photo-masonry__item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    margin: 0;
+    border-radius: inherit;
+    aspect-ratio: auto;
+    object-fit: contain;
+    cursor: zoom-in;
+  }
 
-                    #content-inner .gallery {
-                        margin: 0 0 16px;
-                        text-align: center
-                    }
+  .hanlo-photo-masonry__label {
+    position: absolute;
+    z-index: 1;
+    top: 8px;
+    left: 8px;
+    max-width: calc(100% - 16px);
+    padding: 4px 6px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--heo-black-op);
+    color: var(--heo-white);
+    font-size: 12px;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+  }
 
-                    #content-inner .gallery .fj-gallery {
-                        opacity: 0;
-                        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-                        filter: alpha(opacity=0)
-                    }
+  .hanlo-photo-empty {
+    padding: 3rem 1rem;
+    color: var(--heo-secondtext);
+    text-align: center;
+  }
 
-                    #content-inner .gallery .fj-gallery .img-alt {
-                        display: none
-                    }
+  @media (max-width: 767px) {
+    .gallery-groups {
+      padding: 1rem;
+    }
 
-                    #content-inner .gallery .fj-gallery.lazyload+button {
-                        display: inline-block
-                    }
+    .hanlo-photo-masonry {
+      margin-top: 1.25rem;
+      columns: 2;
+      column-gap: 0.75rem;
+    }
 
-                    #content-inner .gallery .fj-gallery .gallery-data {
-                        opacity: 0;
-                        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-                        filter: alpha(opacity=0);
-                        visibility: hidden
-                    }
+    .hanlo-photo-masonry__item {
+      margin-bottom: 0.75rem;
+      border-radius: 8px;
+    }
+  }
 
-                    #content-inner .gallery button {
-                        display: none;
-                        margin-top: 25px;
-                        padding: 10px;
-                        width: 9em;
-                        border-radius: 5px;
-                        background: var(--btn-bg);
-                        color: var(--btn-color);
-                        font-weight: 700;
-                        font-size: 1.1em;
-                        -webkit-transition: all .3s;
-                        -moz-transition: all .3s;
-                        -o-transition: all .3s;
-                        -ms-transition: all .3s;
-                        transition: all .3s
-                    }
-
-                    #content-inner .gallery button>* {
-                        -webkit-transition: all .4s;
-                        -moz-transition: all .4s;
-                        -o-transition: all .4s;
-                        -ms-transition: all .4s;
-                        transition: all .4s
-                    }
-
-                    #content-inner .gallery button i {
-                        opacity: 1;
-                        -ms-filter: none;
-                        filter: none;
-                        font-size: 1.1rem
-                    }
-
-                    #content-inner .gallery button:hover {
-                        background: var(--btn-hover-color)
-                    }
-
-                    #content-inner .gallery button:hover i {
-                        margin-left: 2px
-                    }
-
-                    .hanlo-article-container .tag-address {
-                        display: flex;
-                        position: absolute;
-                        left: 8px;
-                        top: 8px;
-                        padding: 4px 6px;
-                        border-radius: 8px;
-                        background: var(--heo-black-op);
-                        font-size: 12px;
-                        color: var(--heo-white);
-                        transition: .3s;
-                        z-index: 1;
-                        user-select: none
-                    }
-
-                    img {
-                        border-style: none;
-                        border-radius: 8px;
-                        max-width: 100%;
-                        transition: all .2s ease 0s;
-                        -webkit-user-drag: none
-                    }
+  @media (max-width: 359px) {
+    .hanlo-photo-masonry {
+      columns: 1;
+    }
+  }
 }
