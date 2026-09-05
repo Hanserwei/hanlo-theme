@@ -36,10 +36,6 @@
         height: 25rem;
     }
 
-    #page-header {
-        height: 25rem;
-    }
-
     #page-header.post-bg:before {
         height: 25rem;
         /* opacity: 0; */

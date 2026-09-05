@@ -47,8 +47,8 @@ if (Object.hasOwn(packageJson, "version")) {
   throw new Error("package.json must not duplicate theme.yaml spec.version");
 }
 
-if (!/^\d+\.\d+\.\d+$/.test(packageJson.devDependencies?.parse5 ?? "")) {
-  throw new Error("parse5 must use an exact devDependency version");
+if (!/^\d+\.\d+\.\d+$/.test(packageJson.dependencies?.parse5 ?? "")) {
+  throw new Error("parse5 must use an exact production dependency version");
 }
 
 if (!/th:fragment="html\(head, content\)"/.test(layoutTemplate)) {
@@ -72,6 +72,14 @@ for (const file of collectFiles("src", [".html"])) {
   const document = parseFragment(readFileSync(file, "utf8"));
   walkHtml(document, (node) => {
     const attributes = new Map((node.attrs ?? []).map(({ name, value }) => [name, value]));
+    for (const value of attributes.values()) {
+      // Halo wraps JSON objects in ComparableJsonNode; Map.get is not available.
+      if (/\btheme\.config(?:\.[A-Za-z_]\w*)*\.get\s*\(/.test(value)) {
+        throw new Error(
+          `${file} calls get() on theme.config; use property access for Halo JsonPropertyAccessor`,
+        );
+      }
+    }
     if (
       attributes.has("onclick") ||
       attributes.has("th:onclick") ||

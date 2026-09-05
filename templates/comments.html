@@ -28,7 +28,7 @@
                     </th:block>
 
 
-                    <div id="article-container">
+                    <div class="hanlo-envelope-container">
                         <div id="maincontent">
                             <div id="form-wrap"
                                  th:style="|--hanlo-envelope-open-height: ${theme.config.envelope_comment.height}px|">
@@ -36,7 +36,7 @@
                                      th:src="@{${theme.config.envelope_comment.custom_pic.beforeimg}}">
                                 <div id="envelope">
                                     <form>
-                                        <div class="formmain hl:pointer-events-none">
+                                        <div class="formmain hanlo-envelope-letter hl:pointer-events-none">
                                             <img class="headerimg no-lightbox entered loaded hl:w-full hl:overflow-hidden hl:pointer-events-none"
                                                  th:src="@{${theme.config.envelope_comment.custom_pic.cover}}"
                                                 >
@@ -44,8 +44,7 @@
                                                 <h3 class="title3 hl:no-underline hl:[color:var(--heo-theme)] hl:text-center"
                                                    >
                                                     来自[[${site.title}]]的留言:</h3>
-                                                <div class="comments hl:text-center hl:[border-bottom:#ddd_1px_solid] hl:[border-left:#ddd_1px_solid] hl:[padding-bottom:20px] hl:[background-color:#eee] hl:[margin:15px_0] hl:[padding-left:20px] hl:[padding-right:20px] hl:[border-top:#ddd_1px_solid] hl:[border-right:#ddd_1px_solid] hl:[padding-top:20px]"
-                                                    
+                                                <div class="hanlo-envelope-message"
                                                      th:with="message = ${theme.config.envelope_comment.message_list}">
 
                                                     <div th:each="data : ${message}">[[${data}]]</div>
@@ -56,7 +55,7 @@
                                                          th:src="@{${theme.config.envelope_comment.custom_pic.line}}"
                                                         >
                                                 </div>
-                                                <p class="bottomhr hl:[font-size:12px] hl:text-center hl:[color:#999]">
+                                                <p class="hanlo-envelope-signature">
                                                     [[${theme.config.envelope_comment.bottom}]]</p>
                                             </div>
                                         </div>

@@ -264,6 +264,12 @@ function mountRandomTagColors(config: Readonly<ThemeConfig>): void {
   });
 }
 
+async function mountRecentCommentPreviews(resources: PageResourceScope): Promise<void> {
+  if (!document.querySelector("[data-hanlo-comment-preview]")) return;
+  const { mountCommentPreviews } = await import("./comment-preview");
+  if (!resources.disposed) mountCommentPreviews(document);
+}
+
 async function mountLinkCanvas(resources: PageResourceScope): Promise<void> {
   if (!document.querySelector("#link-canvas")) return;
   const { mountLinkCanvas: mount } = await import("../link-canvas");
@@ -283,6 +289,7 @@ export function createPageWidgetsController(): PageControllerDefinition {
         mountPursuit(resources);
         mountHelloAbout(resources);
         mountRandomTagColors(config);
+        void mountRecentCommentPreviews(resources);
         void mountLinkCanvas(resources);
         resources.timeout(() => loading(false), 3_000);
       },
