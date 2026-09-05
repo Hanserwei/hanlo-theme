@@ -46,11 +46,13 @@
     flex: 1 1 0%;
     height: 90%;
     width: 600px;
+    min-width: 0;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
-    background-color: rgb(48, 122, 246);
+    background-color: transparent;
     background-position: center center;
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     margin-left: 1rem;
     border-radius: 2rem;
 }
@@ -60,6 +62,7 @@
         -webkit-box-flex: 1;
         flex: 1 1 0%;
         width: 100%;
+        margin-left: 0;
         border-radius: 12px;
     }
 }
