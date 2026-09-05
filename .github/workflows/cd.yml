@@ -5,12 +5,24 @@ on:
     types:
       - published
 
+permissions:
+  contents: read
+
+concurrency:
+  group: cd-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
 jobs:
+  verify:
+    uses: ./.github/workflows/ci.yml
+
   release:
+    needs: verify
     uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v4
     permissions:
       contents: write
     with:
+      # Enable App Store publishing only after the first application review passes.
       skip-appstore-release: true
       node-version: "24"
       pnpm-version: "10.33.0"

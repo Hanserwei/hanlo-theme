@@ -139,6 +139,7 @@ Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/hal
 ```bash
 pnpm install --frozen-lockfile
 pnpm check
+pnpm test
 pnpm build
 ```
 
@@ -188,6 +189,28 @@ pnpm dev
 | `THIRD_PARTY_NOTICES.txt` | 由生产依赖图及字体、图标许可生成并随 ZIP 分发的通知文本                 |
 
 菜单图标通过 `scripts/generate-menu-icons.mjs` 生成，运行 `pnpm menu-icons:sync` 更新图标集和预览页，`pnpm menu-icons:check` 校验。字体版本、来源、许可和转换说明见 `public/assets/fonts/PROVENANCE.md`。
+
+### CI/CD
+
+工作流使用 Node.js 24 和 pnpm 10.33.0，与本地构建工具链保持一致。
+
+| 工作流 | 触发方式 | 执行内容 |
+| --- | --- | --- |
+| [CI](.github/workflows/ci.yml) | 推送到 `master`、向 `master` 提交 PR，或在 Actions 页面手动运行 | 锁定依赖安装、源码和设置校验、单元和设置交互测试、构建打包、已提交产物一致性及 ZIP 完整性检查 |
+| [CD](.github/workflows/cd.yml) | 发布 GitHub Release，包括预发布版本 | 先复用完整 CI 并校验标签版本，再通过 Halo 官方工作流构建并上传 ZIP 到该 Release |
+
+CI 通过后，可在对应 Actions 运行的 Artifacts 中下载 `theme-hanlo-<提交 SHA>`，解压后取得可安装的主题 ZIP。构建产物保留 7 天。源码变更后需执行 `pnpm build` 并提交生成的 `templates/`；CI 会拒绝未提交的修改和新增产物。
+
+发布版本的步骤：
+
+1. 修改 `theme.yaml` 中的 `spec.version`，更新升级说明，执行 `pnpm check`、`pnpm test` 和 `pnpm build`。
+2. 提交源码与生成的 `templates/` 并推送，确认 CI 通过。
+3. 在 GitHub Releases 中选择该提交创建并发布 Release。标签必须为 `spec.version` 或带 `v` 前缀的相同版本，例如 `2.3.5` / `v2.3.5`；预发布版本可用 `v2.4.0-rc.1`，对应 `spec.version: "2.4.0-rc.1"`。
+4. 等待 CD 成功，从 Release 附件下载 `theme-hanlo-<version>.zip`。GitHub 自动生成的 Source code 压缩包不作为安装包使用。
+
+仅推送提交或标签不会触发 CD，需发布 Release。已发布的版本制品不应覆盖，修复应使用新版本号。
+
+按照 [Halo 发布应用文档](https://docs.halo.run/developer-guide/app-store/publish-app.md)，当前审核前阶段保留 `skip-appstore-release: true`，只上传 GitHub Release 附件，不配置应用市场 ID、`HALO_PAT` 或自动同步；所需的 GitHub 令牌由 Actions 自动提供。
 
 发现问题或希望提交改进时，请通过当前仓库的 Issues 和 Pull Requests 反馈。
 
