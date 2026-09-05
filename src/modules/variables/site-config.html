@@ -1,5 +1,6 @@
 <!-- 声明一些公共信息 -->
-<script id="site-config" th:inline="javascript">
+<script id="site-config" th:inline="javascript"
+        th:with="postAiEnabled=${htmlType == 'post' && (not #strings.isEmpty(#annotations.get(post, 'ai')) ? #annotations.get(post, 'ai') == 'true' : theme.config.post.aiDescription.aiDescriptionEnable)}">
     window.GLOBAL_CONFIG = {
         // 页面类型 index,page,post,tag,category
         htmlType: (/*[[${ htmlType }]]*/ null),
@@ -27,7 +28,7 @@
             errorImage: (/*[[@{${theme.config.other.error_404.background}}]]*/ null)
         },
         postAi: {
-            summary: (/*[[${htmlType != 'post' || !theme.config.post.aiDescription.aiDescriptionEnable ? '' :
+            summary: (/*[[${!postAiEnabled ? '' :
                         theme.config.post.aiDescription.mode != 'local' && !theme.config.post.aiDescription.switchBtn ? '' :
                         post.spec.excerpt.autoGenerate ? '本地模式需要自己填写文章摘要' :
                         #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt}]]*/ null),
@@ -108,7 +109,7 @@
                 switch: (/*[[${ theme.config.tool.snackbar.switch }]]*/ null)
             },
             postAi: {
-                ai: (/*[[${htmlType != 'post' || !theme.config.post.aiDescription.aiDescriptionEnable  ?  ''  :
+                ai: (/*[[${!postAiEnabled ? '' :
                                     theme.config.post.aiDescription.mode != 'local' && !theme.config.post.aiDescription.switchBtn ? '' :
                                     post.spec.excerpt.autoGenerate ? '本地模式需要自己填写文章摘要' :
                                     #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt  }]]*/ null),

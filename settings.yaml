@@ -5,43 +5,73 @@ metadata:
 spec:
   forms:
     - group: basics
-      label: 基础
+      label: 站点信息与备案
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 先确认站点名称与建站日期
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 这里设置导航栏显示名称、建站日期及页脚备案信息。浏览器标题和首页首屏标题来自 Halo「设置 → 基本设置」；备案与版权链接还需在主题页脚设置中开启对应入口。
         - $formkit: code
           name: siteTitle
-          label: 站点名称
-          placeholder: 请输入站点名称
+          label: 导航栏站点名称
+          placeholder: 我的博客
           height: 80px
           language: html
-          help: 支持 HTML 语法
+          help: 留空使用 Halo 站点标题。仅替换导航栏名称，支持 HTML；普通名称直接填写文字即可。
         - $formkit: date
           name: siteStartTime
-          label: 建站时间
+          label: 建站日期
           validation: required
           value: "2023-08-05"
-          help: 注意，此项为必填项
+          help: 必填，格式为年-月-日。用于页脚建站年份、运行时长及侧栏站点统计。
         - $formkit: text
           name: icp
-          label: ICP 备案
-          placeholder: 请输入 ICP 备案号
-          help: 格式：皖ICP备 xxxxxxxx 号
+          label: ICP 备案号
+          placeholder: 皖ICP备12345678号
+          help: 选填，留空不显示。填写完整备案号后，还需开启页脚的 ICP 备案入口；点击后进入工信部备案查询网站。
         - $formkit: text
           name: gongan
-          label: 公安备案
-          placeholder: 请输入公安备案号
-          help: 格式：皖公网安备 xxxxxxxx 号
+          label: 公安联网备案号
+          placeholder: 皖公网安备12345678901234号
+          help: 选填，留空不显示。填写完整备案号后，还需开启页脚的公安备案入口；当前链接进入公安备案查询网站。
         - $formkit: url
           name: copyrightAgreement
-          label: 版权协议
-          placeholder: 请输入版权协议地址
-          help: 文章模块声明版权，也会使用此协议
+          label: 页脚版权协议地址
+          placeholder: https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans
+          help: 选填，例如 CC BY-NC-ND 4.0 协议地址；需开启页脚版权协议入口。文章末尾声明请在「文章」设置中单独配置。
+        - $el: div
+          attrs:
+            style: "margin-top: 0.75rem; padding: 0.75rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.5rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.7;"
+          children: 备案字段也支持以 https:// 开头的备案图片地址，建议使用清晰、紧凑的横图；填写图片不会改变查询链接。页脚版权入口使用固定的 CC BY-NC-ND 图标，修改协议地址不会更换图标。
 
     - group: nav
-      label: 导航
+      label: 顶部导航
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 先建菜单，再选择显示位置
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 在「外观 → 菜单」中配置菜单项并指定主菜单，主菜单用于桌面顶部与手机侧栏。站点名左侧使用单独选择的菜单组；下方可分别控制设备显示和右侧功能按钮。
         - $formkit: group
           name: menus
-          label: 菜单控制
+          label: 菜单显示位置
           value:
             pc_leftMenu: true
             phone_leftMenu: true
@@ -50,26 +80,30 @@ spec:
           children:
             - $formkit: switch
               name: pc_leftMenu
-              id: pc_leftMenu
-              label: pc端左侧菜单
+              id: hanlo_nav_pc_leftMenu
+              label: 桌面端显示站点名左侧菜单
+              help: 在站点名称左侧显示菜单入口，使用下方选择的菜单组。
             - $formkit: switch
               name: phone_leftMenu
-              label: 移动左侧菜单
+              label: 手机侧栏显示站点名左侧菜单组
+              help: 在手机展开的导航侧栏中显示同一菜单组，可与桌面端独立开启。
+              id: hanlo_nav_phone_leftMenu
             - $formkit: switch
               name: phone_menu
-              label: 移动主菜单
+              label: 手机侧栏显示主菜单
+              help: 在手机展开的导航侧栏中显示 Halo 主菜单及其子菜单。
             - $formkit: select
               name: submenu_layout
-              label: 桌面子菜单布局
-              help: 默认使用下拉菜单；横向布局在导航下方展开一排子菜单。也可在菜单项中单独设置，手机端使用折叠菜单。
+              label: 桌面主菜单的子菜单展开方式
+              help: 下拉列表在父菜单下方展开；横向一行在导航栏下方展开。菜单项元数据可单独覆盖此设置，手机端始终使用折叠菜单。
               options:
-                - label: 下拉
+                - label: 父菜单下方的下拉列表
                   value: dropdown
-                - label: 横向
+                - label: 导航栏下方的横向一行
                   value: horizontal
             - $el: div
               attrs:
-                style: "margin-top: 0.75rem; padding: 0.75rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.5rem; background: rgba(148,163,184,.08); color: #64748b; font-size: 0.8125rem; line-height: 1.7;"
+                style: "margin-top: 0.75rem; padding: 0.75rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.5rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.7;"
               children:
                 - $el: p
                   attrs:
@@ -78,7 +112,7 @@ spec:
                 - $el: p
                   attrs:
                     style: "margin: 0;"
-                  children: 在「外观 → 菜单」中填写图标名称，名称区分大小写。
+                  children: 在「外观 → 菜单」编辑菜单项的图标字段，填写 Ant Design 图标名称，区分大小写；留空不显示图标。
                 - $el: p
                   attrs:
                     style: "margin: 0.35rem 0; overflow-wrap: anywhere;"
@@ -92,17 +126,19 @@ spec:
                     href: /themes/theme-hanlo/assets/icon/antdv-next/catalog.html
                     target: _blank
                     rel: noopener noreferrer
-                    style: "color: #2563eb; text-decoration: none;"
+                    style: "color: inherit; text-decoration: underline; text-underline-offset: 3px;"
                   children: "查看全部 847 个图标 →"
+          help: 主菜单内容和层级在「外观 → 菜单」维护；下列开关只控制前台是否显示。
         - $formkit: menuRadio
           name: leftMenu
-          if: $get(pc_leftMenu).value
-          label: 站点名左侧菜单
-          help: 默认只有主菜单，可前往【外观】—>【菜单】新建菜单组
+          if: $get(hanlo_nav_pc_leftMenu).value || $get(hanlo_nav_phone_leftMenu).value
+          label: 站点名左侧使用的菜单组
+          help: 先在「外观 → 菜单」新建菜单组，再在此选择。桌面左侧入口和手机侧栏共用此选择，留空不显示。
           value: ""
+          preserve: true
         - $formkit: group
           name: right
-          label: 导航栏右侧
+          label: 导航栏右侧功能按钮
           value:
             travelling: true
             article: true
@@ -113,35 +149,53 @@ spec:
           children:
             - $formkit: switch
               name: travelling
-              id: travelling
+              id: hanlo_nav_travelling
               key: travelling
-              label: 开往按钮
+              label: 显示「开往」入口
+              help: 在首页导航右侧显示，点击后随机访问开往项目中的其他网站。
             - $formkit: switch
               name: article
-              label: 随机文章
-              help: 右上角随机文章按钮
+              label: 显示随机文章按钮
+              help: 点击后随机打开本站一篇文章，站内需要已有文章。
             - $formkit: switch
               name: darkMode
-              label: 切换模式
-              help: 右上角切换主题模式按钮
+              label: 显示明暗模式切换按钮
+              help: 允许访客手动切换浅色与深色外观；初始模式在「样式」设置中配置。
             - $formkit: switch
               name: navLogin
-              label: 登入按钮
-              help: 右上角登入按钮
+              label: 显示登录与用户菜单
+              help: 未登录时提供登录入口；已登录时显示用户头像（如有）、控制台与退出登录入口。
             - $formkit: group
               name: console
-              label: 中控台
+              label: 访客中控台入口
               children:
                 - $formkit: switch
                   name: consoleEnable
+                  label: 显示中控台按钮
+                  help: 在导航栏右侧显示打开访客快捷面板的按钮。
+              help: 主题的快捷面板，展示最近评论、标签和归档等内容。
+          help: 分别开启访客可用的快捷入口。安装并启用搜索组件插件后，搜索按钮会自动显示。
 
     - group: top
-      label: 顶部
+      label: 首页顶部与背景
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 按页面位置配置首页顶部
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 首页依次显示可选的全屏首屏、瞬间条和推荐横幅。首屏背景只覆盖首页第一屏，全站背景位于各页面内容下方，两者独立；关闭模块或切换图片／视频时保留已填内容。
         - $formkit: group
           name: above
-          label: 首页第一屏
-          help: 开启后会在页面的最上方新增一个第一屏
+          label: 首页全屏首屏
+          help: 位于首页最上方，高度为一个屏幕；标题读取 Halo 站点标题，下方可配置轮播文案和背景。
           value:
             enable_above: false
             typed:
@@ -154,106 +208,135 @@ spec:
             - $formkit: switch
               name: enable_above
               key: enable_above
-              id: enable_above
+              id: hanlo_top_enable_above
+              label: 启用首页全屏首屏
+              help: 开启后，访客向下滚动一屏才会看到瞬间条、推荐横幅与文章列表。
             - $formkit: repeater
               name: typed
-              if: $get(enable_above).value
-              label: 打字机显示的文字
+              if: $get(hanlo_top_enable_above).value
+              label: 首屏打字机文案
               value: []
               children:
                 - $formkit: text
                   name: text
-                  label: 自定义文字
-                  placeholder: 请输入自定义文字
+                  label: 轮播句子
+                  placeholder: 记录生活，也分享热爱
+                  help: 显示在首屏站点标题下方，建议一句短文。
+                  preserve: true
+              help: 每项填写一句，按列表顺序循环播放；留空且关闭随机文案时不显示打字机内容。
+              addLabel: 添加一句文案
+              itemLabels:
+                - type: text
+                  label: $value.text
+              preserve: true
             - $formkit: switch
-              label: 随机文字
-              if: $get(enable_above).value
+              label: 追加一言随机文案
+              if: $get(hanlo_top_enable_above).value
               name: enable_typed_random
               key: enable_typed_random
-              id: enable_typed_random
+              id: hanlo_top_enable_typed_random
               value: false
-              help: 如果配置了自定义文字，优先展示自定义文字
+              help: 从一言（v1.hitokoto.cn）获取一句话及出处，追加到自定义文案后循环播放；请求失败时仅使用自定义文案。
+              preserve: true
             - $formkit: switch
-              if: $get(enable_above).value
-              label: 背景模式
+              if: $get(hanlo_top_enable_above).value
+              label: 首屏使用视频背景
               name: enable_above_video
               key: enable_above_video
-              id: enable_above_video
+              id: hanlo_top_enable_above_video
               value: false
+              help: 关闭使用桌面／手机背景图片，开启使用同一段视频。切换后保留另一种素材，但只展示当前模式。
+              preserve: true
             - $formkit: attachment
               name: index_video
               key: index_video
-              id: index_video
-              if: $get(enable_above).value  &&  $get(enable_above_video).value
-              label: 动态壁纸
-              placeholder: 请填写动态壁纸地址
+              id: hanlo_top_index_video
+              if: $get(hanlo_top_enable_above).value  &&  $get(hanlo_top_enable_above_video).value
+              label: 首屏背景视频
+              width: "15rem"
+              aspectRatio: "16/9"
+              accepts:
+                - "video/*"
+              placeholder: https://example.com/media/hero.mp4
               value: ""
-              help: http(s)://xxx.mp4
+              help: 建议使用压缩后的短循环 MP4（H.264），横向 1920×1080（16:9）。桌面和手机共用，静音循环播放并铺满裁切；浏览器可能限制自动播放。
+              preserve: true
             - $formkit: attachment
               name: index_img
-              if: $get(enable_above).value  &&  $get(enable_above_video).value == false
-              label: PC背景图
+              if: $get(hanlo_top_enable_above).value  &&  $get(hanlo_top_enable_above_video).value == false
+              label: 首屏桌面背景图
               width: "15rem"
               aspectRatio: "16/9"
-              placeholder: 请填写背景图地址
+              placeholder: https://example.com/images/hero-desktop.webp
               value: https://www.dmoe.cc/random.php
+              help: 建议 1920×1080（16:9）或更大横图，居中铺满并裁切边缘。站点标题覆盖在中央，主体和文字请留出空间。
+              preserve: true
             - $formkit: attachment
               name: phone_index_img
-              if: $get(enable_above).value  &&  $get(enable_above_video).value == false
-              label: 移动端背景图
-              placeholder: 请填写移动端背景图地址
-              width: "15rem"
-              aspectRatio: "16/9"
+              if: $get(hanlo_top_enable_above).value  &&  $get(hanlo_top_enable_above_video).value == false
+              label: 首屏手机背景图
+              placeholder: https://example.com/images/hero-mobile.webp
+              width: 10rem
+              aspectRatio: 9/16
               value: https://imgapi.kouseki.cn/random?sort=mp
+              help: 屏幕宽度不超过 768px 时使用，不会自动回退到桌面图。建议 1080×1920（9:16）竖图，主体居中以适应不同屏幕比例。
+              preserve: true
         - $formkit: group
           name: global_background
-          label: 全局背景设置
-          help: 开启后设置全局背景图片/视频
+          label: 全站内容背景
+          help: 位于页面内容下方，与首页首屏背景独立。背景图片仅在宽于 1300px 的屏幕显示；不会自动把文章卡片变透明。
           value:
             enable_global_background_img: false
             index_background_img:
           children:
             - $formkit: switch
-              label: 全局透明背景图
+              label: 启用全站背景
               name: enable_global_background_img
               key: enable_global_background_img
-              id: enable_global_background_img
+              id: hanlo_top_enable_global_background_img
               value: false
-              help: 首页透明背景图
+              help: 开启后选择图片或视频；关闭后使用主题配色背景。
             - $formkit: switch
-              if: $get(enable_global_background_img).value
-              label: 全局背景模式
+              if: $get(hanlo_top_enable_global_background_img).value
+              label: 全站背景使用视频
               name: enable_global_background_above_video
               key: enable_global_background_above_video
-              id: enable_global_background_above_video
+              id: hanlo_top_enable_global_background_above_video
               value: false
+              help: 关闭使用图片，开启使用视频。视频与首屏视频是独立播放器，同时启用会增加加载量。
+              preserve: true
             - $formkit: attachment
               name: global_background_img
               key: global_background_img
-              id: global_background_img
-              if: $get(enable_global_background_img).value  &&  $get(enable_global_background_above_video).value == false
-              label: 全局背景图片
+              id: hanlo_top_global_background_img
+              if: $get(hanlo_top_enable_global_background_img).value  &&  $get(hanlo_top_enable_global_background_above_video).value == false
+              label: 全站背景图片
               width: "15rem"
               aspectRatio: "16/9"
-              placeholder: 请填写全局背景图片地址
+              placeholder: https://example.com/images/site-background.webp
+              help: 建议 1920×1080（16:9）或更大的浅纹理横图，固定铺满并裁切。仅宽于 1300px 时显示，优先选择不干扰正文阅读的图片。
+              preserve: true
             - $formkit: attachment
               name: global_background_video
-              id: global_background_video
+              id: hanlo_top_global_background_video
               key: global_background_video
-              if: $get(enable_global_background_img).value  &&  $get(enable_global_background_above_video).value
-              label: 全局背景视频
+              if: $get(hanlo_top_enable_global_background_img).value  &&  $get(hanlo_top_enable_global_background_above_video).value
+              label: 全站背景视频
               width: "15rem"
               aspectRatio: "16/9"
-              placeholder: 请填写全局背景视频地址
+              placeholder: https://example.com/media/site-background.mp4
+              help: 建议短循环 MP4（H.264），1920×1080（16:9），压缩体积以减少加载。静音自动循环播放，浏览器可能限制自动播放。
+              preserve: true
         - $formkit: switch
           name: moment
-          label: 瞬间说说
+          label: 显示首页瞬间条
           value: true
-          help: 需要安装瞬间插件
+          help: 在推荐横幅上方滚动显示瞬间内容；需要安装并启用「瞬间」插件，未安装时会显示插件安装提示。
+          id: hanlo_top_moment
         - $formkit: group
           name: climb
-          label: 宠物挂件
-          help: 需要瞬间丶顶部 Banner显示
+          label: 瞬间条上的宠物挂件
+          help: 需同时开启瞬间条与首页推荐横幅，且屏幕宽于 1200px；点击挂件会移动位置。
           value:
             climbEnable: false
             climbImg: https://imgapi.yyds.pink/random?sort=animals
@@ -261,22 +344,30 @@ spec:
             - $formkit: switch
               name: climbEnable
               key: climbEnable
-              id: climbEnable
+              id: hanlo_top_climbEnable
+              label: 显示宠物挂件
+              help: 在瞬间条上叠放装饰图片。
+              preserve: true
             - $formkit: url
               name: climbImg
-              if: $get(climbEnable).value
-              label: 图片
-              help: 随机图地址：https://imgapi.yyds.pink/random?sort=animals
+              if: $get(hanlo_top_climbEnable).value
+              label: 宠物挂件图片地址
+              help: 建议透明 PNG／WebP，宽约 540px、比例约 3:1 的横向趴伏插画；前台最大宽度 270px，高度随图片比例变化。
+              placeholder: https://example.com/images/pet.webp
+              preserve: true
+          if: $get(hanlo_top_moment).value && $get(hanlo_top_recentTop).value
+          preserve: true
         - $formkit: switch
           name: recentTop
-          id: recentTop
+          id: hanlo_top_recentTop
           key: recentTop
-          label: 顶部 Banner
+          label: 显示首页推荐横幅
           value: true
+          help: 在文章列表上方显示左侧介绍与快捷入口、右侧推荐文章；较窄屏幕会简化横幅布局。
         - $formkit: group
           name: BannerLeft
-          label: Banner 左侧
-          if: $get(recentTop).value
+          label: 推荐横幅左侧：介绍与快捷入口
+          if: $get(hanlo_top_recentTop).value
           value:
             bannersBackgroundRollStyle: tags-group-all
             bannersBackground: default
@@ -301,19 +392,21 @@ spec:
           children:
             - $formkit: select
               name: bannersBackground
-              id: bannersBackground
+              id: hanlo_top_bannersBackground
               key: bannersBackground
-              label: 背景图
+              label: 滚动技术图标来源
               options:
-                - label: 默认技术栈
+                - label: 主题内置技术图标
                   value: default
-                - label: 个人技术栈
+                - label: 自定义技术图标
                   value: techStack
+              help: 选择主题内置图标或自行添加的图标列表；也会影响「关于」页的技能展示。
+              preserve: true
             - $formkit: array
               name: techStack
-              if: $get(bannersBackground).value == 'techStack'
-              label: 个人技术栈
-              help: 需要选择上方“个人技术栈”
+              if: $get(hanlo_top_bannersBackground).value == 'techStack'
+              label: 自定义技术图标列表
+              help: 为每项设置名称、图标和底色；用于横幅滚动背景，也供「关于」页技能展示使用。
               value: []
               itemLabels:
                 - type: text
@@ -323,32 +416,44 @@ spec:
               children:
                 - $formkit: text
                   name: name
-                  label: 名称
-                  placeholder: 请输入名称
+                  label: 技术名称
+                  placeholder: TypeScript
+                  help: 作为图标悬停提示，并用于关于页技能名称。
+                  preserve: true
                 - $formkit: attachment
                   name: url
-                  label: 路径
-                  placeholder: 请输入图标路径
+                  label: 技术图标图片
+                  placeholder: https://example.com/images/typescript.svg
+                  help: 建议 SVG 或 144×144（1:1）的透明 PNG／WebP；横幅图标约以 72px 宽显示。
+                  width: 6rem
+                  aspectRatio: 1/1
+                  preserve: true
                 - $formkit: color
                   name: background
-                  label: 背景色
+                  label: 图标卡片底色
+                  help: 选择与图标有足够对比的颜色；用于横幅图标块及关于页技能卡片。
+                  preserve: true
+              addLabel: 添加技术图标
+              preserve: true
             - $formkit: code
               name: bannersTitleBig
-              label: 大标题
-              placeholder: 请输入大标题
+              label: 横幅主标题
+              placeholder: <div class="banners-title-big">我的数字花园</div>
               height: 80px
               language: html
-              help: 支持 HTML 语法  <div class="banners-title-big">内容</div>
+              help: 支持 HTML；每行建议使用 <div class="banners-title-big">标题文字</div>，以保持大标题样式。
+              preserve: true
             - $formkit: code
               name: bannersTitleSmall
-              label: 小标题
-              placeholder: 请输入小标题
+              label: 横幅说明文字
+              placeholder: 记录开发心得与生活片段
               height: 80px
               language: html
-              help: 支持 HTML 语法
+              help: 显示在主标题下方，建议一句简短介绍；支持 HTML，留空不显示。
+              preserve: true
             - $formkit: array
               name: categoryGroup
-              id: categoryGroup
+              id: hanlo_top_categoryGroup
               key: categoryGroup
               min: 0
               max: 2
@@ -360,46 +465,66 @@ spec:
               children:
                 - $formkit: text
                   name: title
-                  label: 标题
-                  placeholder: 请输入内容
+                  label: 入口名称
+                  placeholder: 必看精选
                   validation: required
                   value: "必看精选"
+                  help: 建议 2～6 个字，作为按钮上的文字。
+                  preserve: true
                 - $formkit: text
                   name: icon
-                  label: 图标
-                  placeholder: 请输入内容
+                  label: 入口图标类名或图片地址
+                  placeholder: haofont hao-icon-book
                   validation: required
                   value: "haofont hao-icon-book"
+                  help: 填写完整 haofont 图标类名，或以 https:// 开头的图片地址。图片建议 160×160（1:1）透明图；此处不使用导航菜单的 Ant Design 图标名称。
+                  preserve: true
                 - $formkit: url
                   name: url
-                  label: 跳转地址
-                  placeholder: 请输入内容
+                  label: 入口跳转地址
+                  placeholder: /categories/notes
                   validation: required
                   value: "/"
+                  help: 可用站内路径或完整网址，点击入口后在当前窗口打开。
+                  preserve: true
                 - $formkit: color
                   name: colorOneLight
-                  label: 颜色1 (浅色)
+                  label: 浅色模式：渐变起点
                   validation: required
                   value: "#358bff"
+                  help: 按钮背景从左到右渐变的起始颜色，需与白色文字保持对比。
+                  preserve: true
                 - $formkit: color
                   name: colorTwoLight
-                  label: 颜色2 (浅色)
+                  label: 浅色模式：渐变终点
                   validation: required
                   value: "#15c6ff"
+                  help: 按钮背景从左到右渐变的结束颜色。
+                  preserve: true
                 - $formkit: color
                   name: colorOneDark
-                  label: 颜色1 (深色)
+                  label: 深色模式：渐变起点
                   validation: required
                   value: "#0653b8"
+                  help: 深色模式下按钮背景左端的颜色，需与白色文字保持对比。
+                  preserve: true
                 - $formkit: color
                   name: colorTwoDark
-                  label: 颜色2 (深色)
+                  label: 深色模式：渐变终点
                   validation: required
                   value: "#2fcbff"
+                  help: 深色模式下按钮背景右端的颜色。
+                  preserve: true
+              label: 横幅快捷入口
+              help: 最多两个，按列表顺序显示；可链接分类、文章或任意页面，留空不显示入口。
+              addLabel: 添加快捷入口
+              preserve: true
+          help: 宽屏显示标题和技术图标背景，快捷入口随屏幕尺寸调整位置。技术图标配置也被「关于」页的技能展示使用。
+          preserve: true
         - $formkit: group
           name: BannerRight
-          label: Banner 右侧
-          if: $get(recentTop).value
+          label: 推荐横幅右侧：文章与专题
+          if: $get(hanlo_top_recentTop).value
           value:
             todayRecommend: true
             todayRecommendContent:
@@ -411,14 +536,15 @@ spec:
           children:
             - $formkit: switch
               name: todayRecommend
-              id: todayRecommend
+              id: hanlo_top_todayRecommend
               key: todayRecommend
-              label: 今日推荐
-              help: 开启后会在推荐文章前显示“今日推荐”模块
+              label: 先显示专题推荐卡片
+              help: 在宽屏右侧推荐文章上方覆盖专题卡片；点击卡片跳转，点击「更多推荐」收起卡片。
+              preserve: true
             - $formkit: group
               name: todayRecommendContent
-              if: $get(todayRecommend).value
-              label: 今日推荐
+              if: $get(hanlo_top_todayRecommend).value
+              label: 专题推荐卡片内容
               value:
                 todayRecommendUrl:
                 todayRecommendTitle:
@@ -427,53 +553,87 @@ spec:
               children:
                 - $formkit: url
                   name: todayRecommendUrl
-                  label: 跳转地址
-                  placeholder: 请输入地址
+                  label: 专题跳转地址
+                  placeholder: /archives/welcome
                   value: /
+                  help: 点击卡片在新窗口打开，可填写站内路径或完整网址。
+                  preserve: true
                 - $formkit: text
                   name: todayRecommendxTitle
-                  label: 小标题
-                  placeholder: 请输入小标题
+                  label: 专题提示文字
+                  placeholder: 本周推荐
                   value: 今日推荐
+                  help: 显示在主标题上方，建议 2～6 个字。
+                  preserve: true
                 - $formkit: text
                   name: todayRecommendTitle
-                  label: 大标题
-                  placeholder: 请输入标题
+                  label: 专题主标题
+                  placeholder: 从这里开始了解我
                   value: Hanlo Theme
+                  help: 显示在卡片左下方，建议简短，避免遮挡画面。
+                  preserve: true
                 - $formkit: attachment
                   name: todayRecommendCover
-                  label: 背景图
-                  placeholder: 请输入地址
+                  label: 专题封面图片
+                  placeholder: https://example.com/images/featured.webp
                   value: /themes/theme-hanlo/assets/images/home.webp
                   width: "15rem"
                   aspectRatio: "16/9"
+                  help: 建议 1200×675（16:9）或更大横图，铺满卡片并裁切；左下方放标题，右下方放按钮，避免把关键信息放在这些位置。
+                  preserve: true
+              help: 配置封面、两级标题和跳转地址；此卡片在宽屏横幅中显示。
+              preserve: true
             - $formkit: select
               name: recommendPost
-              id: recommendPost
+              id: hanlo_top_recommendPost
               key: recommendPost
-              label: 推荐文章
+              label: 推荐文章来源
               value: latest
               options:
-                - label: 最新文章
+                - label: 自动显示最新六篇
                   value: latest
-                - label: 自定义
+                - label: 手动选择推荐文章
                   value: custom
+              help: 自动读取最新六篇文章，或手动选择最多六篇文章并调整顺序。
+              preserve: true
             - $formkit: repeater
-              if: $get(recommendPost).value === custom
+              if: $get(hanlo_top_recommendPost).value === 'custom'
               name: recommendPostCustom
-              label: 自定义文章
-              help: 建议设置六篇文章
+              label: 手动推荐文章列表
+              help: 建议选满六篇以填满宽屏横幅；按列表顺序展示，删除或取消发布文章后请同步更新。
               max: 6
               children:
                 - $formkit: postSelect
                   name: post
-                  label: 文章
+                  label: 推荐文章
                   value: ""
                   validation: required
+                  help: 选择已发布的文章；每项对应横幅中的一张文章卡片。
+                  preserve: true
+              addLabel: 添加推荐文章
+              itemLabels:
+                - type: text
+                  label: $value.post
+              preserve: true
+          help: 最多展示六篇推荐文章；宽屏可先覆盖一张专题卡片，访客点击「更多推荐」后查看文章。
+          preserve: true
 
     - group: layout
-      label: 布局
+      label: 文章列表与导航条
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 设置文章入口与卡片排版
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 这里控制首页文章列表上方的导航条，以及首页、分类和标签等文章列表的卡片排版。列数在宽屏生效，小屏会按响应式样式排列；每页文章数量请在 Halo 站点设置中调整。
         - $formkit: group
           name: navs
           value:
@@ -486,43 +646,48 @@ spec:
           children:
             - $formkit: select
               name: nav
-              id: nav
+              id: hanlo_layout_nav
               key: nav
-              label: 导航条显示内容
+              label: 导航条内容来源
               options:
-                - label: 分类
+                - label: 全部分类
                   value: category
-                - label: 标签
+                - label: 全部标签
                   value: tag
-                - label: 自定义分类
+                - label: 手动选择分类
                   value: custom-category
-                - label: 自定义标签
+                - label: 手动选择标签
                   value: custom-tag
-                - label: 自定义路径
+                - label: 自定义链接
                   value: custom-url
+              help: 全部分类／标签会自动读取站内数据；手动选择可控制显示范围和顺序；自定义链接可添加任意页面。
             - $formkit: categorySelect
-              if: $get(nav).value === 'custom-category'
+              if: $get(hanlo_layout_nav).value === 'custom-category'
               name: navCategory
               key: navCategory
-              label: 自定义分类
+              label: 导航条分类
               multiple: true
               clearable: true
               searchable: true
               sortable: true
+              help: 选择需要显示的分类，可拖动调整顺序；留空时仅保留首页及「更多」入口。
+              preserve: true
             - $formkit: tagSelect
-              if: $get(nav).value === 'custom-tag'
+              if: $get(hanlo_layout_nav).value === 'custom-tag'
               name: navTag
               key: navTag
-              label: 自定义标签
+              label: 导航条标签
               multiple: true
               clearable: true
               searchable: true
               sortable: true
+              help: 选择需要显示的标签，可拖动调整顺序；留空时仅保留首页及「更多」入口。
+              preserve: true
             - $formkit: array
-              if: $get(nav).value === 'custom-url'
+              if: $get(hanlo_layout_nav).value === 'custom-url'
               name: navCustomUrl
               key: navCustomUrl
-              label: 自定义路径
+              label: 导航条自定义链接
               value: []
               itemLabels:
                 - type: text
@@ -532,30 +697,45 @@ spec:
               children:
                 - $formkit: text
                   name: title
-                  label: 标题
+                  label: 链接名称
+                  help: 显示在文章导航条中，建议 2～6 个字。
+                  placeholder: 文章归档
+                  preserve: true
                 - $formkit: url
                   name: url
-                  label: 链接
+                  label: 链接地址
+                  help: 填写站内路径或完整网址，点击后在当前窗口打开。
+                  placeholder: /archives
+                  preserve: true
+              help: 按列表顺序显示，适合添加归档、关于或专题入口。
+              addLabel: 添加导航链接
+              preserve: true
             - $formkit: select
               name: navMore
-              id: navMore
+              id: hanlo_layout_navMore
               key: navMore
-              label: 更多按钮跳转地址
+              label: 导航条右侧「更多」入口
               value: categories
               options:
-                - label: 隐藏
+                - label: 隐藏「更多」按钮
                   value: hide
-                - label: 分类
+                - label: 分类集合页（/categories）
                   value: categories
-                - label: 标签
+                - label: 标签集合页（/tags）
                   value: tags
-                - label: 自定义地址
+                - label: 自定义链接
                   value: customUrl
+              help: 选择分类集合页、标签集合页或自定义地址；选择隐藏仅移除「更多」按钮。
             - $formkit: url
-              if: $get(navMore).value === customUrl
+              if: $get(hanlo_layout_navMore).value === 'customUrl'
               name: navMoreCustomUrl
-              label: 文章导航更多跳转路径
+              label: 「更多」跳转地址
               value:
+              help: 填写站内路径或完整网址；仅在「更多」入口选择自定义链接时使用。
+              placeholder: /archives
+              preserve: true
+          label: 首页文章列表上方的导航条
+          help: 首页入口始终保留，其余入口可显示分类、标签或自定义链接；右侧「更多」单独设置。
         - $formkit: group
           name: post
           value:
@@ -564,43 +744,61 @@ spec:
           children:
             - $formkit: select
               name: cols
-              label: 文章布局
+              label: 宽屏文章列数
               options:
-                - label: 单列
+                - label: 单列：突出标题与摘要
                   value: col1
-                - label: 两列
+                - label: 两列：封面与文字均衡
                   value: col2
-                - label: 三列
+                - label: 三列：紧凑浏览封面
                   value: col3
+              help: 屏幕宽度达到 1300px 时使用所选列数；更窄屏幕按主题响应式布局显示。
             - $formkit: select
               name: postLocation
-              label: 封面位置
+              label: 卡片封面位置
               options:
-                - label: 上方
+                - label: 封面在上，文字在下
                   value: top
-                - label: 左侧
+                - label: 封面在左，文字在右
                   value: left
-                - label: 右侧
+                - label: 封面在右，文字在左
                   value: right
-                - label: 交替
+                - label: 逐篇左右交替
                   value: alternate
-              help: 建议单列时，将图片放在左右
+              help: 单列建议封面在左、在右或左右交替，多列建议封面在上；手机端会按可用宽度调整排版。
+          label: 文章卡片排版
+          help: 列数和封面位置共同决定卡片布局；单列适合长标题，多列适合以封面为主的内容。
         - $formkit: url
           name: postRandomImg
-          label: 随机封面
+          label: 未设置封面时的备用图片
           value: /themes/theme-hanlo/assets/images/home.webp
-          help: 未设置文章封面时，将使用随机封面 (二次元随机图地址：https://www.dmoe.cc/random.php)
+          help: 文章无封面时使用，推荐横幅也会使用。建议 1200×675（16:9）横图；支持固定图或随机图接口，主题会在地址查询参数后追加文章标题。
+          placeholder: https://example.com/images/post-cover.webp
         - $formkit: switch
           name: articleCardPolish
-          label: 首页文章卡片(擦亮效果)
+          label: 文章卡片悬停高光
           value: false
+          help: 鼠标移入首页、作者页的文章卡片时扫过一道高光；分类和标签页不应用此效果，触屏设备没有常规悬停操作。
 
     - group: sidebar
       label: 侧栏
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 先选页面，再搭配侧栏卡片
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 先决定侧栏位置，再为首页、文章、分类、标签和独立页面排列小工具；下方设置负责卡片内容。个人卡片可使用透明或图片背景，头像与社交入口独立配置。音乐、Steam 与通讯录需要对应服务或插件。
         - $formkit: select
           name: location
-          label: 侧边栏位置
+          label: 桌面侧栏位置
           value: right-aside
           options:
             - value: hide-aside
@@ -609,9 +807,10 @@ spec:
               label: 右侧
             - value: left-aside
               label: 左侧
+          help: 应用于带侧栏的页面；选择隐藏后，各页的小工具列表仍会保留。
         - $formkit: group
           name: widgetss
-          label: 侧边栏内容
+          label: 各页面的小工具顺序
           value:
             indexWidget:
               - widget: "profile"
@@ -638,23 +837,22 @@ spec:
           children:
             - $formkit: repeater
               name: indexWidget
-              id: indexWidget
-              label: 首页
+              id: hanlo_sidebar_indexWidget
+              label: 首页与作者文章列表
               children:
                 - $formkit: select
                   name: widget
-                  id: widget
                   key: widget
-                  label: "小工具"
+                  label: "小工具类型"
                   options:
                     - value: "profile"
                       label: 个人卡片
                     - value: "steam"
-                      label: Steam卡片
+                      label: Steam 游戏卡片
                     - value: "music"
                       label: 音乐卡片
                     - value: "friend-link"
-                      label: 通讯录
+                      label: 友链通讯录
                     - value: "recent-posts"
                       label: 最新文章
                     - value: "visit-posts"
@@ -666,52 +864,58 @@ spec:
                     - value: "tags"
                       label: 文章标签
                     - value: "stat"
-                      label: 统计
+                      label: 站点统计
                     - value: "tags-stat"
-                      label: 标签&归档&统计
+                      label: 标签、归档与统计组合卡片
                     - value: "custom_html"
-                      label: 自定义
+                      label: 自定义 HTML 卡片
+                  help: 个人、音乐与 Steam 卡片在下方配置；「通讯录」需要链接插件，并为友链分组设置展示样式。
                 - $formkit: group
                   name: custom_html
                   if: $value.widget == 'custom_html'
                   key: custom_html
-                  label: 自定义内容
+                  label: 本项自定义卡片
                   children:
                     - $formkit: code
                       name: title
-                      label: 标题
-                      help: 支持html语法
+                      label: 卡片标题 HTML
+                      help: 显示在卡片顶部，可组合图标与文字。
                       height: 50px
                       value: <i class="haofont hao-icon-folder-open"></i><span>分类</span>
                       language: html
+                      placeholder: <span>推荐阅读</span>
                     - $formkit: code
                       name: html
-                      label: 内容
+                      label: 卡片正文 HTML
                       height: 200px
-                      help: 支持html语法
+                      help: "填写要展示的 HTML 片段，例如公告、链接或图片；图片建议宽度 600 像素以上，并设置 max-width: 100%。"
                       language: html
+                      placeholder: <p>欢迎来到我的博客。</p>
+                  help: 仅修改当前这一项，切换小工具类型会保留已填写内容。
+                  preserve: true
+              help: 首页和作者归档共用此列表。 可增删，使用上下箭头调整顺序；未含目录时，最后一张卡片随页面滚动固定。
+              addLabel: 添加小工具
             - $formkit: repeater
               name: postWidget
-              id: postWidget
-              label: 文章页
-              help: post 可以支持设置 toc
+              id: hanlo_sidebar_postWidget
+              label: 文章详情页
+              help: 文章页可添加「文章目录」，建议只添加一次，并将需要随目录固定的卡片放在它后面。 可增删，使用上下箭头调整顺序；未含目录时，最后一张卡片随页面滚动固定。
               children:
                 - $formkit: select
                   name: widget
-                  id: widget
                   key: widget
-                  label: "小工具"
+                  label: "小工具类型"
                   options:
                     - value: "profile"
                       label: 个人卡片
                     - value: "toc"
-                      label: 目录
+                      label: 文章目录
                     - value: "steam"
-                      label: Steam卡片
+                      label: Steam 游戏卡片
                     - value: "music"
                       label: 音乐卡片
                     - value: "friend-link"
-                      label: 通讯录
+                      label: 友链通讯录
                     - value: "recent-posts"
                       label: 最新文章
                     - value: "visit-posts"
@@ -723,50 +927,55 @@ spec:
                     - value: "tags"
                       label: 文章标签
                     - value: "stat"
-                      label: 统计
+                      label: 站点统计
                     - value: "tags-stat"
-                      label: 标签&归档&统计
+                      label: 标签、归档与统计组合卡片
                     - value: "custom_html"
-                      label: 自定义
+                      label: 自定义 HTML 卡片
+                  help: 个人、音乐与 Steam 卡片在下方配置；「通讯录」需要链接插件，并为友链分组设置展示样式。
                 - $formkit: group
                   name: custom_html
                   if: $value.widget == 'custom_html'
                   key: custom_html
-                  label: 自定义内容
+                  label: 本项自定义卡片
                   children:
                     - $formkit: code
                       name: title
-                      label: 标题
-                      help: 支持html语法
+                      label: 卡片标题 HTML
+                      help: 显示在卡片顶部，可组合图标与文字。
                       height: 100px
                       value: <i class="haofont hao-icon-folder-open"></i><span>分类</span>
                       language: html
+                      placeholder: <span>推荐阅读</span>
                     - $formkit: code
                       name: html
-                      label: 内容
+                      label: 卡片正文 HTML
                       height: 200px
-                      help: 支持html语法
+                      help: "填写要展示的 HTML 片段，例如公告、链接或图片；图片建议宽度 600 像素以上，并设置 max-width: 100%。"
                       language: html
+                      placeholder: <p>欢迎来到我的博客。</p>
+                  help: 仅修改当前这一项，切换小工具类型会保留已填写内容。
+                  preserve: true
+              addLabel: 添加小工具
 
             - $formkit: repeater
               name: tagWidget
-              id: tagWidget
-              label: 标签页
+              id: hanlo_sidebar_tagWidget
+              label: 标签下的文章列表
               children:
                 - $formkit: select
                   name: widget
-                  id: widget
                   key: widget
-                  label: "小工具"
+                  label: "小工具类型"
                   options:
                     - value: "profile"
                       label: 个人卡片
                     - value: "steam"
-                      label: Steam卡片
+                      label: Steam 游戏卡片
                     - value: "music"
                       label: 音乐卡片
                     - value: "friend-link"
-                      label: 通讯录
+                      label: 友链通讯录
                     - value: "recent-posts"
                       label: 最新文章
                     - value: "visit-posts"
@@ -778,49 +987,55 @@ spec:
                     - value: "tags"
                       label: 文章标签
                     - value: "stat"
-                      label: 统计
+                      label: 站点统计
                     - value: "tags-stat"
-                      label: 标签&归档&统计
+                      label: 标签、归档与统计组合卡片
                     - value: "custom_html"
-                      label: 自定义
+                      label: 自定义 HTML 卡片
+                  help: 个人、音乐与 Steam 卡片在下方配置；「通讯录」需要链接插件，并为友链分组设置展示样式。
                 - $formkit: group
                   name: custom_html
                   if: $value.widget == 'custom_html'
                   key: custom_html
-                  label: 自定义内容
+                  label: 本项自定义卡片
                   children:
                     - $formkit: code
                       name: title
-                      label: 标题
-                      help: 支持html语法
+                      label: 卡片标题 HTML
+                      help: 显示在卡片顶部，可组合图标与文字。
                       height: 100px
                       value: <i class="haofont hao-icon-folder-open"></i><span>分类</span>
                       language: html
+                      placeholder: <span>推荐阅读</span>
                     - $formkit: code
                       name: html
-                      label: 内容
+                      label: 卡片正文 HTML
                       height: 200px
-                      help: 支持html语法
+                      help: "填写要展示的 HTML 片段，例如公告、链接或图片；图片建议宽度 600 像素以上，并设置 max-width: 100%。"
                       language: html
+                      placeholder: <p>欢迎来到我的博客。</p>
+                  help: 仅修改当前这一项，切换小工具类型会保留已填写内容。
+                  preserve: true
+              help: 作用于单个标签的文章列表，不影响标签集合页。 可增删，使用上下箭头调整顺序；未含目录时，最后一张卡片随页面滚动固定。
+              addLabel: 添加小工具
             - $formkit: repeater
-              id: categoryWidget
+              id: hanlo_sidebar_categoryWidget
               name: categoryWidget
-              label: 分类页
+              label: 分类下的文章列表
               children:
                 - $formkit: select
                   name: widget
-                  id: widget
                   key: widget
-                  label: "小工具"
+                  label: "小工具类型"
                   options:
                     - value: "profile"
                       label: 个人卡片
                     - value: "steam"
-                      label: Steam卡片
+                      label: Steam 游戏卡片
                     - value: "music"
                       label: 音乐卡片
                     - value: "friend-link"
-                      label: 通讯录
+                      label: 友链通讯录
                     - value: "recent-posts"
                       label: 最新文章
                     - value: "visit-posts"
@@ -832,50 +1047,56 @@ spec:
                     - value: "tags"
                       label: 文章标签
                     - value: "stat"
-                      label: 统计
+                      label: 站点统计
                     - value: "tags-stat"
-                      label: 标签&归档&统计
+                      label: 标签、归档与统计组合卡片
                     - value: "custom_html"
-                      label: 自定义
+                      label: 自定义 HTML 卡片
+                  help: 个人、音乐与 Steam 卡片在下方配置；「通讯录」需要链接插件，并为友链分组设置展示样式。
                 - $formkit: group
                   name: custom_html
                   if: $value.widget == 'custom_html'
                   key: custom_html
-                  label: 自定义内容
+                  label: 本项自定义卡片
                   children:
                     - $formkit: code
                       name: title
-                      label: 标题
-                      help: 支持html语法
+                      label: 卡片标题 HTML
+                      help: 显示在卡片顶部，可组合图标与文字。
                       height: 100px
                       value: <i class="haofont hao-icon-folder-open"></i><span>分类</span>
                       language: html
+                      placeholder: <span>推荐阅读</span>
                     - $formkit: code
                       name: html
-                      label: 内容
+                      label: 卡片正文 HTML
                       height: 200px
-                      help: 支持html语法
+                      help: "填写要展示的 HTML 片段，例如公告、链接或图片；图片建议宽度 600 像素以上，并设置 max-width: 100%。"
                       language: html
+                      placeholder: <p>欢迎来到我的博客。</p>
+                  help: 仅修改当前这一项，切换小工具类型会保留已填写内容。
+                  preserve: true
+              help: 作用于单个分类的文章列表，不影响 /categories 分类集合页。 可增删，使用上下箭头调整顺序；未含目录时，最后一张卡片随页面滚动固定。
+              addLabel: 添加小工具
             - $formkit: repeater
               name: pageWidget
-              id: pageWidget
-              label: 自定义页
-              help: 自定义页面默认没有侧栏
+              id: hanlo_sidebar_pageWidget
+              label: 独立页面
+              help: 作用于使用 page.html 的独立页面；列表留空时不显示侧栏，插件专属页面不使用此列表。 可增删，使用上下箭头调整顺序；未含目录时，最后一张卡片随页面滚动固定。
               children:
                 - $formkit: select
                   name: widget
-                  id: widget
                   key: widget
-                  label: "小工具"
+                  label: "小工具类型"
                   options:
                     - value: "profile"
                       label: 个人卡片
                     - value: "steam"
-                      label: Steam卡片
+                      label: Steam 游戏卡片
                     - value: "music"
                       label: 音乐卡片
                     - value: "friend-link"
-                      label: 通讯录
+                      label: 友链通讯录
                     - value: "recent-posts"
                       label: 最新文章
                     - value: "visit-posts"
@@ -887,30 +1108,37 @@ spec:
                     - value: "tags"
                       label: 文章标签
                     - value: "stat"
-                      label: 统计
+                      label: 站点统计
                     - value: "tags-stat"
-                      label: 标签&归档&统计
+                      label: 标签、归档与统计组合卡片
                     - value: "custom_html"
-                      label: 自定义
+                      label: 自定义 HTML 卡片
+                  help: 个人、音乐与 Steam 卡片在下方配置；「通讯录」需要链接插件，并为友链分组设置展示样式。
                 - $formkit: group
                   name: custom_html
                   if: $value.widget == 'custom_html'
                   key: custom_html
-                  label: 自定义内容
+                  label: 本项自定义卡片
                   children:
                     - $formkit: code
                       name: title
-                      label: 标题
-                      help: 支持html语法
+                      label: 卡片标题 HTML
+                      help: 显示在卡片顶部，可组合图标与文字。
                       height: 100px
                       value: <i class="haofont hao-icon-folder-open"></i><span>分类</span>
                       language: html
+                      placeholder: <span>推荐阅读</span>
                     - $formkit: code
                       name: html
-                      label: 内容
+                      label: 卡片正文 HTML
                       height: 200px
-                      help: 支持html语法
+                      help: "填写要展示的 HTML 片段，例如公告、链接或图片；图片建议宽度 600 像素以上，并设置 max-width: 100%。"
                       language: html
+                      placeholder: <p>欢迎来到我的博客。</p>
+                  help: 仅修改当前这一项，切换小工具类型会保留已填写内容。
+                  preserve: true
+              addLabel: 添加小工具
+          help: 先为各页面添加小工具，再在下方配置卡片内容。同一类卡片共用配置，列表顺序就是前台从上到下的顺序。
         - $formkit: group
           name: profile
           label: 个人卡片
@@ -949,6 +1177,7 @@ spec:
               value: "分享技术与生活"
               label: 一句话简介
               help: 显示在卡片底部名称下方，建议不超过 20 个字。
+              placeholder: 分享技术与生活
             - $formkit: text
               name: helloText
               label: 顶部标签
@@ -957,8 +1186,8 @@ spec:
             - $formkit: text
               name: profileName
               label: 卡片名称
-              placeholder: 请填写个人卡片名称
-              help: 不填写默认为站点名称
+              placeholder: 如 小航的数字花园
+              help: 留空使用站点名称；点击名称前往 /about。
             - $formkit: code
               name: profileDesc
               label: 个人介绍
@@ -978,18 +1207,24 @@ spec:
               children:
                 - $formkit: text
                   name: icon
-                  label: 图标
-                  placeholder: 如 GithubOutlined
+                  label: 入口图标
+                  placeholder: GithubOutlined 或 https://example.com/icon.svg
+                  help: 支持 Ant Design 图标名、已有图标类名或图片地址；留空使用链接图标。图片建议 1:1、64 × 64 像素。
                 - $formkit: text
                   name: name
-                  label: 名称
+                  label: 入口名称
+                  help: 用于鼠标提示和读屏说明，建议填写平台名。
+                  placeholder: GitHub
                 - $formkit: url
                   name: url
-                  label: 链接
+                  label: 入口链接
+                  help: 点击后在新标签页打开，可填写 HTTPS 地址或站内路径。
+                  placeholder: https://github.com/your-name
+          help: 在上方页面列表添加「个人卡片」后显示。卡片由顶部标签、头像与介绍、底部名称和社交入口组成；点击名称前往 /about，请准备对应页面。
         - $formkit: group
           name: music
-          label: 音乐卡片
-          help: 文档请看：https://githubfast.com/zonemeen/netease-recent-profile
+          label: 音乐翻转卡片
+          help: 先在页面列表添加「音乐卡片」。使用网易云最近听歌卡片服务生成图片，将用户 ID 替换成自己的；服务说明：https://github.com/zonemeen/netease-recent-profile
           value:
             musicUrl: /music
             lightMsimg: https://card-music.yyds.pink/?id=xxxxx&theme=card&themeColor=e60026&mode=light&size=300&show_random=1
@@ -999,46 +1234,58 @@ spec:
           children:
             - $formkit: url
               name: musicUrl
-              label: 跳转地址
+              label: 点击卡片前往
+              help: 填写音乐主页或站内音乐页；留空时卡片仍展示，但不跳转。
+              placeholder: /music 或 https://music.163.com/#/user/home?id=123456
             - $formkit: textarea
               name: lightMsimg
-              label: 浅色卡片
-              help: https://card-music.yyds.pink/?id=xxxxx&theme=card&themeColor=e60026&mode=light&size=300&show_random=1
+              label: 浅色模式 · 正面图片
+              help: 填写可直接显示图片的完整 URL，用作卡片正面。服务图片保留输出比例；自制图片建议约 3:4、600 × 800 像素，四张图保持一致尺寸。
+              placeholder: https://card-music.yyds.pink/?id=123456&mode=light&theme=card&size=300
             - $formkit: textarea
               name: lightBackMsimg
-              label: 浅色翻页卡片
-              help: https://card-music.yyds.pink/?id=xxxxx&size=60&type=1&mode=light&title=%E6%9C%80%E8%BF%91%E5%B8%B8%E5%90%AC%E6%A6%9C%E5%8D%95&number=6
+              label: 浅色模式 · 背面图片
+              help: 填写可直接显示图片的完整 URL，用作悬停翻转后的背面。服务图片保留输出比例；自制图片建议约 3:4、600 × 800 像素，四张图保持一致尺寸。
+              placeholder: https://card-music.yyds.pink/?id=123456&mode=light&size=60&type=1&number=6
             - $formkit: textarea
               name: darkMsimg
-              label: 深色卡片
-              help: https://card-music.yyds.pink/?id=xxxxx&theme=card&themeColor=e60026&mode=dark&size=300&show_random=1
+              label: 深色模式 · 正面图片
+              help: 填写可直接显示图片的完整 URL，用作卡片正面。服务图片保留输出比例；自制图片建议约 3:4、600 × 800 像素，四张图保持一致尺寸。
+              placeholder: https://card-music.yyds.pink/?id=123456&mode=dark&theme=card&size=300
             - $formkit: textarea
               name: darkBackMsimg
-              label: 深色翻页卡片
-              help: https://card-music.yyds.pink/?id=xxxxx&size=60%E2%80%A6F%91%E5%B8%B8%E5%90%AC%E6%A6%9C%E5%8D%95&number=6
+              label: 深色模式 · 背面图片
+              help: 填写可直接显示图片的完整 URL，用作悬停翻转后的背面。服务图片保留输出比例；自制图片建议约 3:4、600 × 800 像素，四张图保持一致尺寸。
+              placeholder: https://card-music.yyds.pink/?id=123456&mode=dark&size=60&type=1&number=6
         - $formkit: group
           name: steam
-          label: Steam卡片
-          help: 文档请看：https://githubfast.com/yuyinws/steam-card
+          label: Steam 游戏卡片
+          help: 先在页面列表添加「Steam 游戏卡片」。使用 Steam Card 服务生成图片；服务说明：https://github.com/yuyinws/steam-card
           value:
             steamUrl: /
             cardSteam: https://card.yuy1n.io/card/xxxxxx/gradient1,badge,bg-game-1111460,games,screenshots,badges
           children:
             - $formkit: url
               name: steamUrl
-              label: 跳转地址
+              label: 点击卡片前往
+              help: 填写 Steam 个人主页；留空时仅展示卡片，不跳转。
+              placeholder: https://steamcommunity.com/profiles/76561198000000000/
             - $formkit: textarea
               name: cardSteam
-              label: 卡片
-              help: https://card.yuy1n.io/card/xxxxxx/gradient1,badge,bg-game-1111460,games,screenshots,badges
+              label: Steam 卡片图片地址
+              help: 填写图片直链，使用 SteamID64 生成卡片；建议横图约 3:1、至少 600 × 200 像素，保留服务生成比例。
+              placeholder: https://card.yuy1n.io/card/76561198000000000/gradient1,badge,games
         - $formkit: number
           name: recentPost
-          label: 最新文章/热门文章
+          label: 最新与热门文章数量
           value: 4
-          help: 文章数量
+          help: 两种文章卡片共用数量，建议 4～8 篇。0 或负数按 Halo 分页上限读取（当前最多 1000 篇）。
+          max: 1000
+          step: 1
+          validation: number|matches:/^-?\d+$/|max:1000
         - $formkit: group
           name: newcomment
-          label: 最新评论
+          label: 最新评论卡片
           value:
             newcommentUrl: /newest
             newcommentnumber: 5
@@ -1046,42 +1293,65 @@ spec:
           children:
             - $formkit: url
               name: newcommentUrl
-              label: 跳转地址
+              label: 查看更多评论的地址
+              help: 卡片右上角的跳转链接；例如使用最新评论模板的 /newest 页面，留空隐藏入口。
+              placeholder: /newest
             - $formkit: number
               name: newcommentnumber
-              label: 数量
-              help: 最新评论数量, 小于 0 则展示5条评论
+              label: 最新评论数量
+              help: 建议 5～10 条；负数使用 5 条，0 按 Halo 分页上限读取。
+              max: 1000
+              step: 1
+              validation: number|matches:/^-?\d+$/|max:1000
             - $formkit: text
-              label: 头像服务镜像地址
+              label: 评论头像服务地址
               name: providerMirror
-              help: 使用官方源则留空, 示例：https://gravatar.com
+              help: 仅为没有头像的评论拼接 /avatar/邮箱哈希。填写服务根地址，不含 /avatar，末尾不加斜杠；使用官方源请填 https://gravatar.com。
+              placeholder: https://cravatar.cn
+          help: 显示站点最新评论；先在页面列表添加「最新评论」。评论头像服务也用于 /newest 最新评论页面。
 
         - $formkit: number
           name: categoryQuantity
-          label: 文章分类
+          label: 分类卡片数量
           value: 0
-          help: 小于 0 则展示全部分类
+          help: 建议 10～20 个；0 或负数按 Halo 分页上限读取（当前最多 1000 个）。
+          max: 1000
+          step: 1
+          validation: number|matches:/^-?\d+$/|max:1000
         - $formkit: number
           name: tagQuantity
-          label: 文章标签
+          label: 标签展示数量
           value: 0
-          help: 小于 0 则展示全部标签
-        - $formkit: number
-          name: archivesQuantity
-          label: 文章归档
-          value: 0
-          help: 小于 0 则展示全部归档(目前没用等适配)
+          help: 标签卡片、组合卡片及控制中心等共用此数量。建议 20～50 个；0 或负数按 Halo 分页上限读取（当前最多 1000 个）。
+          max: 1000
+          step: 1
+          validation: number|matches:/^-?\d+$/|max:1000
         - $formkit: switch
           name: tags_switch
-          label: 标签&归档&统计 (标签按钮开关)
+          label: 组合卡片中显示标签
           value: true
+          help: 仅影响「标签、归档与统计组合卡片」，不影响单独的标签卡片。
         - $formkit: switch
           name: archive_switch
-          label: 标签&归档&统计 (归档按钮开关)
+          label: 组合卡片中显示月份归档
           value: false
+          help: 仅影响「标签、归档与统计组合卡片」，启用后显示月份和文章数量。
     - group: footer
       label: 页脚
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 从装饰到站点信息，按页脚位置配置
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 页脚从上到下包含动物装饰、站点介绍、社交入口与站点记录、分组导航、底部徽章与信息栏。各区域可单独开关；运行时间、备案和许可协议读取「基础」设置。
         - $formkit: switch
           name: animal_enable
           label: 动物装饰栏
@@ -1089,7 +1359,7 @@ spec:
           help: 在正文与页脚之间显示动物和矮墙，自动留出空间。图片随主题提供，无需代码注入。
         - $formkit: group
           name: records
-          label: 站点记录与 Logo
+          label: 中央 Logo 与站点记录
           value:
             enable: true
             logo: /themes/theme-hanlo/assets/images/footer/shiba.svg
@@ -1099,35 +1369,41 @@ spec:
           children:
             - $formkit: switch
               name: enable
-              id: footer_records_enable
+              id: hanlo_footer_records_enable
               label: 显示站点记录
               help: 在动物栏下方显示 Logo、记录文字和运行时间。
             - $formkit: attachment
-              if: $get(footer_records_enable).value
+              if: $get(hanlo_footer_records_enable).value
               name: logo
-              label: 页脚 Logo
+              label: 中央 Logo
               width: "8rem"
               aspectRatio: "1/1"
-              help: 默认使用主题自带柴犬，可选择附件或填写图片地址。点击图片返回顶部，留空恢复默认柴犬。
+              help: 建议 1:1 正方形、至少 192 × 192 像素，透明背景更自然。点击返回顶部；留空使用主题自带柴犬。
+              placeholder: 选择图片，或留空使用柴犬
+              preserve: true
             - $formkit: textarea
-              if: $get(footer_records_enable).value
+              if: $get(hanlo_footer_records_enable).value
               name: text
               label: 记录文字
               placeholder: 写下你的站点寄语，支持多行
               help: 可填写自定义文字，显示在 Logo 下方；留空则不显示。
+              preserve: true
             - $formkit: switch
-              if: $get(footer_records_enable).value
+              if: $get(hanlo_footer_records_enable).value
               name: runtime_enable
-              label: 显示运行时间
-              help: 根据「基础 → 建站时间」统计天、时、分、秒。
+              label: 显示站点运行时间
+              help: 根据「基础 → 建站时间」统计天、时、分、秒；请先填写有效的建站日期。
+              preserve: true
             - $formkit: switch
-              if: $get(footer_records_enable).value
+              if: $get(hanlo_footer_records_enable).value
               name: voyager_enable
               label: 显示旅行者 1 号里程
               help: 从 1977 年 9 月 5 日发射时间起，按约 17 千米/秒估算飞行里程，仅作展示，不代表实时距地球距离。
+              preserve: true
+          help: 位于左右社交入口之间；记录文字与计时位于 Logo 下方，可分别开关。
         - $formkit: group
           name: footer_bar
-          label: 了解更多
+          label: 页脚站点介绍栏
           value:
             footer_bar_enable: false
             logo: "困困鱼"
@@ -1135,29 +1411,36 @@ spec:
           children:
             - $formkit: switch
               name: footer_bar_enable
-              id: footer_bar_enable
+              id: hanlo_footer_footer_bar_enable
+              label: 显示站点介绍栏
+              help: 在社交入口与站点记录上方展示。
             - $formkit: code
-              if: $get(footer_bar_enable).value
+              if: $get(hanlo_footer_footer_bar_enable).value
               name: logo
-              label: logo
+              label: 介绍栏标题 HTML
               height: 80px
               language: html
-              help: 支持 HTML 语法
+              help: 可填写文字或 HTML 图片标签；图片建议高度 64～96 像素，保留原始比例。
+              placeholder: 我的数字花园
+              preserve: true
             - $formkit: textarea
-              if: $get(footer_bar_enable).value
+              if: $get(hanlo_footer_footer_bar_enable).value
               name: description
-              label: 描述
-              placeholder: 请填写描述内容
+              label: 介绍栏说明
+              placeholder: 记录开发经验，也分享日常生活
+              help: 显示在标题下方，建议用一句话概括站点内容。
+              preserve: true
+          help: 显示站点标题和简短描述，附带「了解更多」链接，固定跳转到首页。
         - $formkit: group
           name: social_media
-          label: 社交媒体
+          label: Logo 两侧的社交入口
           value:
             socialMediaLeft:
             socialMediaRight:
           children:
             - $formkit: array
               name: socialMediaLeft
-              label: 左侧
+              label: Logo 左侧入口
               value: []
               itemLabels:
                 - type: text
@@ -1167,39 +1450,47 @@ spec:
               children:
                 - $formkit: radio
                   name: option_social_data
-                  id: left_option_social_data
-                  label: 类型
+                  label: 图标来源
                   value: icon
-                  help: "icon图标选择icon图标或者图片(如果使用图片请输入完整img标签)选择自定义"
+                  help: "已有主题图标选「图标类名」；需要 SVG 图标时选「图标库选择」。切换来源后请重新确认图标。"
                   options:
                     - value: icon
-                      label: icon图标
+                      label: 图标类名
                     - value: custom
-                      label: 自定义
+                      label: 图标库选择（SVG）
                 - $formkit: textarea
                   name: icon
                   key: icon
-                  if: $get(left_option_social_data).value == 'icon'
-                  help: "icon图标，svg代码，图片(如果使用图片请输入完整img标签)"
-                  label: 图标
+                  if: $value.option_social_data == 'icon'
+                  help: "填写主题已加载的图标类名，用空格分隔；此模式不解析 SVG、img 标签或图片 URL。"
+                  label: 图标类名
                   validation: "required"
+                  preserve: true
+                  placeholder: haofont hao-icon-github
                 - $formkit: iconify
-                  if: $get(left_option_social_data).value == 'custom'
+                  if: $value.option_social_data == 'custom'
                   name: icon
                   key: custom_icon
-                  label: svg图标
+                  label: 选择 SVG 图标
                   format: svg # svg / dataurl / url / name
+                  preserve: true
+                  help: 通过图标库选择，保存为 SVG 代码；与图标类名共用同一图标值，切换后请重新选择。
                 - $formkit: text
                   name: name
-                  label: 名称
+                  label: 入口名称
                   validation: "required"
+                  help: 鼠标悬停时显示，建议填写平台名或用途。
+                  placeholder: GitHub
                 - $formkit: text
                   name: url
-                  label: 链接
+                  label: 入口链接
                   validation: "required"
+                  help: "可填写完整 HTTPS 地址、站内路径或 mailto: 邮箱链接。"
+                  placeholder: https://github.com/your-name
+              help: 按列表顺序展示；建议每侧 2～4 个，名称用于鼠标提示。
             - $formkit: array
               name: socialMediaRight
-              label: 右侧
+              label: Logo 右侧入口
               value: []
               itemLabels:
                 - type: text
@@ -1209,58 +1500,76 @@ spec:
               children:
                 - $formkit: radio
                   name: option_social_data
-                  id: right_option_social_data
-                  label: 类型
+                  label: 图标来源
                   value: icon
                   options:
                     - value: icon
-                      label: icon图标
+                      label: 图标类名
                     - value: custom
-                      label: 自定义
+                      label: 图标库选择（SVG）
+                  help: 已有主题图标选「图标类名」；需要 SVG 图标时选「图标库选择」。切换来源后请重新确认图标。
                 - $formkit: textarea
-                  if: $get(right_option_social_data).value == 'icon'
+                  if: $value.option_social_data == 'icon'
                   name: icon
                   key: icon
-                  help: "icon图标或者图片(如果使用图片请输入完整img标签)"
-                  label: 图标
+                  help: "填写主题已加载的图标类名，用空格分隔；此模式不解析 SVG、img 标签或图片 URL。"
+                  label: 图标类名
                   validation: "required"
+                  preserve: true
+                  placeholder: haofont hao-icon-github
                 - $formkit: iconify
-                  if: $get(right_option_social_data).value == 'custom'
+                  if: $value.option_social_data == 'custom'
                   name: icon
                   key: custom_icon
-                  label: svg图标
+                  label: 选择 SVG 图标
                   format: svg # svg / dataurl / url / name
+                  preserve: true
+                  help: 通过图标库选择，保存为 SVG 代码；与图标类名共用同一图标值，切换后请重新选择。
                 - $formkit: text
                   name: name
-                  label: 名称
+                  label: 入口名称
                   validation: "required"
+                  help: 鼠标悬停时显示，建议填写平台名或用途。
+                  placeholder: GitHub
                 - $formkit: text
                   name: url
-                  label: 链接
+                  label: 入口链接
                   validation: "required"
+                  help: "可填写完整 HTTPS 地址、站内路径或 mailto: 邮箱链接。"
+                  placeholder: https://github.com/your-name
+              help: 按列表顺序展示；建议每侧 2～4 个，名称用于鼠标提示。
+          help: 左右两组独立排序；图标与链接逐项配置，留空列表不显示对应入口。
         - $formkit: menuRadio
           name: menu
-          label: 相关链接
-          help: 默认只有主菜单，可前往【外观】—>【菜单】新建菜单组
+          label: 页脚分组导航
+          help: 在「外观 → 菜单」创建菜单组：一级菜单作为栏目标题，二级菜单作为链接。选择有内容的菜单后，页脚友链栏才会显示。
         - $formkit: group
           name: footer_group
-          label: 页脚友链
+          label: 导航区的随机友链
           value:
             enable_footer_group: true
             num: 3
           children:
             - $formkit: switch
               name: enable_footer_group
-              id: enable_footer_group
+              id: hanlo_footer_enable_footer_group
               key: enable_footer_group
+              label: 显示随机友链栏
+              help: 在页脚分组导航旁展示，更多入口使用「友链与朋友圈 → 友链列表地址」。
             - $formkit: number
-              if: $get(enable_footer_group).value
+              if: $get(hanlo_footer_enable_footer_group).value
               name: num
-              label: 友链数
-              validation: required
+              label: 每批随机友链数量
+              validation: number|matches:/^-?\d+$/|min:0|max:100
+              help: 建议 3～6 个；0 只显示「更多」入口。
+              min: 0
+              max: 100
+              step: 1
+              preserve: true
+          help: 依赖链接插件，以及上方已选择且有内容的页脚菜单；访客可点击刷新按钮换一批。
         - $formkit: group
           name: footerContent
-          label: 页脚内容
+          label: 页脚底部信息
           value:
             default_enable_group:
               default_enable: true
@@ -1275,78 +1584,115 @@ spec:
           children:
             - $formkit: group
               name: default_enable_group
-              label: 底部页脚
+              label: 底部徽章与信息栏
               value:
               children:
                 - $formkit: switch
                   name: default_enable
-                  id: default_enable
+                  id: hanlo_footer_default_enable
                   key: default_enable
-                  label: 底部启用
+                  label: 显示底部徽章与信息栏
+                  help: 同时控制 Halo、Hanlo、建站年份徽章及底部版权与链接栏。
                 - $formkit: number
-                  if: $get(default_enable).value
+                  if: $get(hanlo_footer_default_enable).value
                   name: footer_banner_padding
-                  id: footer_banner_padding
+                  id: hanlo_footer_footer_banner_padding
                   key: footer_banner_padding
-                  label: 页脚高度
+                  label: 底部信息栏上下留白（rem）
+                  help: 上下内边距，不是固定高度；1 rem 通常约 16 像素，建议 0.5～2。
+                  min: 0
+                  max: 10
+                  step: 0.25
+                  validation: number|min:0|max:10
+                  preserve: true
                 - $formkit: switch
-                  if: $get(default_enable).value
+                  if: $get(hanlo_footer_default_enable).value
                   name: dingyue
-                  id: dingyue
+                  id: hanlo_footer_dingyue
                   key: dingyue
-                  label: 订阅
+                  label: 显示 RSS 订阅入口
+                  help: 需要启用 RSS 插件（PluginFeed），链接为 /rss.xml；同时控制 RSS 徽章。
+                  preserve: true
                 - $formkit: switch
-                  if: $get(default_enable).value
+                  if: $get(hanlo_footer_default_enable).value
                   name: zhuti
-                  id: zhuti
+                  id: hanlo_footer_zhuti
                   key: zhuti
-                  label: 主题
+                  label: 显示主题仓库链接
+                  help: 链接到主题声明的代码仓库；不控制 Hanlo 版本徽章。
+                  preserve: true
                 - $formkit: switch
-                  if: $get(default_enable).value
+                  if: $get(hanlo_footer_default_enable).value
                   name: about
-                  id: about
+                  id: hanlo_footer_about
                   key: about
-                  label: 关于
+                  label: 显示关于入口
+                  help: 链接固定为 /about，请先创建对应独立页面。
+                  preserve: true
                 - $formkit: switch
-                  if: $get(default_enable).value
+                  if: $get(hanlo_footer_default_enable).value
                   name: icp_icon
-                  id: icp_icon
+                  id: hanlo_footer_icp_icon
                   key: icp_icon
-                  label: icp备案
+                  label: 显示 ICP 备案
+                  help: 先在「基础」填写 ICP 备案号或备案图片；点击前往工信部备案查询。
+                  preserve: true
                 - $formkit: switch
-                  if: $get(default_enable).value
+                  if: $get(hanlo_footer_default_enable).value
                   name: gongwangan
-                  id: gongwangan
+                  id: hanlo_footer_gongwangan
                   key: gongwangan
-                  label: 公网安备案
+                  label: 显示公安联网备案
+                  help: 先在「基础」填写公安备案号或备案图片；点击前往公安备案网站。
+                  preserve: true
                 - $formkit: switch
-                  if: $get(default_enable).value
+                  if: $get(hanlo_footer_default_enable).value
                   name: yingsi
-                  id: yingsi
+                  id: hanlo_footer_yingsi
                   key: yingsi
-                  label: 隐私
+                  label: 显示版权许可协议入口
+                  help: 使用「基础」中的版权协议地址，显示 CC BY-NC-ND 图标；请确认实际采用的许可协议。
+                  preserve: true
                 - $formkit: switch
-                  if: $get(default_enable).value
+                  if: $get(hanlo_footer_default_enable).value
                   name: yunzhichi
-                  id: yunzhichi
+                  id: hanlo_footer_yunzhichi
                   key: yunzhichi
-                  label: 腾讯云支持
+                  label: 显示腾讯云服务说明
+                  help: 展示「提供 CDN 加速 / 云存储服务」文字并链接腾讯云，请按实际使用情况开启。
+                  preserve: true
+              help: 站点年份来自建站时间；开关分别控制下方链接。
+          help: 控制底部站点徽章、版权年份和辅助链接；备案内容与协议地址在「基础」中填写。
 
     - group: post
-      label: 文章
+      label: 文章详情
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 让文章更易读，也清楚说明来源
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 这里配置正文前的摘要与时效提醒，以及文章底部的版权、分享和推荐。单篇文章元数据可覆盖摘要与版权开关；文章评论需同时启用评论组件插件、主题「评论」总开关和该文章的允许评论。
         - $formkit: switch
           name: dynamicBackground
-          label: 动态主色
+          label: 从封面提取文章主色
           value: true
-          help: 文章主色匹配图片颜色
+          help: 根据文章封面图片调整文章页主色。
         - $formkit: switch
           name: opacity
-          label: 目录模糊效果
+          label: 淡化并模糊未选中的目录项
           value: true
+          help: 作用于文章侧栏目录；关闭后未选中的目录文字也保持清晰。
         - $formkit: group
           name: aiDescription
-          label: 文章 AI 摘要
+          label: 文章摘要卡片
           value:
             aiDescriptionEnable: false
             gptName:
@@ -1360,64 +1706,90 @@ spec:
           children:
             - $formkit: switch
               name: aiDescriptionEnable
-              id: aiDescriptionEnable
+              id: hanlo_post_aiDescriptionEnable
               key: aiDescriptionEnable
               value: false
+              label: 显示文章摘要卡片
+              help: 先启用，再选择摘要来源；使用本地模式时请在文章编辑中关闭自动摘要并填写摘要。
             - $formkit: text
-              if: $get(aiDescriptionEnable).value
+              if: $get(hanlo_post_aiDescriptionEnable).value && ($get(hanlo_post_aiDescription_mode).value == 'local' || $get(hanlo_post_aiDescription_switchBtn).value)
               name: gptName
-              label: 名称
-              placeholder: 请输入内容
+              label: 本地摘要助手名称
+              placeholder: 如 小航
               value: KunKunYu
+              help: 显示为「名称 GPT」，用于本地模式的卡片标签和介绍。
+              preserve: true
             - $formkit: radio
-              if: $get(aiDescriptionEnable).value
+              if: $get(hanlo_post_aiDescriptionEnable).value
               name: mode
-              label: 模式
+              label: 默认摘要来源
               value: local
-              help: 本地模式需要自己填写文章摘要
+              help: 本地模式使用文章手动摘要；Tianli 模式需配置服务 Key 和站点地址。
               options:
-                - label: 本地
+                - label: 文章手动摘要
                   value: local
-                - label: ai
+                - label: Tianli 在线生成
                   value: tianli
+              id: hanlo_post_aiDescription_mode
+              preserve: true
             - $formkit: switch
-              if: $get(aiDescriptionEnable).value
+              if: $get(hanlo_post_aiDescriptionEnable).value
               name: switchBtn
-              label: 显示切换按钮
+              label: 允许切换摘要来源
               value: false
+              help: 访客可在本地与 Tianli 模式间切换；开启时请同时准备手动摘要和 Tianli 配置。
+              id: hanlo_post_aiDescription_switchBtn
+              preserve: true
             - $formkit: url
-              if: $get(aiDescriptionEnable).value
+              if: $get(hanlo_post_aiDescriptionEnable).value && ($get(hanlo_post_aiDescription_mode).value == 'tianli' || $get(hanlo_post_aiDescription_switchBtn).value)
               name: btnLink
-              label: Tianli GPT 介绍链接
-              placeholder: 输入链接地址
+              label: Tianli 服务介绍链接
+              placeholder: https://example.com/ai-summary
               value: ""
+              help: 访客点击 Tianli 标签后，可通过介绍按钮访问此链接。
+              preserve: true
             - $formkit: number
-              if: $get(aiDescriptionEnable).value
+              if: $get(hanlo_post_aiDescriptionEnable).value && ($get(hanlo_post_aiDescription_mode).value == 'tianli' || $get(hanlo_post_aiDescription_switchBtn).value)
               name: randomNum
-              label: 随机次数
+              label: 刷新时的取样字数变化范围
               value: 3
-              help: 按钮最大的随机次数，也就是一篇文章最大随机出来几种
+              help: Tianli 刷新摘要时随机调整正文取样字数；不是刷新次数限制。建议 3～100；0 按最小范围 1 处理。
+              min: 0
+              max: 1000
+              step: 1
+              validation: number|matches:/^-?\d+$/|min:0|max:1000
+              preserve: true
             - $formkit: number
-              if: $get(aiDescriptionEnable).value
+              if: $get(hanlo_post_aiDescriptionEnable).value && ($get(hanlo_post_aiDescription_mode).value == 'tianli' || $get(hanlo_post_aiDescription_switchBtn).value)
               name: basicWordCount
-              label: 字符数
+              label: 正文基础取样字数
               value: 1000
-              help: 最低获取字符数, 最小1000, 最大1999
+              help: 提交给 Tianli 的标题和正文取样长度，建议 1000～1999；刷新取样最多截取 2000 字符。
+              min: 1000
+              max: 1999
+              step: 1
+              validation: number|matches:/^-?\d+$/|min:1000|max:1999
+              preserve: true
             - $formkit: text
-              if: $get(aiDescriptionEnable).value
+              if: $get(hanlo_post_aiDescriptionEnable).value && ($get(hanlo_post_aiDescription_mode).value == 'tianli' || $get(hanlo_post_aiDescription_switchBtn).value)
               name: key
-              label: key
+              label: Tianli 服务 Key
               value: xxxx
-              placeholder: 请输入key
+              placeholder: 填写 Tianli 为本站提供的 Key
+              help: 填写为本站签发的 Tianli Key。该值会发送到访客浏览器，请仅使用允许前端调用的服务 Key。
+              preserve: true
             - $formkit: url
-              if: $get(aiDescriptionEnable).value
+              if: $get(hanlo_post_aiDescriptionEnable).value && ($get(hanlo_post_aiDescription_mode).value == 'tianli' || $get(hanlo_post_aiDescription_switchBtn).value)
               name: Referer
-              label: 你的博客地址
-              help: 注意保留最后的斜杠
+              label: Tianli 绑定的站点地址
+              help: 与服务绑定地址保持一致，填写完整 HTTPS 地址并保留末尾斜杠；浏览器实际 Referer 仍受来源策略控制。
               value: https://xx.xx/
+              placeholder: https://blog.example.com/
+              preserve: true
+          help: 显示在正文上方。本地模式读取手动填写的文章摘要，可用英文逗号分隔多段供刷新切换；Tianli 模式通过外部服务生成摘要。单篇文章的 AI 元数据可覆盖显示开关。
         - $formkit: group
           name: passage_tips
-          label: 温馨提示
+          label: 正文更新时效提醒
           value:
             enable: false
             content: 文章内容可能已经过时。
@@ -1425,59 +1797,78 @@ spec:
           children:
             - $formkit: switch
               name: enable
-              id: enable
+              id: hanlo_post_passage_tips_enable
+              label: 显示内容时效提醒
+              help: 超过下方天数后才显示，不会隐藏或修改文章正文。
             - $formkit: number
-              if: "$get(enable).value"
+              if: "$get(hanlo_post_passage_tips_enable).value"
               name: day
-              label: 更新时间大于天数显示
-              validation: required
+              label: 超过多少天后提醒
+              validation: number|matches:/^-?\d+$/|min:0|max:36500
+              help: 距最后修改时间严格超过此天数才显示；0 表示满一天后即可提醒。
+              min: 0
+              max: 36500
+              step: 1
+              preserve: true
             - $formkit: code
-              if: "$get(enable).value"
+              if: "$get(hanlo_post_passage_tips_enable).value"
               name: content
               height: 100px
-              label: 温馨提示文案
-              help: "自定义温馨提示的文案，支持html语法"
+              label: 时效提醒正文 HTML
+              help: "时间前缀由主题自动生成；这里只填写后半段提醒，可使用简短 HTML。"
               language: html
+              placeholder: 文章内容可能已经过时，请结合最新文档阅读。
+              preserve: true
+          help: 在正文开始处提示内容可能过时，以文章最后修改时间计算。
         - $formkit: switch
           name: update_time
-          label: 最后更新时间
+          label: 显示最后更新时间
           value: false
+          help: 在文章标题下的信息栏中显示最后修改日期。
         - $formkit: select
           name: copyrightsStyle
-          id: copyrightsStyle
+          id: hanlo_post_copyrightsStyle
           key: copyrightsStyle
-          label: 版权样式
+          label: 文章底部版权区布局
           value: default
           options:
             - value: default
-              label: 默认
+              label: 文章标题与链接布局
             - value: one
-              label: 样式一
+              label: 作者头像卡片布局
+          help: 两种布局都支持声明与分享；作者卡片布局使用文章作者头像和站点名称。
         - $formkit: text
-          if: $get(copyrightsStyle).value == 'one'
+          if: $get(hanlo_post_copyrightsStyle).value == 'one'
           name: desc
           value: "分享设计与科技生活"
-          label: 版权样式一(描述)
+          label: 作者卡片的一句话说明
+          help: 仅用于作者头像卡片布局，显示在站点名称下方。
+          placeholder: 分享设计与科技生活
+          preserve: true
         - $formkit: group
           name: post_edit
-          label: 运营模式与责任
+          label: 版权区附加链接
           value:
             enable_post_edit: false
             post_edit_url: "/rss"
           children:
             - $formkit: switch
               name: enable_post_edit
-              id: enable_post_edit
+              id: hanlo_post_enable_post_edit
               key: enable_post_edit
-              help: 启用文章运营模式与责任，请正确填写链接
+              help: 链接显示在文章底部分享按钮旁。
+              label: 显示版权区附加链接
             - $formkit: url
               name: post_edit_url
-              if: $get(enable_post_edit).value
-              label: 运营模式与责任地址
-              placeholder: 请输入运营模式与责任地址
+              if: $get(hanlo_post_enable_post_edit).value
+              label: 附加链接目标地址
+              placeholder: /about 或 /rss.xml
+              help: 填写站内说明页或订阅地址，链接文字由版权区布局决定。
+              preserve: true
+          help: 文章标题布局显示「运营模式与责任」；作者卡片布局显示「订阅」，请按所选布局设置目标页面。
         - $formkit: group
           name: share_right
-          label: 分享按钮
+          label: 文章分享入口
           value:
             mobile_edit: true
             weibo_edit: true
@@ -1485,19 +1876,23 @@ spec:
           children:
             - $formkit: switch
               name: mobile_edit
-              help: 启用分享手机访问二维码
+              help: 访客可扫码在手机上打开当前文章。
               value: true
+              label: 显示手机访问二维码
             - $formkit: switch
               name: weibo_edit
-              help: 启用分享到微博
+              help: 点击打开微博分享页。
+              label: 显示微博分享入口
             - $formkit: switch
               name: copyurl_edit
-              help: 启用复制链接
+              help: 点击复制当前页面地址，适合粘贴到聊天或社交平台。
               value: true
+              label: 显示复制链接按钮
+          help: 显示在文章底部版权区，可分别开启二维码、微博与复制链接。
         - $formkit: group
           name: copyrights
-          label: 版权声明
-          help: 需要在发布文章时的元数据上选显示版权声明才可以生效
+          label: 文章版权声明
+          help: 这里提供全站默认值；单篇文章的版权开关、原创 / 转载类型和版权链接元数据优先。关闭声明后，文章底部布局和分享入口仍保留。
           value:
             enable: true
             content: '本文是原创文章，采用 <a target="_blank" href="/cc">CC BY-NC-ND 4.0</a> 协议，完整转载请注明来自 <a href="/" target="_blank" >程序员小航</a>'
@@ -1505,258 +1900,390 @@ spec:
           children:
             - $formkit: switch
               name: enable
-              help: 文章底部显示版权声明模块
+              help: 未单独设置版权开关的文章使用此值；单篇文章可以覆盖，以下内容也供单篇开启时使用。
+              label: 默认显示版权声明
             - $formkit: text
               name: originalUrl
-              label: 原创链接
-              placeholder: 请输入链接
+              label: 原创标记的默认链接
+              placeholder: /cc
+              help: 用于原创文章的「原创」标记，可指向版权说明页；单篇版权链接优先。留空且单篇未设置时没有有效目标。
             - $formkit: text
               name: reprintUrl
-              label: 转载链接
-              placeholder: 请输入链接
+              label: 转载标记的默认原文链接
+              placeholder: https://example.com/original-article
+              help: 单篇版权链接优先，转载文章建议逐篇填写实际来源，避免不同文章共用同一原文。
             - $formkit: code
               name: content
-              label: 原创声明内容
-              placeholder: '本文是原创文章，采用 <a target="_blank" href="/cc">CC BY-NC-ND 4.0</a> 协议，完整转载请注明来自 <a href="/" target="_blank" >程序员小航</a>'
+              label: 原创文章声明 HTML
+              placeholder: '<p>本文由本站原创，转载时请注明作者与文章链接。</p>'
               height: 120px
               language: html
-              help: 支持 HTML 语法
+              help: 显示于原创文章底部；请将协议、署名、站点地址替换为自己的内容。
             - $formkit: code
               name: reprintContent
-              label: 转载声明内容
+              label: 转载文章声明 HTML
               placeholder: "本文是转载文章，版权归原作者所有。建议访问原文，转载本文请联系原作者。"
               height: 120px
               language: html
-              help: 支持 HTML 语法
+              help: 显示于转载文章底部；在文章元数据中选择转载类型，并填写该文章的原文链接。
         - $formkit: select
           name: recommendQuantity
-          label: 阅读建议
+          label: 底部推荐文章数量
           value: six
           options:
             - value: two
               label: 两篇
             - value: six
               label: 六篇
+          help: 从文章第一个分类中推荐相关阅读；没有分类时不显示，实际数量取决于该分类可用文章。
 
     - group: categories
-      label: 分类
+      label: 分类集合页
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 配置分类集合页，而不是分类文章列表
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 这些设置作用于 /categories 分类集合页。分类名称、封面和描述在「文章 → 分类」维护；点入某个分类后的文章列表侧栏在「侧栏」设置。
         - $formkit: select
           name: use
-          label: 页面样式
+          label: 分类集合页布局
           value: default
           options:
-            - label: 默认
+            - label: 分类名称与文章数列表
               value: default
-            - label: 3D
+            - label: 封面卡片（3D 悬停效果）
               value: 3D
+          help: 作用于 /categories。文字列表展示名称和文章数；封面卡片使用分类封面与描述，请在「文章 → 分类」中完善，封面建议 1:1、至少 640 × 640 像素。
 
     - group: moment
       label: 瞬间
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 为瞬间内容配置页首横幅
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 此处设置瞬间页面的背景、标题、说明和按钮。请先安装并启用瞬间插件，在插件中发布内容；这里只调整主题横幅，不改变瞬间内容或发布方式。
         - $formkit: attachment
           name: backgroundImg
-          label: 背景图
+          label: 瞬间页横幅背景
           width: "15rem"
           aspectRatio: "16/9"
           value: https://liuzhihang.com/upload/moments.png
-          placeholder: 请输入图片地址
+          placeholder: 选择横幅图片或填写图片直链
+          help: 建议使用 16:9、1920 × 1080 像素横图，WebP 或 AVIF 格式。横幅会裁切，主体放在中间，左侧留出标题空间。
         - $formkit: text
           name: smallTitle
-          label: 小标题
+          label: 横幅上方小标题
           value: 即刻短文
+          help: 位于主标题上方，建议 4～8 个字。
+          placeholder: 即刻短文
         - $formkit: text
           name: bigTitle
-          label: 大标题
+          label: 横幅主标题
           value: 分享生活的小确幸
+          help: 横幅中的醒目标题，建议控制在 16 个字以内。
+          placeholder: 分享生活的小确幸
         - $formkit: text
           name: detail
-          label: 描述
+          label: 横幅底部说明
           value: 使用 Halo/Moment插件 构建
+          help: 用一句话介绍瞬间内容，建议不超过 30 个字。
+          placeholder: 记录日常、灵感和片刻心情
         - $formkit: text
           name: buttonTitle
-          label: 按钮标题
+          label: 横幅按钮文字
           value: 部署瞬间
+          help: 按钮位于横幅右下方，仅在填写跳转地址时显示。
+          placeholder: 了解我的日常
+          if: $get(hanlo_moment_buttonUrl).value
+          preserve: true
         - $formkit: url
           name: buttonUrl
           validation: url
           value: https://githubfast.com/halo-sigs/plugin-moments
-          label: 按钮跳转连链接
-          placeholder: 请输入跳转 url
+          label: 横幅按钮跳转地址
+          placeholder: https://example.com/about
+          help: 填写完整 HTTP / HTTPS 地址；留空隐藏整个按钮。点击在新标签页打开。
+          id: hanlo_moment_buttonUrl
 
     - group: link
-      label: 友链
+      label: 友链与朋友圈
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 友链站点与朋友圈文章分别配置
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 友链页面依赖链接插件，站点、分组、头像和展示样式在插件中维护。下方分别设置友链横幅、互动与评论，以及朋友圈插件文章流的加载数量。
         - $formkit: text
           name: smallTitle
-          label: 小标题
+          label: 友链页横幅小标题
           value: 友情链接
+          help: 位于主标题上方，建议 4～8 个字。
+          placeholder: 友情链接
         - $formkit: text
           name: bigTitle
-          label: 大标题
+          label: 友链页横幅主标题
           value: 我和我的小伙伴们
-        - $formkit: url
-          name: fcircleUrl
-          value: "/fcircle"
-          label: 鱼塘链接
+          help: 介绍你的朋友们，建议控制在 16 个字以内。
+          placeholder: 我和我的小伙伴们
         - $formkit: url
           name: linksUrl
           value: "/links"
-          label: 友链链接
+          label: 友链列表地址
+          help: 页脚随机友链的「更多」入口使用此地址；填写链接插件实际的列表路径。
+          placeholder: /links
         - $formkit: switch
           name: linksCanvas
-          label: 互动友链
+          label: 显示互动友链头像画布
           value: false
+          help: 在友链列表中显示头像互动区域，需要链接插件中已有友链分组与头像。
         - $formkit: switch
           name: enable_comment
-          label: 启用评论
-          help: "启用链接插件原生适配的评论组件，需要链接插件 >= 1.4.0 版本"
+          label: 允许友链页评论
+          help: "需链接插件 1.4.0 或更新版本、启用评论组件插件，并打开主题「评论」总开关。"
         - $formkit: code
           name: linksArticle
           height: 300px
-          label: 底部显示内容
+          label: 友链列表下方补充说明 HTML
           language: html
+          help: 可放置申请友链要求或站点信息；在评论区上方展示，留空不显示。
+          placeholder: <h2>申请友链</h2><p>请留下站点名称、地址、简介和头像。</p>
         - $formkit: text
           name: fmomentsPageSize
-          label: 友链每页数量
-          help: "填写每页（滚动加载）展示的友链数量,"
+          label: 朋友圈每批加载文章数
+          help: "作用于朋友圈文章流的滚动加载，需要朋友圈插件；不是友链站点数量。建议 12～30 条。"
           value: 12
+          inputmode: numeric
+          validation: number|matches:/^\d+$/|between:1,100
+          placeholder: "12"
 
     - group: photos
-      label: 图库
+      label: 图库与相册
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 配置照片列表和相册分组的展示
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 先安装并启用图库插件，在插件中维护照片和分组；相册入口需新建页面并选择相册页面模板。分组封面、背景和说明在图库分组中填写。
         - $formkit: select
           name: photosStyle
-          id: photosStyle
-          key: photosStyle
-          label: 样式
+          id: hanlo_photos_photosStyle
+          key: hanlo_photos_photosStyle
+          label: 相册与照片布局
           value: default
           options:
             - value: default
-              label: 默认
+              label: 封面卡片与横幅
             - value: one
-              label: 样式一
+              label: 简洁分组与照片
+          help: 同时影响相册分组入口和照片列表；带封面布局显示横幅与返回按钮，简洁布局以分组名称和照片为主。
         - $formkit: text
           name: topLink
           key: topLink
-          if: $get(photosStyle).value == 'default'
-          label: 返回地址 (填写图库分组地址)
+          if: $get(hanlo_photos_photosStyle).value == 'default'
+          label: 横幅返回按钮地址
           value: "/album"
-        - $formkit: text
-          if: $get(photosStyle).value == 'default'
-          name: detail
-          label: 描述
-          value: 每一张照片都是一次美好的记忆。
+          preserve: true
+          help: 填写已创建的相册分组页面地址，点击照片页横幅上的“返回”时跳转。
+          placeholder: /album
         - $formkit: switch
           name: tagEnable
-          label: 图片标签
+          label: 显示照片名称标签
           value: false
-          help: 图片左上角标签
+          help: 在照片左上角显示图库中填写的照片名称；两种布局均支持。
         - $formkit: attachment
           name: backgroundImg
-          key: backgroundImg
-          id: backgroundImg
-          label: 背景图
+          key: hanlo_photos_backgroundImg
+          id: hanlo_photos_backgroundImg
+          label: 全部照片页横幅
           width: "15rem"
-          aspectRatio: "16/9"
+          aspectRatio: 8/3
           value: https://liuzhihang.com/upload/moments.png
-          placeholder: 请输入图片地址
+          placeholder: 选择横幅图片或填写图片 URL
+          help: 用于未筛选分组的照片页；分组照片页使用各分组背景。建议 1600×600 像素、约 8:3，主体居中，边缘可能裁切。
+          if: $get(hanlo_photos_photosStyle).value == 'default'
+          preserve: true
 
     - group: todo
-      label: 待办清单
+      label: 待办清单页面
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 把目标整理成左右两列清单
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 新建页面并选择待办页面模板。这里维护清单分组与完成状态；页面顶部的标题、封面和摘要在页面编辑器中设置。
         - $formkit: array
           name: list
-          label: 待办清单列表
+          label: 清单分组
           value: []
           itemLabels:
-            - type: text
-              label: $value.seat
             - type: text
               label: $value.class_name
           children:
             - $formkit: text
               name: class_name
-              label: 标题
-              placeholder: 请输入标题
+              label: 分组标题
+              placeholder: 例如：今年想完成的事
+              help: 显示在这组待办事项上方。
             - $formkit: radio
               name: seat
-              label: 位置
+              label: 桌面展示列
               value: left
               options:
-                - label: 左
+                - label: 左列
                   value: left
-                - label: 右
+                - label: 右列
                   value: right
+              help: 选择分组在桌面双列布局中的位置；窄屏会按布局收拢。
             - $formkit: array
               name: todo_list
-              label: 内容列表
+              label: 组内待办事项
               value: []
               itemLabels:
-                - type: text
-                  label: $value.completed
                 - type: text
                   label: $value.content
               children:
                 - $formkit: textarea
                   name: content
-                  label: 内容
-                  placeholder: 请输入内容
+                  label: 待办事项
+                  placeholder: 例如：完成一次城市徒步
+                  help: 按纯文本显示，建议用一句话描述目标。
                 - $formkit: radio
                   name: completed
-                  label: 填写
+                  label: 完成状态
                   value: false
                   options:
-                    - label: 完成
+                    - label: 已完成
                       value: true
                     - label: 未完成
                       value: false
+                  help: 已完成的事项显示勾选图标和完成样式；访客无法在前台修改。
+              help: 每项填写一件事，完成后可在这里更新状态。
+              addLabel: 添加待办事项
+          help: 每项是一组清单，可分别放入左列或右列；同列按列表顺序显示。
+          addLabel: 添加清单分组
 
     - group: equipment
-      label: 我的装备
+      label: 装备页面
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 为装备推荐页设置顶部介绍
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 先安装并启用装备插件，访问 /equipments 查看。这里设置页首封面与文案；装备分组、图片、规格和详情链接在插件中管理。
         - $formkit: attachment
           name: backgroundImg
-          label: 背景图
+          label: 装备页横幅
           width: "15rem"
-          aspectRatio: "16/9"
+          aspectRatio: 8/3
           value: https://liuzhihang.com/upload/moments.png
-          placeholder: 请输入图片地址
+          placeholder: 选择装备页横幅或填写图片 URL
+          help: 建议 1600×600 像素、约 8:3；图片会铺满横幅并可能裁切，避免在图中放重要文字。
         - $formkit: text
           name: smallTitle
-          label: 小标题
+          label: 横幅上方短标签
           value: 好物
+          help: 显示在主标题上方，建议 2–6 个字。
+          placeholder: 例如：好物分享
         - $formkit: text
           name: bigTitle
-          label: 大标题
+          label: 横幅主标题
           value: 实物装备推荐
+          help: 用于装备页顶部的大标题。
+          placeholder: 例如：我的日常装备
         - $formkit: text
           name: detail
-          label: 描述
+          label: 横幅介绍
           value: 跟我一起享受科技带来的乐趣
+          help: 显示在横幅底部，建议一句话说明推荐范围。
+          placeholder: 例如：记录让我工作和生活更顺手的好物
 
     - group: envelope_comment
-      label: 留言板
+      label: 留言板页面
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 给留言板添加一封欢迎信
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 新建页面并选择留言板页面模板。信笺只负责顶部装饰和欢迎文案；下方留言还需开启全站评论、启用评论组件插件，并允许该页面评论。
         - $formkit: switch
-          label: 信笺
+          label: 显示欢迎信笺
           name: enable_envelope_comment
-          key: enable_envelope_comment
-          id: enable_envelope_comment
+          key: hanlo_envelope_comment_enable_envelope_comment
+          id: hanlo_envelope_comment_enable_envelope_comment
           value: true
+          help: 开启后在留言板顶部展示信封；桌面悬停展开，手机直接展示信纸内容。
         - $formkit: code
-          if: $get(enable_envelope_comment).value
+          if: $get(hanlo_envelope_comment_enable_envelope_comment).value
           name: title
-          label: 标题
-          placeholder: 请输入内容
+          label: 信笺上方标题
+          placeholder: <div style="text-align:center">给我留言</div>
           value: <div align="center">留言板</div>
           height: 80px
           language: html
-          help: 支持 HTML 语法
+          help: 支持 HTML，可设置居中或换行；留空不显示标题。
+          preserve: true
         - $formkit: group
           name: custom_pic
-          if: $get(enable_envelope_comment).value
-          label: 信笺图片
+          if: $get(hanlo_envelope_comment_enable_envelope_comment).value
+          label: 信封与信纸图片
           value:
             cover:
             line:
@@ -1765,38 +2292,44 @@ spec:
           children:
             - $formkit: attachment
               name: cover
-              label: 头部图片
-              placeholder: 请输入内容
+              label: 信纸顶部插图
+              placeholder: 选择信纸顶部插图或填写图片 URL
               width: "15rem"
-              aspectRatio: "20/15"
+              aspectRatio: 96/59
               value: "/themes/theme-hanlo/assets/images/envelope/cover.jpg"
+              help: 位于信纸正文上方。建议 960×590 像素、约 96:59，按信纸宽度缩放。
             - $formkit: attachment
               name: line
-              label: 底部图片
-              placeholder: 请输入内容
+              label: 信纸底部分隔图
+              placeholder: 选择细长分隔图或填写图片 URL
               width: "15rem"
-              aspectRatio: "20/15"
+              aspectRatio: 20/1
               value: "/themes/theme-hanlo/assets/images/envelope/line.png"
+              help: 位于正文和落款之间。建议 1920×95 像素、约 20:1 的横向装饰条，推荐透明 PNG。
             - $formkit: attachment
               name: beforeimg
-              label: 前半部分图片
-              placeholder: 请输入内容
+              label: 信封背面图
+              placeholder: 选择信封背面 PNG 或填写图片 URL
               width: "15rem"
-              aspectRatio: "20/15"
+              aspectRatio: 530/317
               value: "/themes/theme-hanlo/assets/images/envelope/before.png"
+              help: 桌面展开时位于信纸后方。建议 530×317 像素、约 5:3，保留透明区域；手机不显示外壳。
             - $formkit: attachment
               name: afterimg
-              label: 后半部分图片
-              placeholder: 请输入内容
+              label: 信封正面图
+              placeholder: 选择信封正面 PNG 或填写图片 URL
               width: "15rem"
-              aspectRatio: "20/15"
+              aspectRatio: 530/259
               value: "/themes/theme-hanlo/assets/images/envelope/after.png"
+              help: 覆盖信纸下半部。建议 530×259 像素、约 2:1 的透明 PNG；手机不显示外壳。
+          preserve: true
+          help: 四张图分别组成信纸装饰和信封外壳；替换时保持下方建议比例，透明外壳使用 PNG。
         - $formkit: list
-          if: $get(enable_envelope_comment).value
+          if: $get(hanlo_envelope_comment_enable_envelope_comment).value
           name: message_list
-          label: 正文
-          addLabel: 添加标签
-          help: 选项是默认给的值
+          label: 信纸正文行
+          addLabel: 添加正文行
+          help: 每项在信纸上单独显示一行，支持纯文本；可调整顺序。
           itemType: string
           value:
             - 有什么想问的？
@@ -1807,34 +2340,59 @@ spec:
             - $formkit: text
               index: "$index"
               validation: required
+              label: 正文行
+              help: 写一句给访客的邀请或说明。
+              placeholder: 例如：欢迎分享你的近况
+          preserve: true
         - $formkit: text
           name: bottom
-          if: $get(enable_envelope_comment).value
-          label: 底部文本
-          placeholder: 请输入内容
+          if: $get(hanlo_envelope_comment_enable_envelope_comment).value
+          label: 信纸底部落款
+          placeholder: 例如：期待收到你的来信
           value: 自动书记人偶竭诚为您服务！
-          help: 仅支持单行文本
+          help: 显示在分隔图下方，使用单行纯文本。
+          preserve: true
         - $formkit: number
           name: height
-          if: $get(enable_envelope_comment).value
-          label: 高度
-          placeholder: 请输入内容
-          help: 信封划出的高度
+          if: $get(hanlo_envelope_comment_enable_envelope_comment).value
+          label: 桌面展开高度（像素）
+          placeholder: "1024"
+          help: 控制鼠标悬停时的信封容器高度。建议从 1024 开始按正文长度调整，过小会裁切信纸；手机不受此项影响。
           value: 1024
+          preserve: true
+          min: 1
+          step: 1
 
     - group: about
-      label: 关于
+      label: 关于页面
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 按展示顺序组织个人介绍
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 新建页面并选择关于页面模板，页面标题在页面编辑器中填写。先选择并拖动下方内容区块，再编辑对应内容；取消选择会隐藏区块设置并保留已填内容。头像、个人标签、建站故事和十年之约独立展示。
         - $formkit: attachment
           name: aboutAuthorImage
-          label: 图片
+          label: 页面顶部头像
           value: https://liuzhihang.com/upload/recommend.png
+          help: 建议 400×400 像素、1:1，人物居中以适应圆形裁切；留空使用主题标志。
+          placeholder: 选择个人头像或填写图片 URL
+          width: 15rem
+          aspectRatio: 1/1
         - $formkit: select
           name: widget_list
           multiple: true
           sortable: true
-          label: 小部件
-          help: 我的介绍&我的想法, 我的问候, 技能&职业生涯, 性格&图片, 座右铭, 爱好, 关注偏好&音乐偏好, 地图&作者相关信息。
+          label: 内容区块与展示顺序
+          help: 选中的区块按此处顺序显示，可拖动排序；每个成对区块会一起出现。取消选择后保留配置，再次选中即可继续编辑。
           value:
             - content-idea
             - hello-about
@@ -1846,75 +2404,93 @@ spec:
             - statistics-map
           options:
             - value: content-idea
-              label: 我的介绍&我的想法
+              label: 自我介绍与想法
             - value: hello-about
-              label: 我的问候
+              label: 互动问候横幅
             - value: authorCareers
-              label: 技能&职业生涯
+              label: 技能与职业生涯
             - value: personalities-photo
-              label: 性格&图片
+              label: 人格与个人照片
             - value: textarea
-              label: 座右铭
+              label: 双栏座右铭
             - value: game
-              label: 爱好
+              label: 游戏与追番爱好
             - value: like-music
-              label: 关注偏好&音乐偏好
+              label: 关注偏好与音乐
             - value: statistics-map
-              label: 地图&作者相关信息
+              label: 居住地与个人信息
+          id: hanlo_about_widget_list
 
         - $formkit: list
           name: author_info_left_tags
-          label: 个人标签-左
-          addLabel: 添加标签
-          help: 头像左侧个人标签
+          label: 头像左侧标签
+          addLabel: 添加左侧标签
+          help: 每项显示为一个个人标签，建议 2–8 个字；留空不显示这一侧标签。
           itemType: string
           children:
             - $formkit: text
               index: "$index"
               validation: required
+              label: 个人标签
+              help: 用简短词语介绍一个兴趣或身份。
+              placeholder: 例如：徒步爱好者
         - $formkit: list
           name: author_info_right_tags
-          label: 个人标签-右
-          addLabel: 添加标签
-          help: 头像右侧个人标签
+          label: 头像右侧标签
+          addLabel: 添加右侧标签
+          help: 每项显示为一个个人标签，建议与左侧数量接近；留空不显示这一侧标签。
           itemType: string
           children:
             - $formkit: text
               index: "$index"
               validation: required
+              label: 个人标签
+              help: 用简短词语介绍一个特点。
+              placeholder: 例如：持续学习中
         - $formkit: code
           name: content
-          label: 我的介绍
+          label: 左侧自我介绍
           value: <div class="title1">你好，很高兴认识你👋</div> <div class="title2">我叫 <span class="inline-word">程序员小航</span></div> <div class="title1">是一名 前端开发工程师、后端开发工程师、全干工程师</div>
           height: 200px
           language: html
-          help: 支持 HTML 语法
+          help: 支持 HTML，可写姓名、身份与简短介绍；保留示例中的标题类名可延续原有字号层次。
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('content-idea')
+          preserve: true
+          placeholder: <div class="title1">你好，很高兴认识你</div>
         - $formkit: code
           name: idea
-          label: 我的想法
+          label: 右侧想法卡片
           value: <div class="author-content-item-tips">一定</div> <h2>记得<br> 修改这块<span class="inline-word">代码</span> <div class="mask"> <span class="first-tips" data-show="">优秀的产品</span> <span>出色的设计</span> <span>高效的编程</span> <span data-up="">人性化的用户体验</span> </div> </h2>
           height: 200px
           language: html
-          help: 支持 HTML 语法
+          help: 支持 HTML；示例包含轮换展示的短语，保留 mask 及其内部 span 结构可沿用该效果。
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('content-idea')
+          preserve: true
+          placeholder: <h2>用心记录生活</h2>
         - $formkit: text
           name: helloAbout
-          label: 我的问候
+          label: 互动横幅问候语
           value: Hello there!
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('hello-about')
+          preserve: true
+          help: 在彩色互动横幅中央显示，建议简短，使用纯文本。
+          placeholder: 例如：Hello there!
         - $formkit: group
           name: authorCareers
-          label: 职业生涯
+          label: 职业生涯卡片
           value:
             authorCareersTitle: 无限进步
             authorCareersBackground: https://bu.dusays.com/2023/03/12/640dc587ab895.png
           children:
             - $formkit: text
               name: authorCareersTitle
-              label: 生涯标题
-              placeholder: 请输入内容
+              label: 生涯主标题
+              placeholder: 例如：在探索中成长
               value: 无限进步
+              help: 显示在“生涯”标签下方。
             - $formkit: array
               name: authorCareersTags
-              label: 标签
+              label: 经历条目
               value: []
               itemLabels:
                 - type: text
@@ -1922,18 +2498,29 @@ spec:
               children:
                 - $formkit: color
                   name: background
-                  label: 颜色
+                  label: 圆点颜色
+                  help: 用于该经历前的小圆点，建议选择与卡片背景有区分的颜色。
                 - $formkit: text
                   name: desc
-                  label: 描述
+                  label: 经历说明
+                  help: 建议包含年份和一段简短经历。
+                  placeholder: 例如：2024 · 开始独立开发
+              help: 每项显示一个彩色圆点和一句经历说明，按列表顺序排列。
+              addLabel: 添加经历
             - $formkit: attachment
               name: authorCareersBackground
-              label: 背景图
-              placeholder: 建议找个透明图
+              label: 生涯底部插图
+              placeholder: 选择透明生涯插图或填写图片 URL
+              help: 建议 1000×500 像素、2:1 的透明 PNG，主体居中；留空使用主题标志。
+              width: 15rem
+              aspectRatio: 2/1
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('authorCareers')
+          preserve: true
+          help: 设置右侧生涯介绍；同一行左侧技能区使用“顶部”中首页横幅的背景模式和个人技术栈。
         - $formkit: select
           name: personalities
-          label: 人格
-          help: 选择你的16人格
+          label: 人格类型
+          help: 选择已了解的 16 型人格结果，卡片会显示对应名称、插画和介绍链接。
           value: infp
           options:
             - label: INFP
@@ -1968,13 +2555,21 @@ spec:
               value: istj
             - label: ESTJ
               value: estj
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('personalities-photo')
+          preserve: true
         - $formkit: attachment
           name: authorCareersPhoto
-          label: 图片
+          label: 人格卡片旁的个人照片
           value: https://liuzhihang.com/upload/recommend.png
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('personalities-photo')
+          preserve: true
+          help: 建议 1000×800 像素、5:4，主体居中；图片铺满右侧卡片，悬停时会缩放。
+          placeholder: 选择个人照片或填写图片 URL
+          width: 15rem
+          aspectRatio: 5/4
         - $formkit: array
           name: textarea
-          label: 文本块
+          label: 双栏座右铭内容
           value:
             - tittle: 座右铭
               textarea_up: 生活原本沉闷，
@@ -1984,26 +2579,35 @@ spec:
               textarea_down: 但跑起来就有风。
           min: 2
           max: 2
-          help: 左边的一行10字 右面一行19字(设置两条数据，不然出不来)
+          help: 必须保留两项，分别对应左、右卡片。建议左栏每行约 10 字、右栏每行约 19 字，超长文案需检查换行。
           itemLabels:
             - type: text
               label: $value.tittle
           children:
             - $formkit: text
               name: tittle
-              label: 标题
+              label: 卡片上方标签
               value: 座右铭
+              help: 用于区分两张卡片，例如“座右铭”或“特长”。
+              placeholder: 例如：座右铭
             - $formkit: text
               name: textarea_up
-              label: 第一行
+              label: 上半句
               value: 生活原本沉闷，
+              help: 显示为第一行浅色文字。
+              placeholder: 例如：生活原本沉闷，
             - $formkit: text
               name: textarea_down
-              label: 第二行
+              label: 下半句
               value: 但跑起来就有风。
+              help: 显示为第二行强调文字。
+              placeholder: 例如：但跑起来就有风。
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('textarea')
+          preserve: true
+          addLabel: 添加座右铭卡片
         - $formkit: group
           name: game
-          label: 爱好游戏 1
+          label: 左侧游戏爱好卡片
           value:
             game_tips: 爱好游戏
             game_title: 英雄联盟
@@ -2013,27 +2617,39 @@ spec:
           children:
             - $formkit: text
               name: game_tips
-              label: 提示文字
-              placeholder: 请输入内容
+              label: 卡片上方标签
+              placeholder: 例如：最近在玩
+              help: 显示在游戏名称上方，建议 2–6 个字。
             - $formkit: text
               name: game_title
-              label: 游戏标题
-              placeholder: 请输入内容
+              label: 游戏或爱好名称
+              placeholder: 例如：英雄联盟
+              help: 卡片中的主标题。
             - $formkit: text
               name: game_uid
-              label: 游戏 ID
-              placeholder: 请输入内容
+              label: 底部账号或区服
+              placeholder: 例如：比尔吉沃特 · 玩家昵称
+              help: 仅作文字展示，可填写游戏 ID、区服或一句补充说明。
             - $formkit: attachment
               name: game_bg
-              label: 爱好游戏背景
-              placeholder: 请输入内容
+              label: 左侧卡片背景
+              placeholder: 选择游戏背景或填写图片 URL
+              help: 建议 1200×800 像素、3:2，主体靠中，图片会裁切；为叠加的白色文字预留较暗区域。
+              width: 15rem
+              aspectRatio: 3/2
             - $formkit: attachment
               name: loading_bar
-              label: 爱好游戏logo
-              placeholder: 请输入内容
+              label: 底部游戏标识图
+              placeholder: 选择横向透明标识或填写图片 URL
+              help: 用作卡片底部的轮廓动画，建议透明 PNG、500×63 像素、约 8:1；保留透明背景以显示图形轮廓。
+              width: 15rem
+              aspectRatio: 8/1
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('game')
+          preserve: true
+          help: 用背景、标题和底部标识介绍一个游戏或兴趣。
         - $formkit: group
           name: game2
-          label: 爱好游戏 2
+          label: 右侧游戏或追番卡片
           value:
             game2_type: img
             game2_tips: 爱好游戏
@@ -2043,58 +2659,77 @@ spec:
           children:
             - $formkit: radio
               name: game2_type
-              id: game2_type
-              key: game2_type
+              id: hanlo_about_game2_game2_type
+              key: hanlo_about_game2_game2_type
               options:
-                - label: 图片
+                - label: 游戏背景与账号
                   value: img
-                - label: 追番
+                - label: 追番封面列表
                   value: comic
+              label: 右侧展示内容
+              help: 切换后保留另一种内容的配置；追番列表由这里手动填写，无需追番插件。
             - $formkit: text
               name: game2_tips
-              label: 提示文字
-              placeholder: 请输入内容
+              label: 卡片上方标签
+              placeholder: 例如：最近在追
+              help: 显示在主标题上方，两种展示方式共用。
             - $formkit: text
               name: game2_title
-              label: 标题
-              placeholder: 请输入内容
+              label: 右侧卡片主标题
+              placeholder: 例如：我的追番记录
+              help: 游戏模式可填游戏名称，追番模式可填列表主题。
             - $formkit: array
               name: comic_list
-              id: comic_list
-              key: comic_list
-              if: $get(game2_type).value == 'comic'
-              label: 追番列表
+              id: hanlo_about_game2_comic_list
+              key: hanlo_about_game2_comic_list
+              if: $get(hanlo_about_game2_game2_type).value == 'comic'
+              label: 追番封面列表
               itemLabels:
                 - type: text
-                  label: $value.tittle
-                - type: text
-                  label: $value.url
+                  label: $value.title
               children:
                 - $formkit: text
                   name: title
-                  label: 标题
-                  placeholder: 请输入内容
+                  label: 作品名称
+                  placeholder: 例如：葬送的芙莉莲
+                  help: 用作封面的图片说明和链接提示。
                 - $formkit: textarea
                   name: url
-                  label: 链接
-                  placeholder: 请输入内容
+                  label: 作品跳转地址
+                  placeholder: https://bangumi.tv/subject/400602
+                  help: 点击封面时在新标签页打开；填写一条完整链接。
                 - $formkit: attachment
                   name: bg
-                  label: 背景
-                  placeholder: 请输入内容
+                  label: 作品封面
+                  placeholder: 选择作品海报或填写图片 URL
+                  help: 建议 600×900 像素、2:3 的竖版海报，主体居中，展示时可能裁切。
+                  width: 15rem
+                  aspectRatio: 2/3
+              preserve: true
+              help: 每项是一张可点击的作品封面，按列表顺序展示；标题用作图片说明和悬停提示。
+              addLabel: 添加作品
             - $formkit: text
-              if: $get(game2_type).value == 'img'
+              if: $get(hanlo_about_game2_game2_type).value == 'img'
               name: game2_uid
-              label: 游戏 ID
-              placeholder: 请输入内容
+              label: 底部账号或区服
+              placeholder: 例如：ID 1333E3FF
+              preserve: true
+              help: 显示在背景卡片底部，支持普通文字说明。
             - $formkit: attachment
-              if: $get(game2_type).value == 'img'
+              if: $get(hanlo_about_game2_game2_type).value == 'img'
               name: game2_bg
-              label: 游戏背景
-              placeholder: 请输入内容
+              label: 右侧游戏背景
+              placeholder: 选择游戏背景或填写图片 URL
+              preserve: true
+              help: 建议 1200×800 像素、3:2，图片会铺满裁切；避免主体被顶部标题遮挡。
+              width: 15rem
+              aspectRatio: 3/2
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('game')
+          preserve: true
+          help: 可展示单张游戏背景，或手动维护可点击的追番封面列表。
         - $formkit: group
           name: like
-          label: 关注偏好
+          label: 左侧关注偏好卡片
           value:
             like_tips: 关注偏好
             like_title: 数码科技
@@ -2103,25 +2738,32 @@ spec:
           children:
             - $formkit: text
               name: like_tips
-              label: 提示文字
-              placeholder: 请输入内容
+              label: 卡片上方标签
+              placeholder: 例如：关注偏好
+              help: 显示在关注领域上方，建议 2–6 个字。
             - $formkit: text
               name: like_title
-              label: 偏好标题
-              placeholder: 请输入内容
+              label: 关注领域
+              placeholder: 例如：数码科技
+              help: 作为卡片主标题，建议使用简短词组。
             - $formkit: text
               name: like_bottom
-              label: 底部文字
-              placeholder: 请输入内容
+              label: 底部补充说明
+              placeholder: 例如：手机、电脑与创意工具
+              help: 进一步说明关注的话题，使用纯文本。
             - $formkit: attachment
               name: like_bg
-              label: 背景图片
+              label: 关注偏好背景
               width: "15rem"
-              aspectRatio: "16/9"
-              placeholder: 请输入内容
+              aspectRatio: 3/2
+              placeholder: 选择偏好背景或填写图片 URL
+              help: 建议 1200×800 像素、3:2，图片会裁切；让白色文案处于较暗区域。
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('like-music')
+          preserve: true
+          help: 用一张背景图和简短文字介绍关注的领域。
         - $formkit: group
           name: music
-          label: 音乐偏好
+          label: 右侧音乐偏好卡片
           value:
             music_tips: 音乐偏好
             music_title: Hiphop、民谣、华语流行
@@ -2130,25 +2772,32 @@ spec:
           children:
             - $formkit: text
               name: music_tips
-              label: 提示文字
-              placeholder: 请输入内容
+              label: 卡片上方标签
+              placeholder: 例如：音乐偏好
+              help: 显示在音乐风格上方，建议 2–6 个字。
             - $formkit: text
               name: music_title
-              label: 偏好标题
-              placeholder: 请输入内容
+              label: 喜欢的音乐风格
+              placeholder: 例如：民谣、华语流行
+              help: 显示为卡片主标题，可用顿号分隔多个风格。
             - $formkit: text
               name: music_link
-              label: 按钮链接
-              placeholder: 请输入内容
+              label: 更多推荐按钮地址
+              placeholder: https://music.163.com/#/playlist?id=歌单编号
+              help: 填写后显示“更多推荐”按钮，在新标签页打开；留空隐藏按钮，不影响卡片显示。
             - $formkit: attachment
               name: music_bg
-              label: 背景图片
+              label: 音乐偏好背景
               width: "15rem"
-              aspectRatio: "16/9"
-              placeholder: 请输入内容
+              aspectRatio: 3/2
+              placeholder: 选择音乐背景或填写图片 URL
+              help: 建议 1200×800 像素、3:2，图片铺满卡片并可能裁切；保留标题和按钮的可读性。
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('like-music')
+          preserve: true
+          help: 介绍喜欢的音乐风格，并可链接到歌单或音乐页面。
         - $formkit: group
           name: map
-          label: 地图相关配置
+          label: 居住地与个人信息
           value:
             StrengthenTitle:
             background:
@@ -2157,50 +2806,67 @@ spec:
           children:
             - $formkit: text
               name: StrengthenTitle
-              label: 居住地
-              placeholder: 请输入内容
+              label: 当前居住地
+              placeholder: 例如：浙江 · 杭州
+              help: 接在“我现在住在”后面显示，填写希望公开的城市或地区即可。
             - $formkit: attachment
               name: background
-              label: 地图亮色模式背景
-              placeholder: 请输入内容
+              label: 浅色模式地图图片
+              placeholder: 选择浅色地图或填写图片 URL
+              help: 建议 1200×600 像素、2:1 的地图截图；底部会叠加居住地文字，悬停时图片放大。
+              width: 15rem
+              aspectRatio: 2/1
             - $formkit: attachment
               name: backgroundDark
-              label: 地图暗色模式背景
-              placeholder: 请输入内容
+              label: 深色模式地图图片
+              placeholder: 选择深色地图或填写图片 URL
+              help: 建议与浅色地图保持相同构图和 1200×600 像素、2:1；深色模式单独读取此图，需一起配置。
+              width: 15rem
+              aspectRatio: 2/1
             - $formkit: array
               name: authorInfo
-              label: 个人信息
+              label: 地图下方个人信息
               min: 3
               max: 3
               itemLabels:
                 - type: text
                   label: $value.authorInfoTitle
+                - type: text
+                  label: $value.authorInfoContent
               children:
                 - $formkit: text
                   name: authorInfoTitle
-                  label: 标题
-                  placeholder: 请输入内容
+                  label: 信息标签
+                  placeholder: 例如：现在职业
                   value: 标题
+                  help: 说明这项信息的含义，建议简短。
                 - $formkit: text
                   name: authorInfoContent
-                  label: 内容
-                  placeholder: 请输入内容
+                  label: 信息内容
+                  placeholder: 例如：软件工程师
                   value: 内容
+                  help: 显示为较大的强调文字，建议一行内表达。
                 - $formkit: color
                   name: authorInfoColor
-                  label: 内容颜色
-                  placeholder: 请输入内容
+                  label: 信息文字颜色
                   value: "#ffffff"
+                  help: 用于这一项的内容文字；请同时检查浅色和深色模式下的对比度。
+              help: 保留三项，按顺序显示为三个信息块；可填写出生年份、专业和职业等愿意公开的信息。
+              addLabel: 添加个人信息
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('statistics-map')
+          preserve: true
+          help: 地图是静态图片，无需地图服务密钥；请分别准备浅色和深色背景，下方信息按三项展示。
         - $formkit: code
           name: xjlc
-          label: 心路历程
+          label: 页面底部建站故事
           value: <div class="author-content-item-tips">心路历程</div> <span class="author-content-item-title">为什么建站？</span> <br>创建这个站的时候，想要就是能够有一个自己能够<b>积累知识、积累兴趣</b>的地方。和他人分享，会让这些成为积累和沉淀。如果能够帮助到更多的人，帮助更多人解决问题，那一定是非常棒的事情。<br> 分享这件事我从很早就开始了，起初做的微信公众号，现在做的网站。因为我比较喜欢研究数码和软件，想要探究在互联网上的事物是如何被创造和发展。网络给我带来了非常多的知识和眼界，我也想力所能及的分享一些我生活的琐碎知识。<br>与大多数垂直类的技术博客不同，这里的种类会非常的繁杂，有<b>技能的教程干货</b>、有<b>生活上的吐槽和妙招</b>、有<b>话题上的思考和想法</b>。一般我研究什么、发现了什么都会分享在这里。<br> 这些就是创造这个小站的本意，<b>也是我分享生活的方式</b>。有幸能和你相遇在这里，相信我们能共同留下一段美好记忆。</p>
           height: 200px
           language: html
-          help: 支持 HTML 语法
+          help: 支持 HTML，独立显示在所选内容区块之后；可介绍建站缘由与希望分享的内容。
+          placeholder: <h2>为什么建站？</h2><p>记录学习，也分享生活。</p>
         - $formkit: group
           name: tenyear
-          label: 十年之约
+          label: 页面底部十年之约
           value:
             tenyear_enable: true
             tenyear_tips: 始终如一，不离不弃
@@ -2211,144 +2877,215 @@ spec:
           children:
             - $formkit: switch
               name: tenyear_enable
-              id: tenyear_enable
-              key: tenyear_enable
+              id: hanlo_about_tenyear_tenyear_enable
+              key: hanlo_about_tenyear_tenyear_enable
+              label: 显示十年之约进度
+              help: 开启后展示约定文案和时间进度条，日期需同时填写。
             - $formkit: text
-              if: $get(tenyear_enable).value
+              if: $get(hanlo_about_tenyear_tenyear_enable).value
               name: tenyear_tips
-              label: 提示文字
-              placeholder: 请输入内容
+              label: 约定上方短标签
+              placeholder: 例如：始终如一，不离不弃
+              preserve: true
+              help: 显示在主标题上方，建议一句简短承诺。
             - $formkit: text
-              if: $get(tenyear_enable).value
+              if: $get(hanlo_about_tenyear_tenyear_enable).value
               name: tenyear_title
-              label: 标题
-              placeholder: 请输入内容
+              label: 约定主标题
+              placeholder: 例如：十年之约
+              preserve: true
+              help: 显示在进度卡片上方。
             - $formkit: textarea
-              if: $get(tenyear_enable).value
+              if: $get(hanlo_about_tenyear_tenyear_enable).value
               name: tenyear_content
-              label: 描述
-              placeholder: 请输入内容
+              label: 约定说明
+              placeholder: 例如：用十年时间记录生活与成长。
+              preserve: true
+              help: 用纯文本写下约定的意义，显示在进度条上方。
             - $formkit: date
-              if: $get(tenyear_enable).value
+              if: $get(hanlo_about_tenyear_tenyear_enable).value
               name: start_time
-              label: 开始时间
+              label: 约定开始日期
+              preserve: true
+              help: 与结束日期一起计算已过去的时间和进度百分比。
             - $formkit: date
-              if: $get(tenyear_enable).value
+              if: $get(hanlo_about_tenyear_tenyear_enable).value
               name: end_time
-              label: 结束时间
+              label: 约定结束日期
+              preserve: true
+              help: 应晚于开始日期；如为十年之约，可选择开始日期十年后的同一天。
+          help: 独立显示在建站故事下方，按开始和结束日期计算进度。
 
     - group: comments
-      label: 评论
+      label: 全站评论
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 控制主题中的评论区入口
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 主题使用 Halo 评论组件插件。请先安装并启用插件，再检查文章或页面是否允许评论；评论审核、通知和组件样式在 Halo 及插件设置中管理。
         - $formkit: switch
           name: commentsEnable
-          id: commentsEnable
-          key: commentsEnable
-          label: 开关
+          id: hanlo_comments_commentsEnable
+          key: hanlo_comments_commentsEnable
+          label: 显示全站评论区
           value: true
+          help: 同时控制主题评论区与直达评论入口；开启后仍需评论组件插件可用，且对应文章或页面允许评论。
 
     - group: style
-      label: 样式
+      label: 全站外观
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 设置明暗配色与中文转换
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 主题色用于链接、按钮和强调色。建议分别检查浅色、深色下的文字对比度；访客可通过已开启的悬浮工具或右键菜单切换外观。
         - $formkit: radio
           name: colorScheme
-          label: 默认配色
+          label: 页面初始明暗模式
           value: system
           options:
-            - label: 跟随系统
+            - label: 跟随系统（记住访客选择）
               value: system
-            - label: 深色
+            - label: 固定以深色打开
               value: dark
-            - label: 浅色
+            - label: 固定以浅色打开
               value: light
+          help: 跟随系统时优先记住访客的手动选择，再使用系统偏好；选择固定深色或浅色时，每次打开页面均以该模式开始。
         - $formkit: color
           name: themeLightSkin
-          label: 主题浅色基色
+          label: 浅色模式强调色
           value: "#425AEF"
+          help: "用于浅色模式的链接、按钮和高亮元素。请选择不带透明度的六位十六进制颜色，例如 #425AEF。"
         - $formkit: color
           name: themeDarkSkin
-          label: 主题深色基色
+          label: 深色模式强调色
           value: "#f2b94b"
+          help: "用于深色模式的链接、按钮和高亮元素。请选择不带透明度的六位十六进制颜色，例如 #F2B94B。"
         - $formkit: switch
           name: universe
-          label: 深色模式粒子效果
+          label: 显示深色模式星空粒子
           value: true
+          help: 在深色背景上绘制动态星空；效果会增加动画开销，可按设备表现关闭。
         - $formkit: group
           name: translate
-          label: 简繁转换
+          label: 中文简繁转换
           value:
             defaultEncoding: 2
             translateEnable: true
           children:
             - $formkit: radio
               name: defaultEncoding
-              label: 默认语言
+              label: 网站原文的简繁类型
               options:
                 - label: 简体中文
                   value: 2
                 - label: 繁體中文
                   value: 1
+              help: 选择文章和页面原本使用的简体或繁体，供转换器判断转换方向；不会自动把原文改为该类型。
             - $formkit: switch
               name: translateEnable
-              label: 允许切换语言
+              label: 显示简繁切换按钮
+              help: 在右下角工具及主题右键菜单中提供切换入口；需至少开启一种对应工具，访客选择会被记住。
+          help: 按字表转换页面文字，无法代替多语言内容；原文类型应与网站实际使用的简体或繁体一致。
 
     - group: code
-      label: 代码块
+      label: 文章与评论代码块
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 设置代码高亮和阅读工具
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 为正文及主题评论区中可识别的代码块启用 Shiki 高亮。建议在编辑器里标记代码语言；下方工具与配色仅在高亮开启后生效。
         - $formkit: switch
           name: shiki_enable
-          id: enable
-          key: enable
-          label: 启用 Shiki 代码高亮
-          help: 使用 Shiki（VS Code 同款 TextMate 语法引擎）渲染代码块
+          id: hanlo_code_shiki_enable
+          key: hanlo_code_shiki_enable
+          label: 启用代码语法高亮
+          help: 为支持的代码块增加语法配色与阅读工具；关闭后保留原始代码内容。
           value: true
         - $formkit: switch
           name: enable_title
-          if: $get(enable).value
-          label: 启用代码标题
-          help: 启用代码块的标题，默认显示语言类型，也可自定义标题
+          if: $get(hanlo_code_shiki_enable).value
+          label: 显示代码标题
+          help: 顶部显示语言名称；代码块已有自定义标题时优先显示该标题。
           value: true
+          preserve: true
         - $formkit: switch
           name: enable_hr
-          if: $get(enable).value
-          label: 启用代码标题分割线
-          help: 启用代码标题和内容之间的分割线，不展示时会更加简洁
+          if: $get(hanlo_code_shiki_enable).value
+          label: 显示工具栏底部分隔线
+          help: 在顶部工具栏和代码正文之间加一条分隔线，与标题文字是否显示无关。
           value: true
+          preserve: true
         - $formkit: switch
           name: enable_line
-          if: $get(enable).value
-          label: 启用代码行号
-          help: 启用代码块行号功能
+          if: $get(hanlo_code_shiki_enable).value
+          label: 显示代码行号
+          help: 为每行代码添加序号，便于讲解和定位；复制时不包含行号。
           value: true
+          preserve: true
         - $formkit: switch
           name: enable_copy
-          if: $get(enable).value
-          label: 启用代码复制
-          help: 启用代码块复制按钮
+          if: $get(hanlo_code_shiki_enable).value
+          label: 显示复制按钮
+          help: 点击后复制整个代码块的原始文本，包括当前折叠的内容。
           value: true
+          preserve: true
         - $formkit: switch
           name: enable_expander
-          if: $get(enable).value
-          label: 启用代码折叠
-          help: 启用代码折叠功能
+          if: $get(hanlo_code_shiki_enable).value
+          label: 显示整段折叠按钮
+          help: 代码初始展开，访客可通过顶部按钮折叠或展开整个代码块。
           value: true
+          preserve: true
         - $formkit: switch
           name: enable_height_limit
-          id: enable_height_limit
-          key: enable_height_limit
-          if: $get(enable).value
-          label: 启用代码高度限制
-          help: 启用代码高度限制功能
+          id: hanlo_code_enable_height_limit
+          key: hanlo_code_enable_height_limit
+          if: $get(hanlo_code_shiki_enable).value
+          label: 限制长代码的初始高度
+          help: 超过指定高度时收起多余内容，并提供“展开完整代码”按钮；与整段折叠按钮独立。
           value: false
+          preserve: true
         - $formkit: number
           name: height_limit
-          if: $get(enable_height_limit).value
+          if: $get(hanlo_code_shiki_enable).value && $get(hanlo_code_enable_height_limit).value
           value: 300
-          label: 代码高度限制
+          label: 初始可见高度（像素）
+          preserve: true
+          help: 建议 300–600 像素，仅影响长代码的初始显示区域；如需完整显示，请关闭高度限制。
+          placeholder: "300"
+          min: 1
+          step: 1
         - $formkit: select
           name: theme_light
-          if: $get(enable).value
-          label: Shiki 代码主题（浅色）
+          if: $get(hanlo_code_shiki_enable).value
+          label: 浅色模式代码配色
           value: one-light
           options:
             - value: "one-light"
@@ -2357,10 +3094,12 @@ spec:
               label: "GitHub Light"
             - value: "light-plus"
               label: "Light Plus"
+          preserve: true
+          help: 跟随页面的浅色模式使用，可选择熟悉的编辑器配色。
         - $formkit: select
           name: theme_dark
-          if: $get(enable).value
-          label: Shiki 代码主题（深色）
+          if: $get(hanlo_code_shiki_enable).value
+          label: 深色模式代码配色
           value: one-dark-pro
           options:
             - value: "one-dark-pro"
@@ -2369,227 +3108,305 @@ spec:
               label: "GitHub Dark"
             - value: "dark-plus"
               label: "Dark Plus"
+          preserve: true
+          help: 跟随页面的深色模式使用，与全站强调色独立。
 
     - group: tool
-      label: 小部件
+      label: 页面操作工具
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 设置菜单、悬浮按钮与协议提示
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 这些工具由主题提供，无需额外工具插件。评论按钮仍依赖评论组件，协议提示的目标页面需自行创建；开启后检查桌面和手机上的按钮占位。
         - $formkit: group
           name: rightMenu
-          label: 右键菜单
+          label: 桌面右键菜单
           value:
             rightMenuEnable: false
           children:
             - $formkit: switch
               name: rightMenuEnable
+              label: 启用主题右键菜单
+              help: 在桌面右键点击时显示主题菜单，会改变浏览器原有的右键操作入口。
+              id: hanlo_tool_rightMenu_rightMenuEnable
+          help: 提供返回、刷新、复制和外观切换等常用操作；触摸设备仍按浏览器自身交互使用。
         - $formkit: group
           name: rightside
-          label: 右下角悬浮操作按钮
+          label: 右下角悬浮工具
           value:
             rightsideEnable: false
             readmode: false
           children:
             - $formkit: switch
               name: rightsideEnable
-              id: rightsideEnable
+              id: hanlo_tool_rightside_rightsideEnable
+              label: 显示右下角悬浮工具
+              help: 开启后显示悬浮操作按钮；评论入口还需全站评论开关与评论组件插件。
             - $formkit: switch
               name: readmode
-              if: $get(rightsideEnable).value
-              label: 阅读模式
+              if: $get(hanlo_tool_rightside_rightsideEnable).value
+              label: 提供文章阅读模式
+              preserve: true
+              help: 在文章页工具中显示阅读按钮，进入后隐藏周边区域；不会改变文章内容。
+          help: 提供回到顶部、外观切换、侧栏控制等按钮；文章页还可显示目录与阅读模式。
         - $formkit: group
           name: snackbar
-          label: 右下角弹窗
+          label: 右下角协议提示卡片
           value:
             switch: false
           children:
             - $formkit: switch
               name: switch
-              id: switch
-              key: switch
+              id: hanlo_tool_snackbar_switch
+              key: hanlo_tool_snackbar_switch
+              label: 显示协议提示卡片
+              help: 开启后显示下方标题、说明及链接；这是信息入口，不会管理访客的 Cookie 授权。
             - $formkit: text
-              if: $get(switch).value
+              if: $get(hanlo_tool_snackbar_switch).value
               name: introductionTitle
-              label: 标题
+              label: 提示卡片标题
               value: "协议提醒助手"
+              preserve: true
+              help: 显示在卡片顶部，建议 4–10 个字。
+              placeholder: 例如：隐私保护说明
             - $formkit: text
-              if: $get(switch).value
+              if: $get(hanlo_tool_snackbar_switch).value
               name: introductionTip
-              label: 内容
+              label: 提示说明
               value: 查看本站为你的个人隐私做出的努力
+              preserve: true
+              help: 用一句话说明访客可以从链接中了解什么。
+              placeholder: 例如：了解本站如何处理你的个人信息
             - $formkit: url
-              if: $get(switch).value
+              if: $get(hanlo_tool_snackbar_switch).value
               name: introductionUrl
               value: /privacy
-              label: 点击跳转地址
-              placeholder: 请输入跳转 url
+              label: 协议页面地址
+              placeholder: https://example.com/privacy
+              preserve: true
+              help: 先创建对应的隐私政策或使用协议页面，再填写可访问的地址。
             - $formkit: text
-              if: $get(switch).value
+              if: $get(hanlo_tool_snackbar_switch).value
               name: introductionName
               value: 本站如何保护你的隐私
-              label: 按钮标题
-              placeholder: 请输入按钮标题
+              label: 链接悬停提示
+              placeholder: 例如：查看隐私政策
+              preserve: true
+              help: 当前链接显示为箭头图标，此文字用于鼠标悬停说明。
+          help: 在页脚区域提供一张协议提示卡片；页面向下滚动时隐藏，目标页面需自行创建。
 
     - group: other
-      label: 其他设置
+      label: 资源与页面效果
       formSchema:
+        - $el: div
+          attrs:
+            class: hanlo-settings-guide
+            style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+          children:
+            - $el: p
+              attrs:
+                style: margin:0 0 .3rem;font-weight:600;color:inherit
+              children: 配置资源来源、图片占位和页面提示
+            - $el: p
+              attrs:
+                style: margin:0
+              children: 通常保留主题本地资源即可。图片加载、页面入场动画、错误页和首页问候可分别调整；自定义资源来源需与当前主题版本保持一致。
         - $formkit: group
           name: staticResource
-          label: 静态资源文件设置
+          label: 主题静态资源来源
           value:
             use: local
           children:
             - $formkit: select
               name: use
-              id: use
-              key: use
-              label: 类型选择
+              id: hanlo_other_staticResource_use
+              key: hanlo_other_staticResource_use
+              label: 资源加载方式
               options:
-                - label: 本地
+                - label: 主题安装包中的本地资源
                   value: local
-                - label: 自定义
+                - label: 自托管资源或 CDN
                   value: custom
+              help: 本地方式使用安装包资源；自定义方式需自行托管同版本的完整 assets 目录。
             - $formkit: url
               name: cdn_link
-              if: "$get(use).value == 'custom'"
-              label: cdn地址，外链地址
+              if: "$get(hanlo_other_staticResource_use).value == 'custom'"
+              label: 自托管 assets 根地址
               validation: required
               value: "https://npm.onmicrosoft.cn/hao-theme-static@1.3.7/templates/assets"
-              help: "默认为npmJs的onmicrosoft加速地址，如果你有自己的cdn地址（请确保链接下assets文件夹下主题静态资源文件），可以填写，否则请勿修改！ "
+              help: 填写以 /assets 结尾且末尾不带斜杠的根地址，目录中须有当前 Hanlo 版本的 css、icon、images 等资源。已有示例为旧版 Hao 资源，切换为自定义前请替换。
+              preserve: true
+              placeholder: https://cdn.example.com/hanlo/2.3.1/assets
+          help: 控制主题图标、部分样式和图片的资源地址；主程序仍由主题本地加载。
         - $formkit: group
           name: opengraph
-          label: Open Graph
+          label: 列表页社交分享图片
           value:
             image:
           children:
             - $formkit: attachment
               name: image
-              label: 默认图片
+              label: 全站列表页分享图
               width: "15rem"
-              aspectRatio: "16/9"
-              help: 如果页面没有设置图片，那么将会使用此图片作为 Open Graph 图片
+              aspectRatio: 1200/630
+              help: 建议 1200×630 像素、约 1.91:1，使用公开可访问的完整图片 URL；此项留空时相关页面回退到站点 Logo。
+              placeholder: https://example.com/upload/share-cover.jpg
+          help: 用于首页、归档、标签等传入全站分享图的页面；文章和单页面使用各自封面，缺少封面时回退到站点 Logo。
         - $formkit: group
           name: vanillaLazyload
-          label: 懒加载
+          label: 图片延迟加载
           value:
             enable: true
             errorImg: "/themes/theme-hanlo/assets/images/404.gif"
-            loadingImg: /themes/theme-hanlo/assets/images/404s.gif
           children:
             - $formkit: switch
               name: enable
-              id: enable
-              key: enable
-            - $formkit: attachment
-              name: loadingImg
-              id: loadingImg
-              key: loadingImg
-              if: $get(enable).value
-              label: 加载图片
-              width: "15rem"
-              aspectRatio: "16/9"
-              validation: required
-              placeholder: 请输入图片 url
+              id: hanlo_other_vanillaLazyload_enable
+              key: hanlo_other_vanillaLazyload_enable
+              label: 启用图片延迟加载
+              help: 减少首屏同时请求的图片数量；关闭后对应图片直接加载。
             - $formkit: attachment
               name: errorImg
-              label: 图片加载失败图
+              label: 延迟加载失败替代图
               validation: required
               width: "15rem"
               aspectRatio: "16/9"
-              placeholder: 请输入图片 url
+              placeholder: 选择加载失败图或填写图片 URL
+              help: 延迟加载的图片失败后使用此图。建议 640×360 像素、16:9，图中文字保持简短。
+              if: $get(hanlo_other_vanillaLazyload_enable).value
+              preserve: true
+          help: 主题中支持延迟加载的图片在接近视口时开始加载；不会统一接管所有背景图和插件图片。
         - $formkit: group
           name: diytitle
-          label: 动态标题
+          label: 浏览器标签页动态标题
           value:
             diytitleEnable: false
           children:
             - $formkit: switch
               name: diytitleEnable
-              id: diytitleEnable
-              key: diytitleEnable
+              id: hanlo_other_diytitle_diytitleEnable
+              key: hanlo_other_diytitle_diytitleEnable
+              label: 启用标签页标题提示
+              help: 只改变浏览器标签上的标题，不改变页面正文或文章标题。
             - $formkit: text
               name: leaveTitle
-              if: $get(diytitleEnable).value
-              label: 离开
+              if: $get(hanlo_other_diytitle_diytitleEnable).value
+              label: 离开标签页时的标题
               value: w(ﾟДﾟ)w 不要走！再看看嘛！
+              preserve: true
+              help: 切换到其他标签页后显示，可用简短文字提醒访客返回。
+              placeholder: 例如：稍后见，记得回来看看
             - $formkit: text
               name: backTitle
-              if: $get(diytitleEnable).value
-              label: 回到
+              if: $get(hanlo_other_diytitle_diytitleEnable).value
+              label: 返回标签页时的标题
               value: ♪(^∇^*)欢迎肥来！
+              preserve: true
+              help: 访客返回后，将此提示加在原始标题前，约 2 秒后恢复原标题。
+              placeholder: 例如：欢迎回来！
+          help: 访客切换到其他标签页或返回本站时，短暂替换浏览器标签页标题。
         - $formkit: group
           name: loadingBoxs
-          label: 直接或跨站进入加载动画
+          label: 直接或跨站进入时的加载动画
           value:
             loadingBoxEnable: true
             loadingBoxImg: /themes/theme-hanlo/assets/images/hanlo-logo.png
           children:
             - $formkit: switch
               name: loadingBoxEnable
-              id: loadingBoxEnable
-              key: loadingBoxEnable
+              id: hanlo_other_loadingBoxs_loadingBoxEnable
+              key: hanlo_other_loadingBoxs_loadingBoxEnable
               help: 无 referrer 或从其他站点进入时显示；带同源 referrer 的导航、刷新或新标签页不显示。
+              label: 显示入场加载动画
             - $formkit: attachment
               name: loadingBoxImg
-              if: $get(loadingBoxEnable).value
-              label: 加载图片
+              if: $get(hanlo_other_loadingBoxs_loadingBoxEnable).value
+              label: 入场动画中央图片
               width: "15rem"
-              aspectRatio: "16/9"
-              placeholder: 请输入图片 url
+              aspectRatio: 1/1
+              placeholder: 选择站点 Logo 或填写图片 URL
+              preserve: true
+              help: 建议 256×256 像素、1:1 的透明 Logo 或轻量动画；留空不展示加载遮罩。
+          help: 使用独立的入场遮罩，适用于直接打开本站或从其他站点进入。
         - $formkit: group
           name: error_404
-          label: 404 页面
+          label: 页面不存在时（404）
           value:
             subtitle: 请尝试站内搜索寻找文章
             background: /themes/theme-hanlo/assets/images/404s.gif
           children:
             - $formkit: text
               name: subtitle
-              label: 标题
+              label: 404 页面提示
+              help: 使用一句话指引访客搜索内容或返回首页。
+              placeholder: 例如：页面不见了，试试站内搜索吧
             - $formkit: attachment
               name: background
               width: "15rem"
               aspectRatio: "16/9"
-              label: 背景
+              label: 404 页面插图
+              help: 建议 1200×675 像素、16:9，主体居中；图片铺满错误页卡片并可能裁切。
+              placeholder: 选择 404 插图或填写图片 URL
+          help: 访客打开不存在的地址时展示的提示和插图。
         - $formkit: group
           name: error_500
-          label: 500 页面
+          label: 服务异常时（500）
           value:
             subtitle: 服务器内部出现错误，请查看日志
             background: /themes/theme-hanlo/assets/images/404s.gif
           children:
             - $formkit: text
               name: subtitle
-              label: 标题
+              label: 500 页面提示
+              help: 建议使用访客能理解的提示，可引导稍后重试。
+              placeholder: 例如：服务暂时遇到问题，请稍后重试
             - $formkit: attachment
               name: background
               width: "15rem"
               aspectRatio: "16/9"
-              label: 背景
+              label: 500 页面插图
+              help: 建议 1200×675 像素、16:9，主体居中；可使用与 404 页风格一致的插图。
+              placeholder: 选择服务异常插图或填写图片 URL
+          help: 服务器渲染错误页时展示的提示和插图；文案用于告知访客当前状态。
         - $formkit: switch
           name: bubbleEnable
-          label: 页面卡片顶部气泡升起效果
-          help: 已有页面(友链鱼塘,瞬间,ToDoList,我的装备)
+          label: 页面横幅气泡动画
+          help: 在友链鱼塘、瞬间、待办清单和装备等使用顶部介绍卡片的页面显示上升气泡。
           value: false
         - $formkit: switch
           name: scrollbarLinearGradientEnable
-          label: 渐变滚动条效果
+          label: 启用渐变滚动条
           value: false
+          help: 在支持自定义滚动条样式的浏览器中显示渐变色，实际外观受浏览器和系统影响。
         - $formkit: switch
           name: tagRandomColorEnable
-          label: 标签云随机颜色效果
+          label: 标签云使用随机颜色
           value: false
+          help: 为侧栏和控制台面板中的标签云分配随机颜色，不影响文章内标签或分类配色。
         - $formkit: group
           name: greeting
-          label: 首页问候语
+          label: 首页按时段问候
           children:
             - $formkit: switch
               name: enable_greeting
-              key: enable_greeting
-              id: enable_greeting
+              key: hanlo_other_greeting_enable_greeting
+              id: hanlo_other_greeting_enable_greeting
               value: false
+              label: 显示首页时段问候
+              help: 开启后根据下方时间段显示问候语；仅在首页展示。
             - $formkit: array
               name: setting
-              if: $get(enable_greeting).value
-              label: 问候语配置
+              if: $get(hanlo_other_greeting_enable_greeting).value
+              label: 问候时段列表
               itemLabels:
                 - type: text
                   label: $value.greeting
@@ -2625,15 +3442,22 @@ spec:
               children:
                 - $formkit: text
                   name: greeting
-                  label: 问候内容
-                  placeholder: 请输入问候内容
+                  label: 时段问候语
+                  placeholder: 例如：早上好，今天也要元气满满！
+                  help: 在对应时间段展示，建议一句简短问候，可使用表情。
                 - $formkit: text
                   name: start_time
-                  label: 开始时间
-                  placeholder: 请输入开始时间(小时)
-                  help: 与上一个问候的结束时间相同时，上一个问候在该时间生效
+                  label: 开始小时（0–23）
+                  placeholder: "6"
+                  help: 填写访客本地时间的整数小时，例如 6 表示 06:00；应不大于结束小时，重叠时前一项优先生效。
+                  validation: number|between:0,23
                 - $formkit: text
                   name: end_time
-                  label: 结束时间
-                  placeholder: 请输入结束时间(小时)
-                  help: 可以与开始时间相同，表示一个小时内的问候
+                  label: 结束小时（0–24）
+                  placeholder: "9"
+                  help: 包含该整点所在的一小时；可与开始小时相同，24 表示覆盖至当天结束，不代表次日 0 点。
+                  validation: number|between:0,24
+              preserve: true
+              help: 起止小时都包含在匹配范围内，重叠时优先使用列表中靠前的一项。跨午夜请拆成两项；留空使用内置问候，没有匹配项时显示“晚上好👋”。
+              addLabel: 添加问候时段
+          help: 按访客设备的本地小时选择一条问候，在进入首页后短暂展示。

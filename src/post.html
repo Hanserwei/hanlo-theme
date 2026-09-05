@@ -35,7 +35,7 @@
                                title="该文章为转载文章，版权归原作者所有"
                                th:if="${#strings.equals(#annotations.getOrDefault(post, 'copyrightType','original'),'reprint')}"
                                th:href="@{${not #strings.isEmpty(copyrightUrl) ? copyrightUrl :
-                                not #strings.isEmpty(theme.config.post.copyrights.originalUrl) ? theme.config.post.copyrights.reprintUrl : '#'}}"
+                                not #strings.isEmpty(theme.config.post.copyrights.reprintUrl) ? theme.config.post.copyrights.reprintUrl : '#'}}"
                             >转载</a>
                         </th:block>
                         <span class="post-meta-categories" th:each="category : ${post.categories}"

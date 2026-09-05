@@ -14,9 +14,11 @@
     "menu-icons:sync": "node scripts/generate-menu-icons.mjs",
     "notices": "node scripts/generate-third-party-notices.mjs",
     "package": "node scripts/package-theme.mjs",
-    "test": "pnpm run test:unit",
+    "test": "pnpm run test:unit && pnpm run test:settings",
     "test:unit": "vitest run",
-    "validate": "node scripts/validate-theme.mjs && node scripts/sync-dashboard-icons.mjs --check && node scripts/generate-menu-icons.mjs --check && node scripts/generate-third-party-notices.mjs --check",
+    "test:settings": "node --test tests/settings-*.test.mjs",
+    "settings:check": "node scripts/validate-settings.mjs",
+    "validate": "node scripts/validate-theme.mjs && node scripts/validate-settings.mjs && node scripts/sync-dashboard-icons.mjs --check && node scripts/generate-menu-icons.mjs --check && node scripts/generate-third-party-notices.mjs --check",
     "verify-build": "node scripts/verify-build.mjs"
   },
   "dependencies": {
@@ -32,6 +34,7 @@
   },
   "devDependencies": {
     "@antdv-next/icons": "1.1.2",
+    "@formkit/core": "2.1.2",
     "@halo-dev/theme-package-cli": "1.1.1",
     "@halo-dev/vite-plugin-halo-theme": "1.0.3",
     "@tailwindcss/vite": "4.3.3",

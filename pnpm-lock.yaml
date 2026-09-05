@@ -39,6 +39,9 @@ importers:
       '@antdv-next/icons':
         specifier: 1.1.2
         version: 1.1.2(vue@3.5.30(typescript@5.9.3))
+      '@formkit/core':
+        specifier: 2.1.2
+        version: 2.1.2
       '@halo-dev/theme-package-cli':
         specifier: 1.1.1
         version: 1.1.1
@@ -188,6 +191,12 @@ packages:
     engines: {node: '>=20.19.0'}
     peerDependencies:
       postcss-selector-parser: ^7.1.1
+
+  '@formkit/core@2.1.2':
+    resolution: {integrity: sha512-uv3NUXQkqyjvT2VILdcDWvO99Ql69zA93RiInqBXMyuA6UyFTJvc/LQt352diP951k0bDGWG4ar0g1GI2/EtYQ==}
+
+  '@formkit/utils@2.1.2':
+    resolution: {integrity: sha512-ZbPWhmQKkx5ojGW+r14WfrubnhWWdeTlm/rTiVjZExFQhsmQa6hCu35l0z/EeLb04UhXjoZP/IXBJ+/QU5ZMGw==}
 
   '@halo-dev/api-client@2.26.0':
     resolution: {integrity: sha512-z80aGP8sbTcX+s9//Q1XdF7iUByKUylAH3fJuO58pN1plQAWkClRaEiIXn56PBwL3/iPUd/RnuI7BMVTBj5Ysg==}
@@ -2680,6 +2689,12 @@ snapshots:
   '@csstools/selector-specificity@6.0.0(postcss-selector-parser@7.1.6)':
     dependencies:
       postcss-selector-parser: 7.1.6
+
+  '@formkit/core@2.1.2':
+    dependencies:
+      '@formkit/utils': 2.1.2
+
+  '@formkit/utils@2.1.2': {}
 
   '@halo-dev/api-client@2.26.0(axios@1.20.0)':
     dependencies:
