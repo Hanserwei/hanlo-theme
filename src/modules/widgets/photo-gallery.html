@@ -1,0 +1,14 @@
+<!-- Both photo-page appearances share the same natural-ratio gallery and lightbox boundary. -->
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="gallery"
+     class="hanlo-article-container" id="article-container">
+    <div class="hanlo-photo-masonry" role="list" aria-label="照片">
+        <div class="hanlo-photo-masonry__item" role="listitem" th:each="photo : ${photos.items}">
+            <span class="hanlo-photo-masonry__label" th:if="${theme.config.photos.tagEnable}"
+                  th:text="${photo.spec.displayName}"></span>
+            <img th:src="${photo.spec.url}" decoding="async"
+                 th:alt="${#strings.isEmpty(photo.spec.description) ? photo.spec.displayName : photo.spec.description}"
+                 th:title="${photo.spec.description}">
+        </div>
+    </div>
+    <p class="hanlo-photo-empty" th:if="${#lists.isEmpty(photos.items)}">这个分组还没有照片</p>
+</div>

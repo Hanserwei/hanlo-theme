@@ -62,21 +62,7 @@
                             </div>
                         </div>
                     </th:block>
-                    <div class="hanlo-article-container" id="article-container">
-                        <section class="page-1 loadings">
-                            <div class="type-gallery ">
-                                <div class="gallery">
-                                    <div class="fj-gallery-item" th:each="photo : ${photos.items}">
-                                        <div th:if="${theme.config.photos.tagEnable}" class="tag-address">
-                                            [[${photo.spec.displayName}]]</div>
-                                        <img th:src="${photo.spec.url}" th:alt="${photo.spec.description}"
-                                             th:title="${photo.spec.description}">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
+                    <div th:replace="~{modules/widgets/photo-gallery :: gallery}"></div>
                     <!-- 分页 -->
                     <th:block th:with="param_group = ${not #strings.isEmpty(param.group) ? '?group='+param.group : ''}">
                         <div th:replace="~{modules/widgets/page :: page('/photos',${photos},false,${param_group})}"></div>
@@ -88,25 +74,9 @@
                         <h1 class="hl:[margin:8px_0px_20px]" th:if="${#strings.equals(group.metadata.name, param.group) && not #strings.isEmpty(param.group) }">
                             [[${group.spec.displayName}]]
                         </h1>
-                        <h1 class="hl:[margin:8px_0px_20px]" th:if="${#strings.isEmpty(param.group) }">
-                            全部
-                        </h1>
                     </th:block>
-                    <div class="hanlo-article-container" id="article-container-alternate">
-                        <section class="page-1 loadings">
-                            <div class="type-gallery ">
-                                <div class="gallery">
-                                    <div class="fj-gallery-item" th:each="photo : ${photos.items}">
-                                        <div th:if="${theme.config.photos.tagEnable}" class="tag-address">
-                                            [[${photo.spec.displayName}]]</div>
-                                        <img th:src="${photo.spec.url}" th:alt="${photo.spec.description}"
-                                             th:title="${photo.spec.description}">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
+                    <h1 class="hl:[margin:8px_0px_20px]" th:if="${#strings.isEmpty(param.group)}">全部</h1>
+                    <div th:replace="~{modules/widgets/photo-gallery :: gallery}"></div>
                     <!-- 分页 -->
                     <th:block th:with="param_group = ${not #strings.isEmpty(param.group) ? '?group='+param.group : ''}">
                         <div th:replace="~{modules/widgets/page :: page('/photos',${photos},false,${param_group})}"></div>
