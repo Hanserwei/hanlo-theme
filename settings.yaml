@@ -2215,11 +2215,15 @@ spec:
             - $el: p
               attrs:
                 style: margin:0 0 .3rem;font-weight:600;color:inherit
-              children: 为装备推荐页设置顶部介绍
+              children: 装备展示与页面介绍
             - $el: p
               attrs:
                 style: margin:0
-              children: 先安装并启用装备插件，访问 /equipments 查看。这里设置页首封面与文案；装备分组、图片、规格和详情链接在插件中管理。
+              children: 需要 Halo 2.26.0 及以上，并安装启用装备插件 2.0.0 或更新版本。访问 /equipments 查看；这里设置顶部横幅，装备内容在后台「装备」中管理。
+            - $el: p
+              attrs:
+                style: "margin: .4rem 0 0;"
+              children: 每件装备可填写类型、使用状态、简短概述和多行使用感受；详细配置在参数列表中逐项添加，支持同名参数及换行。「重点展示」使用宽卡片，未选封面时显示设备类型图标。
         - $formkit: attachment
           name: backgroundImg
           label: 装备页横幅
@@ -2238,7 +2242,7 @@ spec:
           name: bigTitle
           label: 横幅主标题
           value: 实物装备推荐
-          help: 用于装备页顶部的大标题。
+          help: 用于装备页顶部的大标题；下方分组标题在装备插件中设置。
           placeholder: 例如：我的日常装备
         - $formkit: text
           name: detail
