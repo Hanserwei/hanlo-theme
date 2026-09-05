@@ -915,42 +915,45 @@ spec:
           name: profile
           label: 个人卡片
           value:
-            profileStyle: default
-            helloText: 🤖️ 数码科技爱好者, 🔍 分享与热心帮助, 🏠 智能家居小能手, 🔨 设计开发一条龙, 🤝 专修交互与设计, 🏃 脚踏实地行动派, 🧱 团队小组发动机, 💢 壮汉人狠话不多
+            backgroundImg: ""
+            avatar: ""
+            stickerImg: ""
+            desc: 分享技术与生活
+            helloText: "🤖 数码科技爱好者, 🔍 分享与热心帮助, 🏠 智能家居小能手, 🔨 设计开发一条龙"
           children:
-            - $formkit: select
-              name: profileStyle
-              id: profileStyle
-              key: profileStyle
-              label: 样式
-              options:
-                - value: default
-                  label: 默认
-                - value: one
-                  label: 样式一
             - $formkit: attachment
               name: backgroundImg
               label: 背景图片
-              value: /themes/theme-hanlo/assets/images/sidebar/profile.webp
-              width: "15rem"
-              aspectRatio: "16/9"
-              placeholder: 请输入背景图片路径或地址（建议使用 280px * 330px 图片效果最佳）
+              value: ""
+              width: "12rem"
+              aspectRatio: "4/5"
+              placeholder: 留空使用透明背景
+              help: "建议使用 4:5 竖图，推荐 800 × 1000 像素（至少 400 × 500），WebP 或 AVIF 格式。图片居中铺满并适当裁切，重要内容放在中央；留空时卡片透明，设置图片时自动叠加遮罩保证文字清晰。"
+            - $formkit: attachment
+              name: avatar
+              label: 头像
+              width: "8rem"
+              aspectRatio: "1/1"
+              placeholder: 留空使用站点 Logo
+              help: 建议使用至少 256 × 256 像素的正方形图片，卡片中显示为圆形。
             - $formkit: attachment
               name: stickerImg
-              if: $get(profileStyle).value == 'one'
-              label: 贴纸
-              value: /upload/omxo3N22290781690363822143.png
-              placeholder: 请输入图片地址
+              label: 头像贴纸
+              value: ""
+              width: "5rem"
+              aspectRatio: "1/1"
+              placeholder: 可选，留空不显示
+              help: 显示在头像右下角，建议使用 96 × 96 像素透明背景图片。
             - $formkit: text
-              if: $get(profileStyle).value == 'one'
               name: desc
-              value: "分享设计与科技生活"
-              label: 卡片名称下面的描述
+              value: "分享技术与生活"
+              label: 一句话简介
+              help: 显示在卡片底部名称下方，建议不超过 20 个字。
             - $formkit: text
               name: helloText
-              label: 作者打招呼
-              placeholder: 请填写作者打招呼
-              help: 注意格式 （🤖️ 数码科技爱好者, 🔍 分享与热心帮助 ） 以逗号隔开
+              label: 顶部标签
+              placeholder: "如 🏠 智能家居小能手, 🔨 设计开发一条龙"
+              help: 以中文或英文逗号分隔多个标签，点击卡片顶部的标签可以切换。
             - $formkit: text
               name: profileName
               label: 卡片名称
@@ -958,26 +961,25 @@ spec:
               help: 不填写默认为站点名称
             - $formkit: code
               name: profileDesc
-              label: 描述信息
-              placeholder: 请填写个人卡片描述信息
+              label: 个人介绍
+              placeholder: 介绍自己、兴趣或正在做的事情
               height: 200px
               language: html
-              help: 支持 HTML 语法
+              help: 支持 HTML。鼠标悬浮或点击「认识我」时展示，建议使用 3～5 行短句；留空时只显示头像。
             - $formkit: array
               name: socialMedia
               label: 社交媒体
-              help: 此处社交媒体最多设置两个
+              help: 底部最多显示两个入口。支持 Ant Design 图标名称，如 GithubOutlined、MailOutlined，也兼容现有图标类名和图片地址。
               max: 2
               value: []
               itemLabels:
-                - type: image
-                  label: $value.logo
                 - type: text
                   label: $value.name
               children:
                 - $formkit: text
                   name: icon
                   label: 图标
+                  placeholder: 如 GithubOutlined
                 - $formkit: text
                   name: name
                   label: 名称

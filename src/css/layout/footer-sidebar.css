@@ -547,10 +547,6 @@ body[data-type=music] .page #nav #site-name span {
     background: var(--heo-maskbg);
 }
 
-#aside-content .card-info .card-info-data > .card-info-data-item {
-    transition: .3s;
-}
-
 /* 手机端导航 */
 #sidebar #sidebar-menus .site-data {
     margin: 1rem 0;
@@ -559,16 +555,6 @@ body[data-type=music] .page #nav #site-name span {
 
 #sidebar-menus > hr {
     display: none;
-}
-
-/* 胶囊形状GitHub按钮 */
-#card-info-btn {
-    border-radius: 25px;
-    overflow: hidden;
-}
-
-#card-info-btn:before {
-    border-radius: 25px;
 }
 
 /* 搜索结果文字 */
@@ -987,10 +973,6 @@ li.card-archive-list-item {
 
     #page-header.nav-visible + .layout > .aside-content > .sticky_layout {
         top: calc(60px + 0.5rem);
-    }
-
-    [data-theme=dark] #aside-content > .card-widget.card-info {
-        border: var(--style-border);
     }
 
     .coverdiv {

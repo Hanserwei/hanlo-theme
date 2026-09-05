@@ -11,10 +11,6 @@
     background: var(--hanlo-essay-cover) left 28% / cover no-repeat;
 }
 
-.hanlo-profile-background {
-    background-image: var(--hanlo-profile-background, none);
-}
-
 .hanlo-card-cover {
     background-image: var(--hanlo-card-cover);
 }

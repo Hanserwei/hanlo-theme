@@ -9,19 +9,6 @@ i.haofont.hao-icon-arrow-right.banner-righticon{
     font-size: 80px;
 }
 
-/* 自我介绍渐变色背景 */
-#aside-content > .card-widget.card-info::before {
-    background: linear-gradient(-25deg, var(--heo-main), #031764, var(--heo-main), #67044d);
-    background-size: 400%;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    content: '';
-    animation: gradient 15s ease infinite;
-}
-
 
 #article-container ol li:not(.tab), #article-container ul li:not(.tab){
     /* margin-left: 2em; */

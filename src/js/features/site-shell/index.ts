@@ -40,53 +40,6 @@ function updateAsideState(storage: ExpiringStorage): void {
   document.querySelector("#consoleHideAside")?.classList.toggle("on", hidden);
 }
 
-function changeGreeting(config: Readonly<ThemeConfig>): void {
-  const element = document.querySelector<HTMLElement>(".author-info__sayhi");
-  if (!element) return;
-  const greetings =
-    config.helloText && config.helloText.length > 0
-      ? config.helloText
-      : [
-          "🤖️ 数码科技爱好者",
-          "🔍 分享与热心帮助",
-          "🏠 智能家居小能手",
-          "🔨 设计开发一条龙",
-          "🤝 专修交互与设计",
-          "🏃 脚踏实地行动派",
-          "🧱 团队小组发动机",
-          "💢 壮汉人狠话不多",
-        ];
-  const previous = element.dataset["lastGreeting"];
-  const candidates = greetings.filter((greeting) => greeting !== previous);
-  const next = candidates[Math.floor(Math.random() * candidates.length)] ?? greetings[0];
-  if (!next) return;
-  element.textContent = next;
-  element.dataset["lastGreeting"] = next;
-}
-
-function timeGreeting(profileStyle: string | undefined, date = new Date()): string {
-  const hour = date.getHours();
-  if (profileStyle === "one") {
-    if (hour <= 5) return "睡个好觉，保证精力充沛";
-    if (hour <= 10) return "一日之计在于晨";
-    if (hour <= 14) return "吃饱了才有力气干活";
-    if (hour <= 18) return "集中精力，攻克难关";
-    return "不要太劳累了，早睡更健康";
-  }
-  if (hour <= 5) return "晚安";
-  if (hour <= 10) return "早上好";
-  if (hour <= 14) return "中午好";
-  if (hour <= 18) return "下午好";
-  return "晚上好";
-}
-
-function initializeGreeting(config: Readonly<ThemeConfig>): void {
-  const element = document.querySelector<HTMLElement>(".author-info__sayhi");
-  if (!element) return;
-  const greeting = timeGreeting(config.profileStyle);
-  element.textContent = config.profileStyle === "default" ? `${greeting}！我是` : greeting;
-}
-
 function randomItems<T>(items: readonly T[], count: number): T[] {
   const pool = [...items];
   const result: T[] = [];
@@ -256,10 +209,6 @@ function handleAction(
     case "toggle-aside":
       event.preventDefault();
       updateAsideState(storage);
-      break;
-    case "change-greeting":
-      event.preventDefault();
-      changeGreeting(config);
       break;
     case "hide-today-card":
       event.stopPropagation();
@@ -851,7 +800,6 @@ function initializePageState(
       document.querySelector(`#${id}`)?.classList.add("more-page");
     }
   }
-  initializeGreeting(config);
   initializeActiveNavigation();
   initializeWheelScrolling(resources);
   hideLoading();
@@ -916,5 +864,4 @@ export const siteShellTestables = Object.freeze({
   contrastIsLight,
   initializeNavigationAvatar,
   randomItems,
-  timeGreeting,
 });

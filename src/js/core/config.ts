@@ -13,7 +13,6 @@ export interface ThemeConfig {
   readonly isFriendLinksInFooter?: boolean;
   readonly lightbox?: string;
   readonly helloText?: readonly string[];
-  readonly profileStyle?: string;
   readonly copyright?: Readonly<{
     readonly limitCount: number;
     readonly languages: Readonly<{
