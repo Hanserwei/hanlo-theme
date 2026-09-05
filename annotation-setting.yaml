@@ -45,7 +45,6 @@ spec:
       placeholder: "请输入链接"
 
 ---
-
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
@@ -73,7 +72,6 @@ spec:
         - label: "横向"
           value: "horizontal"
 ---
-
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
@@ -99,7 +97,6 @@ spec:
       label: "描述"
 
 ---
-
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
@@ -121,7 +118,6 @@ spec:
       label: "标签颜色"
 
 ---
-
 apiVersion: v1alpha1
 kind: AnnotationSetting
 metadata:
@@ -140,4 +136,3 @@ spec:
     - $formkit: "textarea"
       name: "description"
       label: "分组描述"
-
