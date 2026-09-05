@@ -7,42 +7,61 @@ spec:
     group: content.halo.run
     kind: Post
   formSchema:
-    - $formkit: "radio"
-      name: "ai"
-      label: "AI 摘要"
-      help: "默认后台设置"
+    - $el: div
+      attrs:
+        class: hanlo-settings-guide
+        style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+      children:
+        - $el: p
+          attrs:
+            style: "margin: 0 0 .3rem; font-weight: 600; color: inherit;"
+          children: 本篇文章的展示选项
+        - $el: p
+          attrs:
+            style: "margin: 0;"
+          children: 仅影响本篇文章。选择「跟随主题设置」可统一使用文章设置中的摘要与版权开关。
+    - $formkit: radio
+      name: ai
+      label: AI 摘要
+      help: 摘要内容与服务提供方仍在「主题设置 → 文章详情 → AI 摘要」配置。
       options:
-        - label: "启用"
+        - label: 跟随主题设置
+          value: ""
+        - label: 本篇显示
           value: "true"
-        - label: "禁用"
+        - label: 本篇隐藏
           value: "false"
-    - $formkit: "radio"
-      name: "copyrightEnable"
-      id: "copyrightEnable"
-      key: "copyrightEnable"
-      label: "显示版权声明"
-      help: "默认后台设置"
+    - $formkit: radio
+      name: copyrightEnable
+      id: hanlo_annotation_post_copyright
+      label: 版权声明
+      help: 未单独选择时，跟随主题中的版权声明开关。
       options:
-        - label: "显示"
+        - label: 跟随主题设置
+          value: ""
+        - label: 本篇显示
           value: "true"
-        - label: "隐藏"
+        - label: 本篇隐藏
           value: "false"
-    - $formkit: "radio"
-      name: "copyrightType"
-      label: "版权声明类型"
-      value: "original"
-      if: "$get(copyrightEnable).value != 'false'"
+    - $formkit: radio
+      name: copyrightType
+      label: 文章来源
+      value: original
+      if: $get(hanlo_annotation_post_copyright).value != 'false'
+      preserve: true
+      help: 原创与转载分别使用主题设置中对应的声明文字。
       options:
-        - label: "原创"
-          value: "original"
-        - label: "转载"
-          value: "reprint"
-    - $formkit: "text"
-      name: "copyrightUrl"
-      label: "版权声明链接"
-      help: "默认后台设置"
-      if: "$get(copyrightEnable).value != 'false'"
-      placeholder: "请输入链接"
+        - label: 原创文章
+          value: original
+        - label: 转载文章
+          value: reprint
+    - $formkit: text
+      name: copyrightUrl
+      label: 本篇版权链接
+      if: $get(hanlo_annotation_post_copyright).value != 'false'
+      preserve: true
+      help: 用于文章顶部及「文章标题与链接布局」中的原创或转载标记；留空使用主题里对应的默认链接。
+      placeholder: 如 https://example.com/license 或 /copyright
 
 ---
 apiVersion: v1alpha1
@@ -54,23 +73,44 @@ spec:
     group: ""
     kind: MenuItem
   formSchema:
-    - $formkit: "text"
-      name: "icon"
-      label: "图标"
-      placeholder: "如 HomeOutlined、GithubOutlined、HeartTwoTone"
-      help: "支持 @antdv-next/icons 全套图标名称（区分大小写）。图标预览：/themes/theme-hanlo/assets/icon/antdv-next/catalog.html"
-    - $formkit: "radio"
-      name: "submenuLayout"
-      value: "inherit"
-      label: "桌面子菜单布局"
-      help: "跟随主题设置，或为此菜单单独选择布局。手机端使用折叠菜单。"
+    - $el: div
+      attrs:
+        class: hanlo-settings-guide
+        style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+      children:
+        - $el: p
+          attrs:
+            style: "margin: 0 0 .3rem; font-weight: 600; color: inherit;"
+          children: 菜单图标与展开方式
+        - $el: p
+          attrs:
+            style: "margin: 0;"
+          children: 图标用于主导航、手机菜单和左侧菜单。子菜单布局仅影响桌面端，手机端保持折叠显示。
+        - $el: a
+          attrs:
+            href: /themes/theme-hanlo/assets/icon/antdv-next/catalog.html
+            target: _blank
+            rel: noopener noreferrer
+            style: "color: inherit; text-decoration: underline; text-underline-offset: 3px;"
+          children: 查看全部 847 个图标 →
+    - $formkit: text
+      name: icon
+      label: 菜单图标
+      placeholder: 如 HomeOutlined、GithubOutlined、HeartTwoTone
+      help: 填写完整图标名称，区分大小写；留空不显示。也兼容图片地址和已有图标类名。
+    - $formkit: radio
+      name: submenuLayout
+      value: inherit
+      label: 桌面子菜单布局
+      help: 仅有子项的菜单生效；默认沿用「主题设置 → 顶部导航」的选择。
       options:
-        - label: "跟随主题设置"
-          value: "inherit"
-        - label: "下拉"
-          value: "dropdown"
-        - label: "横向"
-          value: "horizontal"
+        - label: 跟随主题设置
+          value: inherit
+        - label: 纵向下拉
+          value: dropdown
+        - label: 横向展开
+          value: horizontal
+
 ---
 apiVersion: v1alpha1
 kind: AnnotationSetting
@@ -81,20 +121,36 @@ spec:
     group: core.halo.run
     kind: LinkGroup
   formSchema:
-    - $formkit: "radio"
-      name: "displayStyle"
-      label: "分组方式"
-      value: "default"
+    - $el: div
+      attrs:
+        class: hanlo-settings-guide
+        style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+      children:
+        - $el: p
+          attrs:
+            style: "margin: 0 0 .3rem; font-weight: 600; color: inherit;"
+          children: 友链分组的展示方式
+        - $el: p
+          attrs:
+            style: "margin: 0;"
+          children: 在友情链接页面设置本组的卡片外观。每条友链的截图和标签可在友链条目中单独填写。
+    - $formkit: radio
+      name: displayStyle
+      label: 卡片展示
+      value: default
       options:
-        - label: "默认"
-          value: "default"
-        - label: "美化"
-          value: "beautify"
-        - label: "失联"
-          value: "deprecated"
-    - $formkit: "textarea"
-      name: "description"
-      label: "描述"
+        - label: 简洁卡片
+          value: default
+        - label: 网站截图卡片
+          value: beautify
+        - label: 失联友链
+          value: deprecated
+      help: 截图卡片优先显示条目中的网站截图；失联分组用于保留暂时无法访问的链接。
+    - $formkit: textarea
+      name: description
+      label: 分组说明
+      placeholder: 如 经常阅读的技术博客
+      help: 显示在本组标题附近，支持简短 HTML；留空不显示说明。
 
 ---
 apiVersion: v1alpha1
@@ -106,16 +162,39 @@ spec:
     group: core.halo.run
     kind: Link
   formSchema:
-    - $formkit: "attachment"
-      name: "siteshot"
-      label: "背景"
-    - $formkit: "text"
-      name: "label"
-      label: "标签"
-    - $formkit: "color"
-      name: "labelColor"
+    - $el: div
+      attrs:
+        class: hanlo-settings-guide
+        style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+      children:
+        - $el: p
+          attrs:
+            style: "margin: 0 0 .3rem; font-weight: 600; color: inherit;"
+          children: 友链卡片装饰
+        - $el: p
+          attrs:
+            style: "margin: 0;"
+          children: 网站名称、地址和 Logo 使用友链本身的基本信息；这里补充截图与标签。
+    - $formkit: attachment
+      name: siteshot
+      label: 网站截图
+      width: 12rem
+      aspectRatio: 16/9
+      help: 建议使用 16:9、1280 × 720 像素图片；用于「网站截图卡片」，留空使用友链 Logo。
+      placeholder: 选择截图或粘贴图片地址
+    - $formkit: text
+      name: label
+      id: hanlo_annotation_link_label
+      label: 角标文字
+      placeholder: 如 推荐、技术、朋友
+      help: 显示在友链卡片角落，建议 2～4 个字；留空不显示。
+    - $formkit: color
+      name: labelColor
       value: "#425AEF"
-      label: "标签颜色"
+      label: 角标背景色
+      if: $get(hanlo_annotation_link_label).value
+      preserve: true
+      help: 与角标白色文字搭配，建议选择较深的颜色。
 
 ---
 apiVersion: v1alpha1
@@ -127,12 +206,35 @@ spec:
     group: core.halo.run
     kind: PhotoGroup
   formSchema:
-    - $formkit: "attachment"
-      name: "cover"
-      label: "分组图片"
-    - $formkit: "attachment"
-      name: "background"
-      label: "分组顶部 banner 图片"
-    - $formkit: "textarea"
-      name: "description"
-      label: "分组描述"
+    - $el: div
+      attrs:
+        class: hanlo-settings-guide
+        style: "margin: 0 0 1.25rem; padding: 0.85rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.65rem; background: rgba(148,163,184,.08); color: inherit; font-size: 0.8125rem; line-height: 1.75;"
+      children:
+        - $el: p
+          attrs:
+            style: "margin: 0 0 .3rem; font-weight: 600; color: inherit;"
+          children: 相册封面与顶部横幅
+        - $el: p
+          attrs:
+            style: "margin: 0;"
+          children: 封面用于相册目录卡片，横幅用于打开本相册后的照片列表。两张图片可以不同。
+    - $formkit: attachment
+      name: cover
+      label: 相册封面
+      width: 10rem
+      aspectRatio: 4/3
+      help: 建议使用 4:3、800 × 600 像素图片；卡片会居中裁切，主体放在中央。
+      placeholder: 选择相册封面
+    - $formkit: attachment
+      name: background
+      label: 相册顶部横幅
+      width: 15rem
+      aspectRatio: 16/5
+      help: 建议使用 1600 × 500 像素横图，避免把重要文字放在边缘。
+      placeholder: 选择横幅或粘贴图片地址
+    - $formkit: textarea
+      name: description
+      label: 相册简介
+      placeholder: 记录这组照片的时间、地点或故事
+      help: 显示在相册目录与详情顶部；建议使用一两句简短文字。

@@ -4,7 +4,6 @@
       th:with="assets_link=${theme.config.other.staticResource.use == 'custom' ? theme.config.other.staticResource.cdn_link : '/themes/theme-hanlo/assets'},
       theme_version = ${ theme.config.other.staticResource.use == 'local' ? '?v='+ theme.spec.version : ''},
       isLazyload = ${theme.config.other.vanillaLazyload.enable},
-      loadingImg = ${theme.config.other.vanillaLazyload.loadingImg},
       loadingBoxImage = ${#strings.equals(theme.config.other.loadingBoxs.loadingBoxImg, 'https://liuzhihang.com/upload/logo.png') ? '/themes/theme-hanlo/assets/images/hanlo-logo.png' : theme.config.other.loadingBoxs.loadingBoxImg},
       todayRecommendCover = ${#strings.equals(theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover, 'https://liuzhihang.com/upload/hao_dark.jpg') ? '/themes/theme-hanlo/assets/images/home.webp' : theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover},
       postRandomImgSource = ${#strings.equals(theme.config.layout.postRandomImg, 'https://source.unsplash.com/random/600x400/?blog,scenery,night,desert,sea') ? '/themes/theme-hanlo/assets/images/home.webp' : theme.config.layout.postRandomImg},
@@ -38,7 +37,7 @@
         />
         <video th:if="${theme.config.top.global_background.enable_global_background_above_video}"
                class="index-video hl:block hl:object-cover hl:w-full hl:h-full hl:pointer-events-none"
-               id="index-video"
+               id="global-background-video"
                autoplay=""
                th:src="${theme.config.top.global_background.global_background_video}"
                loop=""

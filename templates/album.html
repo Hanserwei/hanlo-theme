@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="gallery-groups" th:if="${#strings.equals(theme.config.photos.photosStyle, 'one')}">
-                    <h2 class="hl:text-center">[[${theme.config.photos.bigTitle}]]</h2>
+                    <h2 class="hl:text-center" th:text="${singlePage.spec.title}"></h2>
                     <div class="gallery-group-main">
                         <th:block th:each="group : ${photoFinder.groupBy()}">
                             <figure class="gallery-group no-lightbox">

@@ -183,14 +183,14 @@
                     <div class="tags-group-icon-pair" th:if="${iterStat.odd}">
                     <div class="tags-group-icon hanlo-dynamic-background"
                          th:style="'--hanlo-dynamic-background:' + ${techOdd.background}"
-                             th:with="techOdd = ${techs.get(iterStat.index - 1)}">
+                             th:with="techOdd = ${tech}">
                             <img th:with=" img = @{${techOdd.url}}" th:src="${img}"
                                  th:title="${techOdd.name}">
                         </div>
                         
-                    <div class="tags-group-icon hanlo-dynamic-background"
+                    <div class="tags-group-icon hanlo-dynamic-background" th:if="${not iterStat.last}"
                          th:style="'--hanlo-dynamic-background:' + ${techEven.background}"
-                             th:with="techEven = ${tech}">
+                             th:with="techEven = ${techs[iterStat.index + 1]}">
                             <img th:with=" img = @{${techEven.url}}" th:src="${img}"
                                  th:title="${techEven.name}">
                         </div>
