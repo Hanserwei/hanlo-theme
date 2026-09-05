@@ -67,8 +67,33 @@ spec:
                   value: dropdown
                 - label: 横向
                   value: horizontal
-            - $el: p
-              children: "菜单图标使用 @antdv-next/icons。在「外观 → 菜单」的菜单项图标中填写名称，如 HomeOutlined、GithubOutlined、HeartTwoTone。"
+            - $el: div
+              attrs:
+                style: "margin-top: 0.75rem; padding: 0.75rem 1rem; border: 1px solid rgba(148,163,184,.25); border-radius: 0.5rem; background: rgba(148,163,184,.08); color: #64748b; font-size: 0.8125rem; line-height: 1.7;"
+              children:
+                - $el: p
+                  attrs:
+                    style: "margin: 0 0 0.25rem; font-weight: 600;"
+                  children: 菜单图标
+                - $el: p
+                  attrs:
+                    style: "margin: 0;"
+                  children: 在「外观 → 菜单」中填写图标名称，名称区分大小写。
+                - $el: p
+                  attrs:
+                    style: "margin: 0.35rem 0; overflow-wrap: anywhere;"
+                  children:
+                    - $el: span
+                      children: "示例："
+                    - $el: code
+                      children: "HomeOutlined · GithubOutlined · HeartTwoTone"
+                - $el: a
+                  attrs:
+                    href: /themes/theme-hanlo/assets/icon/antdv-next/catalog.html
+                    target: _blank
+                    rel: noopener noreferrer
+                    style: "color: #2563eb; text-decoration: none;"
+                  children: "查看全部 847 个图标 →"
         - $formkit: menuRadio
           name: leftMenu
           if: $get(pc_leftMenu).value
@@ -1061,6 +1086,44 @@ spec:
           value: true
           help: 在正文与页脚之间显示动物和矮墙，自动留出空间。图片随主题提供，无需代码注入。
         - $formkit: group
+          name: records
+          label: 站点记录与 Logo
+          value:
+            enable: true
+            logo: /themes/theme-hanlo/assets/images/footer/shiba.svg
+            text: ""
+            runtime_enable: true
+            voyager_enable: true
+          children:
+            - $formkit: switch
+              name: enable
+              id: footer_records_enable
+              label: 显示站点记录
+              help: 在动物栏下方显示 Logo、记录文字和运行时间。
+            - $formkit: attachment
+              if: $get(footer_records_enable).value
+              name: logo
+              label: 页脚 Logo
+              width: "8rem"
+              aspectRatio: "1/1"
+              help: 默认使用主题自带柴犬，可选择附件或填写图片地址。点击图片返回顶部，留空恢复默认柴犬。
+            - $formkit: textarea
+              if: $get(footer_records_enable).value
+              name: text
+              label: 记录文字
+              placeholder: 写下你的站点寄语，支持多行
+              help: 可填写自定义文字，显示在 Logo 下方；留空则不显示。
+            - $formkit: switch
+              if: $get(footer_records_enable).value
+              name: runtime_enable
+              label: 显示运行时间
+              help: 根据「基础 → 建站时间」统计天、时、分、秒。
+            - $formkit: switch
+              if: $get(footer_records_enable).value
+              name: voyager_enable
+              label: 显示旅行者 1 号里程
+              help: 从 1977 年 9 月 5 日发射时间起，按约 17 千米/秒估算飞行里程，仅作展示，不代表实时距地球距离。
+        - $formkit: group
           name: footer_bar
           label: 了解更多
           value:
@@ -1088,14 +1151,8 @@ spec:
           label: 社交媒体
           value:
             socialMediaLeft:
-            centerImg: /themes/theme-hanlo/assets/images/hanlo-logo.png
             socialMediaRight:
           children:
-            - $formkit: attachment
-              name: centerImg
-              label: 中间 logo
-              placeholder: 请填写 logo 图片地址
-              value: /themes/theme-hanlo/assets/images/hanlo-logo.png
             - $formkit: array
               name: socialMediaLeft
               label: 左侧

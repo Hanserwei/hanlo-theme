@@ -6,7 +6,6 @@
       isLazyload = ${theme.config.other.vanillaLazyload.enable},
       loadingImg = ${theme.config.other.vanillaLazyload.loadingImg},
       loadingBoxImage = ${#strings.equals(theme.config.other.loadingBoxs.loadingBoxImg, 'https://liuzhihang.com/upload/logo.png') ? '/themes/theme-hanlo/assets/images/hanlo-logo.png' : theme.config.other.loadingBoxs.loadingBoxImg},
-      footerCenterImage = ${#strings.equals(theme.config.footer.social_media.centerImg, 'https://liuzhihang.com/upload/logo.png') ? '/themes/theme-hanlo/assets/images/hanlo-logo.png' : theme.config.footer.social_media.centerImg},
       todayRecommendCover = ${#strings.equals(theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover, 'https://liuzhihang.com/upload/hao_dark.jpg') ? '/themes/theme-hanlo/assets/images/home.webp' : theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover},
       postRandomImgSource = ${#strings.equals(theme.config.layout.postRandomImg, 'https://source.unsplash.com/random/600x400/?blog,scenery,night,desert,sea') ? '/themes/theme-hanlo/assets/images/home.webp' : theme.config.layout.postRandomImg},
       siteTitle = ${not #strings.isEmpty(title) ?  title  :  #strings.isEmpty(site.subtitle) ? site.title :  site.title +' - ' +site.subtitle }">

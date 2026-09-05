@@ -1,5 +1,8 @@
 <!-- 页脚模块 -->
-<footer class="hanlo-site-footer" id="footer" xmlns:th="http://www.w3.org/1999/xhtml">
+<footer class="hanlo-site-footer" id="footer" xmlns:th="http://www.w3.org/1999/xhtml"
+        th:with="footerRecords=${theme.config.footer.records},
+                 recordsEnabled=${footerRecords?.enable != false},
+                 recordLogo=${#strings.isEmpty(footerRecords?.logo) ? '/themes/theme-hanlo/assets/images/footer/shiba.svg' : footerRecords.logo}">
 
     <!-- 装饰占据独立布局空间，不覆盖正文或分页。旧配置未保存此开关时默认显示。 -->
     <div class="hanlo-footer-animals" aria-hidden="true"
@@ -19,8 +22,8 @@
     </div>
 
     <!-- 社交链接，需要填入 href class title -->
-    <div id="footer_deal"
-         th:if="${not #lists.isEmpty(theme.config.footer.social_media.socialMediaLeft) || not #lists.isEmpty(theme.config.footer.social_media.socialMediaRight) || not #strings.isEmpty(footerCenterImage)}">
+    <div id="footer_deal" class="hanlo-footer-social"
+         th:if="${not #lists.isEmpty(theme.config.footer.social_media.socialMediaLeft) || not #lists.isEmpty(theme.config.footer.social_media.socialMediaRight) || recordsEnabled}">
         <th:block th:with="socialMedias = ${theme.config.footer.social_media.socialMediaLeft}">
             <a th:class="${socialMedia.option_social_data == 'custom' ? 'custom_socials' : 'deal_link'}" rel="external nofollow" target="_blank" th:each="socialMedia : ${socialMedias}"
                th:href="${socialMedia.url}" th:title="${socialMedia.name}">
@@ -30,10 +33,10 @@
             </a>
         </th:block>
 
-        <img th:if="${not #strings.isEmpty(footerCenterImage)}"
-             class="footer_mini_logo"
-             th:with="img = @{${footerCenterImage}}" th:src="${isLazyload ? '' : img}"
-             th:data-lazy-src="${ isLazyload ? img : ''}" title="返回顶部" data-hanlo-action="scroll-top">
+        <button th:if="${recordsEnabled}" class="hanlo-footer-logo hanlo-button-reset"
+                type="button" title="返回顶部" aria-label="返回顶部" data-hanlo-action="scroll-top">
+            <img th:src="${recordLogo}" width="96" height="96" alt="" loading="lazy" decoding="async">
+        </button>
 
         <th:block th:with="socialMedias = ${theme.config.footer.social_media.socialMediaRight}">
             <a th:class="${socialMedia.option_social_data == 'custom' ? 'custom_socials' : 'deal_link'}" rel="external nofollow" target="_blank" th:each="socialMedia : ${socialMedias}"
@@ -43,6 +46,17 @@
                 <th:block th:if="${socialMedia.option_social_data == 'custom'}" th:utext="${socialMedia.icon}"></th:block>
             </a>
         </th:block>
+    </div>
+
+    <div th:if="${recordsEnabled}" class="hanlo-footer-records" data-hanlo-footer-records
+         th:data-started-at="${theme.config.basics.siteStartTime}">
+        <p class="hanlo-footer-record-note" th:if="${not #strings.isEmpty(footerRecords?.text)}"
+           th:text="${footerRecords.text}"></p>
+        <p th:if="${footerRecords?.runtime_enable != false}" data-footer-uptime>
+            <span data-footer-uptime-text>记录每一天的成长</span>
+            <span class="hanlo-footer-heart" aria-hidden="true">❤</span>
+        </p>
+        <p th:if="${footerRecords?.voyager_enable != false}" data-footer-voyager></p>
     </div>
 
     <!-- 相关地址  -->
