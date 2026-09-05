@@ -1915,7 +1915,7 @@ spec:
             - $formkit: code
               name: content
               label: 原创文章声明 HTML
-              placeholder: '<p>本文由本站原创，转载时请注明作者与文章链接。</p>'
+              placeholder: "<p>本文由本站原创，转载时请注明作者与文章链接。</p>"
               height: 120px
               language: html
               help: 显示于原创文章底部；请将协议、署名、站点地址替换为自己的内容。
