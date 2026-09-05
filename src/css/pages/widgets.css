@@ -19,11 +19,10 @@
     margin-top: 0;
 }
 
-/* 即刻短文 */
+/* Shared page banner: keep the configured cover in the same layer as its layout. */
 .author-content.author-content-item.essayPage {
     height: 19rem;
-    background: url(https://img.zhheo.com/i/2022/08/27/6309587509a02.jpg) no-repeat center;
-    background-size: cover;
+    background: var(--hanlo-essay-cover, none) left 28% / cover no-repeat;
     color: var(--heo-white);
     overflow: hidden;
     margin-top: 0;

@@ -7,10 +7,6 @@
     color: var(--hanlo-dynamic-color);
 }
 
-.hanlo-essay-cover {
-    background: var(--hanlo-essay-cover) left 28% / cover no-repeat;
-}
-
 .hanlo-card-cover {
     background-image: var(--hanlo-card-cover);
 }
