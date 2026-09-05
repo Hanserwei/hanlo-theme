@@ -3346,7 +3346,7 @@ spec:
           label: 页面不存在时（404）
           value:
             subtitle: 请尝试站内搜索寻找文章
-            background: /themes/theme-hanlo/assets/images/404s.gif
+            background: /themes/theme-hanlo/assets/images/error/404.svg
           children:
             - $formkit: text
               name: subtitle
@@ -3356,9 +3356,9 @@ spec:
             - $formkit: attachment
               name: background
               width: "15rem"
-              aspectRatio: "16/9"
+              aspectRatio: "3/2"
               label: 404 页面插图
-              help: 建议 1200×675 像素、16:9，主体居中；图片铺满错误页卡片并可能裁切。
+              help: 默认使用主题内置的 404 SVG，留空恢复默认。建议使用 3:2、1200×800 像素图片或 SVG；图片居中完整展示，不裁切。
               placeholder: 选择 404 插图或填写图片 URL
           help: 访客打开不存在的地址时展示的提示和插图。
         - $formkit: group
@@ -3366,7 +3366,7 @@ spec:
           label: 服务异常时（500）
           value:
             subtitle: 服务器内部出现错误，请查看日志
-            background: /themes/theme-hanlo/assets/images/404s.gif
+            background: /themes/theme-hanlo/assets/images/error/500.svg
           children:
             - $formkit: text
               name: subtitle
@@ -3376,9 +3376,9 @@ spec:
             - $formkit: attachment
               name: background
               width: "15rem"
-              aspectRatio: "16/9"
+              aspectRatio: "1/1"
               label: 500 页面插图
-              help: 建议 1200×675 像素、16:9，主体居中；可使用与 404 页风格一致的插图。
+              help: 默认使用主题内置的 500 SVG，留空恢复默认。建议使用 1:1、800×800 像素图片或 SVG；图片居中完整展示，不裁切。
               placeholder: 选择服务异常插图或填写图片 URL
           help: 服务器渲染错误页时展示的提示和插图；文案用于告知访客当前状态。
         - $formkit: switch

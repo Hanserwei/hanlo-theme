@@ -4,6 +4,8 @@
       th:with="assets_link=${theme.config.other.staticResource.use == 'custom' ? theme.config.other.staticResource.cdn_link : '/themes/theme-hanlo/assets'},
       theme_version = ${ theme.config.other.staticResource.use == 'local' ? '?v='+ theme.spec.version : ''},
       isLazyload = ${theme.config.other.vanillaLazyload.enable},
+      error404Image = ${#strings.isEmpty(theme.config.other.error_404.background) || #strings.equals(theme.config.other.error_404.background, '/themes/theme-hanlo/assets/images/404s.gif') ? assets_link + '/images/error/404.svg' : theme.config.other.error_404.background},
+      error500Image = ${#strings.isEmpty(theme.config.other.error_500.background) || #strings.equals(theme.config.other.error_500.background, '/themes/theme-hanlo/assets/images/404s.gif') ? assets_link + '/images/error/500.svg' : theme.config.other.error_500.background},
       loadingBoxImage = ${#strings.equals(theme.config.other.loadingBoxs.loadingBoxImg, 'https://liuzhihang.com/upload/logo.png') ? '/themes/theme-hanlo/assets/images/hanlo-logo.png' : theme.config.other.loadingBoxs.loadingBoxImg},
       todayRecommendCover = ${#strings.equals(theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover, 'https://liuzhihang.com/upload/hao_dark.jpg') ? '/themes/theme-hanlo/assets/images/home.webp' : theme.config.top.BannerRight.todayRecommendContent.todayRecommendCover},
       postRandomImgSource = ${#strings.equals(theme.config.layout.postRandomImg, 'https://source.unsplash.com/random/600x400/?blog,scenery,night,desert,sea') ? '/themes/theme-hanlo/assets/images/home.webp' : theme.config.layout.postRandomImg},
