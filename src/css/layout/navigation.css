@@ -605,12 +605,32 @@ html {
 }
 
 #page-header #nav #nav-right .console-button .nav-login {
+    position: relative;
     width: 35px;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 40px;
-    margin-top: 4.8px;
+}
+
+.nav-login-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.nav-login [data-hanlo-nav-avatar] {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 50%;
+    background: var(--heo-card-bg);
+}
+
+.nav-login [data-hanlo-nav-avatar][hidden] {
+    display: none;
 }
 
 #page-header.not-top-img #nav .nav-login {
@@ -668,6 +688,7 @@ html {
     color: var(--heo-main);
 }
 
+.console-button:focus-within .back-menu-list-groups,
 .console-button:hover .back-menu-list-groups {
     display: flex;
     opacity: 1;
@@ -684,6 +705,7 @@ html {
         left: 0;
     }
 
+    .console-button:focus-within .back-menu-list-groups,
     .console-button:hover .back-menu-list-groups {
         padding-bottom: 8px;
         box-shadow: var(--heo-shadow-border);

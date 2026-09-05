@@ -9,6 +9,8 @@
 }
 
 .aboutsiteTips h2 {
+    width: 100%;
+    min-width: 0;
     margin-right: auto;
     font-size: 36px;
     font-family: Helvetica;
@@ -19,18 +21,20 @@
 }
 
 .aboutsiteTips .mask {
-    height: 36px;
-    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 1.2em;
     overflow: hidden;
     margin-top: 4px;
 }
 
 .aboutsiteTips .mask span {
     display: block;
-    box-sizing: border-box;
-    position: absolute;
-    top: 36px;
-    padding-bottom: var(--offset);
+    grid-area: 1 / 1;
+    min-width: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+    transform: translateY(100%);
     background-size: 100% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -39,12 +43,12 @@
 }
 
 .aboutsiteTips .mask span[data-show] {
-    transform: translateY(-100%);
+    transform: translateY(0);
     transition: .5s transform ease-in-out;
 }
 
 .aboutsiteTips .mask span[data-up] {
-    transform: translateY(-200%);
+    transform: translateY(-100%);
     transition: .5s transform ease-in-out;
 }
 

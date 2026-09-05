@@ -20,10 +20,8 @@
                 </a>
                 <div class="content">
                     <a class="comment hl:[display:-webkit-box] hl:[-webkit-line-clamp:2] hl:[-webkit-box-orient:vertical] hl:overflow-hidden"
-                      
-                       th:href="${url}" th:title="${comment.spec.content}" th:text="${comment.spec.content}">
-
-                    </a>
+                       data-hanlo-comment-preview th:attr="data-hanlo-comment-html=${comment.spec.content}"
+                       th:href="${url}">查看评论</a>
                     <div class="name">
                         <span th:text="${comment.owner.displayName + ' / '}">stonewu / </span>
                         <time

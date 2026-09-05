@@ -31,7 +31,7 @@
                         comment.spec.subjectRef.kind == 'SinglePage' && not #strings.contains('photos,links,moments', comment.spec.subjectRef.name) ? singlePageFinder.getByName(comment.spec.subjectRef.name) : null},
                         url = ${page == null? '/' : page.status.permalink + '#comment-' + comment.metadata.name},
                         article = ${page == null? '该文章/页面不存在' : page.spec.title}">
-                        <a class="comment-card" th:title="${comment.spec.content}" th:href="${url}">
+                        <a class="comment-card" th:title="${article}" th:href="${url}">
                             <div class="comment-info">
                                 <img th:with=" img =${#strings.isEmpty(comment.owner.avatar)? theme.config.sidebar.newcomment.providerMirror+'/avatar/'+comment.spec.owner.annotations['email-hash'] :comment.owner.avatar}"
                                      th:alt="${comment.owner.displayName}" th:src="${isLazyload ? '' : img}"
@@ -42,8 +42,8 @@
                                         'yyyy-MM-dd HH:mm:ss')}]]</span>
                                 </div>
                             </div>
-                            <div class="comment-content">[[${comment.spec.content}]]
-                            </div>
+                            <div class="comment-content" data-hanlo-comment-preview
+                                 th:attr="data-hanlo-comment-html=${comment.spec.content}">查看评论</div>
                             <div class="comment-article">[[${article}]]</div>
                         </a>
                     </th:block>

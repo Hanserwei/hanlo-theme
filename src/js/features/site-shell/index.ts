@@ -21,11 +21,7 @@ interface LinkItem {
   readonly spec: Readonly<{ readonly displayName: string; readonly url: string }>;
 }
 
-function showConsole(reward = false): void {
-  const rewardGroup = document.querySelector<HTMLElement>(".console-card-group-reward");
-  const mainGroup = document.querySelector<HTMLElement>(".console-card-group");
-  if (rewardGroup) rewardGroup.style.display = reward ? "flex" : "none";
-  if (mainGroup) mainGroup.style.display = reward ? "none" : "flex";
+function showConsole(): void {
   document.querySelector("#console")?.classList.add("show");
 }
 
@@ -206,14 +202,6 @@ function copyText(text: string, message: string): void {
   );
 }
 
-function showRewardMask(visible: boolean): void {
-  const display = visible ? "flex" : "none";
-  const reward = document.querySelector<HTMLElement>(".reward-main");
-  const quit = document.querySelector<HTMLElement>("#quit-box");
-  if (reward) reward.style.display = display;
-  if (quit) quit.style.display = display;
-}
-
 async function showRandomFriend(storage: ExpiringStorage, signal: AbortSignal): Promise<void> {
   try {
     const [item] = randomItems(await getFriendLinks(storage, signal), 1);
@@ -264,10 +252,6 @@ function handleAction(
       event.preventDefault();
       hideConsole();
       break;
-    case "show-reward-console":
-      event.preventDefault();
-      showConsole(true);
-      break;
     case "toggle-aside":
       event.preventDefault();
       updateAsideState(storage);
@@ -282,12 +266,6 @@ function handleAction(
       break;
     case "hide-loading":
       hideLoading();
-      break;
-    case "show-reward-mask":
-      showRewardMask(true);
-      break;
-    case "hide-reward-mask":
-      showRewardMask(false);
       break;
     case "copy-page-url":
       copyText(window.location.href, "复制本页链接地址成功");
@@ -341,11 +319,24 @@ function initializeHeader(resources: PageResourceScope): void {
   resources.listen(window, "orientationchange", () => resources.timeout(adjust, 100));
 }
 
+function initializeNavigationAvatar(image: HTMLImageElement, resources: PageResourceScope): void {
+  const update = () => {
+    image.hidden = !image.complete || image.naturalWidth === 0;
+  };
+  update();
+  resources.listen(image, "load", update);
+  resources.listen(image, "error", update);
+}
+
 function initializeNavigation(
   config: Readonly<ThemeConfig>,
   storage: ExpiringStorage,
   resources: PageResourceScope,
 ): void {
+  document.querySelectorAll<HTMLImageElement>("[data-hanlo-nav-avatar]").forEach((image) => {
+    initializeNavigationAvatar(image, resources);
+  });
+
   const body = document.body;
   const sidebar = document.querySelector<HTMLElement>("#sidebar-menus");
   const mask = document.querySelector<HTMLElement>("#menu-mask");
@@ -443,12 +434,6 @@ function initializeNavigation(
     document
       .querySelector("#toPageButton")
       ?.classList.toggle("haveValue", event.target.value !== "");
-  });
-
-  resources.listen(document, "touchstart", () => {
-    if (document.querySelector<HTMLElement>(".reward-main")?.style.display === "flex") {
-      showRewardMask(false);
-    }
   });
 
   resources.listen(window, "resize", () => {
@@ -930,6 +915,7 @@ export function createSiteShellController(storage: ExpiringStorage): PageControl
 export const siteShellTestables = Object.freeze({
   adjustHexColor,
   contrastIsLight,
+  initializeNavigationAvatar,
   randomItems,
   timeGreeting,
 });

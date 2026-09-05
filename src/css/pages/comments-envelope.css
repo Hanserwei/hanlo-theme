@@ -1,86 +1,94 @@
 @layer pages {
-/* Extracted from src/comments.html. */
-@media screen and (max-width: 600px) {
+  .hanlo-envelope-letter {
+    width: 95%;
+    max-width: 800px;
+    margin: auto;
+    overflow: hidden;
+    color: var(--heo-fontcolor);
+    background: var(--heo-card-bg);
+    border: var(--style-border-always);
+    border-radius: 5px;
+    box-shadow: var(--heo-shadow-border);
+  }
 
-                            #afterimg,
-                            #beforeimg {
-                                display: none
-                            }
-                        }
+  .hanlo-envelope-message {
+    margin: 15px 0;
+    padding: 20px;
+    color: var(--heo-fontcolor);
+    line-height: 2;
+    overflow-wrap: anywhere;
+    text-align: center;
+    background: var(--heo-secondbg);
+    border-block: var(--style-border-always);
+  }
 
-                        @media screen and (min-width: 600px) {
-                            #article-container img {
-                                margin: 0 auto 0
-                            }
+  .hanlo-envelope-signature {
+    padding-inline: 1rem;
+    color: var(--heo-secondtext);
+    font-size: 12px;
+    text-align: center;
+  }
 
-                            #form-wrap {
-                                overflow: hidden;
-                                height: 447px;
-                                position: relative;
-                                top: 0;
-                                transition: all 1s ease-in-out .3s;
-                                z-index: 0
-                            }
+  @media screen and (max-width: 599px) {
+    #afterimg,
+    #beforeimg {
+      display: none;
+    }
+  }
 
-                            #form-wrap:hover {
-                                height: var(--hanlo-envelope-open-height);
-                                top: -200px
-                            }
+  @media screen and (min-width: 600px) {
+    .hanlo-envelope-container img {
+      margin: 0 auto;
+    }
 
-                            #beforeimg {
-                                position: absolute;
-                                bottom: 126px;
-                                left: 0;
-                                background-repeat: no-repeat;
-                                width: 530px;
-                                height: 317px;
-                                z-index: -100;
-                                pointer-events: none
-                            }
+    #form-wrap {
+      position: relative;
+      top: 0;
+      z-index: 0;
+      height: 447px;
+      overflow: hidden;
+      transition: all 1s ease-in-out 0.3s;
+    }
 
-                            #afterimg {
-                                position: absolute;
-                                bottom: -2px;
-                                left: 0;
-                                background-repeat: no-repeat;
-                                width: 530px;
-                                height: 259px;
-                                z-index: 100;
-                                pointer-events: none
-                            }
+    #form-wrap:hover {
+      top: -200px;
+      height: var(--hanlo-envelope-open-height);
+    }
 
-                            #envelope {
-                                position: relative;
-                                overflow: visible;
-                                width: 500px;
-                                margin: 0 auto;
-                                transition: all 1s ease-in-out .3s;
-                                padding-top: 200px
-                            }
+    #beforeimg {
+      position: absolute;
+      bottom: 126px;
+      left: 0;
+      z-index: -100;
+      width: 530px;
+      height: 317px;
+      background-repeat: no-repeat;
+      pointer-events: none;
+    }
 
-                            #maincontent {
-                                width: 530px;
-                                margin: 20px auto 0
-                            }
+    #afterimg {
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      z-index: 100;
+      width: 530px;
+      height: 259px;
+      background-repeat: no-repeat;
+      pointer-events: none;
+    }
 
-                            .formmain {
-                                background: #fff;
-                                width: 95%;
-                                max-width: 800px;
-                                margin: auto auto;
-                                border-radius: 5px;
-                                border: 1px solid;
-                                overflow: hidden;
-                                -webkit-box-shadow: 0 0 20px 0 #000;
-                                box-shadow: 0 0 20px 0 #000
-                            }
-                        }
+    #envelope {
+      position: relative;
+      width: 500px;
+      margin: 0 auto;
+      padding-top: 200px;
+      overflow: visible;
+      transition: all 1s ease-in-out 0.3s;
+    }
 
-                        [data-theme=dark] .formmain {
-                            background: #323232
-                        }
-
-                        [data-theme=dark] .comments {
-                            background: #5a5a5a
-                        }
+    #maincontent {
+      width: 530px;
+      margin: 20px auto 0;
+    }
+  }
 }

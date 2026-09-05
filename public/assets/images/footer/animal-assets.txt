@@ -1,0 +1,14 @@
+Footer animal artwork
+
+These two assets preserve the artwork supplied through this site's Halo footer code injection.
+They are bundled locally to avoid requiring the external image host at runtime.
+
+animals.avif
+Original source: https://api.minio.yyds.pink/moony/files/2024/10/dwy.avif
+Intrinsic dimensions: 1948 x 236 (RGBA)
+
+animal-wall.avif
+Original source: https://api.minio.yyds.pink/moony/files/2024/10/dwy1.avif
+Intrinsic dimensions: 3600 x 72 (RGB)
+
+The original artwork is unchanged. This record identifies its source and does not claim authorship of the images.

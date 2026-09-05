@@ -1,6 +1,17 @@
 <!-- 页脚模块 -->
 <footer class="hanlo-site-footer" id="footer" xmlns:th="http://www.w3.org/1999/xhtml">
 
+    <!-- 装饰占据独立布局空间，不覆盖正文或分页。旧配置未保存此开关时默认显示。 -->
+    <div class="hanlo-footer-animals" aria-hidden="true"
+         th:if="${theme.config.footer.animal_enable != false}">
+        <img class="hanlo-footer-animal-wall"
+             th:src="${assets_link + '/images/footer/animal-wall.avif'}"
+             width="3600" height="72" alt="" loading="lazy" decoding="async">
+        <img class="hanlo-footer-animal-row"
+             th:src="${assets_link + '/images/footer/animals.avif'}"
+             width="1948" height="236" alt="" loading="lazy" decoding="async">
+    </div>
+
     <div id="heo-footer-bar" th:if="${theme.config.footer.footer_bar.footer_bar_enable}">
         <div class="footer-logo"><th:block th:utext="${theme.config.footer.footer_bar.logo}"></th:block></div>
         <div class="footer-bar-description">[[${theme.config.footer.footer_bar.description}]]</div>
@@ -194,7 +205,6 @@
                     class="bber-gotobb haofont hao-icon-circle-arrow-right"></i></a>
         </div>
     </div>
-    <div data-hanlo-action="hide-reward-mask" id="quit-box"></div>
 
     <!--评论弹幕弹窗 -->
 
