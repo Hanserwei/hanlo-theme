@@ -3,6 +3,7 @@
   "bangumi": "src/css/pages/bangumi.css",
   "categories-3d": "src/css/pages/categories-3d.css",
   "comments-envelope": "src/css/pages/comments-envelope.css",
+  "equipment": "src/css/pages/equipment.css",
   "friend-links": "src/css/pages/friend-links.css",
   "friend-moments": "src/css/pages/friend-moments.css",
   "full-page": "src/css/pages/full-page.css",

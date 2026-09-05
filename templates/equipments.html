@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'equipments',title = ${title + ' | ' + site.title}, head = ~{::head},_title = ${title})}">
 <th:block th:fragment="head">
+    <link th:if="${pluginFinder.available('equipment', '>=2.0.0')}" rel="stylesheet"
+          th:href="@{/plugins/equipment/assets/static/equipment.css(v='2.0.0')}">
+    <link rel="stylesheet"
+          th:href="${assets_link + '/css/equipment-' + theme.spec.version + '.css' + theme_version}">
     <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${_title},
                 _permalink = '/equipments',
                 _cover = ${theme.config.other.opengraph.image},
@@ -23,38 +27,14 @@
                         detail = ${theme.config.equipment.detail},
                         buttonUrl = '',
                         buttonTitle = '')}" ></div>
-                <div id="equipment" th:if="${not #lists.isEmpty(groups)}">
-                    <th:block th:each="group : ${groups}">
-                        <div class="equipment-item">
-                            <h2 class="equipment-item-title">[[${group.spec.displayName}]]</h2>
-                            <div class="equipment-item-description">[[${group.spec.description}]]</div>
-                            <div class="equipment-item-content" th:with="equipmentList = ${group.equipments}">
-                                <div class="equipment-item-content-item" th:each="equipment : ${equipmentList}">
-                                    <div class="equipment-item-content-item-cover">
-                                        <img class="equipment-item-content-item-image"
-                                             th:alt="${equipment.spec.displayName}"
-                                             th:src="${isLazyload ? '' : equipment.spec.cover}"
-                                             th:data-lazy-src="${ isLazyload ? equipment.spec.cover : ''}">
-                                    </div>
-                                    <div class="equipment-item-content-item-info">
-                                        <div class="equipment-item-content-item-name"
-                                             data-hanlo-action="copy-text"
-                                             th:data-copy-text="${equipment.spec.displayName}">
-                                            [[${equipment.spec.displayName}]]
-                                        </div>
-                                        <div class="equipment-item-content-item-specification">[[${equipment.spec.specification}]]
-                                        </div>
-                                        <div class="equipment-item-content-item-description">
-                                            [[${equipment.spec.description}]]
-                                        </div>
-                                        <div class="equipment-item-content-item-toolbar">
-                                            <a class="equipment-item-content-item-link" th:href="${equipment.spec.url}" target="_blank">详情</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div id="equipment" class="hanlo-equipment-content" th:fragment="equipment-content"
+                     th:with="equipmentAvailable=${pluginFinder.available('equipment', '>=2.0.0')}">
+                    <th:block th:if="${equipmentAvailable}">
+                        <th:block th:replace="~{plugin:equipment:modules/equipment :: list(groups=${groups})}"></th:block>
                     </th:block>
+                    <p th:unless="${equipmentAvailable}" class="hanlo-equipment-unavailable">
+                        装备清单暂时无法展示，请稍后再来看看。
+                    </p>
                 </div>
             </div>
         </main>
