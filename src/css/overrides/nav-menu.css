@@ -1,3 +1,15 @@
+/* Give each top-level label and icon a complete, evenly padded hover target. */
+.hanlo-nav-menus > .menus_items {
+  align-items: center;
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+}
+
+.hanlo-nav-menus .menus_item {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+}
+
 /* Panels use the same open state for pointer, keyboard and touch input. */
 .hanlo-nav-menus .menus_item_child {
   position: absolute;
@@ -90,8 +102,22 @@
 
 .hanlo-nav-menus .menus_item > .site-page {
   display: inline-flex;
+  box-sizing: border-box;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  height: auto;
+  padding: 0.45rem 1rem;
+  line-height: 1.5;
+  letter-spacing: normal;
+  white-space: nowrap;
+  border-radius: 999px;
+}
+
+.hanlo-nav-menus .menus_item > .site-page > span {
+  margin-inline-end: -0.18em;
+  letter-spacing: 0.18em;
 }
 
 .hanlo-nav-menus :is(.site-page, .hanlo-submenu-toggle):focus-visible {
@@ -99,6 +125,8 @@
   outline-offset: 3px;
 }
 
+.hanlo-nav-menus .menus_item > .site-page:hover,
+.hanlo-nav-menus .menus_item > .site-page:focus-visible,
 .hanlo-nav-menus .menus_item[data-expanded="true"] > .site-page {
   color: var(--heo-white);
   background: var(--heo-main);
@@ -128,7 +156,8 @@
   font-size: 1em;
 }
 
-.hanlo-nav-menus .hanlo-submenu-toggle .hanlo-menu-icon {
+.hanlo-nav-menus .hanlo-submenu-toggle .hanlo-menu-icon,
+.hanlo-nav-menus .menus_item > .site-page .hanlo-menu-icon {
   margin: 0;
 }
 

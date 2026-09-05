@@ -317,6 +317,7 @@ function initializeHeader(resources: PageResourceScope): void {
   adjust();
   nav?.classList.add("show");
   resources.listen(window, "resize", adjust);
+  if (document.fonts) resources.listen(document.fonts, "loadingdone", adjust);
   resources.listen(window, "orientationchange", () => resources.timeout(adjust, 100));
 }
 
