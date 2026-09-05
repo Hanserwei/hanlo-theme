@@ -2,6 +2,7 @@ import type { ThemeConfig } from "../../core/config";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
 import { mountFooterRecords } from "./footer-records";
+import { mountProfileCards } from "./profile-card";
 
 interface GreetingItem {
   readonly greeting: string;
@@ -215,6 +216,7 @@ export function createPageWidgetsController(): PageControllerDefinition {
       mount() {
         mountDynamicTitle(config, resources);
         mountFooterRecords(resources);
+        mountProfileCards(config, resources);
         mountGreeting(config, resources);
         mountTyped(config, resources);
         mountTenYear(config, resources);

@@ -332,7 +332,6 @@ template {
 
 #aside-content .card-archives ul.card-archive-list > .card-archive-list-item a span,
 #aside-content .card-categories ul.card-category-list > .card-category-list-item a span,
-#aside-content .card-info .card-info-data > .card-info-data-item a .headline,
 #pagination .next_info,
 #pagination .prev_info,
 #sidebar #sidebar-menus .menus_items .site-page,
@@ -863,8 +862,6 @@ a:hover {
     color: var(--heo-lighttext)
 }
 
-#aside-content .author-info__description,
-#aside-content .author-info__name,
 #site-name,
 #site-subtitle,
 #site-title {
@@ -878,12 +875,6 @@ a:hover {
     justify-content: center;
     flex-direction: row;
     align-items: center
-}
-
-.card-info-avatar.is-center {
-    flex-direction: column;
-    display: flex;
-    align-items: flex-start
 }
 
 .copy-true {

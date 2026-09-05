@@ -1,109 +1,53 @@
-<!-- 侧边栏自我介绍 -->
+<!-- A single profile card: optional photo background, avatar/intro and persistent identity links. -->
+<section class="card-widget hanlo-profile-card" data-profile-card aria-label="关于作者"
+         th:with="profile=${theme.config.sidebar.profile},
+                  hasBackground=${not #strings.isEmpty(profile.backgroundImg) && profile.backgroundImg != '/themes/theme-hanlo/assets/images/sidebar/profile.webp'},
+                  profileName=${#strings.isEmpty(profile.profileName) ? site.title : profile.profileName},
+                  avatar=${not #strings.isEmpty(profile.avatar) ? profile.avatar : (#strings.isEmpty(site.logo) ? assets_link + '/images/hanlo-logo.png' : site.logo)},
+                  hasDescription=${not #strings.isEmpty(profile.profileDesc)}"
+         th:classappend="${hasBackground ? 'has-background' : ''}">
+    <link rel="stylesheet" th:href="${assets_link + '/css/profile-' + theme.spec.version + '.css' + theme_version}">
+    <img th:if="${hasBackground}" class="hanlo-profile-background" th:src="${profile.backgroundImg}"
+         alt="" loading="lazy" decoding="async" aria-hidden="true">
 
-<div class="card-widget card-info" >
-    <link th:if="${#strings.equals(theme.config.sidebar.profile.profileStyle, 'default')}"
-          rel="stylesheet"
-          th:href="${assets_link + '/css/profile-default-' + theme.spec.version + '.css' + theme_version}">
-    <link th:if="${#strings.equals(theme.config.sidebar.profile.profileStyle, 'one')}"
-          rel="stylesheet"
-          th:href="${assets_link + '/css/profile-one-' + theme.spec.version + '.css' + theme_version}">
+    <header class="hanlo-profile-header">
+        <button type="button" class="hanlo-profile-greeting hanlo-button-reset" data-profile-greeting
+                title="换一个标签" aria-label="切换个人标签">
+            <span data-profile-greeting-text>👋 你好，很高兴认识你</span>
+        </button>
+    </header>
 
-    <!-- 默认 -->
-    <th:block th:if="${#strings.equals(theme.config.sidebar.profile.profileStyle, 'default')}">
-        <!-- 描述信息 -->
-        <div class="card-content hanlo-profile-background"
-             th:style="${#strings.isEmpty(theme.config.sidebar.profile.backgroundImg) ? '' : '--hanlo-profile-background: url(' + theme.config.sidebar.profile.backgroundImg + ');'}">
-            <div class="card-info-avatar is-center">
-                <div class="author-info__top-group">
-                    <div class="author-info__sayhi" data-hanlo-action="change-greeting">你好啊！我是
-                    </div>
-                    <img class="avatar-img" alt="站点头像"
-                         th:with=" img = @{${#strings.isEmpty(site.logo) ? assets_link + '/images/hanlo-logo.png' : site.logo}}"
-
-                         th:src="${isLazyload ? '' : img}"
-                         th:data-lazy-src="${ isLazyload ? img : ''}">
-                </div>
-                <div class="author-info__name" th:if="${#strings.isEmpty(theme.config.sidebar.profile.profileName)}"
-                     th:text="${site.title}"></div>
-                <div class="author-info__name" th:if="${not #strings.isEmpty(theme.config.sidebar.profile.profileName)}"
-                     th:text="${theme.config.sidebar.profile.profileName}"></div>
-                <div class="author-info__description" th:utext="${theme.config.sidebar.profile.profileDesc}">
-
-                </div>
-            </div>
+    <div class="hanlo-profile-stage">
+        <div class="hanlo-profile-portrait" data-profile-portrait>
+            <img class="hanlo-profile-avatar" th:src="${avatar}" th:alt="${profileName + '的头像'}"
+                 width="144" height="144" loading="lazy" decoding="async">
+            <span class="hanlo-profile-sticker"
+                  th:if="${not #strings.isEmpty(profile.stickerImg) && profile.stickerImg != '/upload/omxo3N22290781690363822143.png'}">
+                <img th:src="${profile.stickerImg}" alt="头像贴纸" width="32" height="32" loading="lazy" decoding="async">
+            </span>
         </div>
+        <div th:if="${hasDescription}" class="hanlo-profile-description" data-profile-description
+             tabindex="0" role="region" aria-label="个人介绍" hidden th:utext="${profile.profileDesc}"></div>
+    </div>
 
-        <!-- 跳转信息 -->
-        <div class="banner-button-group">
-            <a class="banner-button" href="/about">
-                <i class="haofont hao-icon-circle-arrow-right"></i>
-                <span class="banner-button-text">了解更多</span>
+    <button th:if="${hasDescription}" type="button" class="hanlo-profile-toggle hanlo-button-reset"
+            data-profile-toggle aria-expanded="false" hidden>
+        <span data-profile-toggle-text>认识我</span>
+        <th:block th:replace="~{modules/widgets/menu-icon :: menu-icon(icon='SwapOutlined')}"></th:block>
+    </button>
+
+    <div class="hanlo-profile-footer">
+        <a class="hanlo-profile-identity" href="/about" title="了解更多">
+            <span class="hanlo-profile-name" th:text="${profileName}"></span>
+            <span class="hanlo-profile-subtitle" th:if="${not #strings.isEmpty(profile.desc)}" th:text="${profile.desc}"></span>
+        </a>
+        <div class="hanlo-profile-socials" th:if="${not #lists.isEmpty(profile.socialMedia)}">
+            <a class="hanlo-profile-social" th:each="social : ${profile.socialMedia}"
+               th:href="${social.url}" th:title="${#strings.isEmpty(social.name) ? '社交主页' : social.name}"
+               th:aria-label="${#strings.isEmpty(social.name) ? '社交主页' : social.name}"
+               target="_blank" rel="noopener noreferrer external nofollow">
+                <th:block th:replace="~{modules/widgets/menu-icon :: menu-icon(icon=${#strings.isEmpty(social.icon) ? 'LinkOutlined' : social.icon})}"></th:block>
             </a>
         </div>
-
-        <div class="card-info-social-icons is-center"
-             th:if="${not #lists.isEmpty(theme.config.sidebar.profile.socialMedia)}"
-             th:with="socialMedias = ${theme.config.sidebar.profile.socialMedia}">
-
-            <a class="social-icon" rel="external nofollow" target="_blank" th:each="socialMedia : ${socialMedias}"
-               th:href="${socialMedia.url}" th:title="${socialMedia.name}">
-                <i th:class="${socialMedia.icon}"></i>
-            </a>
-        </div>
-
-
-    </th:block>
-
-
-    <!-- 样式一 -->
-    <th:block th:if="${#strings.equals(theme.config.sidebar.profile.profileStyle, 'one')}">
-
-
-        <div class="card-content">
-            <div class="card-info-avatar is-center">
-                <div class="author-info__top-group">
-                    <div class="author-info__sayhi" data-hanlo-action="change-greeting">你好啊！
-                    </div>
-                </div>
-            </div>
-            <div class="avatar-img-group">
-                <img class="avatar-img" alt="avatar"
-                     th:with="img = @{${#strings.isEmpty(site.logo) ? assets_link + '/images/hanlo-logo.png' : site.logo}}"
-
-                     th:src="${isLazyload ? '' : img}"
-                     th:data-lazy-src="${ isLazyload ? img : ''}">
-                <div class="avatar-sticker">
-                    <img class="avatar-sticker-img" alt="avatar"
-                         th:with="img = @{${theme.config.sidebar.profile.stickerImg}}"
-
-                         th:src="${isLazyload ? '' : img}"
-                         th:data-lazy-src="${ isLazyload ? img : ''}">
-                </div>
-            </div>
-            <div class="author-info__description_group" th:utext="${theme.config.sidebar.profile.profileDesc}">
-            </div>
-            <div class="author-info__bottom-group">
-                <a th:if="${not #strings.isEmpty(theme.config.sidebar.profile.profileName)}"
-                   class="author-info__bottom-group-left" href="/about">
-                    <div class="author-info__name">[[${theme.config.sidebar.profile.profileName}]]</div>
-                    <div class="author-info__desc">[[${theme.config.sidebar.profile.desc}]]</div>
-                </a>
-                <div class="card-info-social-icons is-center"
-                     th:if="${not #lists.isEmpty(theme.config.sidebar.profile.socialMedia)}"
-                     th:with="socialMedias = ${theme.config.sidebar.profile.socialMedia}">
-                    <a class="social-icon" rel="external nofollow" target="_blank"
-                       th:each="socialMedia : ${socialMedias}" th:href="${socialMedia.url}"
-                       th:title="${socialMedia.name}">
-                        <i th:class="${socialMedia.icon}"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-    </th:block>
-
-</div>
+    </div>
+</section>

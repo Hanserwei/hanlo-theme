@@ -1,0 +1,271 @@
+@layer overrides {
+  .hanlo-profile-card.card-widget {
+    --profile-ink: var(--heo-fontcolor);
+    --profile-muted: var(--heo-secondtext);
+    --profile-control: color-mix(in srgb, var(--heo-fontcolor) 7%, transparent);
+    --profile-border: color-mix(in srgb, var(--heo-fontcolor) 14%, transparent);
+
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-rows: auto minmax(190px, 1fr);
+    grid-auto-rows: auto;
+    gap: 0.9rem;
+    min-height: 380px;
+    padding: 1.35rem 1.25rem;
+    overflow: hidden;
+    color: var(--profile-ink);
+    background: transparent;
+    border: 1px solid var(--profile-border);
+    border-radius: 24px;
+    box-shadow: none;
+  }
+
+  .hanlo-profile-card.has-background {
+    --profile-ink: #fff;
+    --profile-muted: rgb(255 255 255 / 80%);
+    --profile-control: rgb(255 255 255 / 14%);
+    --profile-border: rgb(255 255 255 / 24%);
+  }
+
+  .hanlo-profile-background {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .hanlo-profile-card.has-background::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    content: "";
+    background: linear-gradient(180deg, rgb(0 0 0 / 32%), rgb(0 0 0 / 42%) 45%, rgb(0 0 0 / 66%));
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .hanlo-profile-header {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .hanlo-profile-card .hanlo-profile-greeting {
+    max-width: 100%;
+    min-height: 34px;
+    padding: 0.35rem 0.8rem;
+    color: var(--profile-ink);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    text-align: center;
+    background: var(--profile-control);
+    border: 1px solid var(--profile-border);
+    border-radius: 999px;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .hanlo-profile-card .hanlo-profile-greeting:enabled:hover {
+    background: color-mix(in srgb, var(--profile-ink) 16%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .hanlo-profile-greeting:disabled {
+    cursor: default;
+  }
+
+  .hanlo-profile-stage {
+    display: grid;
+    min-width: 0;
+    min-height: 190px;
+    align-items: center;
+  }
+
+  .hanlo-profile-portrait {
+    position: relative;
+    grid-area: 1 / 1;
+    justify-self: center;
+    width: 144px;
+    max-width: 70%;
+    aspect-ratio: 1;
+    opacity: 1;
+    transition: opacity 0.22s, transform 0.22s;
+  }
+
+  .hanlo-profile-avatar {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 5px solid color-mix(in srgb, var(--profile-ink) 65%, transparent);
+    border-radius: 50%;
+    box-shadow: 0 8px 26px rgb(0 0 0 / 12%);
+  }
+
+  .hanlo-profile-sticker {
+    position: absolute;
+    right: -2px;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    background: var(--heo-card-bg);
+    border: 3px solid var(--heo-card-bg);
+    border-radius: 50%;
+  }
+
+  .hanlo-profile-sticker img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: inherit;
+  }
+
+  .hanlo-profile-description {
+    grid-area: 1 / 1;
+    max-height: 210px;
+    padding: 0.25rem;
+    overflow: auto;
+    color: var(--profile-ink);
+    font-size: 0.95rem;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+    scrollbar-width: thin;
+    overscroll-behavior: contain;
+  }
+
+  .hanlo-profile-description :is(p, ul, ol) {
+    margin: 0 0 0.65rem;
+  }
+
+  .hanlo-profile-description > :last-child {
+    margin-bottom: 0;
+  }
+
+  .hanlo-profile-description :is(ul, ol) {
+    padding-left: 1.1rem;
+  }
+
+  .hanlo-profile-description strong {
+    color: inherit;
+  }
+
+  .hanlo-profile-description a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .hanlo-profile-card[data-show-description="true"] .hanlo-profile-portrait {
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  .hanlo-profile-card .hanlo-profile-toggle {
+    display: inline-flex;
+    justify-self: center;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 32px;
+    padding: 0.2rem 0.65rem;
+    color: var(--profile-muted);
+    font-size: 0.75rem;
+    border-radius: 999px;
+  }
+
+  .hanlo-profile-card .hanlo-profile-toggle:hover {
+    color: var(--profile-ink);
+    background: var(--profile-control);
+  }
+
+  .hanlo-profile-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.9rem;
+    padding-top: 0.25rem;
+  }
+
+  .hanlo-profile-identity {
+    display: grid;
+    flex: 1 1 110px;
+    gap: 0.25rem;
+    min-width: 0;
+    color: var(--profile-ink);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .hanlo-profile-identity:hover {
+    color: var(--profile-ink);
+    opacity: 0.8;
+  }
+
+  .hanlo-profile-name {
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .hanlo-profile-subtitle {
+    color: var(--profile-muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .hanlo-profile-socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .hanlo-profile-social {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    color: var(--profile-ink);
+    background: var(--profile-control);
+    border: 1px solid var(--profile-border);
+    border-radius: 50%;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .hanlo-profile-social:hover {
+    color: var(--profile-ink);
+    background: color-mix(in srgb, var(--profile-ink) 18%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .hanlo-profile-card .hanlo-menu-icon {
+    width: 1.1em;
+    height: 1.1em;
+    margin: 0;
+    font-size: 1.15rem;
+  }
+
+  .hanlo-profile-card :is(button, a, [tabindex]):focus-visible {
+    outline: 2px solid var(--profile-ink);
+    outline-offset: 3px;
+  }
+
+  .hanlo-profile-card [hidden] {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hanlo-profile-card :is(.hanlo-profile-greeting, .hanlo-profile-portrait, .hanlo-profile-social) {
+      transition: none;
+    }
+  }
+}
