@@ -58,15 +58,20 @@ spec:
     - $formkit: "text"
       name: "icon"
       label: "图标"
+      placeholder: "如 HomeOutlined、GithubOutlined、HeartTwoTone"
+      help: "支持 @antdv-next/icons 全套图标名称（区分大小写）。图标预览：/themes/theme-hanlo/assets/icon/antdv-next/catalog.html"
     - $formkit: "radio"
-      name: "isVertical"
-      value: "0"
-      label: "该菜单的子菜单是否为垂直菜单"
+      name: "submenuLayout"
+      value: "inherit"
+      label: "桌面子菜单布局"
+      help: "跟随主题设置，或为此菜单单独选择布局。手机端使用折叠菜单。"
       options:
-        - label: "是"
-          value: "1"
-        - label: "否"
-          value: "0"
+        - label: "跟随主题设置"
+          value: "inherit"
+        - label: "下拉"
+          value: "dropdown"
+        - label: "横向"
+          value: "horizontal"
 ---
 
 apiVersion: v1alpha1

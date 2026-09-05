@@ -83,8 +83,8 @@
     --hanlo-radius-lg: 20px;
     --hanlo-radius-pill: 999px;
     --hanlo-radius-full: 50px;
-    --hanlo-font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
-    --hanlo-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --hanlo-font-sans: "LXGW WenKai", sans-serif;
+    --hanlo-font-mono: "Maple Mono NF CN", monospace;
     --hanlo-duration-fast: 150ms;
     --hanlo-duration-normal: 300ms;
     --hanlo-duration-slow: 600ms;

@@ -46,14 +46,6 @@ function createConfig() {
     },
     widgets: {
       dynamicTitle: { enabled: false, leave: "离开", back: "回来" },
-      footerRuntime: {
-        enabled: false,
-        startedAt: "2023-08-05",
-        workImage: "",
-        workDescription: "",
-        offDutyImage: "",
-        offDutyDescription: "",
-      },
       greeting: { enabled: false, items: [] },
       typed: { random: false, items: [] },
       tenYear: { startedAt: "2023-01-01", endedAt: "2033-01-01" },

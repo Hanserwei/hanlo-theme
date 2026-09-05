@@ -24,7 +24,9 @@ Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/hal
 - 使用浏览器原生文档导航，并以 View Transitions 和保守预取渐进增强
 - 使用 Design Tokens、语义 Cascade Layers 和零 `!important` 的现代 CSS 架构
 - 提供关于、留言板、待办清单、相册等自定义页面模板
-- 内置页脚动物装饰栏，随主题提供图片并预留布局空间；紧凑柴犬徽标适配桌面与手机
+- 内置页脚动物装饰栏，随主题提供图片并预留布局空间
+- 本地霞鹜文楷字体与开启连字的 Maple Mono NF CN 代码字体
+- 847 个 Ant Design 菜单图标，桌面子菜单可选择下拉或横向排列
 
 ## 环境要求
 
@@ -47,6 +49,16 @@ Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/hal
 从 1.x 升级到 2.0.0 时，自定义代码若使用 `window.pjax` 或旧 PJAX 事件，需要改为真实链接、
 `location.assign()` 或原生文档生命周期。
 
+### 升级到 2.2.0：字体、菜单图标与子菜单布局
+
+页脚「内容 → 中间」整组设置及相关功能已移除，包括网站所有者、运行时间、上下班徽标和自定义徽标。底部页脚版权信息仍由「底部页脚」控制。旧配置中的这些字段会被忽略，无需手动清空配置。
+
+普通主题文字使用 **LXGW WenKai（霞鹜文楷）v1.522**，代码块、行内代码、键盘提示和等宽文本使用 **Maple Mono NF CN v7.9**，开启 `calt`、`liga` 连字。字体以 WOFF2 随主题提供，保留完整中文字形及 Maple 的 Nerd Font 字形；旧字体设置已移除。6 个字体文件合计约 41.3 MiB，浏览器按实际使用的字重与样式加载，首次加载期间先显示后备字体。第三方插件独立组件或 Shadow DOM 内的字体由插件控制。
+
+菜单图标改用 **@antdv-next/icons 1.1.2**，包含 847 个线框、实底及双色图标。在「外观 → 菜单」编辑菜单项，将「图标」设为 `HomeOutlined`、`GithubOutlined`、`CameraFilled`、`HeartTwoTone` 等完整名称。升级后可访问站点的 `/themes/theme-hanlo/assets/icon/antdv-next/catalog.html` 预览全部图标，使用浏览器查找功能搜索并复制名称。旧 `#icon-xxx` Symbol 值需要换成新名称；已有图片地址及传统图标类名继续兼容。主导航、手机菜单与左侧菜单共用这套图标。Vue 只用于构建图标，前台直接使用本地 SVG。
+
+「主题设置 → 导航 → 菜单控制 → 桌面子菜单布局」支持 **下拉** 和 **横向**，默认下拉。也可在「外观 → 菜单」的单个菜单项中选择「跟随主题设置／下拉／横向」。横向布局在父菜单下方展开胶囊形菜单栏，过长时换行，靠近屏幕边缘时调整位置；支持悬浮、键盘聚焦、方向下键展开、Escape 收起及触屏点击。手机端继续使用折叠菜单。旧 `isVertical` 注解已由新布局选项取代，升级后按新选项设置需要单独覆盖的菜单。
+
 ### 升级到 2.1.2：留言板与评论摘要
 
 留言板信封卡片现在使用主题统一的文字与背景色，明暗模式下保持配对，移除了强制浅色背景的工具类。最近评论页和侧栏评论摘要统一转换为纯文本，处理段落、换行、链接、HTML 实体和图片说明，悬停提示也不再显示 HTML 标签。解析器仅在有评论摘要时加载，不执行评论 HTML，不请求其中的外部资源。
@@ -59,7 +71,7 @@ Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/hal
 
 动物栏现在由主题渲染，图片包含在主题包中。默认开启，可在“主题设置 → 页脚 → 动物装饰栏”关闭；已有配置缺少此字段时也会正常显示。
 
-动物和矮墙使用同一网格区域，占据实际高度，并与正文末尾保持间距。动物图最大宽度为 880px，手机端按可用宽度缩放。运行时间上方的柴犬徽标桌面最大 104px、手机 72px，保留返回顶部功能。
+动物和矮墙使用同一网格区域，占据实际高度，并与正文末尾保持间距。动物图最大宽度为 880px，手机端按可用宽度缩放。2.1.x 的运行时间和柴犬徽标已在 2.2.0 移除。
 
 原来通过 Halo“代码注入 → 页脚”加入动物栏的用户，升级后可以删除旧的 `<div id="footer-animal">…</div>` 及对应 `<style>` 中的 `#footer-animal`、`.animal-wall`、`img.animal` 和 `#footer-banner` 样式，保留其他注入内容。新主题会隐藏页脚中遗留的 `#footer-animal`，防止重复显示；主题开关关闭时也会隐藏旧动物栏。`halo:footer` 仍保留用于插件及其他代码注入。
 
@@ -116,7 +128,9 @@ pnpm dev
 | `public/assets/`          | 原样复制到主题包的第一方样式、字体和图片；第三方运行时由 pnpm/Vite 构建 |
 | `templates/`              | Vite 生成、Halo 实际读取的运行时产物；不要手动修改                      |
 | `vite.config.ts`          | Vite Plus 与 Halo 主题构建插件配置                                      |
-| `THIRD_PARTY_NOTICES.txt` | 由生产依赖图生成并随 ZIP 分发的第三方许可与通知文本                     |
+| `THIRD_PARTY_NOTICES.txt` | 由生产依赖图及字体、图标许可生成并随 ZIP 分发的通知文本                 |
+
+菜单图标通过 `scripts/generate-menu-icons.mjs` 生成，运行 `pnpm menu-icons:sync` 更新图标集和预览页，`pnpm menu-icons:check` 校验。字体版本、来源、许可和转换说明见 `public/assets/fonts/PROVENANCE.md`。
 
 发现问题或希望提交改进时，请通过当前仓库的 Issues 和 Pull Requests 反馈。
 

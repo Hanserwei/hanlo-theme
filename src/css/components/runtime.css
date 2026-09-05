@@ -122,7 +122,7 @@ body.hanlo-lightbox-open {
   color: #5b1b00;
   background: #ffe8b6;
   border-bottom: 1px solid #e8a43a;
-  font: 14px/1.5 system-ui, sans-serif;
+  font: 14px/1.5 var(--hanlo-font-sans);
   text-align: center;
 }
 

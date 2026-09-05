@@ -1,0 +1,11 @@
+<!-- Menu icon names match @antdv-next/icons exports. Existing image URLs and font classes remain readable. -->
+<th:block th:fragment="menu-icon(icon)" th:if="${not #strings.isEmpty(icon)}"
+          th:with="isAntIcon=${#strings.endsWith(icon, 'Outlined') || #strings.endsWith(icon, 'Filled') || #strings.endsWith(icon, 'TwoTone')},
+                   isImage=${#strings.startsWith(icon, '/') || #strings.startsWith(icon, 'https://') || #strings.startsWith(icon, 'http://')}">
+    <svg th:if="${isAntIcon}" class="hanlo-menu-icon" aria-hidden="true" focusable="false">
+        <use th:href="${'/themes/theme-hanlo/assets/icon/antdv-next/sprite.svg?v=' + theme.spec.version + '#' + icon}"></use>
+    </svg>
+    <img th:if="${!isAntIcon && isImage}" class="hanlo-menu-icon" th:src="${icon}" alt="" decoding="async">
+    <i th:if="${!isAntIcon && !isImage && !#strings.startsWith(icon, '#')}"
+       class="hanlo-menu-icon" th:classappend="${icon}" aria-hidden="true"></i>
+</th:block>

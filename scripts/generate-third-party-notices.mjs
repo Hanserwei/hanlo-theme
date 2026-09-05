@@ -4,11 +4,20 @@ import path from "node:path";
 
 const outputPath = path.resolve("THIRD_PARTY_NOTICES.txt");
 const checkOnly = process.argv.includes("--check");
-const licenseData = JSON.parse(
+function parseJson(text, source) {
+  try {
+    return JSON.parse(text);
+  } catch (cause) {
+    throw new Error(`Invalid JSON from ${source}`, { cause });
+  }
+}
+
+const licenseData = parseJson(
   execFileSync("pnpm", ["licenses", "list", "--prod", "--json"], {
     encoding: "utf8",
     maxBuffer: 32 * 1024 * 1024,
   }),
+  "pnpm licenses",
 );
 
 const packages = new Map();
@@ -17,7 +26,7 @@ for (const [reportedLicense, entries] of Object.entries(licenseData)) {
     for (const packagePath of entry.paths ?? []) {
       const manifestPath = path.join(packagePath, "package.json");
       if (!existsSync(manifestPath)) continue;
-      const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+      const manifest = parseJson(readFileSync(manifestPath, "utf8"), manifestPath);
       const name = String(manifest.name ?? entry.name ?? "unknown-package");
       const version = String(manifest.version ?? "unknown-version");
       const key = `${name}@${version}`;
@@ -92,6 +101,17 @@ if (missingMetadata.length > 0 || missingText.length > 0) {
     lines.push(`Missing packaged notice text: ${missingText.map(({ key }) => key).join(", ")}`);
   }
   lines.push("");
+}
+
+lines.push("BUNDLED FONT AND ICON ASSETS", "===========================", "");
+for (const file of [
+  "public/assets/fonts/PROVENANCE.md",
+  "public/assets/fonts/MapleMono-OFL.txt",
+  "public/assets/fonts/LXGWWenKai-OFL.txt",
+  "public/assets/fonts/NerdFonts-LICENSE.txt",
+  "public/assets/icon/antdv-next/LICENSE.txt",
+]) {
+  lines.push(`[${file}]`, readFileSync(file, "utf8").trim(), "");
 }
 
 const content = `${lines.join("\n").trimEnd()}\n`;

@@ -13,6 +13,7 @@ import type { PageResourceScope } from "../../core/resource-scope";
 import type { ExpiringStorage } from "../../core/storage";
 import type { PageControllerDefinition } from "../../core/types";
 import { fadeIn, fadeOut, sidebarPaddingRight, snackbarShow, syncThemeColor } from "../../core/ui";
+import { mountDesktopMenus } from "./desktop-menus";
 
 const LINKS_ENDPOINT = "/apis/api.plugin.halo.run/v1alpha1/plugins/PluginLinks/links?keyword=";
 const SCROLL_POSTS_KEY = "hanlo-scroll-posts";
@@ -337,6 +338,8 @@ function initializeNavigation(
     initializeNavigationAvatar(image, resources);
   });
 
+  mountDesktopMenus(resources);
+
   const body = document.body;
   const sidebar = document.querySelector<HTMLElement>("#sidebar-menus");
   const mask = document.querySelector<HTMLElement>("#menu-mask");
@@ -438,11 +441,6 @@ function initializeNavigation(
 
   resources.listen(window, "resize", () => {
     if (window.innerWidth >= 768 && sidebar?.classList.contains("open")) closeSidebar();
-  });
-  resources.listen(window, "touchmove", () => {
-    document.querySelectorAll<HTMLElement>("#nav .menus_item_child").forEach((menu) => {
-      if (!isHidden(menu)) menu.style.display = "none";
-    });
   });
 }
 

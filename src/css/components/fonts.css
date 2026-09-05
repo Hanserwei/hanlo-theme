@@ -1,0 +1,49 @@
+/* Full upstream repertoires, losslessly wrapped in WOFF2. See assets/fonts/PROVENANCE.md.
+ * No preload or local() source: fetch only the faces used, consistently across devices. */
+@font-face {
+    font-family: "LXGW WenKai";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/assets/fonts/LXGWWenKai-Regular.woff2?v=1.522") format("woff2");
+}
+
+@font-face {
+    font-family: "LXGW WenKai";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("/assets/fonts/LXGWWenKai-Medium.woff2?v=1.522") format("woff2");
+}
+
+@font-face {
+    font-family: "Maple Mono NF CN";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/assets/fonts/MapleMono-NF-CN-Regular.woff2?v=7.9") format("woff2");
+}
+
+@font-face {
+    font-family: "Maple Mono NF CN";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/assets/fonts/MapleMono-NF-CN-Bold.woff2?v=7.9") format("woff2");
+}
+
+@font-face {
+    font-family: "Maple Mono NF CN";
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url("/assets/fonts/MapleMono-NF-CN-Italic.woff2?v=7.9") format("woff2");
+}
+
+@font-face {
+    font-family: "Maple Mono NF CN";
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/assets/fonts/MapleMono-NF-CN-BoldItalic.woff2?v=7.9") format("woff2");
+}

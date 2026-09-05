@@ -1,9 +1,12 @@
-/* Extracted from src/modules/widgets/nav-menu.html. */
-.ali_icon {
-                    width: 1.2em;
-                    height: 1.2em;
-                    vertical-align: -0.15em;
-                    fill: currentColor;
-                    overflow: hidden;
-                    right: 0;
-                }
+.hanlo-menu-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1.2em;
+  height: 1.2em;
+  margin-inline-end: 0.45em;
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  object-fit: contain;
+}

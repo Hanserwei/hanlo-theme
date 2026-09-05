@@ -14,6 +14,9 @@ kbd,
 pre,
 samp {
     font-family: var(--hanlo-font-mono);
+    font-variant-ligatures: common-ligatures contextual;
+    font-feature-settings: "calt" 1, "liga" 1;
+    letter-spacing: normal;
 }
 
 html,

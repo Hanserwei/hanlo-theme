@@ -9,7 +9,7 @@ code:not([class]) {
     line-height: 2;
     box-shadow: var(--heo-shadow-border);
     font-size: 17.5px;
-    font-family: consolas, Menlo, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-family: var(--hanlo-font-mono);
 }
 
 

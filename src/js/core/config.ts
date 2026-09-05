@@ -81,14 +81,6 @@ export interface ThemeConfig {
   }>;
   readonly widgets: Readonly<{
     readonly dynamicTitle: Readonly<{ enabled: boolean; leave: string; back: string }>;
-    readonly footerRuntime: Readonly<{
-      enabled: boolean;
-      startedAt: string;
-      workImage: string;
-      workDescription: string;
-      offDutyImage: string;
-      offDutyDescription: string;
-    }>;
     readonly greeting: Readonly<{ enabled: boolean; items: readonly unknown[] }>;
     readonly typed: Readonly<{ random: boolean; items: readonly unknown[] }>;
     readonly tenYear: Readonly<{ startedAt: string; endedAt: string }>;
@@ -198,17 +190,6 @@ export function validateThemeConfig(value: unknown): asserts value is ThemeConfi
   assertField(dynamicTitle, "enabled", "boolean", "GLOBAL_CONFIG.widgets.dynamicTitle");
   assertField(dynamicTitle, "leave", "string", "GLOBAL_CONFIG.widgets.dynamicTitle");
   assertField(dynamicTitle, "back", "string", "GLOBAL_CONFIG.widgets.dynamicTitle");
-  const footerRuntime = assertRecord(widgets, "footerRuntime");
-  assertField(footerRuntime, "enabled", "boolean", "GLOBAL_CONFIG.widgets.footerRuntime");
-  for (const key of [
-    "startedAt",
-    "workImage",
-    "workDescription",
-    "offDutyImage",
-    "offDutyDescription",
-  ]) {
-    assertField(footerRuntime, key, "string", "GLOBAL_CONFIG.widgets.footerRuntime");
-  }
   const greeting = assertRecord(widgets, "greeting");
   assertField(greeting, "enabled", "boolean", "GLOBAL_CONFIG.widgets.greeting");
   if (!Array.isArray(greeting["items"])) {

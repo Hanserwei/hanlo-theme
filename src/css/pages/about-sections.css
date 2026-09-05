@@ -13,7 +13,7 @@
     min-width: 0;
     margin-right: auto;
     font-size: 36px;
-    font-family: Helvetica;
+    font-family: var(--hanlo-font-sans);
     line-height: 1.06;
     letter-spacing: -0.02em;
     color: var(--heo-fontcolor);
