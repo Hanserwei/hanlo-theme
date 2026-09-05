@@ -1,0 +1,4 @@
+/* Keep the poem card on the shared text face without changing its layout module. */
+div#poem_sentence {
+    font-family: var(--hanlo-font-sans);
+}

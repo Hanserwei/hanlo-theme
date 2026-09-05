@@ -17,10 +17,7 @@
                             <th:block th:each="childMenu : ${menuItem.children}">
                                 <a class="back-menu-item" rel="external nofollow"
                                    th:target="${childMenu.spec.target?.value}" th:href="@{${childMenu.status.href}}">
-                                    <!-- icon 预留 -->
-                                    <img th:if="${!#strings.isEmpty(#annotations.getOrDefault(childMenu, 'icon', ''))}"
-                                         class="back-menu-item-icon"
-                                         th:src="${#annotations.getOrDefault(childMenu, 'icon', '')}">
+                                    <th:block th:replace="~{modules/widgets/menu-icon :: menu-icon(icon=${#annotations.getOrDefault(childMenu, 'icon', '')})}"></th:block>
                                     <span class="back-menu-item-text" th:text="${childMenu.status.displayName}"></span>
                                 </a>
                             </th:block>

@@ -1,65 +1,41 @@
 <th:block th:fragment="nav-menu-recursion(menuItem)">
-    <!-- 有子菜单则显示子菜单 -->
-    <th:block th:if="${not #lists.isEmpty(menuItem.children)}">
-        <!-- 子菜单 -->
-        <div class="menus_item_child"
-             th:classappend="${#annotations.get(menuItem,'isVertical')=='1'?'vertical_nav':''}">
-            <div class="recursion_menus_item" th:each="childMenu : ${menuItem.children}">
-                <a class="site-page child" th:target="${childMenu.spec.target?.value}"
-                   th:href="@{${childMenu.status.href}}">
-                    <th:block th:if="${theme.config.nav.menus.enable_ali_iconfont_symbol_header}">
-                        <svg class="ali_icon" aria-hidden="true">
-                            <use th:href="${#annotations.getOrDefault(childMenu, 'icon','jiewen joe-icon-zuzhijiagou')}"></use>
-                        </svg>
-                    </th:block>
-                    <th:block th:if="${!theme.config.nav.menus.enable_ali_iconfont_symbol_header}">
-                        <i class="hl:[font-size:.9em]" th:if="${!#strings.isEmpty(#annotations.getOrDefault(childMenu, 'icon', ''))}"
-                           th:class="${#annotations.getOrDefault(childMenu, 'icon', '')}"
-                          ></i>
-                    </th:block>
-                    <span th:text="${childMenu.status.displayName}"></span>
-                </a>
-                <!--递归调用-->
-                <div th:replace="~{modules/widgets/nav-menu :: nav-menu-recursion(menuItem=${childMenu})}"></div>
-            </div>
+    <div th:if="${not #lists.isEmpty(menuItem.children)}" class="menus_item_child"
+         th:id="${'submenu-' + menuItem.metadata.name}"
+         th:with="itemLayout=${#annotations.getOrDefault(menuItem, 'submenuLayout', 'inherit')},
+                  menuLayout=${itemLayout == 'horizontal' || itemLayout == 'dropdown' ? itemLayout : (theme.config.nav.menus.submenu_layout == 'horizontal' ? 'horizontal' : 'dropdown')}"
+         th:data-submenu-layout="${menuLayout}">
+        <div class="recursion_menus_item" th:each="childMenu : ${menuItem.children}">
+            <a class="site-page child" th:target="${childMenu.spec.target?.value}"
+               th:href="@{${childMenu.status.href}}">
+                <th:block th:replace="~{modules/widgets/menu-icon :: menu-icon(icon=${#annotations.getOrDefault(childMenu, 'icon', '')})}"></th:block>
+                <span th:text="${childMenu.status.displayName}"></span>
+            </a>
+            <button th:if="${not #lists.isEmpty(childMenu.children)}" class="hanlo-submenu-toggle hanlo-button-reset"
+                    type="button" aria-expanded="false" th:aria-label="${'展开' + childMenu.status.displayName + '子菜单'}"
+                    th:aria-controls="${'submenu-' + childMenu.metadata.name}">
+                <th:block th:replace="~{modules/widgets/menu-icon :: menu-icon(icon='DownOutlined')}"></th:block>
+            </button>
+            <th:block th:replace="~{modules/widgets/nav-menu :: nav-menu-recursion(menuItem=${childMenu})}"></th:block>
         </div>
-    </th:block>
+    </div>
 </th:block>
 
-<!-- 导航栏菜单栏 -->
-<div id="menus" th:fragment="nav-menu">
-    
+<!-- The first level opens children; leaf items keep their configured links. -->
+<div id="menus" class="hanlo-nav-menus" th:fragment="nav-menu">
     <div class="menus_items">
-        
-        <!-- 第一层仅展示使用，不做跳转 -->
         <div class="menus_item" th:each="menuItem : ${menuFinder.getPrimary().menuItems}">
-            
-            <!-- javascript:void(0);" -->
-            <a class="site-page" rel="external nofollow"
-               th:if="${#lists.isEmpty(menuItem.children)}"
-               th:target="${menuItem.spec.target?.value}"
-               th:href="@{${menuItem.status.href}}">
-                <th:block th:if="${theme.config.nav.menus.enable_ali_iconfont_symbol_header}">
-                    <svg class="ali_icon" aria-hidden="true">
-                        <use th:href="${#annotations.getOrDefault(menuItem, 'icon','jiewen joe-icon-zuzhijiagou')}"></use>
-                    </svg>
-                </th:block>
+            <a class="site-page" th:if="${#lists.isEmpty(menuItem.children)}"
+               th:target="${menuItem.spec.target?.value}" th:href="@{${menuItem.status.href}}">
+                <th:block th:replace="~{modules/widgets/menu-icon :: menu-icon(icon=${#annotations.getOrDefault(menuItem, 'icon', '')})}"></th:block>
                 <span th:text="${menuItem.status.displayName}"></span>
             </a>
-            
             <button th:if="${not #lists.isEmpty(menuItem.children)}"
-                    class="site-page hanlo-button-reset" type="button" aria-haspopup="true">
-                <th:block th:if="${theme.config.nav.menus.enable_ali_iconfont_symbol_header}">
-                    <svg class="ali_icon" aria-hidden="true">
-                        <use th:href="${#annotations.getOrDefault(menuItem, 'icon','jiewen joe-icon-zuzhijiagou')}"></use>
-                    </svg>
-                </th:block>
+                    class="site-page hanlo-button-reset" type="button" aria-expanded="false"
+                    th:aria-controls="${'submenu-' + menuItem.metadata.name}">
+                <th:block th:replace="~{modules/widgets/menu-icon :: menu-icon(icon=${#annotations.getOrDefault(menuItem, 'icon', '')})}"></th:block>
                 <span th:text="${menuItem.status.displayName}"></span>
             </button>
-            <!--递归调用-->
-            <div th:replace="~{modules/widgets/nav-menu :: nav-menu-recursion(menuItem=${menuItem})}"></div>
-            
+            <th:block th:replace="~{modules/widgets/nav-menu :: nav-menu-recursion(menuItem=${menuItem})}"></th:block>
         </div>
-    
     </div>
 </div>

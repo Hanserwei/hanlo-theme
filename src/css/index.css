@@ -16,6 +16,7 @@
 @import "./layout/global-background.css" layer(layout);
 @import "./layout/nav-menu.css" layer(layout);
 
+@import "./components/fonts.css" layer(components);
 @import "./components/sidebar-legacy.css" layer(components);
 @import "./components/article-content.css" layer(components);
 @import "./components/article-extensions.css" layer(components);
@@ -55,6 +56,7 @@
 @import "tailwindcss/utilities.css" layer(utilities) prefix(hl) source("../");
 @import "./utilities.css" layer(utilities);
 
+@import "./overrides/fonts.css" layer(overrides);
 @import "./overrides/global.css" layer(overrides);
 @import "./overrides/sidebar.css" layer(overrides);
 @import "./overrides/components.css" layer(overrides);
@@ -62,6 +64,7 @@
 @import "./overrides/integrations.css" layer(overrides);
 @import "./overrides/footer.css" layer(overrides);
 @import "./overrides/semantic-navigation.css" layer(overrides);
+@import "./overrides/nav-menu.css" layer(overrides);
 
 @view-transition {
   navigation: auto;

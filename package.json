@@ -10,11 +10,13 @@
     "dev": "vp build --watch",
     "icons:check": "node scripts/sync-dashboard-icons.mjs --check",
     "icons:sync": "node scripts/sync-dashboard-icons.mjs",
+    "menu-icons:check": "node scripts/generate-menu-icons.mjs --check",
+    "menu-icons:sync": "node scripts/generate-menu-icons.mjs",
     "notices": "node scripts/generate-third-party-notices.mjs",
     "package": "node scripts/package-theme.mjs",
     "test": "pnpm run test:unit",
     "test:unit": "vitest run",
-    "validate": "node scripts/validate-theme.mjs && node scripts/sync-dashboard-icons.mjs --check && node scripts/generate-third-party-notices.mjs --check",
+    "validate": "node scripts/validate-theme.mjs && node scripts/sync-dashboard-icons.mjs --check && node scripts/generate-menu-icons.mjs --check && node scripts/generate-third-party-notices.mjs --check",
     "verify-build": "node scripts/verify-build.mjs"
   },
   "dependencies": {
@@ -29,12 +31,14 @@
     "typed.js": "2.0.12"
   },
   "devDependencies": {
+    "@antdv-next/icons": "1.1.2",
     "@halo-dev/theme-package-cli": "1.1.1",
     "@halo-dev/vite-plugin-halo-theme": "1.0.3",
     "@tailwindcss/vite": "4.3.3",
     "@types/dplayer": "1.25.6",
     "@types/node": "24.13.3",
     "@types/qrcode": "1.5.6",
+    "@vue/server-renderer": "3.5.30",
     "postcss": "8.5.28",
     "postcss-selector-parser": "7.1.6",
     "stylelint": "17.14.1",
@@ -44,6 +48,7 @@
     "vite": "8.2.2",
     "vite-plus": "0.3.0",
     "vitest": "4.1.11",
+    "vue": "3.5.30",
     "yaml": "2.9.0"
   },
   "engines": {

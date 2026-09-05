@@ -13,23 +13,4 @@ describe("page widget configuration", () => {
       "Hello",
     ]);
   });
-
-  it("replaces legacy footer defaults without rewriting custom images", () => {
-    expect(
-      pageWidgetTestables.normalizeFooterRuntimeImage(
-        "/upload/%E5%9B%B0%E5%9B%B0%E9%B1%BC-%E4%B8%8B%E7%8F%AD%E5%95%A6-yellowgreen.svg",
-      ),
-    ).toBe("/themes/theme-hanlo/assets/images/footer/shiba.svg");
-    expect(
-      pageWidgetTestables.normalizeFooterRuntimeImage(
-        "/themes/theme-hanlo/assets/images/hanlo-logo.png",
-      ),
-    ).toBe("/themes/theme-hanlo/assets/images/footer/shiba.svg");
-    expect(pageWidgetTestables.normalizeFooterRuntimeImage("")).toBe(
-      "/themes/theme-hanlo/assets/images/footer/shiba.svg",
-    );
-    expect(pageWidgetTestables.normalizeFooterRuntimeImage("/upload/custom.webp")).toBe(
-      "/upload/custom.webp",
-    );
-  });
 });

@@ -37,58 +37,6 @@
   display: none;
 }
 
-.hanlo-footer-runtime {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: min(100%, 900px);
-  margin-inline: auto;
-  padding: 1.25rem 1rem 0.5rem;
-  color: var(--heo-fontcolor);
-}
-
-.hanlo-site-footer .hanlo-footer-mascot {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: clamp(80px, 8vw, 104px);
-  aspect-ratio: 1;
-  margin-bottom: 0.75rem;
-  padding: 0;
-  border-radius: 32%;
-  transition: transform 0.3s var(--hanlo-ease-standard, ease);
-}
-
-.hanlo-site-footer .hanlo-footer-mascot:hover {
-  transform: translateY(-2px);
-}
-
-.hanlo-site-footer .hanlo-footer-mascot:focus-visible {
-  outline: 3px solid var(--heo-theme);
-  outline-offset: 4px;
-}
-
-.hanlo-footer-runtime img.boardsign {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: none;
-  aspect-ratio: 1;
-  border-radius: 0;
-  object-fit: contain;
-  filter: drop-shadow(0 12px 18px rgb(124 64 0 / 18%));
-  pointer-events: none;
-}
-
-.hanlo-footer-runtime-text {
-  max-width: 100%;
-  font-size: 0.875rem;
-  line-height: 2;
-  overflow-wrap: anywhere;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
 .hanlo-site-footer .hanlo-footer-badges {
   display: flex;
   flex-wrap: wrap;
@@ -181,20 +129,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .hanlo-footer-runtime {
-    padding-top: 1rem;
-  }
-
-  .hanlo-site-footer .hanlo-footer-mascot {
-    width: 72px;
-    margin-bottom: 0.6rem;
-  }
-
-  .hanlo-footer-runtime-text {
-    font-size: 0.75rem;
-    line-height: 1.9;
-  }
-
   .hanlo-site-footer .hanlo-footer-badges {
     max-width: 360px;
     gap: 0.4rem;
@@ -219,7 +153,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hanlo-site-footer .hanlo-footer-mascot,
   .hanlo-site-footer .hanlo-footer-badge {
     transition: none;
   }

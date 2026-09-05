@@ -190,7 +190,7 @@ hr {
 }
 
 pre {
-    font-family: monospace, monospace;
+    font-family: var(--hanlo-font-mono);
     font-size: 1em;
 }
 
@@ -216,7 +216,7 @@ strong {
 code,
 kbd,
 samp {
-    font-family: monospace, monospace;
+    font-family: var(--hanlo-font-mono);
     font-size: 1em;
 }
 
@@ -775,7 +775,7 @@ body {
     background: var(--heo-background);
     color: var(--heo-fontcolor);
     font-size: var(--global-font-size);
-    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei";
+    font-family: var(--hanlo-font-sans);
     line-height: 2;
     -webkit-tap-highlight-color: transparent;
     margin: 0px;
@@ -868,7 +868,7 @@ a:hover {
 #site-name,
 #site-subtitle,
 #site-title {
-    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-family: var(--hanlo-font-sans);
 }
 
 .is-center {

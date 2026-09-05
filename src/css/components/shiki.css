@@ -55,7 +55,7 @@
     border: 0;
     background: transparent;
     color: inherit;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-family: var(--hanlo-font-mono);
     font-size: 0.95rem;
     line-height: 1.65;
 }

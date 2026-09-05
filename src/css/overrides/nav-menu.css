@@ -1,0 +1,139 @@
+/* Panels use the same open state for pointer, keyboard and touch input. */
+.hanlo-nav-menus .menus_item_child {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 50%;
+  display: none;
+  gap: 0.25rem;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  margin: 10px 0 0;
+  padding: 0.5rem;
+  color: var(--heo-fontcolor);
+  background: var(--heo-card-bg);
+  border: var(--style-border);
+  border-radius: 22px;
+  box-shadow: var(--heo-shadow-black);
+  translate: calc(-50% + var(--hanlo-submenu-shift, 0px)) 0;
+  animation: none;
+  transition: border-color 0.2s;
+}
+
+.hanlo-nav-menus .menus_item_child::before {
+  position: absolute;
+  top: -12px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  content: "";
+}
+
+.hanlo-nav-menus .menus_item_child[data-submenu-layout="dropdown"] {
+  flex-direction: column;
+  min-width: 9rem;
+}
+
+.hanlo-nav-menus .menus_item_child[data-submenu-layout="horizontal"] {
+  flex-flow: row wrap;
+  justify-content: center;
+  padding-inline: 0.75rem;
+  border-radius: 32px;
+}
+
+.hanlo-nav-menus:not([data-menus-ready]) :is(.menus_item, .recursion_menus_item):is(:hover, :focus-within) > .menus_item_child,
+.hanlo-nav-menus [data-expanded="true"] > .menus_item_child {
+  display: flex;
+}
+
+.hanlo-nav-menus .menus_item_child > .recursion_menus_item {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  max-width: 100%;
+  margin: 0;
+  border-radius: 16px;
+}
+
+.hanlo-nav-menus .menus_item_child .site-page {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  color: var(--heo-fontcolor);
+  line-height: 1.7;
+  text-shadow: none;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  border-radius: 18px;
+}
+
+.hanlo-nav-menus .menus_item_child .site-page:hover,
+.hanlo-nav-menus .menus_item_child .site-page:focus-visible {
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  color: var(--heo-card-bg);
+  background: var(--heo-lighttext);
+  box-shadow: none;
+  transform: none;
+}
+
+.hanlo-nav-menus .hanlo-submenu-toggle {
+  flex-shrink: 0;
+  padding: 0.25rem;
+  color: var(--heo-fontcolor);
+  border-radius: 12px;
+}
+
+.hanlo-nav-menus .menus_item > .site-page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hanlo-nav-menus :is(.site-page, .hanlo-submenu-toggle):focus-visible {
+  outline: 2px solid var(--heo-theme);
+  outline-offset: 3px;
+}
+
+.hanlo-nav-menus .menus_item[data-expanded="true"] > .site-page {
+  color: var(--heo-white);
+  background: var(--heo-main);
+}
+
+.hanlo-nav-menus .menus_item_child[data-submenu-layout="dropdown"] > .recursion_menus_item > .menus_item_child {
+  top: 0;
+  left: 100%;
+  margin: 0 0 0 10px;
+  translate: var(--hanlo-submenu-shift, 0px) 0;
+}
+
+.hanlo-nav-menus .menus_item_child[data-submenu-layout="dropdown"] > .recursion_menus_item > .menus_item_child::before {
+  top: 0;
+  left: -12px;
+  width: 12px;
+  height: 100%;
+}
+
+.hanlo-nav-menus .hanlo-menu-icon,
+#sidebar-menus .hanlo-menu-icon,
+.back-menu-item .hanlo-menu-icon {
+  flex-shrink: 0;
+  width: 1.2em;
+  height: 1.2em;
+  margin-inline: 0 0.45em;
+  font-size: 1em;
+}
+
+.hanlo-nav-menus .hanlo-submenu-toggle .hanlo-menu-icon {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hanlo-nav-menus .menus_item_child {
+    transition: none;
+  }
+}

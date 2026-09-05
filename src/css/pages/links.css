@@ -512,25 +512,6 @@
     text-rendering: auto;
 }
 
-.github-badge {
-    color: inherit;
-    text-decoration: inherit;
-    display: inline-flex;
-}
-
-#ghbdages .github-badge img {
-    height: 20px;
-    max-width: 150px;
-    border-radius: 4px;
-    pointer-events: none
-}
-
-#workboard img.boardsign {
-    width: 100%;
-    max-width: 130px;
-    border-radius: 0
-}
-
 @keyframes heartbeat-bounce {
     0%,
     100% {
@@ -551,10 +532,6 @@
     70% {
         transform: scale(1.1);
     }
-}
-
-#workboard {
-    font-size: 12px;
 }
 
 /* 页脚底层背景 */

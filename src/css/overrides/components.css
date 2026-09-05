@@ -297,7 +297,9 @@ psw:hover {
 kbd {
     display: inline-block;
     color: #666;
-    font: bold 9pt arial;
+    font-weight: bold;
+    font-size: 9pt;
+    font-family: var(--hanlo-font-mono);
     text-decoration: none;
     text-align: center;
     padding: 2px 5px;

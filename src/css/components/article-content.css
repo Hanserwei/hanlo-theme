@@ -41,7 +41,7 @@
     white-space: nowrap;
     font-weight: 600;
     font-size: 0.9em;
-    font-family: Monaco, "Ubuntu Mono", monospace;
+    font-family: var(--hanlo-font-mono);
     line-height: 1em;
 }
 
