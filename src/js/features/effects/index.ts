@@ -1,5 +1,6 @@
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
+import { mountClickEffect } from "./click-effect";
 
 interface Point {
   x: number;
@@ -149,11 +150,13 @@ function mountUniverse(resources: PageResourceScope): void {
 export function createEffectsController(): PageControllerDefinition {
   return {
     name: "effects",
-    when: ({ config }) => config.effects.bubble || config.effects.universe,
+    when: ({ config }) =>
+      config.effects.bubble || config.effects.universe || config.effects.baClick,
     create: ({ config, resources }) => ({
       mount() {
         if (config.effects.bubble) mountBubbles(resources);
         if (config.effects.universe) mountUniverse(resources);
+        if (config.effects.baClick) mountClickEffect(resources);
       },
       unmount() {},
     }),

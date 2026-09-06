@@ -61,6 +61,7 @@ export interface ThemeConfig {
   readonly effects: Readonly<{
     readonly bubble: boolean;
     readonly universe: boolean;
+    readonly baClick: boolean;
   }>;
   readonly friends: Readonly<{
     readonly apiUrl: string;
@@ -167,6 +168,7 @@ export function validateThemeConfig(value: unknown): asserts value is ThemeConfi
   const effects = assertRecord(value, "effects");
   assertField(effects, "bubble", "boolean", "GLOBAL_CONFIG.effects");
   assertField(effects, "universe", "boolean", "GLOBAL_CONFIG.effects");
+  assertField(effects, "baClick", "boolean", "GLOBAL_CONFIG.effects");
 
   const friends = assertRecord(value, "friends");
   assertField(friends, "apiUrl", "string", "GLOBAL_CONFIG.friends");

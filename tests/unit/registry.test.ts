@@ -32,7 +32,7 @@ const config = parseThemeConfig({
     theme_light: "one-light",
     theme_dark: "one-dark-pro",
   },
-  effects: { bubble: false, universe: false },
+  effects: { bubble: false, universe: false, baClick: false },
   friends: { apiUrl: "/api/friends", pageSize: 12, errorImage: "/error.png" },
   postAi: {
     summary: "",

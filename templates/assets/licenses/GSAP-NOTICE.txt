@@ -1,0 +1,12 @@
+GSAP 3.15.0
+https://gsap.com/
+Source package: https://www.npmjs.com/package/gsap/v/3.15.0
+
+Copyright (c) 2008-2026, GreenSock. All rights reserved.
+
+GSAP is provided under the Standard "No Charge" GSAP License, not under the
+theme's license. The package's README points to the governing terms at:
+https://gsap.com/standard-license/
+
+Hanlo uses GSAP to implement the animations of the optional 3D category page.
+No visual animation editor or additional GSAP plugins are included.
