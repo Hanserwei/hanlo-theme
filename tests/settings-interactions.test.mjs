@@ -59,6 +59,16 @@ test("About editors track selected sections using FormKit method-call syntax", (
   assert.equal(visible("/about/game", {}), false);
 });
 
+test("emotion controls follow the existing About widget key and preserve selections", () => {
+  for (const path of ["/about/emotions", "/about/emotion_count"]) {
+    assert.equal(visible(path, { hanlo_about_widget_list: ["hello-about"] }), true);
+    assert.equal(visible(path, { hanlo_about_widget_list: ["game"] }), false);
+    assert.equal(visible(path, { hanlo_about_widget_list: [] }), false);
+    assert.equal(visible(path, {}), false);
+    assert.equal(fields.find((field) => field.path === path).node.preserve, true);
+  }
+});
+
 test("each social row independently selects its CSS or SVG input", () => {
   for (const side of ["socialMediaLeft", "socialMediaRight"]) {
     for (const mode of ["icon", "custom"]) {

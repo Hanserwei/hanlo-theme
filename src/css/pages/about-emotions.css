@@ -1,0 +1,142 @@
+.about-emotions {
+  width: 100%;
+  margin: 20px auto 0;
+  overflow: hidden;
+  color: var(--heo-fontcolor);
+  background: var(--heo-card-bg);
+  border: var(--style-border-always);
+  border-radius: 24px;
+  box-shadow: var(--heo-shadow-border);
+}
+
+.about-emotions__header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px 0;
+}
+
+.about-emotions__eyebrow {
+  color: var(--heo-secondtext);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.about-emotions .about-emotions__title {
+  margin: 4px 0 0;
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+.about-emotions__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.about-emotions__controls button {
+  min-height: 40px;
+  padding: 7px 14px;
+  color: var(--heo-fontcolor);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  background: var(--heo-secondbg);
+  border: var(--style-border-always);
+  border-radius: 20px;
+  transition: background 0.2s;
+}
+
+.about-emotions__controls button:hover,
+.about-emotions__controls button[aria-pressed="true"] {
+  color: #332700;
+  background: #ffda68;
+}
+
+.about-emotions__controls button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.about-emotions .about-emotions__hint {
+  margin: 12px 28px 20px;
+  color: var(--heo-secondtext);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.about-emotions__stage {
+  position: relative;
+  height: 320px;
+  overflow: hidden;
+  contain: layout paint;
+  touch-action: pan-y;
+  background-image: radial-gradient(circle, var(--heo-card-border) 1px, transparent 1px);
+  background-position: 12px 12px;
+  background-size: 24px 24px;
+  border-radius: 0 0 24px 24px;
+}
+
+.about-emotions__ball {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  width: var(--emotion-size, 56px);
+  height: var(--emotion-size, 56px);
+  padding: 0;
+  overflow: hidden;
+  font-size: 40px;
+  line-height: 1;
+  cursor: grab;
+  user-select: none;
+  background: #fff1bd;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgb(65 40 0 / 14%), inset 0 0 0 1px rgb(133 84 0 / 10%);
+  place-items: center;
+  touch-action: none;
+}
+
+.about-emotions__ball img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  object-fit: contain;
+}
+
+.about-emotions__ball.is-grabbed {
+  z-index: 1;
+  cursor: grabbing;
+}
+
+.about-emotions__ball:focus-visible,
+.about-emotions__controls button:focus-visible {
+  outline: 3px solid var(--heo-main);
+  outline-offset: -3px;
+}
+
+.about-emotions .about-emotions__placeholder {
+  display: grid;
+  height: 100%;
+  margin: 0;
+  color: var(--heo-secondtext);
+  place-items: center;
+}
+
+.about-emotions [hidden] {
+  display: none;
+}
+
+@media (width <= 768px) {
+  .about-emotions__header {
+    flex-wrap: wrap;
+    padding: 20px 20px 0;
+  }
+
+  .about-emotions .about-emotions__hint {
+    margin: 12px 20px 16px;
+  }
+}

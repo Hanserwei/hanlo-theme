@@ -46,11 +46,13 @@ for (const [reportedLicense, entries] of Object.entries(licenseData)) {
               ? manifest.repository.url.replace(/^git\+/, "").replace(/\.git$/, "")
               : "not declared";
       const noticeFiles = readdirSync(packagePath)
-        .filter((file) => /^(?:licen[cs]e|copying|notice)(?:\..*)?$/i.test(file))
+        .filter((file) =>
+          /^(?:licen[cs]e|copying|notice|third[_-]party[_-]notices?)(?:\..*)?$/i.test(file),
+        )
         .sort();
       const notices = noticeFiles.map((file) => ({
         file,
-        text: readFileSync(path.join(packagePath, file), "utf8").trim(),
+        text: readFileSync(path.join(packagePath, file), "utf8").replace(/\r\n?/g, "\n").trim(),
       }));
       packages.set(key, { homepage, key, license, notices });
     }
@@ -103,13 +105,15 @@ if (missingMetadata.length > 0 || missingText.length > 0) {
   lines.push("");
 }
 
-lines.push("BUNDLED FONT AND ICON ASSETS", "===========================", "");
+lines.push("ADDITIONAL LIBRARY AND ASSET NOTICES", "===================================", "");
 for (const file of [
   "public/assets/fonts/PROVENANCE.md",
   "public/assets/fonts/MapleMono-OFL.txt",
   "public/assets/fonts/LXGWWenKai-OFL.txt",
   "public/assets/fonts/NerdFonts-LICENSE.txt",
   "public/assets/icon/antdv-next/LICENSE.txt",
+  "public/assets/images/tieba/PROVENANCE.md",
+  "public/assets/licenses/GSAP-NOTICE.txt",
 ]) {
   lines.push(`[${file}]`, readFileSync(file, "utf8").trim(), "");
 }

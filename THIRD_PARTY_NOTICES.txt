@@ -4,9 +4,9 @@ HANLO THEME THIRD-PARTY NOTICES
 Generated deterministically from the installed production pnpm dependency graph.
 This inventory records package metadata; it is not legal advice or a grant of rights.
 
-Packages: 107
+Packages: 110
 Missing license metadata: 0
-Missing packaged LICENSE/COPYING/NOTICE text: 1
+Missing packaged LICENSE/COPYING/NOTICE text: 2
 
 --------------------------------------------------------------------------------
 @shikijs/core@4.4.3
@@ -418,6 +418,76 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+--------------------------------------------------------------------------------
+ba-click-fx@1.3.2
+License metadata: MIT
+Homepage: https://ba-click-fx.cialloking.top
+
+[LICENSE]
+MIT License
+
+Copyright (c) 2026 CialloKing
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+[THIRD_PARTY_NOTICES.md]
+# Third-Party Notices
+
+Early versions of **ba-click-fx** were developed with reference to the
+implementation, parameters, and visual behavior of the following
+MIT-licensed projects:
+
+- **BASpark**, maintained at `DoomVoss/BASpark`
+- **BA-Spark-Cursor**, maintained at `VanillaNahida/BA-Spark-Cursor`
+
+BA-Spark-Cursor states that its click effect originates from BASpark.
+
+The current version of ba-click-fx has since been substantially refactored.
+This notice is retained to preserve attribution and license information for
+the early implementation history.
+
+Both projects currently distribute the following MIT license notice:
+
+---
+
+MIT License
+
+Copyright (c) 2026 Doom
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 --------------------------------------------------------------------------------
 balloon-css@1.2.0
@@ -1244,6 +1314,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 --------------------------------------------------------------------------------
+gsap@3.15.0
+License metadata: Standard 'no charge' license: https://gsap.com/standard-license.
+Homepage: https://gsap.com
+Packaged notice text: NOT PRESENT IN THE INSTALLED PACKAGE
+
+--------------------------------------------------------------------------------
 has-symbols@1.1.0
 License metadata: MIT
 Homepage: https://github.com/ljharb/has-symbols#readme
@@ -1508,6 +1584,34 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+--------------------------------------------------------------------------------
+matter-js@0.20.0
+License metadata: MIT
+Homepage: http://brm.io/matter-js/
+
+[LICENSE]
+The MIT License (MIT)
+
+Copyright (c) Liam Brummitt and contributors.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 mdast-util-to-hast@13.2.1
@@ -2740,10 +2844,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 DISCLOSURE GAPS
 ===============
 
-Missing packaged notice text: emoji-regex@8.0.0
+Missing packaged notice text: emoji-regex@8.0.0, gsap@3.15.0
 
-BUNDLED FONT AND ICON ASSETS
-===========================
+ADDITIONAL LIBRARY AND ASSET NOTICES
+===================================
 
 [public/assets/fonts/PROVENANCE.md]
 # Bundled text and code fonts
@@ -3162,3 +3266,39 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 icons-svg LICENSE source: https://github.com/ant-design/ant-design-icons/blob/7f2516ac91226d2b41f93b35cb5197c8d94f7189/LICENSE
+
+[public/assets/images/tieba/PROVENANCE.md]
+# Bundled yellow Tieba faces
+
+Source: <https://github.com/microlong666/Tieba_mobile_emotions>
+
+Pinned source revision: `3492cf674c7596773d572708e5681603839c4b9b`.
+
+The upstream README describes these PNGs as extracted from Baidu Tieba mobile
+11.6.8.2 (2020-07-13) and documents saving the images for use. The repository
+contains no separate license declaration. This provenance records the source;
+it does not grant additional rights or place these images under the theme's license.
+Original artwork belongs to its respective rights holders.
+
+This theme bundles 54 unmodified PNGs from the round yellow face series:
+1–33 excluding 6, 16 and 31; 66–76; 85–93; 95–98. Source filenames are retained
+(the first face is `image_emoticon.png`). Red faces, panda faces, objects,
+standalone gestures and 3D characters are excluded. The same fixed-size circular
+presentation and collision geometry apply to every selected image.
+
+The images are served from the theme's own assets. Selecting or interacting with
+an emotion does not request images from GitHub or a third-party image CDN.
+
+[public/assets/licenses/GSAP-NOTICE.txt]
+GSAP 3.15.0
+https://gsap.com/
+Source package: https://www.npmjs.com/package/gsap/v/3.15.0
+
+Copyright (c) 2008-2026, GreenSock. All rights reserved.
+
+GSAP is provided under the Standard "No Charge" GSAP License, not under the
+theme's license. The package's README points to the governing terms at:
+https://gsap.com/standard-license/
+
+Hanlo uses GSAP to implement the animations of the optional 3D category page.
+No visual animation editor or additional GSAP plugins are included.

@@ -163,29 +163,17 @@ function mountPursuit(resources: PageResourceScope): void {
   }, 2_000);
 }
 
-function mountHelloAbout(resources: PageResourceScope): void {
-  const element = document.querySelector<HTMLElement>(".hello-about");
-  const cursor = element?.querySelector<HTMLElement>(".cursor");
-  const shapes = element?.querySelectorAll<HTMLElement>(".shape");
-  if (!element || !cursor || !shapes || shapes.length === 0) return;
-  const reset = (): void => {
-    cursor.style.removeProperty("transform");
-    shapes.forEach((shape) => shape.style.removeProperty("transform"));
-  };
-  resources.listen(element, "pointermove", (event) => {
-    const pointer = event as PointerEvent;
-    if (pointer.pointerType === "touch") return;
-    const bounds = element.getBoundingClientRect();
-    const x = pointer.clientX - bounds.left;
-    const y = pointer.clientY - bounds.top;
-    cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    shapes.forEach((shape, index) => {
-      const lag = 1 - index * 0.035;
-      shape.style.transform = `translate3d(${x * lag}px, ${y * lag}px, 0)`;
-    });
-  });
-  resources.listen(element, "pointerleave", reset);
-  resources.defer(reset);
+async function mountAboutEmotions(resources: PageResourceScope): Promise<void> {
+  if (!document.querySelector("[data-about-emotions]")) return;
+  try {
+    const { mountAboutEmotions: mount } = await import("../about-emotions");
+    if (!resources.disposed) mount(resources);
+  } catch (error) {
+    console.warn("[Hanlo] Could not load the emotion playground.", error);
+    if (resources.disposed) return;
+    const status = document.querySelector("[data-emotion-placeholder]");
+    if (status) status.textContent = "表情暂时没有到齐，请刷新页面再试。";
+  }
 }
 
 function mountRandomTagColors(config: Readonly<ThemeConfig>): void {
@@ -221,7 +209,7 @@ export function createPageWidgetsController(): PageControllerDefinition {
         mountTyped(config, resources);
         mountTenYear(config, resources);
         mountPursuit(resources);
-        mountHelloAbout(resources);
+        void mountAboutEmotions(resources);
         mountRandomTagColors(config);
         void mountRecentCommentPreviews(resources);
         void mountLinkCanvas(resources);

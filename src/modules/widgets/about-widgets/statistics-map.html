@@ -1,36 +1,29 @@
-<!-- 数据统计&作者相关信息 -->
-<div class="author-content">
-    <div class="author-content-item-group column mapAndInfo">
-        <div class="author-content-item map single"
-             th:style="|--hanlo-map-background-light: url('${theme.config.about.map.background}'); --hanlo-map-background-dark: url('${theme.config.about.map.backgroundDark}')|">
-            <span class="map-title">我现在住在
-                <b>[[${theme.config.about.map.StrengthenTitle}]]</b>
-            </span>
-        </div>
-        <div class="author-content-item selfInfo single"
-             th:if="${not #lists.isEmpty(theme.config.about.map.authorInfo)}"
-             th:with="texts = ${theme.config.about.map.authorInfo}">
-            <div th:if="${theme.config.about.map.authorInfo.size()}>'0'">
-                <span class="selfInfo-title"
-                      th:text="${texts[0].authorInfoTitle}">生于</span><span
-                    class="selfInfo-content hanlo-dynamic-color"
-                    id="selfInfo-content-year" th:style="'--hanlo-dynamic-color:' + ${texts[0].authorInfoColor}"
-                    th:text="${texts[0].authorInfoContent}">2000</span>
+<!-- 居住地与个人信息：内容为空时不保留空卡片。 -->
+<th:block th:with="location=${#strings.trim(theme.config.about.map.StrengthenTitle ?: '')},
+                   lightMap=${#strings.trim(theme.config.about.map.background ?: '')},
+                   darkMap=${#strings.trim(theme.config.about.map.backgroundDark ?: '')},
+                   information=${theme.config.about.map.authorInfo}">
+    <div class="author-content"
+         th:if="${not #strings.isEmpty(location) or not #strings.isEmpty(lightMap) or not #strings.isEmpty(darkMap) or not #lists.isEmpty(information)}">
+        <div class="author-content-item-group column mapAndInfo">
+            <div class="author-content-item map single"
+                 th:if="${not #strings.isEmpty(location) or not #strings.isEmpty(lightMap) or not #strings.isEmpty(darkMap)}"
+                 th:with="lightBackground=${#strings.isEmpty(lightMap) ? darkMap : lightMap},
+                          darkBackground=${#strings.isEmpty(darkMap) ? lightMap : darkMap}"
+                 th:style="${#strings.isEmpty(lightBackground) ? null : '--hanlo-map-background-light:url(&quot;' + lightBackground + '&quot;);--hanlo-map-background-dark:url(&quot;' + darkBackground + '&quot;)'}">
+                <span class="map-title" th:if="${not #strings.isEmpty(location)}">我现在住在
+                    <b th:text="${location}"></b>
+                </span>
             </div>
-            <div th:if="${theme.config.about.map.authorInfo.size()}>'1'">
-                <span class="selfInfo-title"
-                      th:text="${texts[1].authorInfoTitle}">太原理工大学</span><span
-                    class="selfInfo-content hanlo-dynamic-color"
-                    th:style="'--hanlo-dynamic-color:' + ${texts[1].authorInfoColor}"
-                    th:text="${texts[1].authorInfoContent}">计算机科学</span>
-            </div>
-            <div th:if="${theme.config.about.map.authorInfo.size()}>'2'">
-                <span class="selfInfo-title"
-                      th:text="${texts[2].authorInfoTitle}">现在职业</span><span
-                    class="selfInfo-content hanlo-dynamic-color"
-                    th:style="'--hanlo-dynamic-color:' + ${texts[2].authorInfoColor}"
-                    th:text="${texts[2].authorInfoContent}">BI工程师</span>
+            <div class="author-content-item selfInfo single"
+                 th:if="${not #lists.isEmpty(information)}">
+                <div th:each="info, status : ${information}" th:if="${status.index < 3}">
+                    <span class="selfInfo-title" th:text="${info.authorInfoTitle}"></span>
+                    <span class="selfInfo-content hanlo-dynamic-color"
+                          th:style="|--hanlo-dynamic-color:${#strings.isEmpty(info.authorInfoColor) ? 'var(--heo-fontcolor)' : info.authorInfoColor}|"
+                          th:text="${info.authorInfoContent}"></span>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</th:block>

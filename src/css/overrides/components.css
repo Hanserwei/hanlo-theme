@@ -9,19 +9,6 @@
     object-fit: contain;
 }
 
-/* 分类3D */
-#libCategories .card-info p{
-    font-size: 0.9rem;
-    font-weight: 400;
-    text-align: left;
-    letter-spacing: 0.6px;
-    margin: 1rem 0;
-}
-
-#libCategories .card-wrap:hover .card-info:after {
-    width: 300%
-}
-
 .fa-sharp, .fa-solid{
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;

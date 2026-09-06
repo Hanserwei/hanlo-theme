@@ -31,7 +31,7 @@ function createConfig() {
       theme_light: "one-light",
       theme_dark: "one-dark-pro",
     },
-    effects: { bubble: false, universe: false },
+    effects: { bubble: false, universe: false, baClick: false },
     friends: { apiUrl: "/api/friends", pageSize: 12, errorImage: "/error.png" },
     postAi: {
       summary: "",
@@ -71,6 +71,19 @@ describe("parseThemeConfig", () => {
     Object.assign(config, { isPost: "false" });
 
     expect(() => parseThemeConfig(config)).toThrow("GLOBAL_CONFIG.isPost must be a boolean");
+  });
+
+  it("preserves the click-effect switch and rejects non-boolean values", () => {
+    for (const enabled of [false, true]) {
+      const config = createConfig();
+      config.effects.baClick = enabled;
+      expect(parseThemeConfig(config).effects.baClick).toBe(enabled);
+    }
+    const config = createConfig();
+    Object.assign(config.effects, { baClick: "false" });
+    expect(() => parseThemeConfig(config)).toThrow(
+      "GLOBAL_CONFIG.effects.baClick must be a boolean",
+    );
   });
 
   it("validates configuration consumed by migrated feature controllers", () => {

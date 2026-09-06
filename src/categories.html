@@ -19,7 +19,7 @@
         <main class="layout hide-aside" id="content-inner">
 
             <div id="page">
-                <h1 class="page-title hl:inline">分类</h1>
+                <h1 th:if="${not #strings.equals(theme.config.categories.use, '3D')}" class="page-title hl:inline">分类</h1>
                 <div th:if="${#strings.equals(theme.config.categories.use, 'default')}" class="category-lists">
                     <div class="category-title is-center">分类 - <span class="category-amount">11</span></div>
                     <div class="tag-cloud-list is-center">
@@ -31,24 +31,69 @@
                             <span class="tagsPageCount">[[${categoryItem.status.visiblePostCount}]]</span></a>
                     </div>
         </div>
-        <th:block th:if="${#strings.equals(theme.config.categories.use, '3D')}">
-            <div id="libCategories">
-                        <div id="lib-cards" class="container">
+                <th:block th:if="${#strings.equals(theme.config.categories.use, '3D')}">
+                    <section id="libCategories" data-category-gallery aria-labelledby="category-gallery-title"
+                             th:with="categories=${categoryFinder.listAll()}">
+                        <header class="category-gallery-header">
+                            <div>
+                                <span class="category-gallery-eyebrow">TOPIC ATLAS · 主题索引</span>
+                                <h1 id="category-gallery-title">从兴趣出发，<span>继续探索。</span></h1>
+                                <p>知识各有坐标，找到你想深入的那一片。</p>
+                            </div>
+                            <span class="category-gallery-total"><b th:text="${#lists.size(categories)}">0</b> 个分类</span>
+                        </header>
+                        <div id="lib-cards" class="category-grid" th:if="${not #lists.isEmpty(categories)}">
                             <a class="card-wrap" data-hanlo-category-card
-                               th:each="categoryItem : ${categoryFinder.listAll()}"
+                               th:each="categoryItem, categoryIndex : ${categories}"
+                               th:with="cover=${#strings.trim(categoryItem.spec.cover ?: '')}"
+                               th:attr="data-palette=${categoryIndex.index % 6}, aria-label=${categoryItem.spec.displayName + '，' + (categoryItem.status.visiblePostCount ?: 0) + ' 篇文章'}"
                                th:href="@{${categoryItem.status.permalink}}"
-                               th:id="${categoryItem.spec.displayName}">
-                                <article class="card">
-                        <div class="card-bg hanlo-card-cover"
-                             th:style="|--hanlo-card-cover: url('${categoryItem.spec.cover}')|"></div>
-                                    <div class="card-info">
-                                        <h2>[[${categoryItem.spec.displayName}]]</h2>
-                                        <p>[[${categoryItem.spec.description}]]</p>
-                                    </div>
-                                </article>
+                               th:id="${categoryItem.spec.displayName}"
+                               th:classappend="${#strings.isEmpty(cover) ? '' : 'has-cover'}">
+                                <div class="category-arrival">
+                                    <article class="card">
+                                        <div class="category-surface" aria-hidden="true">
+                                            <div class="card-bg"></div>
+                                            <img th:if="${not #strings.isEmpty(cover)}" class="category-image"
+                                                 th:src="${cover}" alt="" loading="lazy" decoding="async">
+                                            <div class="category-gridlines"></div>
+                                            <div class="category-spotlight"></div>
+                                            <div class="category-sheen"></div>
+                                        </div>
+                                        <div class="category-card-meta">
+                                            <span class="category-index" aria-hidden="true"
+                                                  th:text="${#numbers.formatInteger(categoryIndex.count, 2)}">01</span>
+                                            <span class="category-count"><b th:text="${categoryItem.status.visiblePostCount ?: 0}">0</b> 篇文章</span>
+                                        </div>
+                                        <div class="category-art" aria-hidden="true">
+                                            <div class="category-orbit category-orbit-outer"></div>
+                                            <div class="category-orbit category-orbit-inner"></div>
+                                            <div class="category-cube">
+                                                <span class="category-facet facet-front"></span>
+                                                <span class="category-facet facet-back"></span>
+                                                <span class="category-facet facet-left"></span>
+                                                <span class="category-facet facet-right"></span>
+                                                <span class="category-facet facet-top"></span>
+                                                <span class="category-facet facet-bottom"></span>
+                                            </div>
+                                            <span class="category-satellite"></span>
+                                            <span class="category-art-shadow"></span>
+                                        </div>
+                                        <div class="card-info">
+                                            <h2 th:text="${categoryItem.spec.displayName}"></h2>
+                                            <p th:text="${#strings.isEmpty(categoryItem.spec.description) ? '在这里，发现更多值得记录的内容。' : categoryItem.spec.description}"></p>
+                                            <div class="category-card-footer">
+                                                <span>探索分类</span>
+                                                <span class="category-open" aria-hidden="true">↗</span>
+                                            </div>
+                                        </div>
+                                        <span class="category-edge" aria-hidden="true"></span>
+                                    </article>
+                                </div>
                             </a>
                         </div>
-                    </div>
+                        <p class="category-empty" th:if="${#lists.isEmpty(categories)}">新的探索即将开始，分类正在整理中。</p>
+                    </section>
                 </th:block>
             </div>
         </main>

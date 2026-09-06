@@ -1960,9 +1960,9 @@ spec:
           options:
             - label: 分类名称与文章数列表
               value: default
-            - label: 封面卡片（3D 悬停效果）
+            - label: 立体探索卡片（3D 动效）
               value: 3D
-          help: 作用于 /categories。文字列表展示名称和文章数；封面卡片使用分类封面与描述，请在「文章 → 分类」中完善，封面建议 1:1、至少 640 × 640 像素。
+          help: 作用于 /categories。3D 模式提供分层倾斜、悬浮几何光环和逐张入场效果；无封面时自动显示彩色几何背景，封面可选，建议 1:1、至少 640 × 640 像素。名称、简介和文章数直接读取分类；触屏保留轻量入场，系统开启“减少动态效果”时显示静态卡片。
 
     - group: moment
       label: 瞬间
@@ -2410,7 +2410,7 @@ spec:
             - value: content-idea
               label: 自我介绍与想法
             - value: hello-about
-              label: 互动问候横幅
+              label: 表情互动区
             - value: authorCareers
               label: 技能与职业生涯
             - value: personalities-photo
@@ -2471,14 +2471,192 @@ spec:
           if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('content-idea')
           preserve: true
           placeholder: <h2>用心记录生活</h2>
-        - $formkit: text
-          name: helloAbout
-          label: 互动横幅问候语
-          value: Hello there!
+        - $formkit: select
+          name: emotions
+          label: 互动区的黄色圆脸表情
+          multiple: true
+          searchable: true
+          clearable: true
+          sortable: false
+          value: ["1", "2", "3", "5", "22", "25", "26", "28"]
           if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('hello-about')
           preserve: true
-          help: 在彩色互动横幅中央显示，建议简短，使用纯文本。
-          placeholder: 例如：Hello there!
+          placeholder: 搜索名称或编号，选择喜欢的黄色圆脸
+          help: 下拉列表可预览主题内置的 54 款黄色圆脸 PNG。建议选择 6–12 款；按下方总数均匀重复，种类多于总数时随机抽取。清空后显示空状态。所有表情统一为 56px 圆形，可拖拽、碰撞和抛掷。
+          options:
+            - value: "1"
+              label: "01 · 呵呵"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon.png
+            - value: "2"
+              label: "02 · 哈哈"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon2.png
+            - value: "3"
+              label: "03 · 吐舌"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon3.png
+            - value: "4"
+              label: "04 · 啊"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon4.png
+            - value: "5"
+              label: "05 · 酷"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon5.png
+            - value: "7"
+              label: "07 · 开心"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon7.png
+            - value: "8"
+              label: "08 · 汗"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon8.png
+            - value: "9"
+              label: "09 · 泪"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon9.png
+            - value: "10"
+              label: "10 · 黑线"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon10.png
+            - value: "11"
+              label: "11 · 鄙视"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon11.png
+            - value: "12"
+              label: "12 · 不高兴"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon12.png
+            - value: "13"
+              label: "13 · 真棒"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon13.png
+            - value: "14"
+              label: "14 · 钱"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon14.png
+            - value: "15"
+              label: "15 · 疑问"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon15.png
+            - value: "17"
+              label: "17 · 吐"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon17.png
+            - value: "18"
+              label: "18 · 咦"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon18.png
+            - value: "19"
+              label: "19 · 委屈"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon19.png
+            - value: "20"
+              label: "20 · 花心"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon20.png
+            - value: "21"
+              label: "21 · 呼"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon21.png
+            - value: "22"
+              label: "22 · 笑眼"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon22.png
+            - value: "23"
+              label: "23 · 冷"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon23.png
+            - value: "24"
+              label: "24 · 太开心"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon24.png
+            - value: "25"
+              label: "25 · 滑稽"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon25.png
+            - value: "26"
+              label: "26 · 勉强"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon26.png
+            - value: "27"
+              label: "27 · 狂汗"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon27.png
+            - value: "28"
+              label: "28 · 乖"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon28.png
+            - value: "29"
+              label: "29 · 睡觉"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon29.png
+            - value: "30"
+              label: "30 · 惊哭"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon30.png
+            - value: "32"
+              label: "32 · 惊讶"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon32.png
+            - value: "33"
+              label: "33 · 喷"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon33.png
+            - value: "66"
+              label: "66 · 小乖"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon66.png
+            - value: "67"
+              label: "67 · 捂嘴笑"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon67.png
+            - value: "68"
+              label: "68 · 大笑"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon68.png
+            - value: "69"
+              label: "69 · 暴怒"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon69.png
+            - value: "70"
+              label: "70 · 晕"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon70.png
+            - value: "71"
+              label: "71 · 哈欠"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon71.png
+            - value: "72"
+              label: "72 · 笑哭"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon72.png
+            - value: "73"
+              label: "73 · 挖鼻"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon73.png
+            - value: "74"
+              label: "74 · 不爽"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon74.png
+            - value: "75"
+              label: "75 · 害羞"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon75.png
+            - value: "76"
+              label: "76 · 嘟嘴"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon76.png
+            - value: "85"
+              label: "85 · 小委屈"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon85.png
+            - value: "86"
+              label: "86 · 吃瓜"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon86.png
+            - value: "87"
+              label: "87 · 无语"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon87.png
+            - value: "88"
+              label: "88 · 比心"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon88.png
+            - value: "89"
+              label: "89 · 流汗"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon89.png
+            - value: "90"
+              label: "90 · 苦笑"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon90.png
+            - value: "91"
+              label: "91 · 狗头"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon91.png
+            - value: "92"
+              label: "92 · 震惊"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon92.png
+            - value: "93"
+              label: "93 · 脸红"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon93.png
+            - value: "95"
+              label: "95 · 张嘴笑"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon95.png
+            - value: "96"
+              label: "96 · 红包"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon96.png
+            - value: "97"
+              label: "97 · 兴奋"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon97.png
+            - value: "98"
+              label: "98 · 愤怒"
+              icon: /themes/theme-hanlo/assets/images/tieba/image_emoticon98.png
+        - $formkit: number
+          name: emotion_count
+          label: 表情总数
+          value: 24
+          min: 1
+          max: 48
+          step: 1
+          validation: required|number|min:1|max:48
+          if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('hello-about')
+          preserve: true
+          help: 所有表情合计 1–48 个，默认 24；以手机访问为主建议 16–24，桌面建议 24–36。数量越多碰撞越密集、运算越多，窄屏也会自动增加区域高度。手机感应由访客点击开启，需 HTTPS 和浏览器支持；未授权仍可拖拽或点击“摇一摇”。
         - $formkit: group
           name: authorCareers
           label: 职业生涯卡片
@@ -2817,19 +2995,19 @@ spec:
               name: background
               label: 浅色模式地图图片
               placeholder: 选择浅色地图或填写图片 URL
-              help: 建议 1200×600 像素、2:1 的地图截图；底部会叠加居住地文字，悬停时图片放大。
+              help: 建议 1200×600 像素、2:1 的地图截图，主体居中，铺满卡片时可能裁切；底部叠加居住地文字。地图和居住地都留空时不显示地图卡片。
               width: 15rem
               aspectRatio: 2/1
             - $formkit: attachment
               name: backgroundDark
               label: 深色模式地图图片
               placeholder: 选择深色地图或填写图片 URL
-              help: 建议与浅色地图保持相同构图和 1200×600 像素、2:1；深色模式单独读取此图，需一起配置。
+              help: 建议与浅色地图保持相同构图和 1200×600 像素、2:1；只填写一张地图时，浅色和深色模式共用该图。
               width: 15rem
               aspectRatio: 2/1
             - $formkit: array
               name: authorInfo
-              label: 地图下方个人信息
+              label: 个人信息卡片
               min: 3
               max: 3
               itemLabels:
@@ -2854,12 +3032,12 @@ spec:
                   name: authorInfoColor
                   label: 信息文字颜色
                   value: "#ffffff"
-                  help: 用于这一项的内容文字；请同时检查浅色和深色模式下的对比度。
-              help: 保留三项，按顺序显示为三个信息块；可填写出生年份、专业和职业等愿意公开的信息。
+                  help: 作为这一项内容的强调色，会与当前明暗模式的主题文字色调和，提升可读性；留空使用主题文字色。
+              help: 保留三项，桌面显示为三列，窄屏依次竖排；可填写出生年份、专业和职业等愿意公开的信息，长内容会自动换行。
               addLabel: 添加个人信息
           if: $get(hanlo_about_widget_list).value && $get(hanlo_about_widget_list).value.includes('statistics-map')
           preserve: true
-          help: 地图是静态图片，无需地图服务密钥；请分别准备浅色和深色背景，下方信息按三项展示。
+          help: 此区块独占一整行。地图是可选的静态图片，无需地图服务密钥；没有地图和居住地时，只显示已填写的个人信息。
         - $formkit: code
           name: xjlc
           label: 页面底部建站故事
@@ -2955,7 +3133,7 @@ spec:
             - $el: p
               attrs:
                 style: margin:0 0 .3rem;font-weight:600;color:inherit
-              children: 设置明暗配色与中文转换
+              children: 设置明暗配色、鼠标特效与中文转换
             - $el: p
               attrs:
                 style: margin:0
@@ -2987,6 +3165,11 @@ spec:
           label: 显示深色模式星空粒子
           value: true
           help: 在深色背景上绘制动态星空；效果会增加动画开销，可按设备表现关闭。
+        - $formkit: switch
+          name: baClickEnable
+          label: 启用蔚蓝档案鼠标点击特效
+          value: true
+          help: 点击出现蓝色光环和碎片，按住拖动时显示光尾，触屏点击也可触发。特效资源随主题提供；关闭后不加载特效。保留页面滚动与缩放，系统开启“减少动态效果”时自动停用。
         - $formkit: group
           name: translate
           label: 中文简繁转换

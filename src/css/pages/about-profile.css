@@ -533,47 +533,6 @@
     margin: 0.5rem 0;
 }
 
-.author-content-item-group.column.mapAndInfo {
-    width: 59%;
-}
-
-/* 关于页面自我信息 */
-.author-content-item.selfInfo {
-    display: flex;
-    min-height: 100px;
-    max-height: 400px;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    height: -webkit-fill-available;
-    height: 40%;
-}
-
-@media screen and (max-width: 1300px) {
-    .author-content-item.selfInfo {
-        height: 70%;
-    }
-}
-
-.author-content-item.selfInfo div {
-    display: flex;
-    flex-direction: column;
-    margin: 0.5rem 2rem 0.5rem 0;
-}
-
-.author-content-item.selfInfo .selfInfo-title {
-    opacity: 0.8;
-    font-size: 0.6rem;
-    line-height: 1;
-    margin-bottom: 8px;
-}
-
-.author-content-item.selfInfo .selfInfo-content {
-    font-weight: bold;
-    font-size: 34px;
-    line-height: 1;
-}
-
 /* 关于页面我的照片 */
 
 .author-content-item.myphoto {
