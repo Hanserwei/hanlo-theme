@@ -114,6 +114,7 @@ for (const file of [
   "public/assets/icon/antdv-next/LICENSE.txt",
   "public/assets/images/tieba/PROVENANCE.md",
   "public/assets/licenses/GSAP-NOTICE.txt",
+  "public/assets/licenses/THREE-NOTICE.txt",
 ]) {
   lines.push(`[${file}]`, readFileSync(file, "utf8").trim(), "");
 }

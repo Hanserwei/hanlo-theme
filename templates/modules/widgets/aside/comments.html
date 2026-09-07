@@ -14,9 +14,7 @@
                 url = ${page == null? '/' : page.status.permalink + '#comment-' + comment.metadata.name}">
                 <span th:text="${commentIndex}"></span>
                 <a class="thumbnail" th:href="${url}">
-                    <img alt="头像"
-                         th:with=" img =${#strings.isEmpty(comment.owner.avatar)? theme.config.sidebar.newcomment.providerMirror+'/avatar/'+comment.spec.owner.annotations['email-hash'] :comment.owner.avatar}"
-                         th:src="${isLazyload ? '' : img}" th:data-lazy-src="${ isLazyload ? img : ''}">
+                    <img th:replace="~{modules/common/comment-avatar :: avatar(${comment}, '')}">
                 </a>
                 <div class="content">
                     <a class="comment hl:[display:-webkit-box] hl:[-webkit-line-clamp:2] hl:[-webkit-box-orient:vertical] hl:overflow-hidden"

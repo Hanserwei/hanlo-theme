@@ -1,0 +1,9 @@
+<!-- 评论摘要共用头像；缺少邮箱哈希或远程图片失败时由主题生成本地头像。 -->
+<img xmlns:th="http://www.thymeleaf.org" th:fragment="avatar(comment, avatarClass)"
+     th:with="emailHash = ${comment.spec.owner.annotations == null ? null : comment.spec.owner.annotations['email-hash']},
+              mirror = ${#strings.isEmpty(theme.config.sidebar.newcomment.providerMirror) ? 'https://cravatar.cn' : theme.config.sidebar.newcomment.providerMirror},
+              avatar = ${not #strings.isEmpty(comment.owner.avatar) ? comment.owner.avatar : not #strings.isEmpty(emailHash) ? mirror + '/avatar/' + emailHash + '?d=identicon&amp;s=80' : null}"
+     data-hanlo-comment-avatar
+     th:attr="data-hanlo-avatar-seed=${#strings.isEmpty(emailHash) ? comment.owner.displayName : emailHash}"
+     th:src="${avatar}" th:alt="${comment.owner.displayName}"
+     th:class="${avatarClass}" th:loading="${isLazyload ? 'lazy' : 'eager'}" decoding="async">

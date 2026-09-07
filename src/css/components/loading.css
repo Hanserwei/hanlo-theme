@@ -12,76 +12,240 @@
 }
 
 .hanlo-loading-box .loading-bg {
+  --loading-accent: var(--heo-theme, #f18bb3);
+
   position: fixed;
   z-index: 1999;
   inset: 0;
-  display: flex;
-  width: 100%;
-  height: 100%;
+  display: grid;
+  place-items: center;
   pointer-events: auto;
+  visibility: visible;
   opacity: 1;
   background: var(--hanlo-color-surface, var(--heo-card-bg));
-  animation: hanlo-loading-show 300ms backwards;
-  transition: opacity var(--hanlo-duration-fast, 200ms) var(--hanlo-ease-standard, ease);
+  transition:
+    opacity 360ms ease,
+    visibility 0s linear;
 }
 
 .hanlo-loading-box.loaded .loading-bg {
   pointer-events: none;
-  animation: hanlo-loading-hide 300ms forwards;
+  visibility: hidden;
+  opacity: 0;
+  transition-delay: 0s, 360ms;
+}
+
+.hanlo-loading-box .loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  transition:
+    opacity 280ms ease,
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hanlo-loading-box.loaded .loading-content {
+  opacity: 0;
+  transform: translateY(-12px) scale(0.96);
+}
+
+.hanlo-loading-box .loading-mark {
+  position: relative;
+  display: grid;
+  width: 156px;
+  height: 156px;
+  place-items: center;
+}
+
+.hanlo-loading-box .loading-mark::before {
+  position: absolute;
+  inset: -30px;
+  content: "";
+  background: radial-gradient(circle, color-mix(in srgb, var(--loading-accent) 18%, transparent), transparent 68%);
+  animation: hanlo-loading-glow 3s ease-in-out infinite alternate;
+}
+
+.hanlo-loading-box .loading-orbit {
+  position: absolute;
+  inset: 2px;
+  border: 1px solid color-mix(in srgb, var(--loading-accent) 18%, transparent);
+  border-top-color: var(--loading-accent);
+  border-radius: 50%;
+  animation: hanlo-loading-orbit 3.6s linear infinite;
+}
+
+.hanlo-loading-box .loading-orbit::before {
+  position: absolute;
+  inset: 9px;
+  border: 1px dashed color-mix(in srgb, var(--loading-accent) 22%, transparent);
+  border-radius: 50%;
+  content: "";
+}
+
+.hanlo-loading-box .loading-orbit::after {
+  position: absolute;
+  top: -4px;
+  left: calc(50% - 4px);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  content: "";
+  background: var(--loading-accent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--loading-accent) 65%, transparent);
+}
+
+.hanlo-loading-box .loading-avatar {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  animation: hanlo-loading-float 2.8s ease-in-out infinite;
 }
 
 .hanlo-loading-box .loading-img {
-  width: 100px;
-  margin: auto;
-  animation: hanlo-loading-pulse 200ms infinite alternate;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 28px rgb(0 0 0 / 12%);
 }
 
 .hanlo-loading-box .loading-image-dot {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  border: 6px solid #fff;
+  right: 0;
+  bottom: 0;
+  width: 24px;
+  height: 24px;
+  border: 5px solid var(--hanlo-color-surface, var(--heo-card-bg));
   border-radius: 50%;
   background: #6bdf8f;
-  translate: 18px 24px;
 }
 
-@keyframes hanlo-loading-pulse {
+.hanlo-loading-box .loading-caption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--heo-secondtext);
+  font-size: 14px;
+  letter-spacing: 0.12em;
+}
+
+.hanlo-loading-box .loading-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.hanlo-loading-box .loading-dots i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--loading-accent);
+  animation: hanlo-loading-dot 1.4s ease-in-out infinite;
+}
+
+.hanlo-loading-box .loading-dots i:nth-child(2) {
+  animation-delay: 160ms;
+}
+
+.hanlo-loading-box .loading-dots i:nth-child(3) {
+  animation-delay: 320ms;
+}
+
+.hanlo-loading-box .loading-track {
+  width: 112px;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--loading-accent) 12%, transparent);
+}
+
+.hanlo-loading-box .loading-track::after {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: inherit;
+  content: "";
+  background: linear-gradient(90deg, transparent, var(--loading-accent), transparent);
+  animation: hanlo-loading-track 1.8s ease-in-out infinite;
+}
+
+.hanlo-loading-box.loaded .loading-mark::before,
+.hanlo-loading-box.loaded .loading-orbit,
+.hanlo-loading-box.loaded .loading-avatar,
+.hanlo-loading-box.loaded .loading-dots i,
+.hanlo-loading-box.loaded .loading-track::after {
+  animation: none;
+}
+
+@keyframes hanlo-loading-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hanlo-loading-float {
+  0%,
+  100% {
+    transform: translateY(2px);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes hanlo-loading-glow {
   from {
-    opacity: 1;
+    opacity: 0.5;
+    transform: scale(0.9);
   }
 
   to {
-    opacity: 0.6;
+    opacity: 1;
+    transform: scale(1.1);
   }
 }
 
-@keyframes hanlo-loading-hide {
-  from {
-    opacity: 1;
+@keyframes hanlo-loading-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.4;
+    transform: translateY(0);
   }
 
-  to {
-    opacity: 0;
+  30% {
+    opacity: 1;
+    transform: translateY(-4px);
   }
 }
 
-@keyframes hanlo-loading-show {
+@keyframes hanlo-loading-track {
   from {
-    opacity: 0;
+    transform: translateX(-120%);
   }
 
   to {
-    opacity: 1;
+    transform: translateX(360%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hanlo-loading-box .loading-bg,
-  .hanlo-loading-box .loading-img {
-    animation: none;
+  .hanlo-loading-box .loading-content {
     transition: none;
+  }
+
+  .hanlo-loading-box .loading-mark::before,
+  .hanlo-loading-box .loading-orbit,
+  .hanlo-loading-box .loading-avatar,
+  .hanlo-loading-box .loading-dots i,
+  .hanlo-loading-box .loading-track::after {
+    animation: none;
+  }
+
+  .hanlo-loading-box.loaded .loading-content {
+    transform: none;
   }
 }

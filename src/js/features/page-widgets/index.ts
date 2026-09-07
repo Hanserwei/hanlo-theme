@@ -1,6 +1,7 @@
 import type { ThemeConfig } from "../../core/config";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
+import { mountCommentAvatars } from "./comment-avatar";
 import { mountFooterRecords } from "./footer-records";
 import { mountProfileCards } from "./profile-card";
 
@@ -34,10 +35,6 @@ function parseTypedTexts(values: readonly unknown[]): string[] {
     const source = isRecord(value["realNode"]) ? value["realNode"] : value;
     return typeof source["text"] === "string" ? [source["text"]] : [];
   });
-}
-
-function loading(visible: boolean): void {
-  document.querySelector("#loading-box")?.classList.toggle("loaded", !visible);
 }
 
 function mountDynamicTitle(config: Readonly<ThemeConfig>, resources: PageResourceScope): void {
@@ -197,11 +194,22 @@ async function mountLinkCanvas(resources: PageResourceScope): Promise<void> {
   if (!resources.disposed) mount(resources);
 }
 
+async function mountBottle(resources: PageResourceScope): Promise<void> {
+  if (!document.querySelector("[data-about-bottle]")) return;
+  try {
+    const { mountAboutBottle } = await import("../about-bottle");
+    if (!resources.disposed) mountAboutBottle(resources);
+  } catch (error) {
+    console.warn("[Hanlo] Could not load the bottle experience.", error);
+  }
+}
+
 export function createPageWidgetsController(): PageControllerDefinition {
   return {
     name: "page-widgets",
     create: ({ config, resources }) => ({
       mount() {
+        mountCommentAvatars(document, resources);
         mountDynamicTitle(config, resources);
         mountFooterRecords(resources);
         mountProfileCards(config, resources);
@@ -210,10 +218,10 @@ export function createPageWidgetsController(): PageControllerDefinition {
         mountTenYear(config, resources);
         mountPursuit(resources);
         void mountAboutEmotions(resources);
+        void mountBottle(resources);
         mountRandomTagColors(config);
         void mountRecentCommentPreviews(resources);
         void mountLinkCanvas(resources);
-        resources.timeout(() => loading(false), 3_000);
       },
       unmount() {},
     }),

@@ -1306,9 +1306,9 @@ spec:
             - $formkit: text
               label: 评论头像服务地址
               name: providerMirror
-              help: 仅为没有头像的评论拼接 /avatar/邮箱哈希。填写服务根地址，不含 /avatar，末尾不加斜杠；使用官方源请填 https://gravatar.com。
+              help: 没有头像时按邮箱哈希请求头像，未注册邮箱使用彩色图案；缺少哈希或加载失败时由主题生成本地头像。填写服务根地址，不含 /avatar，末尾不加斜杠；官方源为 https://gravatar.com。
               placeholder: https://cravatar.cn
-          help: 显示站点最新评论；先在页面列表添加「最新评论」。评论头像服务也用于 /newest 最新评论页面。
+          help: 显示站点最新评论；先在页面列表添加「最新评论」。评论头像服务也用于中控台和 /newest 最新评论页面。
 
         - $formkit: number
           name: categoryQuantity
@@ -2382,7 +2382,17 @@ spec:
             - $el: p
               attrs:
                 style: margin:0
-              children: 新建页面并选择关于页面模板，页面标题在页面编辑器中填写。先选择并拖动下方内容区块，再编辑对应内容；取消选择会隐藏区块设置并保留已填内容。头像、个人标签、建站故事和十年之约独立展示。
+              children: 新建页面并选择关于页面模板，页面标题在页面编辑器中填写。瓶中世界将介绍、经历、想法、爱好和建站故事编入航海手记；文字关于保留全部内容区块及互动。两种展示共用以下资料。
+        - $formkit: select
+          name: presentation
+          label: 默认展示方式
+          value: bottle
+          options:
+            - label: 瓶中世界 · 3D 微缩场景
+              value: bottle
+            - label: 文字关于 · 经典内容页
+              value: classic
+          help: 访客可在页顶随时切换；选择仅在当前浏览器会话记忆。3D 模式按需从固定版本 CDN 加载 Three.js r160，不支持 WebGL 或加载失败时保留文字内容。
         - $formkit: attachment
           name: aboutAuthorImage
           label: 页面顶部头像

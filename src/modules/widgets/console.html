@@ -21,14 +21,12 @@
                   url = ${page == null? '/' : page.status.permalink + '#comment-' + comment.metadata.name}"
                  th:if="${iterStat.index  < 6}" >
               <a th:href="${url}" class="thumbnail">
-                <img th:with="img = ${#strings.isEmpty(comment.owner.avatar)?'https://cravatar.cn/avatar/?d=mp':comment.owner.avatar}"
-                     th:src="${isLazyload ? '' : img}"
-                     th:data-lazy-src="${ isLazyload ? img : ''}"
-                     th:alt="${comment.owner.displayName}">
-                <div class="name"><span>stonewu</span></div>
+                <img th:replace="~{modules/common/comment-avatar :: avatar(${comment}, '')}">
+                <div class="name"><span th:text="${comment.owner.displayName}">访客</span></div>
               </a>
               <div class="content">
-                <a class="comment" th:href="${url}" th:title="${comment.spec.content}" th:text="${comment.spec.content}"></a>
+                <a class="comment" th:href="${url}" data-hanlo-comment-preview
+                   th:attr="data-hanlo-comment-html=${comment.spec.content}">查看评论</a>
                 <time th:datetime="${#dates.format(comment.metadata.creationTimestamp, 'yyyy-MM-dd HH:mm:ss')}"></time>
               </div>
             </div>
