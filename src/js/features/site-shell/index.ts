@@ -14,6 +14,7 @@ import type { ExpiringStorage } from "../../core/storage";
 import type { PageControllerDefinition } from "../../core/types";
 import { fadeIn, fadeOut, sidebarPaddingRight, snackbarShow, syncThemeColor } from "../../core/ui";
 import { mountDesktopMenus } from "./desktop-menus";
+import { finishPageLoading, mountPageLoading } from "./page-loading";
 
 const LINKS_ENDPOINT = "/apis/api.plugin.halo.run/v1alpha1/plugins/PluginLinks/links?keyword=";
 const SCROLL_POSTS_KEY = "hanlo-scroll-posts";
@@ -28,10 +29,6 @@ function showConsole(): void {
 
 function hideConsole(): void {
   document.querySelector("#console")?.classList.remove("show");
-}
-
-function hideLoading(): void {
-  document.querySelector("#loading-box")?.classList.add("loaded");
 }
 
 function updateAsideState(storage: ExpiringStorage): void {
@@ -215,7 +212,7 @@ function handleAction(
       document.querySelector("#topGroup")?.classList.add("hideCard");
       break;
     case "hide-loading":
-      hideLoading();
+      finishPageLoading(resources);
       break;
     case "copy-page-url":
       copyText(window.location.href, "复制本页链接地址成功");
@@ -802,7 +799,6 @@ function initializePageState(
   }
   initializeActiveNavigation();
   initializeWheelScrolling(resources);
-  hideLoading();
   document
     .querySelector("#consoleHideAside")
     ?.classList.toggle("on", document.documentElement.classList.contains("hide-aside"));
@@ -844,6 +840,7 @@ export function createSiteShellController(storage: ExpiringStorage): PageControl
     name: "site-shell",
     create: ({ config, resources }) => ({
       async mount() {
+        mountPageLoading(resources);
         initializeHeader(resources);
         initializeNavigation(config, storage, resources);
         initializeScroll(resources);
