@@ -25,7 +25,6 @@ function api(route, query = ".") {
   }
 }
 const release = api(`releases/tags/${tag}`);
-assert.equal(release.draft, false, "Publish the GitHub Release before syncing it.");
 assert.equal(release.prerelease, false);
 const sha = api(`commits/${tag}`, "{sha: .sha}").sha;
 assert.match(sha, /^[a-f0-9]{40}$/);
@@ -38,6 +37,26 @@ if (archive) {
   const snapshot = json(Buffer.from(record.content, "base64").toString());
   assert.equal(snapshot.version, version);
   assert.equal(snapshot.sha256, archive.sha256);
+}
+if (release.draft) {
+  assert.ok(
+    archive && process.env.PUBLISH_ARCHIVE_DRAFT === "true",
+    "Publish the GitHub Release before syncing it.",
+  );
+  assert.ok(
+    release.assets.some(
+      (asset) =>
+        asset.name === `theme-hanlo-${version}.zip` &&
+        asset.digest === `sha256:${archive.sha256}` &&
+        asset.size === archive.size,
+    ),
+    "Draft package does not match the historical archive.",
+  );
+  // GITHUB_TOKEN publication stays in this direct workflow, avoiding a second nested workflow
+  // and preserving access to the existing environment secret in the publish job.
+  execFileSync("gh", ["release", "edit", tag, "--draft=false", "--latest=false"], {
+    stdio: "inherit",
+  });
 }
 const control = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 const outputs = {
