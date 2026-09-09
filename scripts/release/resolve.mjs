@@ -15,9 +15,11 @@ function json(text) {
     throw new Error("Invalid release metadata JSON.", { cause });
   }
 }
-function api(route) {
+function api(route, query = ".") {
   try {
-    return json(execFileSync("gh", ["api", `repos/${repo}/${route}`], { encoding: "utf8" }));
+    return json(
+      execFileSync("gh", ["api", `repos/${repo}/${route}`, "--jq", query], { encoding: "utf8" }),
+    );
   } catch (cause) {
     throw new Error(`Cannot read release metadata: ${route}`, { cause });
   }
@@ -25,7 +27,7 @@ function api(route) {
 const release = api(`releases/tags/${tag}`);
 assert.equal(release.draft, false, "Publish the GitHub Release before syncing it.");
 assert.equal(release.prerelease, false);
-const sha = api(`commits/${tag}`).sha;
+const sha = api(`commits/${tag}`, "{sha: .sha}").sha;
 assert.match(sha, /^[a-f0-9]{40}$/);
 const manifest = api(`contents/theme.yaml?ref=${sha}`);
 const version = parse(Buffer.from(manifest.content, "base64").toString()).spec.version;
