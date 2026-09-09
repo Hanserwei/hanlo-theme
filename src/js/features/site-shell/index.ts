@@ -13,6 +13,7 @@ import type { PageResourceScope } from "../../core/resource-scope";
 import type { ExpiringStorage } from "../../core/storage";
 import type { PageControllerDefinition } from "../../core/types";
 import { fadeIn, fadeOut, sidebarPaddingRight, snackbarShow, syncThemeColor } from "../../core/ui";
+import { TRANSLATION_EVENT } from "../translation/state";
 import { mountDesktopMenus } from "./desktop-menus";
 import { finishPageLoading, mountPageLoading } from "./page-loading";
 
@@ -565,6 +566,8 @@ async function initializeToc(resources: PageResourceScope): Promise<void> {
     tocScrollOffset: 50,
   });
   resources.defer(() => tocbot.destroy());
+  // TOC labels are derived from headings; rebuild them from the current variant.
+  resources.listen(document, TRANSLATION_EVENT, () => tocbot.refresh());
   resources.listen(toc, "click", () => {
     if (window.innerWidth < 900) document.querySelector("#card-toc")?.classList.remove("open");
   });

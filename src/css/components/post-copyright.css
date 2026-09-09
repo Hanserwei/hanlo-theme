@@ -18,9 +18,12 @@
     right: 22px;
     top: -77px;
     content: "\e668";
+    /* U+E668 belongs to the bundled haofont, independently of the page's Chinese variant. */
     font-family: "haofont";
     font-size: 180px;
-    font-family: "Font Awesome 5 Brands";
+    font-style: normal;
+    font-weight: normal;
+    pointer-events: none;
     color: var(--heo-fontcolor);
     opacity: 0.1;
     /*filter: blur(7px);*/

@@ -1,0 +1,131 @@
+/* Vditor owns rendering; the article owns layout and the surrounding color scheme. */
+.hanlo-vditor {
+    min-width: 0;
+    color: var(--heo-fontcolor);
+    color-scheme: light;
+}
+
+[data-theme="dark"] .hanlo-vditor {
+    color-scheme: dark;
+}
+
+.hanlo-vditor-block {
+    max-width: 100%;
+    margin-block: 1rem;
+    padding: 1rem;
+    overflow: auto;
+    border: var(--style-border);
+    border-radius: 8px;
+    background: var(--heo-card-bg);
+    color: var(--heo-fontcolor);
+    overscroll-behavior-x: contain;
+}
+
+.hanlo-vditor-block:focus-visible {
+    outline: 2px solid var(--heo-main);
+    outline-offset: 2px;
+}
+
+.hanlo-vditor .hanlo-vditor-pre,
+.hanlo-vditor .hanlo-vditor-pre > code {
+    display: block;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: normal;
+    white-space: normal;
+    text-shadow: none;
+}
+
+.hanlo-vditor :is(.language-mermaid, .language-flowchart, .language-graphviz) {
+    min-width: min-content;
+    text-align: center;
+}
+
+.hanlo-vditor .language-mermaid {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+/* Undo article paragraph/link spacing inside Mermaid's measured SVG HTML labels. */
+:where(#article-container).hanlo-vditor .language-mermaid :is(p, span, a),
+:where(#article-container) .hanlo-vditor .language-mermaid :is(p, span, a) {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+}
+
+.hanlo-vditor .language-mermaid svg {
+    display: block;
+    margin-inline: auto;
+}
+
+.hanlo-vditor :is(.language-echarts, .language-mindmap) {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 320px;
+    background: var(--heo-card-bg);
+    color: var(--heo-fontcolor);
+}
+
+/* DOT, legacy flowchart and remote PlantUML may specify arbitrary fixed colors.
+   Keep those colors intact on a neutral light canvas in either site mode. */
+.hanlo-vditor :is(.language-graphviz, .language-flowchart, .language-plantuml) {
+    padding: 12px;
+    border-radius: 4px;
+    background: #fff;
+    color: #24292f;
+    color-scheme: light;
+}
+
+.hanlo-vditor .language-plantuml object {
+    display: block;
+    margin-inline: auto;
+}
+
+.hanlo-vditor :is(.language-abc, .language-markmap) {
+    color: var(--heo-fontcolor);
+}
+
+.hanlo-vditor .language-math:not(span),
+.hanlo-vditor .katex-display {
+    max-width: 100%;
+    overflow: auto hidden;
+}
+
+.hanlo-vditor .language-math {
+    color: inherit;
+}
+
+.hanlo-vditor :is(video, audio, .iframe__video) {
+    max-width: 100%;
+    border-radius: 8px;
+    color-scheme: inherit;
+}
+
+.hanlo-vditor video {
+    height: auto;
+}
+
+.hanlo-vditor .iframe__video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+.hanlo-vditor .vditor-reset--error {
+    overflow: auto;
+    color: var(--heo-fontcolor);
+    white-space: pre-wrap;
+}

@@ -9,13 +9,23 @@ on:
       - master
   workflow_dispatch:
   workflow_call:
+    inputs:
+      ref:
+        type: string
+        default: ""
+      release-tag:
+        type: string
+        default: ""
+      artifact-name:
+        type: string
+        default: ""
 
 permissions:
   contents: read
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name != 'release' }}
+  cancel-in-progress: ${{ github.event_name != 'release' && inputs.release-tag == '' }}
 
 jobs:
   build:
@@ -24,6 +34,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ inputs.ref || github.ref }}
       - name: Set up pnpm
         uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
         with:
@@ -37,9 +49,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Verify release version
-        if: github.event_name == 'release'
+        if: github.event_name == 'release' || inputs.release-tag != ''
         env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_TAG: ${{ inputs.release-tag || github.event.release.tag_name }}
         run: |
           node --input-type=module <<'NODE'
           import assert from "node:assert/strict";
@@ -56,6 +68,8 @@ jobs:
         run: pnpm check
       - name: Run unit and settings tests
         run: pnpm test
+      - name: Verify actual Vditor Markmap bundle
+        run: pnpm test:markmap-runtime
       - name: Build and package theme
         run: pnpm build
       - name: Verify committed build output
@@ -73,8 +87,10 @@ jobs:
       - name: Upload theme package
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: theme-hanlo-${{ github.sha }}
-          path: dist/*.zip
+          name: ${{ inputs.artifact-name || format('theme-hanlo-{0}', github.sha) }}
+          path: |
+            dist/*.zip
+            dist/*.zip.sha256
           if-no-files-found: error
           compression-level: 0
           retention-days: 7

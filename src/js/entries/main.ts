@@ -15,15 +15,17 @@ import { createShikiController } from "../features/shiki";
 import { createSiteShellController } from "../features/site-shell";
 import { createThemeModeController } from "../features/theme-mode";
 import { createTranslationController } from "../features/translation";
+import { createVditorController } from "../features/vditor";
 
 const storage = createBrowserStorage();
 const lifecycle = installPageLifecycle();
 lifecycle.register(createThemeModeController(storage));
+lifecycle.register(createTranslationController(storage));
+lifecycle.register(createVditorController());
 lifecycle.register(createContentElementsController());
 lifecycle.register(createCategories3dController());
 lifecycle.register(createSiteShellController(storage));
 lifecycle.register(createRightMenuController());
-lifecycle.register(createTranslationController(storage));
 lifecycle.register(createShikiController());
 lifecycle.register(createEffectsController());
 lifecycle.register(createFriendMomentsController());

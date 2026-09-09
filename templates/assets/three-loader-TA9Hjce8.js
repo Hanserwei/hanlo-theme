@@ -1,1 +1,0 @@
-import{t as e}from"./js/.build-entry-ixOlgTd5.js";var t=`https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js`,n;function r(){return n??=e(()=>import(t).then(e=>{if(e.REVISION!==`160`)throw Error(`Unexpected Three.js revision.`);return e}),[]).catch(e=>{throw n=void 0,e}),n}export{r as loadThree};

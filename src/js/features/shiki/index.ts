@@ -3,46 +3,14 @@ import type { ThemeConfig } from "../../core/config";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
 import { snackbarShow } from "../../core/ui";
-import { LOCAL_LANGUAGES, LOCAL_THEMES } from "./registry";
+import { isDiagramLanguage } from "../vditor/languages";
+import { LANGUAGE_ALIASES, LANGUAGE_LABELS, LOCAL_LANGUAGES, LOCAL_THEMES } from "./registry";
 
 const FALLBACK_THEMES = { light: "one-light", dark: "one-dark-pro" } as const;
 const LEGACY_THEME_ALIASES: Readonly<Record<string, string>> = {
   "one-dark": "one-dark-pro",
   vs: "light-plus",
   "vsc-dark-plus": "dark-plus",
-};
-const LANGUAGE_ALIASES: Readonly<Record<string, string>> = {
-  "c++": "cpp",
-  "c#": "csharp",
-  htm: "html",
-  md: "markdown",
-  sh: "shellscript",
-  shell: "shellscript",
-  js: "javascript",
-  ts: "typescript",
-  py: "python",
-  "vue-html": "vue",
-  xml: "html",
-};
-const LANGUAGE_LABELS: Readonly<Record<string, string>> = {
-  bash: "Bash",
-  csharp: "C#",
-  cpp: "C++",
-  css: "CSS",
-  dockerfile: "Dockerfile",
-  html: "HTML",
-  java: "Java",
-  javascript: "JavaScript",
-  json: "JSON",
-  jsx: "JSX",
-  markdown: "Markdown",
-  python: "Python",
-  shellscript: "Shell",
-  sql: "SQL",
-  typescript: "TypeScript",
-  tsx: "TSX",
-  vue: "Vue",
-  yaml: "YAML",
 };
 
 export function normalizeTheme(
@@ -61,11 +29,14 @@ export function normalizeLanguage(
   language: string,
   languages: Readonly<Record<string, unknown>> | readonly string[],
 ): string {
-  const aliased = LANGUAGE_ALIASES[language] ?? language;
+  const requested = language.trim().toLowerCase();
+  const aliased = Object.hasOwn(LANGUAGE_ALIASES, requested)
+    ? LANGUAGE_ALIASES[requested]!
+    : requested;
   if (["text", "txt", "plain", "plaintext"].includes(aliased)) return "text";
   const available = Array.isArray(languages)
     ? (languages as readonly string[]).includes(aliased)
-    : Boolean((languages as Readonly<Record<string, unknown>>)[aliased]);
+    : Object.hasOwn(languages, aliased);
   return available ? aliased : "text";
 }
 
@@ -203,20 +174,25 @@ async function renderCodeBlock(
   const pre = code.parentElement;
   if (!pre || pre.tagName !== "PRE" || pre.classList.contains("shiki")) return;
   if (pre.closest(".shiki-code-block") || code.dataset["shikiPending"] === "true") return;
+  const language = extractLanguage(pre, code);
+  if (isDiagramLanguage(language) || code.dataset["processed"] === "true") return;
+  if (code.querySelector("svg, canvas, iframe, object, .katex, mjx-container")) return;
   code.dataset["shikiPending"] = "true";
   const source = code.textContent ?? "";
-  const language = extractLanguage(pre, code);
   try {
     const normalized = normalizeLanguage(language, LOCAL_LANGUAGES);
-    if (normalized === "text") {
+    if (isDiagramLanguage(normalized)) {
       delete code.dataset["shikiPending"];
       return;
     }
     const { getLocalHighlighter } = await import("./local");
     if (resources.disposed) return;
-    const shiki = await getLocalHighlighter();
+    const shiki = await getLocalHighlighter(normalized);
     if (resources.disposed) return;
-    const html = shiki.codeToHtml(source, {
+    // Markdown ends a fenced block with a newline; it is a line terminator, not another row.
+    // Remove exactly one for display, preserving intentional blank lines and the copied source.
+    const displaySource = source.replace(/(?:\r\n|\r|\n)$/, "");
+    const html = shiki.codeToHtml(displaySource, {
       lang: normalized,
       themes: {
         light: normalizeTheme(config.theme_light, "light", LOCAL_THEMES),
@@ -225,9 +201,9 @@ async function renderCodeBlock(
       defaultColor: false,
     });
     if (resources.disposed || !pre.isConnected) return;
-    const template = document.createElement("template");
-    template.innerHTML = html.trim();
-    const highlighted = template.content.querySelector<HTMLElement>("pre.shiki");
+    // Shiki escapes the source; accept only its generated pre element from an inert document.
+    const parsed = new DOMParser().parseFromString(html, "text/html");
+    const highlighted = parsed.querySelector<HTMLElement>("pre.shiki");
     if (!highlighted) throw new Error("Shiki did not return a code block.");
     highlighted.dataset["shikiRendered"] = "true";
     highlighted.dataset["language"] = language;

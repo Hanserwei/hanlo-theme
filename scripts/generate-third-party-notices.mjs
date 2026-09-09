@@ -47,7 +47,9 @@ for (const [reportedLicense, entries] of Object.entries(licenseData)) {
               : "not declared";
       const noticeFiles = readdirSync(packagePath)
         .filter((file) =>
-          /^(?:licen[cs]e|copying|notice|third[_-]party[_-]notices?)(?:\..*)?$/i.test(file),
+          /^(?:licen[cs]e|copying|notice|third[_-]party[_-](?:notices?|licenses?))(?:\..*)?$/i.test(
+            file,
+          ),
         )
         .sort();
       const notices = noticeFiles.map((file) => ({
