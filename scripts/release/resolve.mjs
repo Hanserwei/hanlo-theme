@@ -24,7 +24,11 @@ function api(route, query = ".") {
     throw new Error(`Cannot read release metadata: ${route}`, { cause });
   }
 }
-const release = api(`releases/tags/${tag}`);
+const release =
+  process.env.PUBLISH_ARCHIVE_DRAFT === "true"
+    ? api("releases?per_page=100", `map(select(.tag_name == "${tag}")) | .[0]`)
+    : api(`releases/tags/${tag}`);
+assert.ok(release, "Release was not found; create its GitHub draft first.");
 assert.equal(release.prerelease, false);
 const sha = api(`commits/${tag}`, "{sha: .sha}").sha;
 assert.match(sha, /^[a-f0-9]{40}$/);
