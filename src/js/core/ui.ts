@@ -1,13 +1,22 @@
 const scriptLoads = new Map<string, Promise<void>>();
 
-export function loadScript(url: string): Promise<void> {
+export function loadScript(
+  url: string,
+  attributes: Readonly<Record<`data-${string}`, string>> = {},
+): Promise<void> {
   const absolute = new URL(url, window.location.href).href;
   const existing = Array.from(document.scripts).find((script) => script.src === absolute);
+  // Script bundles can inspect data attributes while executing (e.g. Prism's data-manual).
+  // Apply them before attaching a new script or waiting for an existing pending request.
+  if (existing) {
+    for (const [name, value] of Object.entries(attributes)) existing.setAttribute(name, value);
+  }
   if (existing?.dataset["loaded"] === "true") return Promise.resolve();
   const pending = scriptLoads.get(absolute);
   if (pending) return pending;
   const promise = new Promise<void>((resolve, reject) => {
     const script = existing ?? document.createElement("script");
+    for (const [name, value] of Object.entries(attributes)) script.setAttribute(name, value);
     script.src = absolute;
     script.async = true;
     script.addEventListener(

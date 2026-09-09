@@ -1,9 +1,4 @@
 /* Migrated from public/assets/zhheo/custom.css; keep module order in src/css/index.css. */
-/* 代码块纯黑色背景 */
-code[class*=" language-"], pre[class*=" language-"]{
-    background: #18171d;
-}
-
 /* banner 字体图标大小及位置 */
 i.haofont.hao-icon-arrow-right.banner-righticon{
     font-size: 80px;

@@ -4,249 +4,74 @@
   <p>适用于 Halo 2.x 的响应式博客主题</p>
 </div>
 
-> Hanlo Theme 基于 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) 定制，后续将独立维护，功能和配置可能与上游版本不同。
+Hanlo 基于 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) 定制并独立维护，设计参考 [Heo](https://blog.zhheo.com/) 与 [Butterfly](https://github.com/jerryc127/hexo-theme-butterfly)。
 
-[功能特性](#功能特性) · [环境要求](#环境要求) · [快速开始](#快速开始) · [插件支持](#插件支持) · [参与开发](#参与开发)
+[应用市场](https://www.halo.run/store/apps/app-pin7ah2e) · [下载安装包](https://github.com/Hanserwei/hanlo-theme/releases) · [版本变更](CHANGELOG.md) · [问题反馈](https://github.com/Hanserwei/hanlo-theme/issues)
 
-## 简介
+## 功能
 
-Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/halo-dev/halo) 的博客主题。主题设计参考了 Hexo 社区的 [Heo](https://blog.zhheo.com/) 与 [Butterfly](https://github.com/jerryc127/hexo-theme-butterfly)。
+- 响应式布局、亮暗模式、可视化设置，以及文章、独立页面、友链、瞬间和图库等页面。
+- Shiki 全语言按需高亮，支持代码复制、行号与折叠；适配 Vditor 公式、图表、脑图和五线谱。
+- 本地 OpenCC 简繁转换，保留代码与公式原文，并同步图表内容。
+- 本地霞鹜文楷与 Maple Mono NF CN 字体、847 个菜单图标、统一个人卡片。
+- 「瓶中沧海」3D 关于页、互动表情、立体分类卡片和可选点击/卡片动效。
+- 原生文档导航与按需资源加载，动效遵循系统「减少动态效果」偏好。
 
-本分支已在原主题基础上完成定制化改造，并使用 Shiki 替代 Prism 提供代码高亮。
+## 安装
 
-## 功能特性
+需要 **Halo 2.26.0 或更高版本**，具体要求见 [theme.yaml](theme.yaml)。
 
-- 响应式博客布局，适配桌面端与移动端
-- 可视化主题设置，无需直接修改模板
-- 支持文章、独立页面、友链、瞬间、图库等内容类型
-- 使用 Halo 官方评论组件，并支持搜索以及多种 Halo 插件集成
-- 使用 Shiki 渲染代码高亮
-- 使用浏览器原生文档导航，并以 View Transitions 和保守预取渐进增强
-- 使用 Design Tokens、语义 Cascade Layers 和零 `!important` 的现代 CSS 架构
-- 提供关于、留言板、待办清单、相册等自定义页面模板
-- 内置页脚动物装饰栏，随主题提供图片并预留布局空间
-- 本地霞鹜文楷字体与开启连字的 Maple Mono NF CN 代码字体
-- 847 个 Ant Design 菜单图标，桌面子菜单可选择下拉或横向排列
-- 统一个人卡片，支持透明或图片背景、头像与个人介绍切换
-- 关于页可切换「瓶中沧海」Three.js 3D 场景，支持微缩航行、风暴、昼夜与个人手记
-- 关于页黄色圆脸表情物理互动，支持拖拽、碰撞与手机运动感应
-- 可选的蔚蓝档案点击特效，以及常见卡片的呼吸光影与流光描边
-- 基于 GSAP 的 3D 分类卡片，支持分层视差、几何光环与无封面背景
+1. 在 Halo 应用市场安装 Hanlo，或从 [GitHub Releases](https://github.com/Hanserwei/hanlo-theme/releases) 下载 `theme-hanlo-<版本>.zip`。
+2. 在 Halo 控制台进入「外观 → 主题」，上传安装包并启用。
+3. 填写建站时间等必填项，保存主题设置。升级注意事项见 [版本变更记录](CHANGELOG.md)。
 
-## 环境要求
+`.zip.sha256` 用于校验安装包；GitHub 自动生成的 **Source code** 压缩包不作为安装包使用。若启用后出现 500 错误，先检查 Halo 版本并重新保存主题设置。
 
-- Halo `2.26.0` 或更高版本
-- 安装主题前建议先备份 Halo 数据及现有主题配置
+## 使用文档
 
-具体版本要求以 [`theme.yaml`](./theme.yaml) 中的 `spec.requires` 字段为准。
+| 内容 | 文档 |
+| --- | --- |
+| Vditor、代码高亮与简繁转换 | [书写说明](docs/vditor-writing.md) · [测试文章](docs/examples/vditor-render-demo.md) · [语言列表](docs/shiki-languages.md) |
+| 关于页面 | [瓶中沧海](docs/about-bottle.md) · [表情互动](docs/about-emotions.md) |
+| 页面动效 | [立体分类](docs/categories-3d.md) · [点击特效](docs/click-effect.md) · [卡片光晕](docs/card-motion.md) |
+| 字体与许可 | [字体来源](public/assets/fonts/PROVENANCE.md) · [第三方声明](THIRD_PARTY_NOTICES.txt) |
+| 开发者发布 | [CI/CD 与发布说明](docs/publishing.md) |
 
-## 快速开始
+## 插件支持
 
-### 安装主题
+插件按需安装；缺少对应插件时相关功能不可用。
 
-1. 从本仓库的 Releases 页面下载主题压缩包，或在本地打包主题。
-2. 登录 Halo 控制台，进入“外观 → 主题”。
-3. 选择“安装主题”，上传主题压缩包。
-4. 安装完成后启用 Hanlo Theme，并进入主题设置完成初始化。
+| 功能 | 插件 |
+| --- | --- |
+| 评论 | [评论组件](https://www.halo.run/store/apps/app-YXyaD) |
+| 搜索 | [搜索组件](https://www.halo.run/store/apps/app-DlacW) |
+| 友链 | [链接管理](https://www.halo.run/store/apps/app-hfbQg) |
+| 瞬间 | [瞬间](https://www.halo.run/store/apps/app-SnwWD) |
+| 追番 | [哔哩哔哩追番](https://www.halo.run/store/apps/app-OTFPN) |
+| 图库 | [图库](https://www.halo.run/store/apps/app-BmQJW) |
+| 数学公式 | [KaTeX](https://www.halo.run/store/apps/app-ISCsX) |
+| 装备页面 | [装备](https://www.halo.run/store/apps/app-ytygyqml)，需 2.0.0 或更新版本 |
+| Markdown / HTML 内容块 | [混合内容编辑块](https://www.halo.run/store/apps/app-NgHnY) |
 
-首次启用时请填写“建站时间”等必填项，并保存各个设置分组。如果启用后出现 `500` 错误，请先确认 Halo 版本符合要求，再重新保存全部主题设置。
+## 开发
 
-从 1.x 升级到 2.0.0 时，自定义代码若使用 `window.pjax` 或旧 PJAX 事件，需要改为真实链接、
-`location.assign()` 或原生文档生命周期。
-
-### 升级到 2.5.0：瓶中沧海与评论、加载体验
-
-关于页新增「瓶中世界」：透明画布铺满导航下方的可用空间，玻璃瓶、木桌与陈设融入网站背景；体素海面、浮力三桅帆船、灯塔岛、水下宝藏与海洋生物构成微缩航行。支持拖动环视、滚轮/双指缩放、按住风暴和 ×1/×4/×12/暂停的昼夜时间控制。个人介绍、经历、想法、爱好和建站故事编入可点击打开的航海手记，首屏手记默认收起。详见 [瓶中沧海说明](docs/about-bottle.md)。
-
-「主题设置 → 关于页面 → 默认展示方式」可选择瓶中世界或文字关于，旧配置缺少字段时默认打开 3D 场景；访客可在页顶随时切换，文字模式保留完整资料和互动。Three.js r160 按需从固定 jsDelivr CDN 加载，失败时恢复可读文字内容；系统减少动态效果时默认暂停。渲染按可见性暂停，分辨率受帧耗时和像素预算约束，实际帧率由设备决定。
-
-同时修复中控台评论昵称固定、评论正文显示 HTML 标签、缺失头像只显示灰色占位的问题。三个评论摘要区域统一使用已有头像、邮箱哈希及本地彩色头像兜底。加载页改为柔和光环、浮动与跳点，完成后首屏内容错落淡入；减少动态效果下也能正常关闭加载层。
-
-下载 [2.5.0 Release](https://github.com/Hanserwei/hanlo-theme/releases/tag/2.5.0) 中的 `theme-hanlo-2.5.0.zip` 更新，现有配置无需清空。版本完整说明见 [2.5.0 发布说明](docs/releases/2.5.0.md)。
-
-### 升级到 2.4.0：交互表情与卡片动效
-
-关于页原「互动问候横幅」直接替换为「表情互动区」，沿用原区块位置和排序。内置 54 款黄色圆脸 PNG，统一为 56px 圆形，可拖拽、抛掷、碰撞和堆叠；后台可预览选择表情并设置 1–48 个实例，默认 24 个。旧问候语 `about.helloAbout` 不再使用，未填写新设置时使用默认表情。手机感应由访客点击授权，在 HTTPS 和支持的浏览器中响应倾斜与晃动。详见 [表情互动区说明](docs/about-emotions.md)。
-
-「全站外观」新增「启用蔚蓝档案鼠标点击特效」，默认开启，关闭后不加载对应模块。点击显示蓝色光环和碎片，按住拖动显示光尾，触屏保留正常滚动和缩放。文章卡片原擦亮效果保留，悬停描边改为流动柔光，常见卡片增加轻微错相呼吸；音乐、Steam 翻转和分类 3D 卡片保留专用交互。详见 [点击特效](docs/click-effect.md) 与 [卡片光晕](docs/card-motion.md)。
-
-分类集合页的 `3D` 选项升级为「立体探索卡片（3D 动效）」：六组配色、透明立方体、双层轨道、逐张入场及指针分层视差。分类名称、简介和文章数直接展示；未设封面时使用几何背景，图片加载失败时自动回退。已有 `3D` 配置直接生效，普通列表模式继续保留。详见 [3D 分类页说明](docs/categories-3d.md)。
-
-同时修复关于页「居住地与个人信息」只占部分行宽、空地图仍占位以及深色信息文字难以辨认的问题。地图和居住地均为空时只展示已填写的个人信息；单张地图可在明暗模式共用，个人信息桌面三列、窄屏竖排并支持长文字换行。
-
-上述动效遵循系统「减少动态效果」，页面进入后台时暂停，离屏卡片也会暂停动画。第三方代码与表情资源随主题打包，许可与来源记录在 `THIRD_PARTY_NOTICES.txt`。建议更新后重新加载页面，实机确认手机传感器授权、方向和手感。
-
-### 升级到 2.3.5：修复页面封面被旧样式覆盖
-
-相册、瞬间、装备、待办清单和最近评论共用横幅的背景由 `--hanlo-essay-cover` 提供。旧版把变量的背景规则放在 `components` 层，但 `pages` 层又为同一横幅指定了固定示例图片，导致配置地址虽已写入 HTML，背景仍被旧规则覆盖。
-
-本版让横幅的 `pages` 层直接使用配置变量，删除固定示例背景和低优先级的重复规则。图库照片页的横幅也一并修复。升级后使用已经保存的封面地址，无需重新上传图片或修改页面配置。
-
-### 升级到 2.3.4：图库使用原比例瀑布流
-
-图库当前页改用等宽分列的瀑布流，横图、竖图和方图都按各自原始比例完整显示，不再按行拉齐或裁切。宽屏按可用空间自动分列，常规手机显示两列，极窄屏显示一列；照片名称标签与点击放大预览继续可用。
-
-「封面卡片与横幅」和「简洁分组与照片」共用同一套图片列表。图库插件控制的每页条数、分组筛选及分页链接保持原样，不增加连续加载或额外图片请求。纯 CSS 布局在脚本加载前即可显示，无需调整或恢复配置。
-
-### 升级到 2.3.3：更新默认错误页插图
-
-404 和 500 页面分别使用新的内置 SVG 插图，图片居中完整显示，不再使用旧 GIF 或蓝色图片底板。404 图片比例为 3:2，500 为 1:1。已保存的旧默认 GIF 地址以及留空配置会自动使用对应新插图，自选图片地址继续生效。
-
-可在「主题设置 → 资源与页面效果 → 页面不存在时（404）／服务异常时（500）」替换图片，尺寸建议已同步更新。无需恢复或迁移主题配置。
-
-### 升级到 2.3.2：适配装备插件 2.0
-
-装备页 `/equipments` 保留 Hanlo 的导航、横幅和页脚，按新版插件适配文档复用 `plugin:equipment:modules/equipment :: list(groups)`，并加载插件自带的 `equipment.css?v=2.0.0`。卡片读取主题配色变量，沿用霞鹜文楷、明暗模式、圆角与响应式布局；主题只补充横幅与装备区之间的间距，不复制一套参数卡片模板。
-
-支持设备类型、使用状态、重点展示宽卡、完整概述与多行使用感受，以及按顺序展示的结构化参数；参数名称可以重复，参数内容保留换行。未填封面显示设备类型图标，未填或无效的详情链接不显示按钮，空分组与空列表使用插件空状态。旧卡片的规格单行截断、描述三行限制和绝对定位底栏已移除。内容由服务端直接渲染，不新增浏览器 API 请求或 JavaScript。
-
-**安装顺序：Halo 2.26.0 或更高版本 → 安装启用装备插件 2.0.0 或更新版本 → 安装本主题包。** 旧插件缺少新版片段时会显示简短的暂不可用提示，避免解析不存在的插件模板。装备资料在后台「装备」中维护，顶部介绍继续在「主题设置 → 装备页面」配置，无须迁移主题配置。
-
-### 升级到 2.3.1：统一全部设置交互
-
-重新整理全部 20 个主题设置页和 5 类扩展设置（文章、菜单、友链分组、友链、相册分组）。每页提供用途说明，字段按页面位置命名，图片注明建议尺寸和裁切方式，链接、代码、数量等输入提供示例和有效范围。提示卡颜色跟随 Halo 控制台明暗模式。
-
-开关联动仅显示当前功能需要的选项，关闭后保留已经填写的值；首屏图片与视频互斥，手机独立菜单仍可选择菜单组，关于页面只显示已启用区块的编辑项。列表条目使用自己的字段控制显示，修复社交图标选择时影响其他条目的问题。文章扩展设置可以明确选择「跟随主题设置」。
-
-移除四个未实际生效的输入：`sidebar.archivesQuantity`、`link.fcircleUrl`、`photos.detail`、`other.vanillaLazyload.loadingImg`。其余配置路径和已有值继续使用，配置备份恢复时删除这四个键即可。升级前导出的私人配置应保存在主题仓库外，避免进入安装包。
-
-同步修复设置对应的页面问题：自定义技术栈成对展示越界、宽屏左右交替封面失效、简洁相册标题读取不存在字段、转载链接判断错误、单篇开启 AI 摘要却被全局开关清空内容，以及双背景视频重复 ID。
-
-`pnpm settings:check` 校验设置分组、字段、重复 ID、条件引用、图片说明和 FormKit 表达式；`pnpm test:settings` 使用 Halo 相同版本的 FormKit 验证联动和隐藏后的值保留。`pnpm test` 同时执行主题单元测试和表单测试。
-
-### 升级到 2.3.0：统一个人卡片
-
-个人卡片参考 [Roozen](https://roozen.top/) 的信息结构重新设计，统一为一套布局：顶部可切换的个人标签、中间头像与个人介绍、底部名称、一句话简介和社交入口。移除了「默认／样式一」选择、两套旧样式及纯色渐变背景。已有名称、简介、介绍、标签和社交链接继续使用。
-
-在「主题设置 → 侧栏 → 个人卡片」设置背景图。**留空时卡片背景透明**；选择图片时居中铺满，并加暗色遮罩搭配白色文字。推荐 **4:5 竖图、800 × 1000 像素**，至少 400 × 500，优先 WebP 或 AVIF；重要内容放在中央，边缘可能裁切。旧版本自带的默认背景会回到透明，已选的自定义背景继续使用，清空后即恢复透明。
-
-头像可以独立设置，留空跟随站点 Logo；建议至少 256 × 256 像素。右下角贴纸可选，建议 96 × 96 像素透明图片。顶部标签支持中文或英文逗号分隔，点击切换到另一个标签；只有一个标签时展示为静态标签。
-
-鼠标悬浮卡片显示介绍，移出后恢复头像；也可使用「认识我／查看头像」按钮主动切换，触屏和键盘均可操作，Escape 收起介绍并返回按钮。长介绍在中间区域滚动，不挤占底部信息；介绍留空时仅显示头像。社交入口最多两个，支持 `GithubOutlined`、`MailOutlined` 等图标名称及已有图标类名、图片地址。
-
-### 升级到 2.2.1：页脚记录与导航留白
-
-「主题设置 → 页脚 → 站点记录与 Logo」新增可自定义的页脚图片、多行记录文字，以及运行时间和旅行者 1 号里程开关。默认使用原柴犬图片，桌面和手机均显示，点击返回顶部；可选择附件替换，留空恢复柴犬。旧「社交媒体 → 中间 logo」由这个新图片设置替代，升级时默认显示柴犬，原社交链接继续保留。
-
-运行时间从「基础 → 建站时间」的当地零点开始统计，只更新文本，不重复创建或加载图片。无效日期隐藏计时行，未来日期从零开始；隐藏页面暂停文本刷新。旅行者里程从发射时刻按 17 千米/秒估算，文案明确标记为飞行里程估算，不代表实时距地球距离。
-
-导航一级菜单增加选项间距、图标与文字间距和按钮四周内边距，悬浮底色完整包裹内容。字体加载后会重新检查可用宽度。设置中的图标说明改为较小的提示卡片，分行展示填写位置、示例和图标预览链接。
-
-### 升级到 2.2.0：字体、菜单图标与子菜单布局
-
-页脚「内容 → 中间」整组设置及相关功能已移除，包括网站所有者、运行时间、上下班徽标和自定义徽标。底部页脚版权信息仍由「底部页脚」控制。旧配置中的这些字段会被忽略，无需手动清空配置。2.2.1 起，运行时间和可自定义图片由新的「站点记录与 Logo」分组提供。
-
-普通主题文字使用 **LXGW WenKai（霞鹜文楷）v1.522**，代码块、行内代码、键盘提示和等宽文本使用 **Maple Mono NF CN v7.9**，开启 `calt`、`liga` 连字。字体以 WOFF2 随主题提供，保留完整中文字形及 Maple 的 Nerd Font 字形；旧字体设置已移除。6 个字体文件合计约 41.3 MiB，浏览器按实际使用的字重与样式加载，首次加载期间先显示后备字体。第三方插件独立组件或 Shadow DOM 内的字体由插件控制。
-
-菜单图标改用 **@antdv-next/icons 1.1.2**，包含 847 个线框、实底及双色图标。在「外观 → 菜单」编辑菜单项，将「图标」设为 `HomeOutlined`、`GithubOutlined`、`CameraFilled`、`HeartTwoTone` 等完整名称。升级后可访问站点的 `/themes/theme-hanlo/assets/icon/antdv-next/catalog.html` 预览全部图标，使用浏览器查找功能搜索并复制名称。旧 `#icon-xxx` Symbol 值需要换成新名称；已有图片地址及传统图标类名继续兼容。主导航、手机菜单与左侧菜单共用这套图标。Vue 只用于构建图标，前台直接使用本地 SVG。
-
-「主题设置 → 导航 → 菜单控制 → 桌面子菜单布局」支持 **下拉** 和 **横向**，默认下拉。也可在「外观 → 菜单」的单个菜单项中选择「跟随主题设置／下拉／横向」。横向布局在父菜单下方展开胶囊形菜单栏，过长时换行，靠近屏幕边缘时调整位置；支持悬浮、键盘聚焦、方向下键展开、Escape 收起及触屏点击。手机端继续使用折叠菜单。旧 `isVertical` 注解已由新布局选项取代，升级后按新选项设置需要单独覆盖的菜单。
-
-### 升级到 2.1.2：留言板与评论摘要
-
-留言板信封卡片现在使用主题统一的文字与背景色，明暗模式下保持配对，移除了强制浅色背景的工具类。最近评论页和侧栏评论摘要统一转换为纯文本，处理段落、换行、链接、HTML 实体和图片说明，悬停提示也不再显示 HTML 标签。解析器仅在有评论摘要时加载，不执行评论 HTML，不请求其中的外部资源。
-
-留言板下方的评论区由官方评论插件提供，头像服务与主题侧栏的头像镜像是两个独立设置。插件出现头像错误图标时，检查“评论组件 → 头像设置 → 头像服务镜像地址”，填写真正的 Gravatar 兼容服务（例如 `https://cravatar.cn`），不要填博客域名，除非已自行部署 `/avatar/{hash}` 代理。是否有个人头像及默认头像图案由该服务决定；主题不会覆盖评论插件内部的头像组件。
-
-### 升级到 2.1.1：页脚动物栏
-
-2.1.1 修复了 2.1.0 页脚开关表达式调用 `.get()` 导致的模板渲染失败（可能表现为空白页面或连接中断）。Halo 的配置由 JsonPropertyAccessor 包装，需要通过属性读取；本版已修正并增加构建检查。已安装 2.1.0 的站点请升级此修复版，无需清空或重置主题配置。
-
-动物栏现在由主题渲染，图片包含在主题包中。默认开启，可在“主题设置 → 页脚 → 动物装饰栏”关闭；已有配置缺少此字段时也会正常显示。
-
-动物和矮墙使用同一网格区域，占据实际高度，并与正文末尾保持间距。动物图最大宽度为 880px，手机端按可用宽度缩放。2.1.x 的运行时间和柴犬徽标在 2.2.0 移除，2.2.1 通过新的「站点记录与 Logo」设置重新提供。
-
-原来通过 Halo“代码注入 → 页脚”加入动物栏的用户，升级后可以删除旧的 `<div id="footer-animal">…</div>` 及对应 `<style>` 中的 `#footer-animal`、`.animal-wall`、`img.animal` 和 `#footer-banner` 样式，保留其他注入内容。新主题会隐藏页脚中遗留的 `#footer-animal`，防止重复显示；主题开关关闭时也会隐藏旧动物栏。`halo:footer` 仍保留用于插件及其他代码注入。
-
-### 本地打包
-
-项目使用 pnpm 10、TypeScript、Vite Plus 和 Halo 官方主题构建插件。在仓库根目录执行：
+使用 Node.js 24 和 pnpm 10.33.0：
 
 ```bash
+git clone https://github.com/Hanserwei/hanlo-theme.git
+cd hanlo-theme
 pnpm install --frozen-lockfile
 pnpm check
 pnpm test
 pnpm build
 ```
 
-构建会从 `src/` 和 `public/` 重新生成 `templates/`，并在 `dist/` 输出可直接上传至 Halo 控制台的 `theme-hanlo-<version>.zip` 和对应 `.zip.sha256` 校验文件。版本唯一来源是 `theme.yaml` 的 `spec.version`。
+`src/` 是模板和脚本源码，`public/assets/` 保存图片、字体等资源；`templates/` 为 Halo 读取的生成文件，应随源码提交。安装包输出到 `dist/`，版本来自 `theme.yaml`。
 
-## 插件支持
+`pnpm dev` 持续构建。本地 Halo 需启用该主题，并关闭 Thymeleaf 缓存。`pnpm test:markmap-runtime` 可额外验证实际 Vditor Markmap 脚本；首次运行会下载并校验固定版本。
 
-所有插件均为可选依赖；未安装插件时，对应功能不会显示。
-
-| 功能                   | 插件                                                                  |
-| ---------------------- | --------------------------------------------------------------------- |
-| 评论                   | [plugin-comment-widget](https://www.halo.run/store/apps/app-YXyaD)    |
-| 搜索                   | [plugin-search-widget](https://www.halo.run/store/apps/app-DlacW)     |
-| 友链                   | [plugin-links](https://www.halo.run/store/apps/app-hfbQg)             |
-| 瞬间                   | [plugin-moments](https://www.halo.run/store/apps/app-SnwWD)           |
-| 追番                   | [plugin-bilibili-bangumi](https://www.halo.run/store/apps/app-OTFPN)  |
-| 图库                   | [plugin-photos](https://www.halo.run/store/apps/app-BmQJW)            |
-| 数学公式               | [plugin-katex](https://www.halo.run/store/apps/app-ISCsX)             |
-| 装备页面               | [plugin-equipment](https://www.halo.run/store/apps/app-ytygyqml)      |
-| Markdown / HTML 内容块 | [plugin-hybrid-edit-block](https://www.halo.run/store/apps/app-NgHnY) |
-
-插件兼容性可能随 Halo 或插件版本变化。遇到问题时，请先确认 Halo、主题和插件均使用兼容版本。
-
-## 参与开发
-
-```bash
-git clone <repository-url> hanlo-theme
-cd hanlo-theme
-git switch master
-pnpm install --frozen-lockfile
-pnpm dev
-```
-
-`pnpm dev` 会监听源码并持续生成 `templates/`。本地 Halo 必须安装并启用当前主题，同时通过 `spring.thymeleaf.cache: false` 或环境变量 `SPRING_THYMELEAF_CACHE=false` 关闭 Thymeleaf 缓存。
-
-主要目录和文件：
-
-| 路径                      | 说明                                                                    |
-| ------------------------- | ----------------------------------------------------------------------- |
-| `theme.yaml`              | 主题元数据与 Halo 版本要求                                              |
-| `settings.yaml`           | 主题设置项定义                                                          |
-| `annotation-setting.yaml` | 文章与页面的扩展设置                                                    |
-| `src/`                    | Thymeleaf 页面与片段源码；应在此修改模板                                |
-| `public/assets/`          | 原样复制到主题包的第一方样式、字体和图片；第三方运行时由 pnpm/Vite 构建 |
-| `templates/`              | Vite 生成、Halo 实际读取的运行时产物；不要手动修改                      |
-| `vite.config.ts`          | Vite Plus 与 Halo 主题构建插件配置                                      |
-| `THIRD_PARTY_NOTICES.txt` | 由生产依赖图及字体、图标许可生成并随 ZIP 分发的通知文本                 |
-
-菜单图标通过 `scripts/generate-menu-icons.mjs` 生成，运行 `pnpm menu-icons:sync` 更新图标集和预览页，`pnpm menu-icons:check` 校验。字体版本、来源、许可和转换说明见 `public/assets/fonts/PROVENANCE.md`。
-
-### CI/CD
-
-工作流使用 Node.js 24 和 pnpm 10.33.0，与本地构建工具链保持一致。
-
-| 工作流                         | 触发方式                                                        | 执行内容                                                                                      |
-| ------------------------------ | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| [CI](.github/workflows/ci.yml) | 推送到 `master`、向 `master` 提交 PR，或在 Actions 页面手动运行 | 锁定依赖安装、源码和设置校验、单元和设置交互测试、构建打包、已提交产物一致性及 ZIP 完整性检查 |
-| [CD](.github/workflows/cd.yml) | 发布 GitHub Release，包括预发布版本                             | 先复用完整 CI 并校验标签版本，再通过 Halo 官方工作流构建并上传 ZIP 到该 Release               |
-
-CI 通过后，可在对应 Actions 运行的 Artifacts 中下载 `theme-hanlo-<提交 SHA>`，解压后取得可安装的主题 ZIP。构建产物保留 7 天。源码变更后需执行 `pnpm build` 并提交生成的 `templates/`；CI 会拒绝未提交的修改和新增产物。
-
-发布版本的步骤：
-
-1. 修改 `theme.yaml` 中的 `spec.version`，更新升级说明，执行 `pnpm check`、`pnpm test` 和 `pnpm build`。
-2. 提交源码与生成的 `templates/` 并推送，确认 CI 通过。
-3. 在 GitHub Releases 中选择该提交创建并发布 Release。标签必须为 `spec.version` 或带 `v` 前缀的相同版本，例如 `2.3.5` / `v2.3.5`；预发布版本可用 `v2.4.0-rc.1`，对应 `spec.version: "2.4.0-rc.1"`。
-4. 等待 CD 成功，从 Release 附件下载 `theme-hanlo-<version>.zip`。GitHub 自动生成的 Source code 压缩包不作为安装包使用。
-
-仅推送提交或标签不会触发 CD，需发布 Release。已发布的版本制品不应覆盖，修复应使用新版本号。
-
-按照 [Halo 发布应用文档](https://docs.halo.run/developer-guide/app-store/publish-app.md)，当前审核前阶段保留 `skip-appstore-release: true`，只上传 GitHub Release 附件，不配置应用市场 ID、`HALO_PAT` 或自动同步；所需的 GitHub 令牌由 Actions 自动提供。
-
-发现问题或希望提交改进时，请通过当前仓库的 Issues 和 Pull Requests 反馈。
-
-## 致谢
-
-- [Halo](https://github.com/halo-dev/halo)
-- [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao)
-- [Hexo Theme Butterfly](https://github.com/jerryc127/hexo-theme-butterfly)
-- [Heo](https://blog.zhheo.com/)
+[CI](.github/workflows/ci.yml) 在推送和 PR 时检查、测试并构建主题；发布正式 GitHub Release 后，[CD](.github/workflows/cd.yml) 上传安装包并同步 Halo 应用市场，支持按标签手动重试。详情见 [发布说明](docs/publishing.md)。
 
 ## 许可证
 
-本项目基于 [GPL-3.0](./LICENSE) 协议开源。使用、修改和分发时请遵守许可证要求，并保留必要的版权与来源说明。
+基于 [GPL-3.0](LICENSE) 开源。感谢 [Halo](https://github.com/halo-dev/halo)、[Hao](https://github.com/chengzhongxue/halo-theme-hao)、[Butterfly](https://github.com/jerryc127/hexo-theme-butterfly) 与 [Heo](https://blog.zhheo.com/)。

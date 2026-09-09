@@ -2,27 +2,148 @@ name: CD
 
 on:
   release:
-    types:
-      - published
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing published release tag to publish or retry
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: cd-${{ github.event.release.tag_name }}
+  group: cd-${{ inputs.tag || github.event.release.tag_name }}
   cancel-in-progress: false
 
 jobs:
-  verify:
-    uses: ./.github/workflows/ci.yml
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      version: ${{ steps.release.outputs.version }}
+      sha: ${{ steps.release.outputs.sha }}
+      control: ${{ steps.release.outputs.control }}
+      release-id: ${{ steps.release.outputs.release_id }}
+      archive: ${{ steps.release.outputs.archive }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: master
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 10.33.0
+          run_install: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Resolve immutable release source and package mode
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+        run: node scripts/release/resolve.mjs
 
-  release:
-    needs: verify
-    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v4
+  source:
+    needs: resolve
+    if: needs.resolve.outputs.archive == 'false'
+    uses: ./.github/workflows/ci.yml
+    with:
+      ref: ${{ needs.resolve.outputs.sha }}
+      release-tag: ${{ needs.resolve.outputs.tag }}
+      artifact-name: release-package
+
+  archive:
+    needs: resolve
+    if: needs.resolve.outputs.archive == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ needs.resolve.outputs.control }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ needs.resolve.outputs.sha }}
+          path: archive-snapshot
+      - name: Download the original historical package
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.resolve.outputs.tag }}
+          RELEASE_VERSION: ${{ needs.resolve.outputs.version }}
+        run: |
+          mkdir -p dist
+          gh release download "$RELEASE_TAG" --pattern "theme-hanlo-${RELEASE_VERSION}.zip*" --dir dist
+      - name: Verify original checksum, manifest and tag snapshot
+        env:
+          RELEASE_VERSION: ${{ needs.resolve.outputs.version }}
+          SNAPSHOT_DIR: archive-snapshot
+        run: python3 scripts/release/verify-package.py
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: release-package
+          path: dist/*
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: [resolve, source, archive]
+    if: ${{ always() && needs.resolve.result == 'success' && (needs.source.result == 'success' || needs.archive.result == 'success') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: HALO_PAT
     permissions:
       contents: write
-    with:
-      # Enable App Store publishing only after the first application review passes.
-      skip-appstore-release: true
-      node-version: "24"
-      pnpm-version: "10.33.0"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ needs.resolve.outputs.control }}
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: release-package
+          path: dist
+      - name: Check market credential is available
+        env:
+          HALO_PAT: ${{ secrets.HALO_PAT }}
+        run: test -n "$HALO_PAT" || { echo '::error::HALO_PAT is missing from the HALO_PAT environment.'; exit 1; }
+      - name: Verify package
+        env:
+          RELEASE_VERSION: ${{ needs.resolve.outputs.version }}
+        run: python3 scripts/release/verify-package.py
+      - name: Upload or reuse matching GitHub assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.resolve.outputs.tag }}
+          RELEASE_VERSION: ${{ needs.resolve.outputs.version }}
+        run: python3 scripts/release/github-assets.py
+      - name: Check for an already published matching market version
+        id: market
+        env:
+          RELEASE_VERSION: ${{ needs.resolve.outputs.version }}
+        run: node scripts/release/market.mjs
+      - name: Publish to Halo App Store
+        if: steps.market.outputs.exists != 'true'
+        uses: halo-sigs/app-store-release-action@0b0b351312114a42a544471c1ee0b78d3f635e51 # v4
+        with:
+          github-token: ${{ github.token }}
+          app-id: app-pin7ah2e
+          halo-pat: ${{ secrets.HALO_PAT }}
+          release-id: ${{ needs.resolve.outputs.release-id }}
+          assets-dir: dist
+      - name: Verify public market version and asset metadata
+        env:
+          RELEASE_VERSION: ${{ needs.resolve.outputs.version }}
+        run: node scripts/release/market.mjs --verify
