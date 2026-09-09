@@ -14,7 +14,7 @@ Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/hal
 
 本分支已在原主题基础上完成定制化改造，并使用 Shiki 替代 Prism 提供代码高亮。
 
-2.6.0 增加 Vditor 正文的亮暗模式同步、图表排版适配，并开放 Shiki 4.4.3 全部 242 种语言及别名，语法资源随主题提供并按需加载。2.6.1 为纯文本围栏补齐相同的代码框与工具，并修复末尾换行多显示一行的问题。参见 [Vditor 书写说明](docs/vditor-writing.md)、[可直接粘贴的测试文章](docs/examples/vditor-render-demo.md)和[完整语言表](docs/shiki-languages.md)。
+2.7.0 使用本地 OpenCC 词组词典进行简繁转换，正文与 Vditor 图表从原文同步更新，PlantUML 无需刷新整页；代码与公式保留原文。绘图提前到正文就绪时启动，并减少重绘等待和重复扫描。延续 Shiki 全部 242 种语言按需高亮、纯文本代码框与亮暗图表适配。参见 [Vditor 书写说明](docs/vditor-writing.md)、[可直接粘贴的测试文章](docs/examples/vditor-render-demo.md)和[完整语言表](docs/shiki-languages.md)。
 
 ## 功能特性
 
