@@ -14,13 +14,15 @@ Hanlo Theme 是一款基于 Thymeleaf、面向 [Halo 2.x](https://github.com/hal
 
 本分支已在原主题基础上完成定制化改造，并使用 Shiki 替代 Prism 提供代码高亮。
 
+2.6.0 增加 Vditor 正文的亮暗模式同步、图表排版适配，并开放 Shiki 4.4.3 全部 242 种语言及别名，语法资源随主题提供并按需加载。参见 [Vditor 书写说明](docs/vditor-writing.md)、[可直接粘贴的测试文章](docs/examples/vditor-render-demo.md)和[完整语言表](docs/shiki-languages.md)。
+
 ## 功能特性
 
 - 响应式博客布局，适配桌面端与移动端
 - 可视化主题设置，无需直接修改模板
 - 支持文章、独立页面、友链、瞬间、图库等内容类型
 - 使用 Halo 官方评论组件，并支持搜索以及多种 Halo 插件集成
-- 使用 Shiki 渲染代码高亮
+- 使用 Shiki 全语言按需高亮，并适配 Vditor 的公式、图表、脑图与五线谱
 - 使用浏览器原生文档导航，并以 View Transitions 和保守预取渐进增强
 - 使用 Design Tokens、语义 Cascade Layers 和零 `!important` 的现代 CSS 架构
 - 提供关于、留言板、待办清单、相册等自定义页面模板

@@ -3217,7 +3217,7 @@ spec:
             - $el: p
               attrs:
                 style: margin:0
-              children: 为正文及主题评论区中可识别的代码块启用 Shiki 高亮。建议在编辑器里标记代码语言；下方工具与配色仅在高亮开启后生效。
+              children: 支持 Shiki 全部内置语言及别名，按文章实际使用的语言加载本地语法。请在编辑器代码块中标记语言；公式、脑图和图表交给 Vditor 渲染。下方工具与配色仅在高亮开启后生效。
         - $formkit: switch
           name: shiki_enable
           id: hanlo_code_shiki_enable
