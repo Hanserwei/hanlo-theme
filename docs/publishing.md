@@ -36,9 +36,17 @@ gh workflow run cd.yml --ref master -f tag=2.7.2
 2.6.0、2.6.1、2.7.0、2.7.1 开发时保存了 ZIP，但未独立提交每个阶段的源码。本次保留原包进行补发，不把最新源码改版本号来重建历史包。
 
 - 原包 SHA-256 和大小固定记录在 `releases/archives.json`。
-- 对应标签是从原包解出的运行文件快照，包含 `release-archive.json` 和转发到正式 CD 的工作流；它们不是完整 authored `src/` 历史。
+- 对应标签是从原包解出的运行文件快照，包含 `release-archive.json` 和归档工作流；它们不是完整 authored `src/` 历史。该仓库实测嵌套工作流无法取得环境 Secret，因此归档版本采用主分支 CD 的直接入口。
 - CD 下载该 Release 的原附件，校验哈希、主题身份、版本、ZIP 完整性，并逐文件与标签运行快照对照。
 - 安装包保持原始字节；版本正文说明功能、已知问题与归档来源。
 - 2.7.2 使用完整源码、当前 CI 和正式发布流程，作为最新推荐版本。
+
+先创建带原始 ZIP 和校验文件的 GitHub 草稿，再直接运行：
+
+```bash
+gh workflow run cd.yml --ref master -f tag=2.6.1 -f publish-archive-draft=true
+```
+
+该选项只接受 `archives.json` 中的历史版本，发布前验证 GitHub 附件 digest。工作流使用自己的 GitHub 令牌发布草稿并继续市场同步，不触发第二条嵌套流程；其它版本仍需先正常发布 Release。已发布归档只需普通重试入口。
 
 按 2.6.0 → 2.6.1 → 2.7.0 → 2.7.1 → 2.7.2 顺序发布，等待每版市场同步成功再进行下一版，使最终最新版本为 2.7.2。

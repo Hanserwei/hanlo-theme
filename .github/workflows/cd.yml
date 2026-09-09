@@ -6,9 +6,13 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Existing published release tag to publish or retry
+        description: Existing release tag to publish or retry
         required: true
         type: string
+      publish-archive-draft:
+        description: Publish an allowlisted historical draft before syncing
+        default: false
+        type: boolean
   workflow_call:
     inputs:
       tag:
@@ -26,6 +30,8 @@ jobs:
   resolve:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: write
     outputs:
       tag: ${{ steps.release.outputs.tag }}
       version: ${{ steps.release.outputs.version }}
@@ -44,13 +50,14 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24
-          cache: pnpm
+          package-manager-cache: false
       - run: pnpm install --frozen-lockfile
       - name: Resolve immutable release source and package mode
         id: release
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+          PUBLISH_ARCHIVE_DRAFT: ${{ inputs.publish-archive-draft || false }}
         run: node scripts/release/resolve.mjs
 
   source:
@@ -111,6 +118,7 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24
+          package-manager-cache: false
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: release-package
