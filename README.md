@@ -8,6 +8,13 @@ Hanlo 基于 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) �
 
 [应用市场](https://www.halo.run/store/apps/app-pin7ah2e) · [下载安装包](https://github.com/Hanserwei/hanlo-theme/releases) · [版本变更](CHANGELOG.md) · [问题反馈](https://github.com/Hanserwei/hanlo-theme/issues)
 
+> [!IMPORTANT]
+> 由于 Halo 官方主题商店审核流程中的特定要求（涉及原主题维护者意见及兼容性评估），本主题目前**已从官方应用市场暂时下架**。
+> 我们完全尊重并理解官方的决定。在此期间：
+> 1. **现有用户**：已安装的用户可继续正常使用，但可能无法通过商店接收自动更新。
+> 2. **新用户**：如需体验本主题，请通过 GitHub Releases 页面手动下载最新版本进行安装。
+> 3. **后续计划**：我们正在积极与官方团队沟通解决方案，力求在符合社区规范的前提下重新上架，如果沟通失败页面布局风格可能会大改，希望理解。
+
 ## 功能
 
 - 响应式布局、亮暗模式、可视化设置，以及文章、独立页面、友链、瞬间和图库等页面。
