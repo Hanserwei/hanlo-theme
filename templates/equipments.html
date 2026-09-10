@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'equipments',title = ${title + ' | ' + site.title}, head = ~{::head},_title = ${title})}">
 <th:block th:fragment="head">
-    <link th:if="${pluginFinder.available('equipment', '>=2.0.0')}" rel="stylesheet"
-          th:href="@{/plugins/equipment/assets/static/equipment.css(v='2.0.0')}">
+    <link th:if="${pluginFinder.available('han-equipment', '>=2.0.0')}" rel="stylesheet"
+          th:href="@{/plugins/han-equipment/assets/static/equipment.css(v='2.0.0')}">
     <link rel="stylesheet"
           th:href="${assets_link + '/css/equipment-' + theme.spec.version + '.css' + theme_version}">
     <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${_title},
@@ -28,9 +28,9 @@
                         buttonUrl = '',
                         buttonTitle = '')}" ></div>
                 <div id="equipment" class="hanlo-equipment-content" th:fragment="equipment-content"
-                     th:with="equipmentAvailable=${pluginFinder.available('equipment', '>=2.0.0')}">
+                     th:with="equipmentAvailable=${pluginFinder.available('han-equipment', '>=2.0.0')}">
                     <th:block th:if="${equipmentAvailable}">
-                        <th:block th:replace="~{plugin:equipment:modules/equipment :: list(groups=${groups})}"></th:block>
+                        <th:block th:replace="~{plugin:han-equipment:modules/equipment :: list(groups=${groups})}"></th:block>
                     </th:block>
                     <p th:unless="${equipmentAvailable}" class="hanlo-equipment-unavailable">
                         装备清单暂时无法展示，请稍后再来看看。
