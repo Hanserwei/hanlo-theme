@@ -1,3 +1,9 @@
+> [!CAUTION]
+> 非常遗憾的告诉大家，未能争取到上游[@HeoZhang / Zhang Hong](https://blog.zhheo.com/)的设计授权，上游表示未来会有上架Halo主题商城的计划，但会收费。
+> 由于[Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao)作者不支持hanlo-theme上架Halo主题商城，同时本仓库代码也难以同步给上游。
+> 所以该主题无限期搁置上架商城计划。
+> 感谢并理解上游HeoZhang已经Hao主题作者，希望Halo主题开源社区越来越好
+
 <div align="center">
   <img width="96" src="./public/assets/images/hanlo-logo.png" alt="Hanlo Theme Logo">
   <h1>Hanlo Theme</h1>
