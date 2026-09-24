@@ -16,14 +16,14 @@ Hanlo 基于 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) �
 
 > [!CAUTION]
 > 各位关注本项目的用户大家好，
-> 
+>
 > 经过与 Halo 官方团队的多轮沟通，由于原参考主题（Hao Theme）维护者的异议及平台审核机制的限制，本项目目前**无法通过官方应用市场审核**。鉴于此情况，我们做出如下说明与承诺：
-> 
+>
 > 1. **长期下架状态**：在未来很长一段时间内，本主题将不会出现在 Halo 官方商店中。现有用户请继续使用 GitHub Releases 进行手动安装与更新。
 > 2. **积极争取授权**：我们正在尝试与原主题作者（[@HeoZhang / Zhang Hong](https://blog.zhheo.com/)）建立直接联系，旨在就代码复用范围、灵感来源致谢等细节达成正式共识，以寻求获得明确的“衍生/致敬”授权，从而合规地重新上架。
 > 3. **技术架构完全独立**：需要澄清的是，本项目并非对 Hao 主题的简单修改或分支。由于两者底层前端架构差异巨大（从传统 CSS 巨型文件重构为模块化现代架构），且设计理念存在根本性分歧，**我们承诺绝不会向 Hao 主题同步任何代码或补丁**。两者已属于完全不同的技术栈实现。
 > 4. **开源理念坚持**：我们将继续遵循开源协议，保留所有历史贡献记录。无论是否上架，本项目都将作为独立的开源作品持续维护，服务于追求高性能与新生态兼容的用户群体。
-> 
+>
 > 感谢大家的理解与支持，如有进展我们将第一时间公告。
 
 ## 功能
@@ -47,29 +47,29 @@ Hanlo 基于 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) �
 
 ## 使用文档
 
-| 内容 | 文档 |
-| --- | --- |
+| 内容                       | 文档                                                                                                                       |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | Vditor、代码高亮与简繁转换 | [书写说明](docs/vditor-writing.md) · [测试文章](docs/examples/vditor-render-demo.md) · [语言列表](docs/shiki-languages.md) |
-| 关于页面 | [瓶中沧海](docs/about-bottle.md) · [表情互动](docs/about-emotions.md) |
-| 页面动效 | [立体分类](docs/categories-3d.md) · [点击特效](docs/click-effect.md) · [卡片光晕](docs/card-motion.md) |
-| 字体与许可 | [字体来源](public/assets/fonts/PROVENANCE.md) · [第三方声明](THIRD_PARTY_NOTICES.txt) |
-| 开发者发布 | [CI/CD 与发布说明](docs/publishing.md) |
+| 关于页面                   | [瓶中沧海](docs/about-bottle.md) · [表情互动](docs/about-emotions.md)                                                      |
+| 页面动效                   | [立体分类](docs/categories-3d.md) · [点击特效](docs/click-effect.md) · [卡片光晕](docs/card-motion.md)                     |
+| 字体与许可                 | [字体来源](public/assets/fonts/PROVENANCE.md) · [第三方声明](THIRD_PARTY_NOTICES.txt)                                      |
+| 开发者发布                 | [CI/CD 与发布说明](docs/publishing.md)                                                                                     |
 
 ## 插件支持
 
 插件按需安装；缺少对应插件时相关功能不可用。
 
-| 功能 | 插件 |
-| --- | --- |
-| 评论 | [评论组件](https://www.halo.run/store/apps/app-YXyaD) |
-| 搜索 | [搜索组件](https://www.halo.run/store/apps/app-DlacW) |
-| 友链 | [链接管理](https://www.halo.run/store/apps/app-hfbQg) |
-| 瞬间 | [瞬间](https://www.halo.run/store/apps/app-SnwWD) |
-| 追番 | [哔哩哔哩追番](https://www.halo.run/store/apps/app-OTFPN) |
-| 图库 | [图库](https://www.halo.run/store/apps/app-BmQJW) |
-| 数学公式 | [KaTeX](https://www.halo.run/store/apps/app-ISCsX) |
-| 装备页面 | [装备](https://www.halo.run/store/apps/app-ytygyqml)，需 2.0.0 或更新版本 |
-| Markdown / HTML 内容块 | [混合内容编辑块](https://www.halo.run/store/apps/app-NgHnY) |
+| 功能                   | 插件                                                                      |
+| ---------------------- | ------------------------------------------------------------------------- |
+| 评论                   | [评论组件](https://www.halo.run/store/apps/app-YXyaD)                     |
+| 搜索                   | [搜索组件](https://www.halo.run/store/apps/app-DlacW)                     |
+| 友链                   | [链接管理](https://www.halo.run/store/apps/app-hfbQg)                     |
+| 瞬间                   | [瞬间](https://www.halo.run/store/apps/app-SnwWD)                         |
+| 追番                   | [哔哩哔哩追番](https://www.halo.run/store/apps/app-OTFPN)                 |
+| 图库                   | [图库](https://www.halo.run/store/apps/app-BmQJW)                         |
+| 数学公式               | [KaTeX](https://www.halo.run/store/apps/app-ISCsX)                        |
+| 装备页面               | [装备](https://www.halo.run/store/apps/app-ytygyqml)，需 2.0.0 或更新版本 |
+| Markdown / HTML 内容块 | [混合内容编辑块](https://www.halo.run/store/apps/app-NgHnY)               |
 
 ## 开发
 

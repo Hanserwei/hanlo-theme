@@ -629,12 +629,16 @@ async function initializeQrCode(resources: PageResourceScope): Promise<void> {
   if (resources.disposed) return;
   element.replaceChildren();
   const canvas = document.createElement("canvas");
-  element.append(canvas);
   await toCanvas(canvas, window.location.href, {
     width: 250,
     errorCorrectionLevel: "H",
     color: { dark: "#000000", light: "#ffffff" },
   });
+  if (resources.disposed) return;
+  // Keep the drawing resolution, but let the share panel control the display size.
+  canvas.style.removeProperty("width");
+  canvas.style.removeProperty("height");
+  element.append(canvas);
 }
 
 async function initializeIndexEssay(resources: PageResourceScope): Promise<void> {

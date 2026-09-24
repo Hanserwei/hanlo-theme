@@ -1850,6 +1850,7 @@ spec:
           label: 版权区附加链接
           value:
             enable_post_edit: false
+            post_edit_text: "订阅"
             post_edit_url: "/rss"
           children:
             - $formkit: switch
@@ -1858,14 +1859,21 @@ spec:
               key: enable_post_edit
               help: 链接显示在文章底部分享按钮旁。
               label: 显示版权区附加链接
+            - $formkit: text
+              name: post_edit_text
+              if: $get(hanlo_post_enable_post_edit).value
+              label: 附加链接文字
+              placeholder: 订阅、关于本站或运营说明
+              help: 两种版权区布局共用此文字，留空时显示「订阅」。
+              preserve: true
             - $formkit: url
               name: post_edit_url
               if: $get(hanlo_post_enable_post_edit).value
               label: 附加链接目标地址
               placeholder: /about 或 /rss.xml
-              help: 填写站内说明页或订阅地址，链接文字由版权区布局决定。
+              help: 填写与链接文字对应的站内说明页或订阅地址，留空时不显示链接。
               preserve: true
-          help: 文章标题布局显示「运营模式与责任」；作者卡片布局显示「订阅」，请按所选布局设置目标页面。
+          help: 在分享按钮旁显示自定义链接，默认用于订阅；不需要时关闭此开关。
         - $formkit: group
           name: share_right
           label: 文章分享入口
