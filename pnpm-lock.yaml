@@ -9,20 +9,20 @@ importers:
   .:
     dependencies:
       ba-click-fx:
-        specifier: 1.3.2
-        version: 1.3.2
+        specifier: 1.3.3
+        version: 1.3.3
       dplayer:
         specifier: 1.27.1
         version: 1.27.1
       fast-average-color:
-        specifier: 9.5.2
-        version: 9.5.2
+        specifier: 9.6.0
+        version: 9.6.0
       gsap:
         specifier: 3.15.0
         version: 3.15.0
       hls.js:
-        specifier: 1.7.1
-        version: 1.7.1
+        specifier: 1.7.3
+        version: 1.7.3
       matter-js:
         specifier: 0.20.0
         version: 0.20.0
@@ -39,14 +39,14 @@ importers:
         specifier: 4.4.3
         version: 4.4.3
       swiper:
-        specifier: 14.2.0
-        version: 14.2.0
+        specifier: 14.3.0
+        version: 14.3.0
       tocbot:
         specifier: 4.36.8
         version: 4.36.8
       typed.js:
-        specifier: 2.0.12
-        version: 2.0.12
+        specifier: 3.0.0
+        version: 3.0.0
     devDependencies:
       '@antdv-next/icons':
         specifier: 1.1.2
@@ -1238,9 +1238,9 @@ packages:
       react-native-b4a:
         optional: true
 
-  ba-click-fx@1.3.2:
-    resolution: {integrity: sha512-r1Iq7NfRovhd1DpI45ab6eIo56LfzLEGkUOIH6y4D7HFXi3DzER8a8yQyQvlKIe4OInYJxsE9qVg07RX0nxcnQ==}
-    engines: {node: '>=18'}
+  ba-click-fx@1.3.3:
+    resolution: {integrity: sha512-jc1Q2Vxnlmsy/56tIRptHLcwztbBdB2M7IKqwufFO/HhIDGNB83cIXUrq1dFc1ESrs5tH5KZyJFY2cLoieHdlw==}
+    engines: {node: '>=24.0.0'}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -1563,8 +1563,8 @@ packages:
     resolution: {integrity: sha512-KfYbmpRm0VbLjEvVa9yGwCi9GI34xvi7A/HXYWQO65CSD2u3MczUJSuwXKFIxlGsgBQizV9q5J9NHj4VG0n+pA==}
     engines: {node: '>=12.0.0'}
 
-  fast-average-color@9.5.2:
-    resolution: {integrity: sha512-FbaU8iPTPljP7tmnVhXbCyASNw/zxnmaNDf88gn5pTXlNvejl9w4FapeWMh6UNDwIjhJJU28EPfQWwW032YgPA==}
+  fast-average-color@9.6.0:
+    resolution: {integrity: sha512-ysLmWrUZb0E7WJ0ikJaXrbo0qEHBS3R6zT8aYlSknpiIzd8hJ+O1Gv3Gi4VNl1pO8YZGREC3vjWK7uqk/49ZuA==}
     engines: {node: '>= 12'}
 
   fast-deep-equal@3.1.3:
@@ -1721,8 +1721,8 @@ packages:
   hast-util-whitespace@3.0.0:
     resolution: {integrity: sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==}
 
-  hls.js@1.7.1:
-    resolution: {integrity: sha512-DlzIkeBAS9IIQ432k3BUf3HlwbsR0+trB1i2lDdN2gUkNkrehFurh0/48M5c1/EjlDkdGng1gwZIpwyPxvdZ/g==}
+  hls.js@1.7.3:
+    resolution: {integrity: sha512-MsPlx6yVW4Qv4C7mEVou4/gk/5cN2dVxOTnrNjPSmyH2f0Ln+/UkG10Ax1PE6OvrmTVPKgQYozTtBaPOuCzq7A==}
 
   hookified@1.15.1:
     resolution: {integrity: sha512-MvG/clsADq1GPM2KGo2nyfaWVyn9naPiXrqIe4jYjXNZQt238kWyOGrsyc/DmRAQ+Re6yeo6yX/yoNCG5KAEVg==}
@@ -2448,8 +2448,8 @@ packages:
   svg-tags@1.0.0:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
 
-  swiper@14.2.0:
-    resolution: {integrity: sha512-GsL4M9Fq7Sg22OyL3SjdNj/0bxTfIxPJJHHW394Li0u5vYtExi0a09iBUc8CuLafJi5pAlH2AHUe1PocxHl45g==}
+  swiper@14.3.0:
+    resolution: {integrity: sha512-qw0Xv1+sylM8KCQxWxV2iYAK2G6XjFGPZ/8F1baEsY8DK4A3sTnLx6jUJ0G71rDbVQ05JHMWkcWmJ5NvlxZO0w==}
     engines: {node: '>= 4.7.0'}
 
   table@6.9.0:
@@ -2508,8 +2508,8 @@ packages:
   trim-lines@3.0.1:
     resolution: {integrity: sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==}
 
-  typed.js@2.0.12:
-    resolution: {integrity: sha512-lyACZh1cu+vpfYY3DG/bvsGLXXbdoDDpWxmqta10IQUdMXisMXOEyl+jos+YT9uBbzK4QaKYBjT3R0kTJO0Slw==}
+  typed.js@3.0.0:
+    resolution: {integrity: sha512-X4pjf0E7riZBo6j3NS21/7cJJ20osSOtD1OxlRoKfFU3GsdPuSpWlFcIKWf0k8uoKwBBrPuHGx+fKeU6GzRcKg==}
 
   typescript@5.9.3:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
@@ -3592,7 +3592,7 @@ snapshots:
 
   b4a@1.8.1: {}
 
-  ba-click-fx@1.3.2: {}
+  ba-click-fx@1.3.3: {}
 
   balanced-match@1.0.2: {}
 
@@ -3883,7 +3883,7 @@ snapshots:
 
   expect-type@1.4.0: {}
 
-  fast-average-color@9.5.2: {}
+  fast-average-color@9.6.0: {}
 
   fast-deep-equal@3.1.3: {}
 
@@ -4055,7 +4055,7 @@ snapshots:
     dependencies:
       '@types/hast': 3.0.5
 
-  hls.js@1.7.1: {}
+  hls.js@1.7.3: {}
 
   hookified@1.15.1: {}
 
@@ -4781,7 +4781,7 @@ snapshots:
 
   svg-tags@1.0.0: {}
 
-  swiper@14.2.0: {}
+  swiper@14.3.0: {}
 
   table@6.9.0:
     dependencies:
@@ -4844,7 +4844,7 @@ snapshots:
 
   trim-lines@3.0.1: {}
 
-  typed.js@2.0.12: {}
+  typed.js@3.0.0: {}
 
   typescript@5.9.3: {}
 
