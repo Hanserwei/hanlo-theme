@@ -2227,7 +2227,7 @@ spec:
             - $el: p
               attrs:
                 style: margin:0
-              children: 需要 Halo 2.26.0 及以上，并安装启用装备插件 2.0.0 或更新版本。访问 /equipments 查看；这里设置顶部横幅，装备内容在后台「装备」中管理。
+              children: 需要 Halo 2.26.0 及以上，并从 Hanserwei/plugin-equipment 仓库安装启用 han-equipment 2.0.0 或更新版本。访问 /equipments 查看；这里设置顶部横幅，装备内容在后台「Han 装备」中管理。旧 equipment 插件应先停用，其数据不会自动迁移。
             - $el: p
               attrs:
                 style: "margin: .4rem 0 0;"

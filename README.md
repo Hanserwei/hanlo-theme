@@ -68,8 +68,12 @@ Hanlo 基于 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) �
 | 追番                   | [哔哩哔哩追番](https://www.halo.run/store/apps/app-OTFPN)                 |
 | 图库                   | [图库](https://www.halo.run/store/apps/app-BmQJW)                         |
 | 数学公式               | [KaTeX](https://www.halo.run/store/apps/app-ISCsX)                        |
-| 装备页面               | [装备](https://www.halo.run/store/apps/app-ytygyqml)，需 2.0.0 或更新版本 |
+| 装备页面               | [han-equipment](https://github.com/Hanserwei/plugin-equipment)，需 2.0.0 或更新版本 |
 | Markdown / HTML 内容块 | [混合内容编辑块](https://www.halo.run/store/apps/app-NgHnY)               |
+
+装备页复用 `han-equipment` 的卡片片段与样式，主题负责导航、横幅和页脚。请从插件仓库的 Releases 安装并启用插件；旧 `equipment` 插件与它共用 `/equipments`，需先停用旧插件。两者数据命名空间独立，不会自动迁移。
+
+`/equipments` 使用插件路由提供的 `groups`；自定义页面查询使用 `hanEquipmentFinder`。参数 `attributes` 为有序的 `{ label, value }[]`，支持重复名称及换行。主题在插件不可用或版本不足时保护片段与样式引用；停用插件后，其 `/equipments` 路由也会撤销，应同步处理导航链接。完整契约见[插件主题适配指南](https://github.com/Hanserwei/plugin-equipment/blob/main/docs/theme-integration.md)。
 
 ## 开发
 
