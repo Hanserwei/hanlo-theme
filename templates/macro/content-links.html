@@ -1,4 +1,4 @@
-<th:block th:fragment="content-links(htmlType)">
+<th:block th:fragment="content-links(htmlType, applicationEnabled, applicationTarget)">
 
     <th:block th:with="groups = ${linkFinder.groupBy()}">
         <div class="flink" id="banners">
@@ -12,12 +12,12 @@
                     <i class="haofont hao-icon-paper-plane1"></i>
                     <span class="banner-button-text">随机访问</span>
                 </button>
-                <a th:unless="${pluginFinder.available('link-submit')}"
-                        class="banner-button" href="#post-comment" rel="external nofollow">
-                    <i class="haofont hao-icon-link"></i>
-                    <span class="banner-button-text">申请友链</span>
+                <a th:if="${applicationEnabled or htmlType == 'page'}"
+                   class="banner-button" th:href="${applicationTarget}">
+                    <i class="haofont hao-icon-link" aria-hidden="true"></i>
+                    <span class="banner-button-text" th:text="${htmlType == 'page' ? '友链申请入口' : '申请友链'}">申请友链</span>
                 </a>
-                <button th:if="${pluginFinder.available('link-submit')}"
+                <button th:if="${not applicationEnabled and pluginFinder.available('link-submit')}"
                         class="banner-button hanlo-button-reset" data-hanlo-action="open-link-submit"
                         type="button">
                     <i class="haofont hao-icon-link"></i>

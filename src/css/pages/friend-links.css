@@ -43,6 +43,92 @@
   color: var(--heo-secondtext, #6b7280);
 }
 
+.link-application {
+  margin-block: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid var(--heo-card-border);
+  border-radius: 12px;
+  background: var(--heo-card-bg);
+  color: var(--heo-fontcolor);
+  scroll-margin-top: 6rem;
+}
+
+.link-application-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1rem;
+  margin-block: 1rem;
+}
+
+.link-application label {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.link-application input:not([type="hidden"]),
+.link-application textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--heo-card-border);
+  border-radius: 8px;
+  background: var(--heo-secondbg);
+  color: var(--heo-fontcolor);
+  font: inherit;
+}
+
+.link-application textarea {
+  resize: vertical;
+}
+
+.link-application button {
+  min-height: 44px;
+  margin-block: 0.75rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--heo-theme);
+  border-radius: 8px;
+  background: var(--heo-theme);
+  color: var(--heo-white);
+  font: inherit;
+  cursor: pointer;
+}
+
+.link-application button[hidden] {
+  display: none;
+}
+
+.link-application :is(input, textarea, button, a):focus-visible {
+  outline: 2px solid var(--heo-theme);
+  outline-offset: 3px;
+}
+
+.link-application-captcha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.link-application-captcha img {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.link-application-help,
+#link-application-captcha-status {
+  color: var(--heo-secondtext);
+  overflow-wrap: anywhere;
+}
+
+.link-application [role="alert"] {
+  padding: 0.75rem;
+  border-inline-start: 3px solid var(--heo-theme);
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 640px) {
   #article-container .flink-list,
   #article-container .site-card-group {

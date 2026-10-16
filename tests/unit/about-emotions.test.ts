@@ -81,7 +81,9 @@ describe("emotion rigid bodies", () => {
   it("falls, collides and settles into a pile with a uniform circular radius", () => {
     const width = 360;
     const height = playgroundHeight(width, 24);
+    const initialAngle = vi.spyOn(Math, "random").mockReturnValue(0.5);
     const world = new EmotionPhysics(width, height, 24);
+    initialAngle.mockRestore();
     tick(world, 1_200);
     expectInside(world, width, height);
     for (const [index, body] of world.balls.entries()) {

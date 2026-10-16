@@ -15,6 +15,7 @@ import type { PageControllerDefinition } from "../../core/types";
 import { fadeIn, fadeOut, sidebarPaddingRight, snackbarShow, syncThemeColor } from "../../core/ui";
 import { TRANSLATION_EVENT } from "../translation/state";
 import { mountDesktopMenus } from "./desktop-menus";
+import { initializeLinkCaptcha, refreshLinkCaptcha } from "./link-captcha";
 import { finishPageLoading, mountPageLoading } from "./page-loading";
 
 const LINKS_ENDPOINT = "/apis/api.plugin.halo.run/v1alpha1/plugins/PluginLinks/links?keyword=";
@@ -185,6 +186,10 @@ function handleAction(
   event: Event,
 ): void {
   switch (action) {
+    case "refresh-link-captcha":
+      event.preventDefault();
+      refreshLinkCaptcha();
+      break;
     case "scroll-top":
       event.preventDefault();
       scrollToDestination(0);
@@ -850,6 +855,7 @@ export function createSiteShellController(storage: ExpiringStorage): PageControl
         mountPageLoading(resources);
         initializeHeader(resources);
         initializeNavigation(config, storage, resources);
+        initializeLinkCaptcha(resources);
         initializeScroll(resources);
         await initializeContent(config, resources);
         initializePageState(config, storage, resources);

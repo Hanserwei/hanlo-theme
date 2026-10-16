@@ -1,15 +1,16 @@
-# CI/CD 与应用市场发布
+# CI/CD 与版本发布
 
-应用市场：[Hanlo Theme](https://www.halo.run/store/apps/app-pin7ah2e)，应用 ID 为 `app-pin7ah2e`。配置依据 [Halo 发布应用文档](https://docs.halo.run/developer-guide/app-store/publish-app.md)。
+正式版本通过 [GitHub Releases](https://github.com/Hanserwei/hanlo-theme/releases) 提供安装包与 SHA-256。应用市场目前暂停上架；恢复时使用 [Hanlo Theme](https://www.halo.run/store/apps/app-pin7ah2e)，应用 ID 为 `app-pin7ah2e`，发布接口依据 [Halo 发布应用文档](https://docs.halo.run/developer-guide/app-store/publish-app.md)。
 
 ## 凭据与工作流
 
-- GitHub Environment 名称为 `HALO_PAT`，其中保存同名 Secret。发布作业显式使用该 Environment；不需要把令牌迁移到仓库，也不应把令牌写入文件。
-- Halo 令牌需要「应用市场开发者 → 版本管理」权限。修改令牌时更新 Environment 内的 Secret。
+- GitHub 安装包发布使用工作流的 GitHub Token，不依赖应用市场凭据。
+- 应用市场作业仅在仓库变量 `HALO_MARKETPLACE_ENABLED` 为 `true` 时执行。当前暂停上架，默认跳过该作业；恢复前先确认应用市场已允许发布。
+- 市场凭据保存在 GitHub Environment `HALO_PAT` 的同名 Secret，需要「应用市场开发者 → 版本管理」权限；无需迁移或下载令牌。
 - CI 使用 Node.js 24 / pnpm 10.33.0，执行锁定安装、类型/样式/设置检查、单元和设置测试、实际 Markmap 脚本测试、构建及已提交产物一致性检查。
 - CD 接收正式 `release.published`、手动 `workflow_dispatch` 或归档标签的调用。标签须为稳定的 `x.y.z` 或 `vx.y.z`，并匹配其 `theme.yaml`；目前不自动发布预发布版本。
-- 普通版本先复用 CI 构建，再上传 ZIP 与 SHA-256，通过固定修订的官方 `halo-sigs/app-store-release-action@v4` 发布到市场；读取正式 GitHub Release 正文作为市场更新说明。
-- 发布完成后检查公开市场版本和附件名称、大小及状态。已有同版本及匹配附件会跳过创建；不一致会报错，避免覆盖。若官方 Action 在中途失败并留下不可见草稿，应在市场管理中检查草稿后重试，工作流不自动删除草稿。
+- 普通版本先复用 CI 构建，再校验并上传 ZIP 与 SHA-256。GitHub 已有匹配附件时复用原始字节，不覆盖不同内容。
+- 启用市场同步后，通过固定修订的官方 `halo-sigs/app-store-release-action@v4` 发布，读取 GitHub 正式 Release 正文作为更新说明。完成后核对公开版本和附件；已有匹配版本会跳过，不一致时报错。若市场留下不可见草稿，需在市场管理中检查后重试。
 
 ## 新版本
 
@@ -17,7 +18,7 @@
 2. 执行 `pnpm check`、`pnpm test`、`pnpm test:markmap-runtime`、`pnpm build`；提交源码与生成的 `templates/`。
 3. 推送到 `master`，确认 CI 成功。
 4. 给通过 CI 的提交创建标签，发布 GitHub 正式 Release，以 `releases/<版本>.md` 为正文。
-5. 等待 CD 成功，核对 GitHub 安装包与市场版本。仅推送标签不会触发发布。
+5. 等待 CD 完成，核对 GitHub 安装包和校验文件。仅在启用市场同步时核对市场版本；只推送标签不会发布。
 
 ## 手动重试
 
@@ -29,7 +30,7 @@
 gh workflow run cd.yml --ref master -f tag=2.7.2
 ```
 
-重试会重新验证内容。GitHub 若已有安装包，先逐文件对比新构建与原附件，内容一致则复用原附件字节和哈希；不会仅因 ZIP 时间戳不同而覆盖已发布包。应用市场已有同版且附件信息一致时跳过再次创建。
+重试会重新验证内容。GitHub 若已有安装包，先逐文件对比新构建与原附件，内容一致则复用原附件字节和哈希；不会仅因 ZIP 时间戳不同而覆盖已发布包。市场作业关闭时只处理 GitHub；启用后，已有匹配市场版本也会跳过。
 
 ## 2.5.0 之后的历史补发
 

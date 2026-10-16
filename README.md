@@ -10,7 +10,7 @@
   <p>适用于 Halo 2.x 的响应式博客主题</p>
 </div>
 
-Hanlo 基于 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) 定制并独立维护，设计参考 [Heo](https://blog.zhheo.com/) 与 [Butterfly](https://github.com/jerryc127/hexo-theme-butterfly)。
+Hanlo 由 Hanserwei 独立维护，前端架构已经完整重构。历史源码与设计参考见文末的许可证和来源说明。
 
 [应用市场](https://www.halo.run/store/apps/app-pin7ah2e) · [下载安装包](https://github.com/Hanserwei/hanlo-theme/releases) · [版本变更](CHANGELOG.md) · [问题反馈](https://github.com/Hanserwei/hanlo-theme/issues)
 
@@ -22,7 +22,7 @@ Hanlo 基于 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) �
 > 1. **长期下架状态**：在未来很长一段时间内，本主题将不会出现在 Halo 官方商店中。现有用户请继续使用 GitHub Releases 进行手动安装与更新。
 > 2. **积极争取授权**：我们正在尝试与原主题作者（[@HeoZhang / Zhang Hong](https://blog.zhheo.com/)）建立直接联系，旨在就代码复用范围、灵感来源致谢等细节达成正式共识，以寻求获得明确的“衍生/致敬”授权，从而合规地重新上架。
 > 3. **技术架构完全独立**：需要澄清的是，本项目并非对 Hao 主题的简单修改或分支。由于两者底层前端架构差异巨大（从传统 CSS 巨型文件重构为模块化现代架构），且设计理念存在根本性分歧，**我们承诺绝不会向 Hao 主题同步任何代码或补丁**。两者已属于完全不同的技术栈实现。
-> 4. **开源理念坚持**：我们将继续遵循开源协议，保留所有历史贡献记录。无论是否上架，本项目都将作为独立的开源作品持续维护，服务于追求高性能与新生态兼容的用户群体。
+> 4. **开源理念坚持**：我们将继续遵循开源协议，保留必要的许可证、版权与来源说明。当前独立重构工程由 Hanserwei 维护，并作为开源作品持续更新。
 >
 > 感谢大家的理解与支持，如有进展我们将第一时间公告。
 
@@ -39,7 +39,7 @@ Hanlo 基于 [Halo Theme Hao](https://github.com/chengzhongxue/halo-theme-hao) �
 
 需要 **Halo 2.26.0 或更高版本**，具体要求见 [theme.yaml](theme.yaml)。
 
-1. 在 Halo 应用市场安装 Hanlo，或从 [GitHub Releases](https://github.com/Hanserwei/hanlo-theme/releases) 下载 `theme-hanlo-<版本>.zip`。
+1. 从 [GitHub Releases](https://github.com/Hanserwei/hanlo-theme/releases) 下载 `theme-hanlo-<版本>.zip`；目前暂停应用市场上架。
 2. 在 Halo 控制台进入「外观 → 主题」，上传安装包并启用。
 3. 填写建站时间等必填项，保存主题设置。升级注意事项见 [版本变更记录](CHANGELOG.md)。
 
@@ -92,7 +92,7 @@ pnpm build
 
 `pnpm dev` 持续构建。本地 Halo 需启用该主题，并关闭 Thymeleaf 缓存。`pnpm test:markmap-runtime` 可额外验证实际 Vditor Markmap 脚本；首次运行会下载并校验固定版本。
 
-[CI](.github/workflows/ci.yml) 在推送和 PR 时检查、测试并构建主题；发布正式 GitHub Release 后，[CD](.github/workflows/cd.yml) 上传安装包并同步 Halo 应用市场，支持按标签手动重试。详情见 [发布说明](docs/publishing.md)。
+[CI](.github/workflows/ci.yml) 在推送和 PR 时检查、测试并构建主题；发布正式 GitHub Release 后，[CD](.github/workflows/cd.yml) 校验并上传安装包。应用市场同步默认关闭，恢复上架后可通过仓库变量 `HALO_MARKETPLACE_ENABLED=true` 单独启用。详情见 [发布说明](docs/publishing.md)。
 
 ## 许可证
 

@@ -17,7 +17,66 @@
         </header>
         <main class="layout hide-aside" id="content-inner">
             <div id="page">
-                <th:block th:replace="~{macro/content-links :: content-links(${htmlType})}" />
+                <th:block th:replace="~{macro/content-links :: content-links(${htmlType}, ${linkApplicationEnabled == true}, '#link-application')}" />
+
+                <section id="link-application" class="link-application" aria-labelledby="link-application-title"
+                         th:with="applicationResult=${not #lists.isEmpty(param.applied) ? param.applied[0] : ''},
+                                  applicationErrorField=${not #lists.isEmpty(param.field) ? param.field[0] : ''},
+                                  applicationErrorValue=${not #lists.isEmpty(param.value) ? param.value[0] : ''},
+                                  applicationMessage=${not #lists.isEmpty(param.message) ? param.message[0] : ''}">
+                    <h2 id="link-application-title">友链申请</h2>
+                    <p th:if="${applicationResult == 'success'}" role="status">申请已提交，等待审核。</p>
+                    <p th:if="${applicationResult == 'error' or applicationResult == 'disabled'}"
+                       th:text="${not #strings.isEmpty(applicationMessage) ? applicationMessage : '提交失败，请稍后重试。'}"
+                       role="alert"></p>
+                    <p th:unless="${linkApplicationEnabled == true}">友链申请暂未开放。</p>
+                    <form th:if="${linkApplicationEnabled == true}" id="link-application-form"
+                          method="post" enctype="application/x-www-form-urlencoded" th:action="@{/links/apply/submit}">
+                        <input type="hidden" name="_csrf" th:value="${csrfToken}">
+                        <p class="link-application-help">带 * 的项目为必填。提交后需等待审核；每次提交后请使用新的验证码。</p>
+                        <div class="link-application-fields">
+                            <label for="link-application-url">网站地址 *
+                                <input id="link-application-url" name="url" type="url" required autocomplete="url" placeholder="https://example.com"
+                                       th:value="${applicationErrorField == 'url' ? applicationErrorValue : ''}">
+                            </label>
+                            <label for="link-application-name">网站名称 *
+                                <input id="link-application-name" name="displayName" required autocomplete="organization"
+                                       th:value="${applicationErrorField == 'displayName' ? applicationErrorValue : ''}">
+                            </label>
+                            <label for="link-application-logo">Logo 地址（选填）
+                                <input id="link-application-logo" name="logo" type="url" autocomplete="off" placeholder="https://example.com/logo.png"
+                                       th:value="${applicationErrorField == 'logo' ? applicationErrorValue : ''}">
+                            </label>
+                            <label for="link-application-email">联系邮箱（选填）
+                                <input id="link-application-email" name="email" type="email" autocomplete="email"
+                                       th:value="${applicationErrorField == 'email' ? applicationErrorValue : ''}">
+                            </label>
+                            <label for="link-application-backlink">反链页面地址（选填）
+                                <input id="link-application-backlink" name="backlink" type="url" autocomplete="off" placeholder="https://example.com/links"
+                                       th:value="${applicationErrorField == 'backlink' ? applicationErrorValue : ''}">
+                            </label>
+                            <label for="link-application-description">网站描述（选填）
+                                <textarea id="link-application-description" name="description" rows="3" autocomplete="off"
+                                          th:text="${applicationErrorField == 'description' ? applicationErrorValue : ''}"></textarea>
+                            </label>
+                            <label for="link-application-feeds">RSS / Atom 订阅地址（选填，每行一个 HTTP/HTTPS 地址）
+                                <textarea id="link-application-feeds" name="feedUrls" rows="3" autocomplete="off"
+                                          th:text="${applicationErrorField == 'feedUrls' ? applicationErrorValue : ''}"></textarea>
+                            </label>
+                        </div>
+                        <div class="link-application-captcha">
+                            <img id="link-application-captcha" th:src="@{/links/apply/captcha}" alt="友链申请验证码" width="160" height="48">
+                            <button type="button" data-hanlo-action="refresh-link-captcha" hidden aria-controls="link-application-captcha">刷新验证码</button>
+                            <a th:href="@{/links#link-application}">重新加载申请页</a>
+                        </div>
+                        <p id="link-application-captcha-status" role="status" aria-live="polite">若验证码无法加载，请稍后刷新验证码或重新加载申请页。</p>
+                        <label for="link-application-captcha-code">验证码 *（五位字符，不区分大小写）
+                            <input id="link-application-captcha-code" name="captchaCode" required minlength="5" maxlength="5"
+                                   autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="link-application-captcha-status">
+                        </label>
+                        <button type="submit">提交友链申请</button>
+                    </form>
+                </section>
 
                 <hr th:if="${theme.config.link.enable_comment == true}" />
                 <!--/* 评论组件 */-->

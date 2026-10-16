@@ -19,7 +19,8 @@
         </header>
         <main class="layout hide-aside" id="content-inner">
             <div id="page">
-                <th:block th:replace="~{macro/content-links :: content-links(${htmlType})}" />
+                <!-- 自定义页面没有插件路由的申请开关和 CSRF 模型，只链接到 canonical 申请区域。 -->
+                <th:block th:replace="~{macro/content-links :: content-links(${htmlType}, false, '/links#link-application')}" />
                 <hr/>
                 <!--/* 评论组件 */-->
                 <th:block
