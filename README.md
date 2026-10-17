@@ -35,6 +35,34 @@ Hanlo 由 Hanserwei 独立维护，前端架构已经完整重构。历史源码
 - 「瓶中沧海」3D 关于页、互动表情、立体分类卡片和可选点击/卡片动效。
 - 原生文档导航与按需资源加载，动效遵循系统「减少动态效果」偏好。
 
+## 架构
+
+[![Hanlo Theme 源码、构建、Halo 渲染、浏览器运行与可选插件关系](docs/architecture/hanlo-theme.svg)](docs/architecture/hanlo-theme.svg)
+
+[PNG 备用图](docs/architecture/hanlo-theme.png) · [可复现图源](docs/architecture/hanlo-theme.architecture.json)
+
+`src/` 中的 Thymeleaf 模板原样复制，TypeScript 和 CSS 经构建生成资源，`public/assets/` 中的图片、字体等资源一并输出到 `templates/`。`pnpm build` 完成校验、构建和打包；安装包将生成文件与主题配置交给 Halo，由 Halo 在服务端结合站点数据和主题设置渲染页面，浏览器负责文档导航、页面生命周期和按需加载。
+
+图中虚线表示按需启用的插件扩展，具体功能见[插件支持](#插件支持)。功能页面需要对应插件；例如装备页复用 `han-equipment >=2.0.0` 的路由数据、卡片片段和样式，主题提供页面外壳。
+
+<details>
+<summary>重新生成与导出架构图</summary>
+
+使用 Archify 3.1.0，在仓库根目录执行以下命令；将 `ARCHIFY_CLI` 替换为本机的 Archify CLI 路径：
+
+```bash
+ARCHIFY_CLI=/path/to/archify/bin/archify.mjs
+node "$ARCHIFY_CLI" finalize architecture \
+  docs/architecture/hanlo-theme.architecture.json \
+  dist/architecture/hanlo-theme.html \
+  --repo-root . --quality showcase \
+  --out-dir dist/architecture/review --json
+```
+
+在浏览器打开生成的 `dist/architecture/hanlo-theme.html`，使用「导出 → SVG · 自动」获取可独立渲染并适配亮暗主题的 SVG；切换为浅色后，使用「导出 → PNG」获取备用图。将两张下载图片分别保存为 `docs/architecture/hanlo-theme.svg` 与 `docs/architecture/hanlo-theme.png`。图源固定了核查时的仓库提交和源码行号；架构变化时应同步更新证据与导出图。HTML 和检查记录保留在已忽略的 `dist/` 中。
+
+</details>
+
 ## 安装
 
 需要 **Halo 2.26.0 或更高版本**，具体要求见 [theme.yaml](theme.yaml)。

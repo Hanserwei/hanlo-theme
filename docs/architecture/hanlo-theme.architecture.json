@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Hanlo Theme · 源码、构建与运行",
+    "locale": "zh-CN",
+    "output": ".archify/hanlo-theme.html",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "frontend": { "label": "源码与浏览器" },
+        "backend": { "label": "构建与运行" },
+        "database": { "label": "文件产物" }
+      }
+    },
+    "repository": {
+      "url": "https://github.com/Hanserwei/hanlo-theme.git",
+      "revision": "60abe8734445fc0a5e22040fbe3cde105e60c516"
+    }
+  },
+  "components": [
+    {
+      "id": "theme-source",
+      "type": "frontend",
+      "label": "主题源码",
+      "sublabel": "src/ · public/assets/",
+      "tag": "HTML · TypeScript · CSS",
+      "pos": [40, 40],
+      "size": [180, 84],
+      "sources": [
+        { "path": "src/.build-entry.html", "line": 1, "end_line": 9 },
+        { "path": "src/js/entries/main.ts", "line": 1, "end_line": 36 },
+        { "path": "vite.config.ts", "line": 74, "end_line": 79 }
+      ]
+    },
+    {
+      "id": "theme-build",
+      "type": "backend",
+      "label": "构建与校验",
+      "sublabel": "Vite Plus · Tailwind · Halo 插件",
+      "tag": "pnpm build-only",
+      "pos": [330, 40],
+      "size": [220, 84],
+      "sources": [
+        { "path": "package.json", "line": 5, "end_line": 23 },
+        { "path": "vite.config.ts", "line": 51, "end_line": 57 },
+        { "path": "vite.config.ts", "line": 80, "end_line": 140 }
+      ]
+    },
+    {
+      "id": "theme-output",
+      "type": "database",
+      "label": "templates/",
+      "sublabel": "原样模板 · 编译资源 · 公共资源",
+      "tag": "生成文件随源码提交",
+      "pos": [660, 40],
+      "size": [220, 84],
+      "sources": [
+        { "path": "vite.config.ts", "line": 51, "end_line": 57 },
+        { "path": "vite.config.ts", "line": 74, "end_line": 79 },
+        { "path": "README.md", "line": 91, "end_line": 95 }
+      ]
+    },
+    {
+      "id": "theme-package",
+      "type": "database",
+      "label": "主题安装包",
+      "sublabel": "dist/*.zip + .sha256",
+      "tag": "pnpm package",
+      "pos": [660, 230],
+      "size": [220, 84],
+      "sources": [
+        { "path": "scripts/package-theme.mjs", "line": 8, "end_line": 22 },
+        { "path": "theme.yaml", "line": 36, "end_line": 41 },
+        { "path": "README.md", "line": 40, "end_line": 46 }
+      ]
+    },
+    {
+      "id": "halo-render",
+      "type": "backend",
+      "label": "Halo ≥ 2.26.0",
+      "sublabel": "Thymeleaf · 内容与主题设置",
+      "tag": "服务端渲染",
+      "pos": [330, 230],
+      "size": [220, 84],
+      "sources": [
+        { "path": "theme.yaml", "line": 36, "end_line": 41 },
+        { "path": "src/modules/layouts/layout.html", "line": 1, "end_line": 23 },
+        { "path": "src/modules/layouts/layout.html", "line": 57, "end_line": 87 }
+      ]
+    },
+    {
+      "id": "reader-browser",
+      "type": "frontend",
+      "label": "读者浏览器",
+      "sublabel": "文档导航 · 页面生命周期",
+      "tag": "主题交互与按需加载",
+      "pos": [40, 230],
+      "size": [180, 84],
+      "sources": [
+        { "path": "src/js/entries/main.ts", "line": 20, "end_line": 36 },
+        { "path": "src/js/core/navigation.ts", "line": 45, "end_line": 65 },
+        { "path": "src/js/core/runtime.ts", "line": 67, "end_line": 93 }
+      ]
+    },
+    {
+      "id": "optional-plugins",
+      "type": "backend",
+      "label": "按需启用的 Halo 插件",
+      "sublabel": "数据 · 路由 · 组件与片段",
+      "tag": "功能页面需对应插件",
+      "pos": [270, 420],
+      "size": [340, 84],
+      "sources": [
+        { "path": "README.md", "line": 58, "end_line": 76 },
+        { "path": "src/equipments.html", "line": 30, "end_line": 37 },
+        { "path": "src/modules/layouts/layout.html", "line": 18, "end_line": 20 }
+      ]
+    }
+  ],
+  "connections": [
+    { "id": "compile-source", "from": "theme-source", "to": "theme-build", "label": "编译 / 复制", "variant": "emphasis" },
+    { "id": "generate-output", "from": "theme-build", "to": "theme-output", "label": "生成" },
+    { "id": "package-output", "from": "theme-output", "to": "theme-package", "label": "打包" },
+    { "id": "install-theme", "from": "theme-package", "to": "halo-render", "label": "上传启用" },
+    { "id": "serve-document", "from": "halo-render", "to": "reader-browser", "label": "HTML 与资源", "variant": "emphasis" },
+    { "id": "extend-theme", "from": "optional-plugins", "to": "halo-render", "label": "启用后扩展", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "构建与交付",
+      "items": [
+        "pnpm build = build-only + package；模板原样复制，JS/CSS 编译。",
+        "安装包包含主题配置与第三方声明；从 GitHub Releases 手动安装。"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "运行与插件",
+      "items": [
+        "Halo 读取模板、站点数据与设置；浏览器执行主题交互脚本。",
+        "评论、搜索、友链、瞬间、追番、图库、公式与内容块按需扩展。",
+        "装备页复用 han-equipment ≥ 2.0.0 的路由数据、卡片片段与样式。"
+      ]
+    }
+  ]
+}
