@@ -27,25 +27,25 @@ function fixture(html: string) {
   Object.defineProperty(document, "scripts", { get: () => document.querySelectorAll("script") });
   let currentScript: HTMLScriptElement | null = null;
   Object.defineProperty(document, "currentScript", { get: () => currentScript });
-  vi.spyOn(dom.Element.prototype, "getBoundingClientRect").mockImplementation(
-    function (this: Element) {
-      const width =
-        this.tagName.toLowerCase() === "svg"
-          ? 800
-          : Math.max(40, (this.textContent?.length ?? 1) * 12);
-      return {
-        x: 0,
-        y: 0,
-        width,
-        height: this.tagName.toLowerCase() === "svg" ? 400 : 24,
-        top: 0,
-        left: 0,
-        right: width,
-        bottom: 400,
-        toJSON() {},
-      };
-    },
-  );
+  vi.spyOn(dom.Element.prototype, "getBoundingClientRect").mockImplementation(function (
+    this: Element,
+  ) {
+    const width =
+      this.tagName.toLowerCase() === "svg"
+        ? 800
+        : Math.max(40, (this.textContent?.length ?? 1) * 12);
+    return {
+      x: 0,
+      y: 0,
+      width,
+      height: this.tagName.toLowerCase() === "svg" ? 400 : 24,
+      top: 0,
+      left: 0,
+      right: width,
+      bottom: 400,
+      toJSON() {},
+    };
+  });
   for (const [name, value] of Object.entries({
     width: { baseVal: { value: 800 } },
     height: { baseVal: { value: 400 } },

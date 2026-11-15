@@ -63,7 +63,9 @@ const navigationScanFiles = [
   "THIRD_PARTY_NOTICES.txt",
 ];
 for (const file of navigationScanFiles) {
-  if (/p\s*j\s*a\s*x/i.test(readFileSync(file, "utf8"))) {
+  // Integrity digests can contain the retired name by chance.
+  const source = readFileSync(file, "utf8").replace(/\bsha512-[\w+/=]+/g, "");
+  if (/p\s*j\s*a\s*x/i.test(source)) {
     throw new Error(`${file} contains a retired partial-navigation reference`);
   }
 }

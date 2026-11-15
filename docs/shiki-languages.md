@@ -1,6 +1,6 @@
 # Shiki 支持语言
 
-本文件由 `node scripts/generate-shiki-languages.mjs` 从 Shiki 4.4.3 的真实注册表生成，共 **242 种语言、104 个官方别名**。
+本文件由 `node scripts/generate-shiki-languages.mjs` 从 Shiki 4.6.0 的真实注册表生成，共 **242 种语言、104 个官方别名**。
 
 代码围栏推荐使用「标识」列的小写名称。主题另外兼容 `c++` → `cpp`、`c#` → `csharp`、`htm` → `html`、`shell` → `shellscript`、`vue-html` → `vue`。
 

@@ -44,7 +44,7 @@ export function createMarkmapRenderer(
     // Vditor's Markmap bundle also ships Prism. Disable its automatic whole-page pass
     // before script execution, or it flattens this SVG and strips Shiki's line/token markup.
     library ??= load(
-      `${(win.vditorRender?.CDN ?? "https://cdn.jsdelivr.net/npm/vditor@3.11.3").replace(/\/$/, "")}/dist/js/markmap/markmap.min.js`,
+      `${(win.vditorRender?.CDN ?? "https://cdn.jsdelivr.net/npm/vditor@4.0.1").replace(/\/$/, "")}/dist/js/markmap/markmap.min.js`,
       { "data-manual": "" },
     )
       .then(() => {

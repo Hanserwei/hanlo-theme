@@ -86,7 +86,7 @@ export function clipMaterial<T extends Material>(
       );
     }
   };
-  material.customProgramCacheKey = () => (wave ? "bottle-wave-160" : "bottle-clip-160");
+  material.customProgramCacheKey = () => (wave ? "bottle-wave-187" : "bottle-clip-187");
   return material;
 }
 

@@ -10,7 +10,7 @@ import { buildShip } from "../../src/js/features/about-bottle/ship";
 // Use the exact CDN revision's real materials/geometry, without creating a browser or renderer.
 describe("bottle material and geometry contracts", () => {
   it("provides every color attribute requested by the scene's materials", () => {
-    expect(THREE.REVISION).toBe("160");
+    expect(THREE.REVISION).toBe("187");
     const uniforms = {
       time: { value: 0 },
       storm: { value: 0 },

@@ -1,6 +1,6 @@
 services:
   halo:
-    image: registry.fit2cloud.com/halo/halo:2.26
+    image: registry.fit2cloud.com/halo/halo:2.27.3
     container_name: halo2-theme-dev
     restart: unless-stopped
     ports:

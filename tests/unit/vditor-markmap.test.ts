@@ -171,6 +171,21 @@ describe("Markmap conversion with stable rendering nodes", () => {
     expect(h.code.dataset["processed"]).toBe("true");
   });
 
+  it("uses the theme fallback when the plugin does not provide a CDN", async () => {
+    const h = fixture();
+    delete h.win.markmap;
+    delete h.win.vditorRender;
+    const load = vi.fn(async () => {
+      h.win.markmap = h.api;
+    });
+    const render = createMarkmapRenderer(h.win, h.resources, load);
+    await render(h.code as unknown as HTMLElement, h.source);
+    expect(load).toHaveBeenCalledWith(
+      "https://cdn.jsdelivr.net/npm/vditor@4.0.1/dist/js/markmap/markmap.min.js",
+      { "data-manual": "" },
+    );
+  });
+
   it("shares the plugin CDN library load and ignores a load completed after unmount", async () => {
     const h = fixture();
     delete h.win.markmap;

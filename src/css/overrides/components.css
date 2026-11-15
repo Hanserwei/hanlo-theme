@@ -120,8 +120,6 @@
 
 .introduction-card .introduction-card-top .int-card-info .int-tip {
     opacity: .8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-    filter: alpha(opacity=80);
     font-size: .6rem;
     margin-bottom: .5rem;
     color: var(--heo-white)
@@ -186,8 +184,6 @@
     font-size: 14px;
     color: var(--heo-gray);
     opacity: .8;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-    filter: alpha(opacity=80)
 }
 
 .introduction-card .introduction-card-bottom .left img {

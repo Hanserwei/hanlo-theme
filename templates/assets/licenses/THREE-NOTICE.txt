@@ -1,11 +1,11 @@
-Three.js r160 (0.160.0)
-Runtime source: https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js
+Three.js r187 (0.187.0)
+Runtime source: https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js
 Project: https://threejs.org/
 This optional About-page dependency is loaded from the pinned CDN on demand.
 
 The MIT License
 
-Copyright © 2010-2023 three.js authors
+Copyright © 2010-2026 three.js authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

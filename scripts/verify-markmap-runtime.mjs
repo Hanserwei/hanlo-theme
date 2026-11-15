@@ -4,7 +4,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 // Test the exact browser bundle, including its embedded Prism, rather than an API-only mock.
-const version = "3.11.3";
+const version = "4.0.1";
 const sha256 = "2d3a3914a7525e0cb39417c75b646a5cbb38ead7dc6ba5f1bd5236aff06f2fcb";
 const url = `https://cdn.jsdelivr.net/npm/vditor@${version}/dist/js/markmap/markmap.min.js`;
 const directory = path.resolve("build/markmap-runtime");

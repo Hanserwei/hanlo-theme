@@ -84,6 +84,6 @@ describe("bottle ocean simulation", () => {
     expect(resolutionScale(1, 12)).toBeGreaterThan(1);
     expect(resolutionScale(0.65, 50)).toBe(0.65);
     expect(resolutionScale(1.6, 8)).toBe(1.6);
-    expect(THREE_CDN).toBe("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js");
+    expect(THREE_CDN).toBe("https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js");
   });
 });

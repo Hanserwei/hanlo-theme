@@ -72,8 +72,6 @@
 
 .read-mode #page-header.post-bg:before {
     opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: alpha(opacity=0)
 }
 
 .read-mode #page-header.post-bg>#post-info {

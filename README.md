@@ -105,7 +105,7 @@ node "$ARCHIFY_CLI" finalize architecture \
 
 ## 开发
 
-使用 Node.js 24 和 pnpm 10.33.0：
+使用 Node.js 26 LTS 和 pnpm 12.21.0（构建最低支持 Node.js 24.15.0）：
 
 ```bash
 git clone https://github.com/Hanserwei/hanlo-theme.git

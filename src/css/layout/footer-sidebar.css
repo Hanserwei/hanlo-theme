@@ -410,8 +410,6 @@ body[data-type=music] .page #nav #site-name span {
     bottom: 100px;
     z-index: 100;
     opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: alpha(opacity=0);
     -webkit-transition: all .5s;
     -moz-transition: all .5s;
     -o-transition: all .5s;
@@ -422,8 +420,6 @@ body[data-type=music] .page #nav #site-name span {
 #rightside #rightside-config-hide {
     height: 0;
     opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: alpha(opacity=0);
     -webkit-transition: -webkit-transform .4s;
     -moz-transition: -moz-transform .4s;
     -o-transition: -o-transform .4s;

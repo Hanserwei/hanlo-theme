@@ -83,8 +83,7 @@ function preserveLegacyTemplates(): Plugin {
     config() {
       return {
         build: {
-          rollupOptions: {
-            input: { runtime: buildEntry, ...conditionalStyleEntries },
+          rolldownOptions: {
             output: {
               entryFileNames(chunkInfo) {
                 return chunkInfo.name === "runtime"
@@ -119,6 +118,10 @@ function preserveLegacyTemplates(): Plugin {
           },
         },
       };
+    },
+    configResolved(config) {
+      // Replace the Halo plugin's merged HTML entries before Thymeleaf reaches the CSS parser.
+      config.build.rolldownOptions.input = { runtime: buildEntry, ...conditionalStyleEntries };
     },
     buildStart() {
       for (const template of collectLegacyTemplates(sourceRoot)) this.addWatchFile(template);

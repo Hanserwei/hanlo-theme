@@ -7,7 +7,7 @@
 - GitHub 安装包发布使用工作流的 GitHub Token，不依赖应用市场凭据。
 - 应用市场作业仅在仓库变量 `HALO_MARKETPLACE_ENABLED` 为 `true` 时执行。当前暂停上架，默认跳过该作业；恢复前先确认应用市场已允许发布。
 - 市场凭据保存在 GitHub Environment `HALO_PAT` 的同名 Secret，需要「应用市场开发者 → 版本管理」权限；无需迁移或下载令牌。
-- CI 使用 Node.js 24 / pnpm 10.33.0，执行锁定安装、类型/样式/设置检查、单元和设置测试、实际 Markmap 脚本测试、构建及已提交产物一致性检查。
+- CI 使用 Node.js 26 LTS / pnpm 12.21.0，执行锁定安装、类型/样式/设置检查、单元和设置测试、实际 Markmap 脚本测试、构建及已提交产物一致性检查。
 - CD 接收正式 `release.published`、手动 `workflow_dispatch` 或归档标签的调用。标签须为稳定的 `x.y.z` 或 `vx.y.z`，并匹配其 `theme.yaml`；目前不自动发布预发布版本。
 - 普通版本先复用 CI 构建，再校验并上传 ZIP 与 SHA-256。GitHub 已有匹配附件时复用原始字节，不覆盖不同内容。
 - 启用市场同步后，通过固定修订的官方 `halo-sigs/app-store-release-action@v4` 发布，读取 GitHub 正式 Release 正文作为更新说明。完成后核对公开版本和附件；已有匹配版本会跳过，不一致时报错。若市场留下不可见草稿，需在市场管理中检查后重试。
