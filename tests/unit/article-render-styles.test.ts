@@ -162,3 +162,52 @@ describe("article rendering CSS contracts", () => {
     },
   );
 });
+
+describe("page style boundaries", () => {
+  it("loads the about-only entry only for the about template", () => {
+    const entries = JSON.parse(readFileSync("css-entries.json", "utf8")) as Record<string, string>;
+    const head = readFileSync("src/modules/head.html", "utf8");
+    const aboutBlock = head.match(
+      /<th:block th:if="\$\{htmlType == 'about'\}">([\s\S]*?)<\/th:block>/,
+    )?.[1];
+    expect(aboutBlock).toBeDefined();
+    expect(index).not.toContain("./pages/about.css");
+    expect(aboutBlock).toContain("/css/about-");
+    const root = postcss.parse(readFileSync(entries.about!, "utf8"));
+    const layers = root.nodes.filter((node) => node.type !== "comment");
+    expect(layers).toHaveLength(1);
+    expect(layers[0]).toMatchObject({ type: "atrule", name: "layer", params: "pages" });
+    const selectors: string[] = [];
+    root.walkRules((rule) => {
+      selectors.push(rule.selector);
+    });
+    expect(selectors).toEqual(
+      expect.arrayContaining([
+        ".hanlo-about-page",
+        ".author-content-item.skills",
+        ".author-content-item.game-lol",
+        ".about-emotions",
+        ".author-content-item.map",
+      ]),
+    );
+    const shared = readFileSync("src/css/pages/author-content.css", "utf8");
+    expect(index).toContain("./pages/author-content.css");
+    expect(shared).toContain(".author-content-item .card-content");
+    expect(shared).toContain(".author-content-item .author-content-item-title");
+    expect(shared).toContain(".page-title");
+  });
+
+  it.each([
+    ["card-music", "405px", "520px"],
+    ["card-steam", "105px", "130px"],
+  ])("places the mobile %s height after its base height", (selector, desktop, mobile) => {
+    const css = postcss.parse(readFileSync("src/css/overrides/sidebar.css", "utf8"));
+    const heights: string[] = [];
+    css.walkRules(`.${selector}`, (rule) => {
+      rule.walkDecls("height", (decl) => {
+        heights.push(decl.value);
+      });
+    });
+    expect(heights).toEqual([desktop, mobile]);
+  });
+});

@@ -54,6 +54,10 @@ const notices = [manifestPath, svgManifestPath].map((file) => {
   return `${manifest.name}@${manifest.version}\nLicense: ${manifest.license}\n\n${license}`;
 });
 const version = readManifest(manifestPath).version;
+const fonts = readFileSync("src/css/components/fonts.css", "utf8").replaceAll(
+  "/assets/fonts/",
+  "../../fonts/",
+);
 const outputs = {
   "sprite.svg": `<svg xmlns="http://www.w3.org/2000/svg">\n${symbols.join("\n")}\n</svg>\n`,
   "names.json": `${JSON.stringify(names, null, 2)}\n`,
@@ -64,9 +68,8 @@ const outputs = {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hanlo 菜单图标</title>
 <style>
-@font-face{font-family:WenKai;src:url(../../fonts/LXGWWenKai-Regular.woff2?v=1.522) format("woff2");font-display:swap}
-@font-face{font-family:Maple;src:url(../../fonts/MapleMono-NF-CN-Regular.woff2?v=7.9) format("woff2");font-display:swap}
-:root{color-scheme:light dark}body{max-width:1200px;margin:2rem auto;padding:0 1rem;font-family:WenKai,serif}main{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}article{padding:1rem;border:1px solid #8886;border-radius:12px;display:flex;align-items:center;gap:1rem}svg{width:2em;height:2em;flex-shrink:0;color:#1677ff}code{font-family:Maple,monospace;font-feature-settings:"calt" 1,"liga" 1;overflow-wrap:anywhere}a{color:inherit}
+${fonts}
+:root{color-scheme:light dark}body{max-width:1200px;margin:2rem auto;padding:0 1rem;font-family:"LXGW WenKai",serif}main{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}article{padding:1rem;border:1px solid #8886;border-radius:12px;display:flex;align-items:center;gap:1rem}svg{width:2em;height:2em;flex-shrink:0;color:#1677ff}code{font-family:"Maple Mono NF CN",monospace;font-feature-settings:"calt" 1,"liga" 1;overflow-wrap:anywhere}a{color:inherit}
 </style>
 <h1>Hanlo 菜单图标</h1>
 <p>@antdv-next/icons ${version} · ${names.length} 个图标。使用浏览器查找功能搜索名称，将完整名称复制到「外观 → 菜单 → 图标」。</p>

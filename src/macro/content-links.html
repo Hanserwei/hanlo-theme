@@ -1,5 +1,8 @@
 <th:block th:fragment="content-links(htmlType, applicationEnabled, applicationTarget)">
 
+    <p th:unless="${pluginFinder.available('PluginLinks')}" role="status">友链插件未启用。</p>
+    <div th:if="${not pluginFinder.available('PluginLinks') and htmlType == 'page'}" th:utext="${singlePage.content.content}"></div>
+    <th:block th:if="${pluginFinder.available('PluginLinks')}">
     <th:block th:with="groups = ${linkFinder.groupBy()}">
         <div class="flink" id="banners">
             <div class="banners-title">
@@ -157,5 +160,6 @@
 
         </div>
 
+    </th:block>
     </th:block>
 </th:block>

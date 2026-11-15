@@ -5,7 +5,7 @@ import path from "node:path";
 
 import { expect, it } from "vitest";
 
-it("ignores integrity digests while rejecting retired navigation dependencies", () => {
+it("validates template bindings and rejects retired navigation dependencies", () => {
   const directory = mkdtempSync(path.join(tmpdir(), "hanlo-validation-"));
   try {
     for (const file of [
@@ -23,6 +23,8 @@ it("ignores integrity digests while rejecting retired navigation dependencies", 
       copyFileSync(file, target);
     }
     writeFileSync(path.join(directory, "THIRD_PARTY_NOTICES.txt"), "");
+    const commentTemplate = path.join(directory, "src/comment.html");
+    writeFileSync(commentTemplate, '<a th:attr="href=${target}">Comment</a>');
     const retired = ["p", "jax"].join("");
     const lockfile = path.join(directory, "pnpm-lock.yaml");
     writeFileSync(lockfile, `integrity: sha512-${retired}${"A".repeat(82)}==\n`);
@@ -31,6 +33,18 @@ it("ignores integrity digests while rejecting retired navigation dependencies", 
       encoding: "utf8",
     });
     expect(valid.status, valid.stderr).toBe(0);
+    writeFileSync(commentTemplate, '<a th:attr="href=${target},onclick=evil()">Comment</a>');
+    const inlineHandler = spawnSync(
+      process.execPath,
+      [path.resolve("scripts/validate-theme.mjs")],
+      {
+        cwd: directory,
+        encoding: "utf8",
+      },
+    );
+    expect(inlineHandler.status).not.toBe(0);
+    expect(inlineHandler.stderr).toContain("inline click handler");
+    rmSync(commentTemplate);
     writeFileSync(lockfile, `packages:\n  ${retired}@2.0.0: {}\n`);
     const invalid = spawnSync(process.execPath, [path.resolve("scripts/validate-theme.mjs")], {
       cwd: directory,

@@ -4,11 +4,6 @@
     window.GLOBAL_CONFIG = {
         // 页面类型 index,page,post,tag,category
         htmlType: (/*[[${ htmlType }]]*/ null),
-        postTitle: (/*[[${ htmlType == 'post' ? post.spec.title : htmlType == 'page' ? singlePage.spec.title : ''}]]*/ null),
-        isPost: (/*[[${htmlType == 'post'}]]*/ null),
-        isHome: (/*[[${ htmlType == 'index'}]]*/ null),
-        copyright: undefined,
-        lightbox: 'native',
         lazyload: {
             enable: (/*[[${theme.config.other.vanillaLazyload.enable}]]*/ null),
             error: (/*[[@{${theme.config.other.vanillaLazyload.errorImg}}]]*/ null)
@@ -35,12 +30,12 @@
                         #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt}]]*/ null),
             randomRange: Number((/*[[${theme.config.post.aiDescription.randomNum}]]*/ null)),
             wordLimit: Number((/*[[${theme.config.post.aiDescription.basicWordCount}]]*/ null)),
-            buttonLink: "[(${theme.config.post.aiDescription.btnLink})]",
-            name: "[(${theme.config.post.aiDescription.gptName})]",
+            buttonLink: (/*[[${theme.config.post.aiDescription.btnLink}]]*/ ''),
+            name: (/*[[${theme.config.post.aiDescription.gptName}]]*/ ''),
             mode: (/*[[${theme.config.post.aiDescription.mode}]]*/ null),
             switchable: (/*[[${theme.config.post.aiDescription.switchBtn}]]*/ null),
-            key: "[(${theme.config.post.aiDescription.key})]",
-            referer: "[(${theme.config.post.aiDescription.Referer})]"
+            key: (/*[[${theme.config.post.aiDescription.key}]]*/ ''),
+            referer: (/*[[${theme.config.post.aiDescription.Referer}]]*/ '')
         },
         widgets: {
             dynamicTitle: {
@@ -74,17 +69,14 @@
             cht_to_chs: "你已切换为简体",
             day_to_night: "你已切换为深色模式",
             night_to_day: "你已切换为浅色模式",
-            bgLight: "[(${theme.config.style.themeLightSkin})]",
-            bgDark: "[(${theme.config.style.themeDarkSkin})]",
+            bgLight: (/*[[${theme.config.style.themeLightSkin}]]*/ ''),
+            bgDark: (/*[[${theme.config.style.themeDarkSkin}]]*/ ''),
             position: "top-center",
         },
         translate: {
             defaultEncoding: (/*[[${theme.config.style.translate.defaultEncoding}]]*/ null),
-            translateDelay: 0,
             msgToTraditionalChinese: "繁",
             msgToSimplifiedChinese: "简",
-            rightMenuMsgToTraditionalChinese: "轉為繁體",
-            rightMenuMsgToSimplifiedChinese: "转为简体"
         },
         shiki: {
             enable: (/*[[${theme.config.code.shiki_enable == null || theme.config.code.shiki_enable}]]*/ null),
@@ -95,8 +87,8 @@
             enable_expander: (/*[[${ theme.config.code.enable_expander }]]*/ null),
             height_limit: Number((/*[[${#strings.isEmpty(theme.config.code.height_limit) ? 300 : theme.config.code.height_limit}]]*/ null)),
             enable_height_limit: (/*[[${theme.config.code.enable_height_limit}]]*/ null),
-            theme_light: "[(${theme.config.code.theme_light})]",
-            theme_dark: "[(${theme.config.code.theme_dark})]"
+            theme_light: (/*[[${theme.config.code.theme_light}]]*/ ''),
+            theme_dark: (/*[[${theme.config.code.theme_dark}]]*/ '')
         },
         source: {
             links: {
@@ -106,29 +98,6 @@
             post: {
                 dynamicBackground: (/*[[${ theme.config.post.dynamicBackground }]]*/ null)
             },
-            tool: {
-                switch: (/*[[${ theme.config.tool.snackbar.switch }]]*/ null)
-            },
-            postAi: {
-                ai: (/*[[${!postAiEnabled ? '' :
-                                    theme.config.post.aiDescription.mode != 'local' && !theme.config.post.aiDescription.switchBtn ? '' :
-                                    post.spec.excerpt.autoGenerate ? '本地模式需要自己填写文章摘要' :
-                                    #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt  }]]*/ null),
-                randomNum: (/*[[${theme.config.post.aiDescription.randomNum}]]*/ null),
-                basicWordCount: (/*[[${theme.config.post.aiDescription.basicWordCount}]]*/ null),
-                btnLink: "[(${theme.config.post.aiDescription.btnLink})]",
-                gptName: "[(${theme.config.post.aiDescription.gptName})]",
-                modeName: (/*[[${theme.config.post.aiDescription.mode}]]*/ null),
-                switchBtn: (/*[[${theme.config.post.aiDescription.switchBtn}]]*/ null),
-                keys: "[(${theme.config.post.aiDescription.key})]",
-                Referers: "[(${theme.config.post.aiDescription.Referer})]",
-            },
-            img: {
-                src: (/*[[${isLazyload ? 'data-lazy-src' : 'src' }]]*/ null)
-            },
-            footer: {
-                default_enable: (/*[[${theme.config.footer.footerContent.default_enable_group.default_enable}]]*/ null)
-            }
         }
     };
 

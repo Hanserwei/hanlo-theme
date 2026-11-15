@@ -56,9 +56,7 @@
                         overflow: hidden;
                         height: 550px;
                         width: 100%;
-                        max-width: 100%;
                         object-fit: cover;
-                        border-radius: var(--album-spacing-l)
                     }
 
                     #album .card:hover .card_cover {

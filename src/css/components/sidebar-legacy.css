@@ -9,9 +9,7 @@
     #aside-content {
         width: 100%;
     }
-}
 
-@media screen and (max-width: 900px) {
     #aside-content > .card-widget:first-child {
         margin-top: 1rem;
     }

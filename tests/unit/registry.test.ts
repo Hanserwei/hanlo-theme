@@ -6,9 +6,6 @@ import type { NavigationContext } from "../../src/js/core/types";
 
 const config = parseThemeConfig({
   htmlType: "index",
-  postTitle: "",
-  isPost: false,
-  isHome: true,
   lazyload: { enable: false, error: "" },
   loadingBox: false,
   rightMenuEnable: false,
@@ -16,7 +13,6 @@ const config = parseThemeConfig({
   date_suffix: { just: "刚刚", min: "分钟前", hour: "小时前", day: "天前" },
   translate: {
     defaultEncoding: 2,
-    translateDelay: 0,
     msgToTraditionalChinese: "繁",
     msgToSimplifiedChinese: "简",
   },

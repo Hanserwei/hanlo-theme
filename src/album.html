@@ -20,6 +20,9 @@
         </header>
         <main class="layout hide-aside" id="content-inner">
             <div id="page">
+                <p th:unless="${pluginFinder.available('PluginPhotos')}" role="status">图库插件未启用。</p>
+                <th:block th:if="${pluginFinder.available('PluginPhotos')}">
+                <th:block th:with="photoGroups=${photoFinder.groupBy()}">
                 <div id="album" th:if="${#strings.equals(theme.config.photos.photosStyle, 'default')}">
                     <div th:replace="~{macro/author-content :: author-content(background = ${singlePage.spec.cover},
                         smallTitle = '相册集',
@@ -29,7 +32,7 @@
                         buttonTitle = '')}"></div>
 
                     <div class="card-album">
-                        <th:block th:each="group : ${photoFinder.groupBy()}">
+                        <th:block th:each="group : ${photoGroups}">
                             <a class="card" th:href="@{/photos(group=${group.metadata.name})}">
                                 <img class="card_cover"
                                      th:src="${isLazyload ? '' : #annotations.get(group, 'cover')}"
@@ -41,7 +44,7 @@
                                 </div>
                             </a>
                         </th:block>
-                        <th:block th:each="photos : ${photoFinder.groupBy()}">
+                        <th:block th:each="photos : ${photoGroups}">
                             <div class="album-content-nocover"></div>
                         </th:block>
                     </div>
@@ -49,7 +52,7 @@
                 <div class="gallery-groups" th:if="${#strings.equals(theme.config.photos.photosStyle, 'one')}">
                     <h2 class="hl:text-center" th:text="${singlePage.spec.title}"></h2>
                     <div class="gallery-group-main">
-                        <th:block th:each="group : ${photoFinder.groupBy()}">
+                        <th:block th:each="group : ${photoGroups}">
                             <figure class="gallery-group no-lightbox">
                                 <img class="gallery-group-img no-lightbox"
                                      th:src="${isLazyload ? '' : #annotations.get(group, 'cover')}"
@@ -65,6 +68,8 @@
                         </th:block>
                     </div>
                 </div>
+                </th:block>
+                </th:block>
                 <!--/* 评论组件 */-->
                 <th:block th:replace="~{modules/comment :: comment(group = 'content.halo.run',
                   kind = 'SinglePage',

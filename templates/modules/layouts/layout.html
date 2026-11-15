@@ -54,12 +54,10 @@
 <th:block th:if="${theme.config.top.global_background.enable_global_background_img}">
 </th:block>
 
-<div hidden id="hanlo-page-data"
-    th:if="${not #lists.isEmpty(postFinder.listAll())}"
-    th:with="allPostList=${postFinder.listAll()},
-    randomIndex=${T(java.lang.Math).floor(T(java.lang.Math).random()*#lists.size(allPostList))},
-    postPermalink=${allPostList[randomIndex].status.permalink}"
-    th:data-random-post-url="${postPermalink}"></div>
+<th:block th:with="randomPosts=${postFinder.random(1)}">
+    <div hidden id="hanlo-page-data" th:if="${not #lists.isEmpty(randomPosts)}"
+         th:data-random-post-url="${randomPosts[0].status.permalink}"></div>
+</th:block>
 
 <!-- 控制台 -->
 <div th:replace="~{modules/widgets/console}"/>

@@ -1,0 +1,48 @@
+<!-- th:attr removes a null href; th:href would render a navigable empty URL. -->
+<th:block th:fragment="comment-item(comment, layout)"
+          th:with="ref=${comment.spec.subjectRef},
+                   photoSubject=${ref.group == 'content.halo.run' and ref.kind == 'SinglePage' and ref.name == 'photos'},
+                   page=${ref.group == 'content.halo.run' and ref.kind == 'Post' ? postFinder.getByName(ref.name).onErrorComplete(T(run.halo.app.extension.exception.ExtensionNotFoundException)) :
+                          ref.group == 'content.halo.run' and ref.kind == 'SinglePage' and not photoSubject ? singlePageFinder.getByName(ref.name).onErrorComplete(T(run.halo.app.extension.exception.ExtensionNotFoundException)) : null},
+                   pluginUrl=${ref.group == 'plugin.halo.run' and ref.kind == 'Plugin' and ref.name == 'PluginLinks' and pluginFinder.available('PluginLinks') ? '/links' :
+                              photoSubject and pluginFinder.available('PluginPhotos') ? '/photos' : null},
+                   target=${page != null ? page.status.permalink : pluginUrl},
+                   url=${#strings.isEmpty(target) ? null : target + '#comment-' + comment.metadata.name},
+                   article=${url == null ? '评论目标不可用' : page != null ? page.spec.title : pluginUrl == '/links' ? '友链' : '图库'}">
+    <a th:if="${layout == 'page'}" class="comment-card" th:title="${article}" th:attr="href=${url}">
+        <div class="comment-info">
+            <img th:replace="~{modules/common/comment-avatar :: avatar(${comment}, 'no-lightbox nolazyload avatar')}">
+            <div class="comment-information">
+                <span class="comment-user">[[${comment.owner.displayName}]]</span>
+                <span class="comment-time">[[${#dates.format(comment.metadata.creationTimestamp, 'yyyy-MM-dd HH:mm:ss')}]]</span>
+            </div>
+        </div>
+        <div class="comment-content" data-hanlo-comment-preview th:attr="data-hanlo-comment-html=${comment.spec.content}">查看评论</div>
+        <div class="comment-article">[[${article}]]</div>
+    </a>
+    <div th:if="${layout == 'console'}" class="aside-list-item">
+        <a th:attr="href=${url}" class="thumbnail">
+            <img th:replace="~{modules/common/comment-avatar :: avatar(${comment}, '')}">
+            <div class="name"><span th:text="${comment.owner.displayName}">访客</span></div>
+        </a>
+        <div class="content">
+            <a class="comment" data-hanlo-comment-preview th:attr="href=${url},data-hanlo-comment-html=${comment.spec.content}">查看评论</a>
+            <span th:if="${url == null}">评论目标不可用</span>
+            <time th:datetime="${#dates.format(comment.metadata.creationTimestamp, 'yyyy-MM-dd HH:mm:ss')}"></time>
+        </div>
+    </div>
+    <div th:if="${layout == 'aside'}" class="aside-list-item">
+        <a class="thumbnail" th:attr="href=${url}">
+            <img th:replace="~{modules/common/comment-avatar :: avatar(${comment}, '')}">
+        </a>
+        <div class="content">
+            <a class="comment hl:[display:-webkit-box] hl:[-webkit-line-clamp:2] hl:[-webkit-box-orient:vertical] hl:overflow-hidden"
+               data-hanlo-comment-preview th:attr="href=${url},data-hanlo-comment-html=${comment.spec.content}">查看评论</a>
+            <span th:if="${url == null}">评论目标不可用</span>
+            <div class="name">
+                <span th:text="${comment.owner.displayName + ' / '}">stonewu / </span>
+                <time th:datetime="${#dates.format(comment.metadata.creationTimestamp, 'yyyy-MM-dd HH:mm:ss')}"></time>
+            </div>
+        </div>
+    </div>
+</th:block>

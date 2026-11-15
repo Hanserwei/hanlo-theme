@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { Script } from "node:vm";
+
 import { describe, expect, it } from "vitest";
 
 import { parseThemeConfig } from "../../src/js/core/config";
@@ -5,9 +8,6 @@ import { parseThemeConfig } from "../../src/js/core/config";
 function createConfig() {
   return {
     htmlType: "index",
-    postTitle: "",
-    isPost: false,
-    isHome: true,
     lazyload: { enable: true, error: "/error.png" },
     loadingBox: true,
     rightMenuEnable: true,
@@ -15,7 +15,6 @@ function createConfig() {
     date_suffix: { just: "刚刚", min: "分钟前", hour: "小时前", day: "天前" },
     translate: {
       defaultEncoding: 2,
-      translateDelay: 0,
       msgToTraditionalChinese: "繁",
       msgToSimplifiedChinese: "简",
     },
@@ -56,6 +55,16 @@ function createConfig() {
 }
 
 describe("parseThemeConfig", () => {
+  it("keeps dynamic JavaScript values inside escaped Thymeleaf inlining", () => {
+    const template = readFileSync("src/modules/variables/site-config.html", "utf8");
+    expect(template).not.toContain("[(");
+    const script = template.slice(
+      template.indexOf("window.GLOBAL_CONFIG"),
+      template.lastIndexOf("</script>"),
+    );
+    expect(() => new Script(script)).not.toThrow();
+  });
+
   it("validates and deeply freezes the Thymeleaf configuration", () => {
     const config = parseThemeConfig(createConfig());
 
@@ -68,9 +77,9 @@ describe("parseThemeConfig", () => {
 
   it("rejects an invalid configuration before controllers mount", () => {
     const config = createConfig();
-    Object.assign(config, { isPost: "false" });
+    Object.assign(config, { loadingBox: "false" });
 
-    expect(() => parseThemeConfig(config)).toThrow("GLOBAL_CONFIG.isPost must be a boolean");
+    expect(() => parseThemeConfig(config)).toThrow("GLOBAL_CONFIG.loadingBox must be a boolean");
   });
 
   it("preserves the click-effect switch and rejects non-boolean values", () => {

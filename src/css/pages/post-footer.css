@@ -484,7 +484,6 @@ div#post-comment {
 #post-comment > div.comment-head > div.comment-privacy {
     display: block;
     justify-content: space-between;
-    margin-left: 8px;
     font-size: 13px;
     margin-left: auto;
 }
@@ -536,16 +535,6 @@ div#post-comment {
     }
 }
 
-@media screen and (min-width: 1300px) {
-    #pagination.pagination-post {
-        border-radius: 12px;
-        margin-top: 1rem;
-    }
-
-    .relatedPosts {
-        margin-top: 1rem;
-    }
-}
 
 
 .post-reward {

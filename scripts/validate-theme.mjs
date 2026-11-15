@@ -85,12 +85,17 @@ for (const file of collectFiles("src", [".html"])) {
     if (
       attributes.has("onclick") ||
       attributes.has("th:onclick") ||
-      /(?:^|;)\s*onclick\s*=/.test(attributes.get("th:attr") ?? "")
+      /(?:^|[,;])\s*onclick\s*=/.test(attributes.get("th:attr") ?? "")
     ) {
       throw new Error(`${file} contains an inline click handler`);
     }
     if (node.nodeName !== "a") return;
-    if (!attributes.has("href") && !attributes.has("th:href") && !attributes.has("th:replace")) {
+    if (
+      !attributes.has("href") &&
+      !attributes.has("th:href") &&
+      !attributes.has("th:replace") &&
+      !/(?:^|,)\s*href\s*=/.test(attributes.get("th:attr") ?? "")
+    ) {
       throw new Error(`${file} contains an anchor without a real href`);
     }
     const href = (attributes.get("href") ?? "").trim().toLowerCase();

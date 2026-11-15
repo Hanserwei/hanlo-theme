@@ -1,20 +1,10 @@
+import type { ThemeConfig } from "../../core/config";
 import { navigateTo, openExternalUrl, resolveHttpUrl } from "../../core/navigation";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
 
-type AiMode = "local" | "tianli";
-
-interface PostAiConfig {
-  readonly summary: string;
-  readonly randomRange: number;
-  readonly wordLimit: number;
-  readonly buttonLink: string;
-  readonly name: string;
-  readonly mode: AiMode;
-  readonly switchable: boolean;
-  readonly key: string;
-  readonly referer: string;
-}
+type PostAiConfig = ThemeConfig["postAi"];
+type AiMode = PostAiConfig["mode"];
 
 export function chooseLocalSummary(
   value: string,
@@ -311,20 +301,6 @@ class PostAiController {
   }
 }
 
-function readConfig(config: Readonly<import("../../core/config").ThemeConfig>): PostAiConfig {
-  return {
-    summary: config.postAi.summary,
-    randomRange: config.postAi.randomRange,
-    wordLimit: config.postAi.wordLimit,
-    buttonLink: config.postAi.buttonLink,
-    name: config.postAi.name,
-    mode: config.postAi.mode,
-    switchable: config.postAi.switchable,
-    key: config.postAi.key,
-    referer: config.postAi.referer,
-  };
-}
-
 export function createPostAiController(): PageControllerDefinition {
   return {
     name: "post-ai",
@@ -337,7 +313,7 @@ export function createPostAiController(): PageControllerDefinition {
           ".ai-title .haofont.hao-icon-arrow-rotate-right",
         );
         if (!panel || !explanation || !refresh) return;
-        new PostAiController(readConfig(config), panel, explanation, refresh, resources).mount();
+        new PostAiController(config.postAi, panel, explanation, refresh, resources).mount();
       },
       unmount() {},
     }),

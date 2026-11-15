@@ -27,23 +27,8 @@
                         buttonUrl = '',
                         buttonTitle = '')}"></div>
                 <div id="comments-page">
-                    <th:block th:each="comment,iterStat : ${commentFinder.list(null, 1, 100)}" th:with="page = ${comment.spec.subjectRef.kind == 'Post' ? postFinder.getByName(comment.spec.subjectRef.name) :
-                        comment.spec.subjectRef.kind == 'SinglePage' && not #strings.contains('photos,links,moments', comment.spec.subjectRef.name) ? singlePageFinder.getByName(comment.spec.subjectRef.name) : null},
-                        url = ${page == null? '/' : page.status.permalink + '#comment-' + comment.metadata.name},
-                        article = ${page == null? '该文章/页面不存在' : page.spec.title}">
-                        <a class="comment-card" th:title="${article}" th:href="${url}">
-                            <div class="comment-info">
-                                <img th:replace="~{modules/common/comment-avatar :: avatar(${comment}, 'no-lightbox nolazyload avatar')}">
-                                <div class="comment-information">
-                                    <span class="comment-user">[[${comment.owner.displayName}]]</span>
-                                    <span class="comment-time">[[${#dates.format(comment.metadata.creationTimestamp,
-                                        'yyyy-MM-dd HH:mm:ss')}]]</span>
-                                </div>
-                            </div>
-                            <div class="comment-content" data-hanlo-comment-preview
-                                 th:attr="data-hanlo-comment-html=${comment.spec.content}">查看评论</div>
-                            <div class="comment-article">[[${article}]]</div>
-                        </a>
+                    <th:block th:each="comment : ${commentFinder.list(null, 1, 100)}">
+                        <th:block th:replace="~{modules/common/comment-item :: comment-item(${comment}, 'page')}" />
                     </th:block>
 
                 </div>

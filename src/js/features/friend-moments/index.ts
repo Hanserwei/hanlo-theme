@@ -1,4 +1,5 @@
 import { throttle, type ThrottledFunction } from "../../core/dom";
+import { resolveHttpUrl } from "../../core/navigation";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
 import { snackbarShow } from "../../core/ui";
@@ -135,6 +136,7 @@ class FriendMomentsController {
   #hasNext = false;
   #keyword = "";
   #loading = false;
+  #unmounted = false;
   #scrollHandler: ThrottledFunction<[]> | undefined;
   #sortField: FriendMomentsSortField = "pubDate";
   #sortOrder: SortOrder = "desc";
@@ -149,21 +151,35 @@ class FriendMomentsController {
   }
 
   async mount(): Promise<void> {
-    this.#showLoading();
     this.#bindEvents();
+    await this.#loadFirstPage();
+  }
+
+  async #loadFirstPage(): Promise<void> {
+    if (this.#loading || this.#unmounted || this.#resources.disposed) return;
+    this.#loading = true;
+    this.#showLoading();
     try {
       await this.#loadPage(1);
-      if (this.#resources.disposed) return;
+      if (this.#unmounted || this.#resources.disposed) return;
       this.#updateAuthors();
       this.#updateStats();
       this.#render();
       this.#hideLoading();
     } catch (error) {
-      if (!(error instanceof DOMException && error.name === "AbortError")) this.#showError(error);
+      if (
+        !this.#unmounted &&
+        !this.#resources.disposed &&
+        !(error instanceof DOMException && error.name === "AbortError")
+      )
+        this.#showError(error);
+    } finally {
+      this.#loading = false;
     }
   }
 
   unmount(): void {
+    this.#unmounted = true;
     this.#scrollHandler?.cancel();
     this.#articles = [];
     document.querySelector("#fmomentsContainer")?.replaceChildren();
@@ -182,13 +198,15 @@ class FriendMomentsController {
         });
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         const data = parsePage(await response.json());
+        if (this.#unmounted || this.#resources.disposed) return;
         const articles = data.items.map(parseArticle);
         this.#articles = page === 1 ? articles : [...this.#articles, ...articles];
         this.#currentPage = page;
-        this.#totalCount = data.total || this.#articles.length;
+        this.#totalCount = data.total;
         this.#hasNext = data.hasNext && !data.last;
         return;
       } catch (error) {
+        if (this.#unmounted || this.#resources.disposed) return;
         if (error instanceof DOMException && error.name === "AbortError") throw error;
         lastError = error;
         if (attempt < 3) await delay(attempt * 1_000, this.#resources.signal);
@@ -241,22 +259,7 @@ class FriendMomentsController {
     const more = document.querySelector<HTMLButtonElement>("#fmomentsMoreBtn");
     if (more) this.#resources.listen(more, "click", () => void this.#loadMore());
     const retry = document.querySelector<HTMLButtonElement>("#retryBtn");
-    if (retry) {
-      this.#resources.listen(retry, "click", () => {
-        this.#articles = [];
-        this.#currentPage = 0;
-        this.#showLoading();
-        void this.#loadPage(1).then(
-          () => {
-            this.#updateAuthors();
-            this.#updateStats();
-            this.#render();
-            this.#hideLoading();
-          },
-          (error: unknown) => this.#showError(error),
-        );
-      });
-    }
+    if (retry) this.#resources.listen(retry, "click", () => void this.#loadFirstPage());
 
     this.#scrollHandler = throttle(() => {
       if (
@@ -272,16 +275,20 @@ class FriendMomentsController {
   }
 
   async #loadMore(): Promise<void> {
-    if (this.#loading || !this.#hasNext) return;
+    if (this.#loading || !this.#hasNext || this.#unmounted || this.#resources.disposed) return;
     this.#loading = true;
     try {
       await this.#loadPage(this.#currentPage + 1);
-      if (this.#resources.disposed) return;
+      if (this.#unmounted || this.#resources.disposed) return;
       this.#updateAuthors();
       this.#updateStats();
       this.#render();
     } catch (error) {
-      if (!(error instanceof DOMException && error.name === "AbortError")) {
+      if (
+        !this.#unmounted &&
+        !this.#resources.disposed &&
+        !(error instanceof DOMException && error.name === "AbortError")
+      ) {
         console.error("[Hanlo] Failed to load more friend moments.", error);
         snackbarShow("加载更多失败，请稍后再试");
       }
@@ -303,10 +310,15 @@ class FriendMomentsController {
       ...articles.map((article, index) => this.#renderArticle(article, index)),
     );
     setDisplay("emptyState", articles.length === 0 ? "block" : "none");
+    const emptyHint = document.querySelector<HTMLElement>("#emptyHint");
+    if (emptyHint)
+      emptyHint.textContent = this.#hasNext
+        ? "已加载的文章中没有匹配结果，可继续加载更多或调整筛选条件。"
+        : "尝试更换搜索词或调整筛选条件。";
     const displayed = document.querySelector<HTMLElement>("#displayedCount");
     const total = document.querySelector<HTMLElement>("#totalCount");
     if (displayed) displayed.textContent = String(articles.length);
-    if (total) total.textContent = String(this.#totalCount || this.#articles.length);
+    if (total) total.textContent = String(this.#articles.length);
     const hasFilter = Boolean(this.#author || this.#keyword);
     setDisplay("filterStatus", hasFilter ? "flex" : "none");
     const filterText = document.querySelector<HTMLElement>("#filterText");
@@ -333,7 +345,9 @@ class FriendMomentsController {
     header.className = "fMomentsArticleHeader";
     const avatar = document.createElement("img");
     avatar.className = "fMomentsAvatar";
-    avatar.src = article.logo || this.#config.errorImage;
+    avatar.src =
+      (article.logo ? resolveHttpUrl(article.logo, window.location.href)?.href : undefined) ||
+      this.#config.errorImage;
     avatar.alt = article.author;
     avatar.addEventListener(
       "error",
@@ -383,11 +397,14 @@ class FriendMomentsController {
     return item;
   }
 
-  #link(url: string, label: string): HTMLAnchorElement {
-    const link = document.createElement("a");
-    link.href = url || "#";
-    link.target = "_blank";
-    link.rel = "noopener nofollow";
+  #link(url: string, label: string): HTMLElement {
+    const resolved = url ? resolveHttpUrl(url, window.location.href) : undefined;
+    const link = document.createElement(resolved ? "a" : "span");
+    if (resolved && link instanceof HTMLAnchorElement) {
+      link.href = resolved.href;
+      link.target = "_blank";
+      link.rel = "noopener nofollow";
+    }
     link.textContent = label;
     return link;
   }
@@ -397,7 +414,7 @@ class FriendMomentsController {
     if (!select) return;
     const current = select.value;
     select.replaceChildren();
-    select.add(new Option("全部作者", ""));
+    select.add(new Option("已加载的全部作者", ""));
     const authors = [...new Set(this.#articles.map((article) => article.author))]
       .filter(Boolean)
       .sort();
@@ -409,7 +426,7 @@ class FriendMomentsController {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const weekAgo = new Date(today.getTime() - 7 * 86_400_000);
-    this.#animateNumber("totalArticles", this.#totalCount || this.#articles.length);
+    this.#animateNumber("totalArticles", this.#totalCount);
     this.#animateNumber(
       "totalAuthors",
       new Set(this.#articles.map((article) => article.author)).size,

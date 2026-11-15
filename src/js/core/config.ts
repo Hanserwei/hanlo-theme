@@ -1,27 +1,12 @@
 export interface ThemeSourceConfig extends Readonly<Record<string, unknown>> {
   readonly post?: Readonly<{ readonly dynamicBackground?: boolean }>;
-  readonly tool?: Readonly<{ readonly switch?: boolean }>;
   readonly links?: Readonly<{ readonly linksUrl?: string; readonly linksNum?: number }>;
-  readonly footer?: Readonly<{ readonly default_enable?: boolean }>;
 }
 
 export interface ThemeConfig {
   readonly htmlType: string;
-  readonly postTitle: string;
-  readonly isPost: boolean;
-  readonly isHome: boolean;
   readonly isFriendLinksInFooter?: boolean;
-  readonly lightbox?: string;
   readonly helloText?: readonly string[];
-  readonly copyright?: Readonly<{
-    readonly limitCount: number;
-    readonly languages: Readonly<{
-      readonly author: string;
-      readonly link: string;
-      readonly source: string;
-      readonly info: string;
-    }>;
-  }>;
   readonly lazyload: Readonly<{
     enable: boolean;
     error: string;
@@ -42,7 +27,6 @@ export interface ThemeConfig {
   }>;
   readonly translate: Readonly<{
     readonly defaultEncoding: number;
-    readonly translateDelay: number;
     readonly msgToTraditionalChinese: string;
     readonly msgToSimplifiedChinese: string;
   }>;
@@ -122,9 +106,6 @@ export function validateThemeConfig(value: unknown): asserts value is ThemeConfi
   if (!isRecord(value)) throw new TypeError("GLOBAL_CONFIG must be an object.");
 
   assertField(value, "htmlType", "string");
-  assertField(value, "postTitle", "string");
-  assertField(value, "isPost", "boolean");
-  assertField(value, "isHome", "boolean");
   assertField(value, "loadingBox", "boolean");
   assertField(value, "rightMenuEnable", "boolean");
 
@@ -145,7 +126,6 @@ export function validateThemeConfig(value: unknown): asserts value is ThemeConfi
 
   const translate = assertRecord(value, "translate");
   assertField(translate, "defaultEncoding", "number", "GLOBAL_CONFIG.translate");
-  assertField(translate, "translateDelay", "number", "GLOBAL_CONFIG.translate");
   assertField(translate, "msgToTraditionalChinese", "string", "GLOBAL_CONFIG.translate");
   assertField(translate, "msgToSimplifiedChinese", "string", "GLOBAL_CONFIG.translate");
 

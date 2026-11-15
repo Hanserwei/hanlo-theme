@@ -492,10 +492,7 @@ function initializeScroll(resources: PageResourceScope): void {
   resources.defer(() => update.cancel());
 }
 
-async function initializeContent(
-  config: Readonly<ThemeConfig>,
-  resources: PageResourceScope,
-): Promise<void> {
+function initializeContent(config: Readonly<ThemeConfig>, resources: PageResourceScope): void {
   const runtime = document.querySelector<HTMLElement>("#runtimeshow");
   if (runtime?.textContent)
     runtime.textContent = `${Math.max(0, differenceInDays(runtime.textContent))}天`;
@@ -519,27 +516,17 @@ async function initializeContent(
         wrapElement(table, "div", "table-wrap");
     });
 
-  if (config.copyright) {
-    resources.listen(document.body, "copy", (event) => {
-      const selection = window.getSelection()?.toString() ?? "";
-      if (selection.length <= config.copyright!.limitCount) return;
-      event.preventDefault();
-      const languages = config.copyright!.languages;
-      const text = `${selection}\n\n\n${languages.author}\n${languages.link}${window.location.href}\n${languages.source}\n${languages.info}`;
-      (event as ClipboardEvent).clipboardData?.setData("text/plain", text);
-    });
-  }
-
-  const mounts = [
+  for (const mount of [
     initializeToc(resources),
     initializeGalleries(resources),
     initializeQrCode(resources),
     initializeIndexEssay(resources),
     initializeCoverColor(config, resources),
-  ];
+  ]) {
+    void mount.catch((error: unknown) => console.warn("[Hanlo] Optional content failed.", error));
+  }
   initializeLazyLoad(config, resources);
   initializeWaterfall(resources);
-  await Promise.all(mounts);
 }
 
 async function initializeToc(resources: PageResourceScope): Promise<void> {
@@ -851,13 +838,13 @@ export function createSiteShellController(storage: ExpiringStorage): PageControl
   return {
     name: "site-shell",
     create: ({ config, resources }) => ({
-      async mount() {
+      mount() {
         mountPageLoading(resources);
         initializeHeader(resources);
         initializeNavigation(config, storage, resources);
         initializeLinkCaptcha(resources);
         initializeScroll(resources);
-        await initializeContent(config, resources);
+        initializeContent(config, resources);
         initializePageState(config, storage, resources);
       },
       unmount() {

@@ -44,13 +44,9 @@
 @import "./pages/links.css" layer(pages);
 @import "./pages/social.css" layer(pages);
 @import "./pages/tags-footer.css" layer(pages);
-@import "./pages/about-profile.css" layer(pages);
-@import "./pages/about-sections.css" layer(pages);
+@import "./pages/author-content.css" layer(pages);
 @import "./pages/widgets.css" layer(pages);
 @import "./pages/content-tools.css" layer(pages);
-@import "./pages/about-game.css" layer(pages);
-@import "./pages/about-emotions.css" layer(pages);
-@import "./pages/about-map.css" layer(pages);
 @import "./pages/error-inline.css" layer(pages);
 
 @import "tailwindcss/utilities.css" layer(utilities) prefix(hl) source("../");

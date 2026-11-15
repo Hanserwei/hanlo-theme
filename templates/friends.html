@@ -38,19 +38,19 @@
                         <div class="fMomentsStatCard">
                             <div class="fMomentsStatIcon">👥</div>
                             <div class="fMomentsStatNumber" id="totalAuthors">0</div>
-                            <div class="fMomentsStatLabel">活跃作者</div>
+                            <div class="fMomentsStatLabel">已加载的活跃作者</div>
                         </div>
 
                         <div class="fMomentsStatCard">
                             <div class="fMomentsStatIcon">🔥</div>
                             <div class="fMomentsStatNumber" id="todayCount">0</div>
-                            <div class="fMomentsStatLabel">今日更新</div>
+                            <div class="fMomentsStatLabel">已加载的今日更新</div>
                         </div>
 
                         <div class="fMomentsStatCard">
                             <div class="fMomentsStatIcon">⚡</div>
                             <div class="fMomentsStatNumber" id="weekCount">0</div>
-                            <div class="fMomentsStatLabel">本周更新</div>
+                            <div class="fMomentsStatLabel">已加载的本周更新</div>
                         </div>
                     </div>
                 </div>
@@ -59,15 +59,15 @@
                 <div class="fMomentsControlPanel">
                     <div class="fMomentsSearchBox">
                         <i class="fas fa-search fMomentsSearchIcon"></i>
-                        <input type="text" class="fMomentsSearchInput" placeholder="搜索文章标题或作者..." id="searchInput">
+                        <input type="text" class="fMomentsSearchInput" placeholder="搜索已加载的文章标题或作者..." aria-label="搜索已加载的文章" id="searchInput">
                     </div>
 
                     <div class="fMomentsFilterGroup">
-                        <select class="fMomentsSelect" id="authorFilter">
-                            <option value="">全部作者</option>
+                        <select class="fMomentsSelect" id="authorFilter" aria-label="筛选已加载的作者">
+                            <option value="">已加载的全部作者</option>
                         </select>
 
-                        <select class="fMomentsSelect" id="sortSelect">
+                        <select class="fMomentsSelect" id="sortSelect" aria-label="排序已加载的文章">
                             <option value="pubDate">按发布时间</option>
                             <option value="creationTime">按创建时间</option>
                             <option value="author">按作者名称</option>
@@ -81,12 +81,13 @@
                         </div>
                     </div>
                 </div>
+                <div>搜索、作者筛选和排序仅限已加载的文章</div>
 
                 <!-- 显示数量状态 -->
                 <div class="fMomentsDisplayStatus">
                     <div class="fMomentsDisplayInfo">
                         <i class="fas fa-filter"></i>
-                        <span>显示</span>
+                        <span>已加载文章中显示</span>
                         <span class="fMomentsDisplayCount" id="displayedCount">0</span>
                         <span>/</span>
                         <span class="fMomentsDisplayCount" id="totalCount">0</span>
@@ -115,8 +116,8 @@
                     </button>
                     <div class="fMomentsNoMore hl:hidden" id="noMoreTip">
                         <i class="fas fa-check-circle"></i>
-                        <div>🎉 已显示全部内容</div>
-                        <small>共找到 <span id="finalCount">0</span> 篇文章</small>
+                        <div>🎉 已加载全部文章</div>
+                        <small>当前筛选显示 <span id="finalCount">0</span> 篇文章</small>
                     </div>
                 </div>
 
@@ -131,8 +132,8 @@
                 <!-- 空状态 -->
                 <div class="fMomentsEmptyState hl:hidden" id="emptyState">
                     <i class="fas fa-search"></i>
-                    <h3>没有找到匹配的文章</h3>
-                    <p>尝试更换搜索词或调整筛选条件</p>
+                    <h3>已加载的文章中没有匹配结果</h3>
+                    <p id="emptyHint">尝试更换搜索词或调整筛选条件</p>
                 </div>
             </div>
         </main>

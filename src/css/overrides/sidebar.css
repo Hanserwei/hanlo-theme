@@ -73,12 +73,6 @@
     transform: rotateY(180deg)
 }
 
-@media screen and (max-width: 768px) {
-    .card-music {
-        height: 520px
-    }
-}
-
 .card-music {
     display: flex;
     justify-content: center;
@@ -89,6 +83,12 @@
     height: 405px;
     margin-top: 0;
     background: 0 0
+}
+
+@media screen and (max-width: 768px) {
+    .card-music {
+        height: 520px;
+    }
 }
 
 /* Steam卡片 */
@@ -153,12 +153,6 @@
     display: none
 }
 
-@media screen and (max-width: 768px) {
-    .card-steam {
-        height:130px
-    }
-}
-
 .card-steam {
     display: flex;
     justify-content: center;
@@ -169,6 +163,12 @@
     height: 105px;
     margin-top: 0;
     background: 0 0
+}
+
+@media screen and (max-width: 768px) {
+    .card-steam {
+        height: 130px;
+    }
 }
 
 /* Steam卡片 */

@@ -256,10 +256,6 @@ html {
 }
 
 @media screen and (max-width: 768px) {
-    #nav {
-        padding: 0px;
-    }
-
     #page-header #nav {
         background: linear-gradient(to top, var(--heo-main-none) 0%, var(--heo-main) 100%);
         transition: 0s;
@@ -949,9 +945,6 @@ html {
     #page-header.nav-fixed #nav #page-name-text:hover:after {
         opacity: 1;
         line-height: 36px;
-    }
-
-    #page-header.nav-fixed #nav #page-name-text:hover:after {
         color: var(--heo-card-bg);
     }
 
