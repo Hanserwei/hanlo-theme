@@ -30,12 +30,12 @@
                         #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt}]]*/ null),
             randomRange: Number((/*[[${theme.config.post.aiDescription.randomNum}]]*/ null)),
             wordLimit: Number((/*[[${theme.config.post.aiDescription.basicWordCount}]]*/ null)),
-            buttonLink: (/*[[${theme.config.post.aiDescription.btnLink}]]*/ ''),
-            name: (/*[[${theme.config.post.aiDescription.gptName}]]*/ ''),
+            buttonLink: (/*[[${theme.config.post.aiDescription.btnLink}]]*/ '') ?? '',
+            name: (/*[[${theme.config.post.aiDescription.gptName}]]*/ '') ?? '',
             mode: (/*[[${theme.config.post.aiDescription.mode}]]*/ null),
             switchable: (/*[[${theme.config.post.aiDescription.switchBtn}]]*/ null),
-            key: (/*[[${theme.config.post.aiDescription.key}]]*/ ''),
-            referer: (/*[[${theme.config.post.aiDescription.Referer}]]*/ '')
+            key: (/*[[${theme.config.post.aiDescription.key}]]*/ '') ?? '',
+            referer: (/*[[${theme.config.post.aiDescription.Referer}]]*/ '') ?? ''
         },
         widgets: {
             dynamicTitle: {

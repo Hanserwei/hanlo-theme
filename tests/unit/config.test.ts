@@ -63,6 +63,9 @@ describe("parseThemeConfig", () => {
       template.lastIndexOf("</script>"),
     );
     expect(() => new Script(script)).not.toThrow();
+    for (const field of ["btnLink", "gptName", "key", "Referer"]) {
+      expect(template).toContain(`theme.config.post.aiDescription.${field}}]]*/ '') ?? ''`);
+    }
   });
 
   it("validates and deeply freezes the Thymeleaf configuration", () => {
