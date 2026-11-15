@@ -1,14 +1,15 @@
 <!-- th:attr removes a null href; th:href would render a navigable empty URL. -->
 <th:block th:fragment="comment-item(comment, layout)"
           th:with="ref=${comment.spec.subjectRef},
+                   nativePermalink=${#halo.matchVersion('>=2.27.0')},
                    photoSubject=${ref.group == 'content.halo.run' and ref.kind == 'SinglePage' and ref.name == 'photos'},
-                   page=${ref.group == 'content.halo.run' and ref.kind == 'Post' ? postFinder.getByName(ref.name).onErrorComplete(T(run.halo.app.extension.exception.ExtensionNotFoundException)) :
-                          ref.group == 'content.halo.run' and ref.kind == 'SinglePage' and not photoSubject ? singlePageFinder.getByName(ref.name).onErrorComplete(T(run.halo.app.extension.exception.ExtensionNotFoundException)) : null},
-                   pluginUrl=${ref.group == 'plugin.halo.run' and ref.kind == 'Plugin' and ref.name == 'PluginLinks' and pluginFinder.available('PluginLinks') ? '/links' :
+                   page=${nativePermalink ? null : ref.group == 'content.halo.run' and ref.kind == 'Post' ? postFinder.getByName(ref.name) :
+                          ref.group == 'content.halo.run' and ref.kind == 'SinglePage' and not photoSubject ? singlePageFinder.getByName(ref.name) : null},
+                   pluginUrl=${nativePermalink ? null : ref.group == 'plugin.halo.run' and ref.kind == 'Plugin' and ref.name == 'PluginLinks' and pluginFinder.available('PluginLinks') ? '/links' :
                               photoSubject and pluginFinder.available('PluginPhotos') ? '/photos' : null},
-                   target=${page != null ? page.status.permalink : pluginUrl},
-                   url=${#strings.isEmpty(target) ? null : target + '#comment-' + comment.metadata.name},
-                   article=${url == null ? '评论目标不可用' : page != null ? page.spec.title : pluginUrl == '/links' ? '友链' : '图库'}">
+                   target=${nativePermalink ? comment.permalink : page != null ? page.status.permalink : pluginUrl},
+                   url=${#strings.isEmpty(target) ? null : nativePermalink ? target : target + '#comment-' + comment.metadata.name},
+                   article=${#strings.isEmpty(url) ? '评论目标不可用' : nativePermalink ? '查看评论原文' : page != null ? page.spec.title : pluginUrl == '/links' ? '友链' : '图库'}">
     <a th:if="${layout == 'page'}" class="comment-card" th:title="${article}" th:attr="href=${url}">
         <div class="comment-info">
             <img th:replace="~{modules/common/comment-avatar :: avatar(${comment}, 'no-lightbox nolazyload avatar')}">
@@ -27,7 +28,7 @@
         </a>
         <div class="content">
             <a class="comment" data-hanlo-comment-preview th:attr="href=${url},data-hanlo-comment-html=${comment.spec.content}">查看评论</a>
-            <span th:if="${url == null}">评论目标不可用</span>
+            <span th:if="${#strings.isEmpty(url)}">评论目标不可用</span>
             <time th:datetime="${#dates.format(comment.metadata.creationTimestamp, 'yyyy-MM-dd HH:mm:ss')}"></time>
         </div>
     </div>
@@ -38,7 +39,7 @@
         <div class="content">
             <a class="comment hl:[display:-webkit-box] hl:[-webkit-line-clamp:2] hl:[-webkit-box-orient:vertical] hl:overflow-hidden"
                data-hanlo-comment-preview th:attr="href=${url},data-hanlo-comment-html=${comment.spec.content}">查看评论</a>
-            <span th:if="${url == null}">评论目标不可用</span>
+            <span th:if="${#strings.isEmpty(url)}">评论目标不可用</span>
             <div class="name">
                 <span th:text="${comment.owner.displayName + ' / '}">stonewu / </span>
                 <time th:datetime="${#dates.format(comment.metadata.creationTimestamp, 'yyyy-MM-dd HH:mm:ss')}"></time>

@@ -42,6 +42,10 @@ describe("template data contracts", () => {
     expect(item).toContain("photoSubject and pluginFinder.available('PluginPhotos')");
     expect(item).toContain("and not photoSubject ? singlePageFinder.getByName(ref.name)");
     expect(item).not.toContain("#strings.contains");
+    expect(item).toContain("nativePermalink ? comment.permalink");
+    expect(item).toContain("#halo.matchVersion('>=2.27.0')");
+    expect(item).toContain("nativePermalink ? null");
+    expect(item).not.toMatch(/\.onError(?:Complete|Resume|Return)\(/);
     expect(item).toContain("#strings.isEmpty(target) ? null");
     expect(item).not.toContain('th:href="${url}"');
     expect(item).toContain("评论目标不可用");
