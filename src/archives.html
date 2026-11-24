@@ -27,11 +27,11 @@
                         <div class="article-sort-item" th:each="post : ${month.posts}">
                             <a class="article-sort-item-img" th:href="@{${post.status.permalink}}"
                                th:title="${post.spec.title}">
-                                <img th:alt="${post.spec.title}"
+                                <img th:alt="${post.spec.title}" loading="lazy" decoding="async"
                                      th:src="${#strings.isEmpty(post.spec.cover) ? postRandomImg+post.spec.title : thumbnail.gen(post.spec.cover, 's')}">
                             </a>
                             <div class="article-sort-item-info">
-                                <div class="article-sort-item-time"><i class="far fa-calendar-alt"></i>
+                                <div class="article-sort-item-time" th:if="${post.spec.publishTime != null}"><i class="haofont hao-icon-calendar-alt" aria-hidden="true"></i>
                                     <time class="post-meta-date-created"
                                           th:attr="datetime=${#dates.format(post.spec.publishTime,'yyyy-MM-dd HH:mm:ss')}"
                                           th:text="${#dates.format(post.spec.publishTime,'yyyy-MM-dd')}"
@@ -40,12 +40,11 @@
                                 </div>
                                 <a class="article-sort-item-title" th:href="@{${post.status.permalink}}" th:text="${post.spec.title}"
                                    th:title="${post.spec.title}"></a>
-                                <div class="article-sort-item-tags">
+                                <div class="article-sort-item-tags" th:if="${not #lists.isEmpty(post.tags)}">
                                     <a class="article-meta__tags"
                                        th:each="tag : ${post.tags}" th:href="@{${tag.status.permalink}}">
                                         <span class="tags-punctuation">[[${tag.spec.displayName}]]</span>
                                     </a>
-                                    <span class="article-meta__link">•</span>
                                 </div>
                             </div>
                         </div>

@@ -1,16 +1,24 @@
-<style type="text/css" th:inline="css">
+<style type="text/css" th:inline="css"
+       th:with="lightSkin=${not #strings.isEmpty(theme.config.style.themeLightSkin) and theme.config.style.themeLightSkin matches '^#[0-9a-fA-F]{3,8}$' ? theme.config.style.themeLightSkin : '#425aef'},
+                darkSkin=${not #strings.isEmpty(theme.config.style.themeDarkSkin) and theme.config.style.themeDarkSkin matches '^#[0-9a-fA-F]{3,8}$' ? theme.config.style.themeDarkSkin : '#f2b94b'}">
     [data-theme=light] {
-        --heo-theme: [(${theme.config.style.themeLightSkin})] !important;
-        --heo-theme-op: [(${theme.config.style.themeLightSkin})]23 !important;
-        --heo-theme-op-deep: [(${theme.config.style.themeLightSkin})]dd !important;
-        --heo-theme-none: [(${theme.config.style.themeLightSkin})]00 !important;
+        --hanlo-color-brand: [(${lightSkin})];
+        --heo-theme: var(--hanlo-color-brand);
+        --heo-theme-op: color-mix(in srgb, var(--heo-theme) 14%, transparent);
+        --heo-theme-op-deep: color-mix(in srgb, var(--heo-theme) 87%, transparent);
+        --heo-theme-op-light: color-mix(in srgb, var(--heo-theme) 5%, transparent);
+        --heo-theme-none: color-mix(in srgb, var(--heo-theme) 0%, transparent);
+        --hanlo-color-brand-soft: var(--heo-theme-op);
     }
 
     [data-theme=dark] {
-        --heo-theme: [(${theme.config.style.themeDarkSkin})] !important;
-        --heo-theme-op: [(${theme.config.style.themeDarkSkin})]23 !important;
-        --heo-theme-op-deep: [(${theme.config.style.themeDarkSkin})]dd !important;
-        --heo-theme-none: [(${theme.config.style.themeDarkSkin})]00 !important;
+        --hanlo-color-brand: [(${darkSkin})];
+        --heo-theme: var(--hanlo-color-brand);
+        --heo-theme-op: color-mix(in srgb, var(--heo-theme) 14%, transparent);
+        --heo-theme-op-deep: color-mix(in srgb, var(--heo-theme) 87%, transparent);
+        --heo-theme-op-light: color-mix(in srgb, var(--heo-theme) 8%, transparent);
+        --heo-theme-none: color-mix(in srgb, var(--heo-theme) 0%, transparent);
+        --hanlo-color-brand-soft: var(--heo-theme-op);
     }
 
     :root {

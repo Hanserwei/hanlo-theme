@@ -69,8 +69,8 @@ function templateValue(value: string | undefined): string {
 
 export function extractHeight(occupied: number, width: string, height: string): string | number {
   const occupiedWidth = width.endsWith("%")
-    ? occupied * (Number(width.slice(0, -1)) / 100)
-    : Number(width);
+    ? occupied * (Number.parseFloat(width) / 100)
+    : Number.parseFloat(width);
   const expression = height.replaceAll("cwidth", String(occupiedWidth));
   if (expression === "${full}") return occupied;
   const match = expression.match(/^\$\{([<>=]{1,2})([\d.]+)\?([\d.]+):([\d.]+)}$/);
@@ -166,7 +166,8 @@ function registerContentElements(): void {
           ? `https://player.bilibili.com/player.html?${new URLSearchParams({ bvid: source, page: attribute(element, "page", "1"), autoplay: attribute(element, "autoplay", "0") })}`
           : httpUrl(source);
       if (!url) return "请填写正确的pdf链接";
-      return `<div class="${kind === "pdf" ? "tool_pdf" : ""}"><iframe class="iframe-dom ${kind === "bilibili" ? "tool_vplayer" : ""}" allowfullscreen="true" src="${escapeHtml(url)}" style="width:${escapeHtml(cssValue("width", width))};height:${escapeHtml(cssValue("height", `${height}px`))}"></iframe></div>`;
+      const frameTitle = kind === "bilibili" ? "Bilibili 视频播放器" : "PDF 文档预览";
+      return `<div class="${kind === "pdf" ? "tool_pdf" : ""}"><iframe class="iframe-dom ${kind === "bilibili" ? "tool_vplayer" : ""}" title="${frameTitle}" allowfullscreen="true" src="${escapeHtml(url)}" style="width:${escapeHtml(cssValue("width", width))};height:${escapeHtml(cssValue("height", `${height}px`))}"></iframe></div>`;
     };
   register("hao-bilibili", frameRenderer("bilibili"));
   register("hao-pdf", frameRenderer("pdf"));
@@ -179,7 +180,7 @@ function registerContentElements(): void {
     const subtitle = element.getAttribute("subtitle");
     const complete = logo !== null && title !== null && subtitle !== null;
     const source = lazyAttribute();
-    return `<div class="introduction-card" style="${complete ? "" : "height:416px"}"><div class="introduction-card-top no-lightbox" style="${complete ? "" : "height:100%;border-radius:15px"}"><div class="int-card-info"><div class="int-tip">${escapeHtml(attribute(element, "tip", "小标题"))}</div><div class="int-cardTitle">${escapeHtml(attribute(element, "cardtitle", "标题"))}</div></div><img ${urlAttribute(source, image)} alt="introduction"></div>${complete ? `<div class="introduction-card-bottom"><div class="left no-lightbox"><img ${urlAttribute(source, logo)} alt="introduction"><div class="info"><div class="title">${escapeHtml(title)}</div><div class="subTitle">${escapeHtml(subtitle)}</div></div></div><div class="right"><a ${urlAttribute("href", link)} tabindex="-1" class="no-text-decoration">前往</a></div></div>` : ""}</div>`;
+    return `<div class="introduction-card" style="${complete ? "" : "height:416px"}"><div class="introduction-card-top no-lightbox" style="${complete ? "" : "height:100%;border-radius:15px"}"><div class="int-card-info"><div class="int-tip">${escapeHtml(attribute(element, "tip", "小标题"))}</div><div class="int-cardTitle">${escapeHtml(attribute(element, "cardtitle", "标题"))}</div></div><img ${urlAttribute(source, image)} alt="introduction"></div>${complete ? `<div class="introduction-card-bottom"><div class="left no-lightbox"><img ${urlAttribute(source, logo)} alt="introduction"><div class="info"><div class="title">${escapeHtml(title)}</div><div class="subTitle">${escapeHtml(subtitle)}</div></div></div><div class="right"><a ${urlAttribute("href", link)} class="no-text-decoration">前往</a></div></div>` : ""}</div>`;
   });
 
   register("hao-folding", (element) => {
@@ -274,12 +275,12 @@ function registerContentElements(): void {
       const cover = urlAttribute(source, values[4] || values[2]);
       content +=
         style === "beautify"
-          ? `<div class="site-card"><a class="img" target="_blank" ${link} title="${name}"><img class="flink-avatar entered loaded" alt="${name}" ${cover}></a><a class="info cf-friends-link" target="_blank" ${link} title="${name}"><div class="site-card-avatar no-lightbox"><img class="flink-avatar cf-friends-avatar" alt="${name}" ${image}></div><div class="site-card-text"><span class="title cf-friends-name">${name}</span><span class="desc" title="${description}">${description}</span></div></a></div>`
-          : `<div class="flink-list-item"><a class="cf-friends-link" rel="external nofollow" target="_blank" ${link} title="${name}"><img class="flink-avatar cf-friends-avatar" alt="${name}" ${image}><div class="flink-item-info no-lightbox"><span class="flink-item-name cf-friends-name">${name}</span><span class="flink-item-desc" title="${description}">${description}</span><img ${image}></div></a></div>`;
+          ? `<div class="site-card"><a class="img" rel="noopener noreferrer external nofollow" target="_blank" ${link} title="${name}"><img class="flink-avatar entered loaded" alt="${name}" ${cover}></a><a class="info cf-friends-link" rel="noopener noreferrer external nofollow" target="_blank" ${link} title="${name}"><div class="site-card-avatar no-lightbox"><img class="flink-avatar cf-friends-avatar" alt="${name}" ${image}></div><div class="site-card-text"><span class="title cf-friends-name">${name}</span><span class="desc" title="${description}">${description}</span></div></a></div>`
+          : `<div class="flink-list-item"><a class="cf-friends-link" rel="noopener noreferrer external nofollow" target="_blank" ${link} title="${name}"><img class="flink-avatar cf-friends-avatar" alt="${name}" ${image}><div class="flink-item-info no-lightbox"><span class="flink-item-name cf-friends-name">${name}</span><span class="flink-item-desc" title="${description}">${description}</span><img ${image} alt=""></div></a></div>`;
       return "";
     });
     const description = escapeHtml(attribute(element, "desc"));
-    return `<div class="flink" id="article-container"><div class="flink-name">${escapeHtml(attribute(element, "name"))}</div>${description ? `<div class="flink-desc">${description}</div>` : ""}<div class="${style === "beautify" ? "site-card-group" : "flink-list"}">${content}</div></div>`;
+    return `<div class="flink"><div class="flink-name">${escapeHtml(attribute(element, "name"))}</div>${description ? `<div class="flink-desc">${description}</div>` : ""}<div class="${style === "beautify" ? "site-card-group" : "flink-list"}">${content}</div></div>`;
   });
 
   register("hao-checkbox", (element) => {
@@ -320,6 +321,7 @@ async function mountDPlayers(
       type = "hanloHls";
       customType = {
         hanloHls(video) {
+          if (resources.disposed) return;
           if (Hls.isSupported()) {
             const hls = resources.track(new Hls(), (instance) => instance.destroy());
             hls.loadSource(source);

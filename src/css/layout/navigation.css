@@ -982,21 +982,21 @@ html {
     }
 
     #page-header.nav-fixed #nav #menus {
-        z-index: 100;
+        z-index: 103;
     }
 
     #page-header.nav-fixed.nav-visible #nav #menus {
-        z-index: 101;
+        z-index: 104;
     }
 
     #page-header.nav-fixed #page-name {
-        z-index: 101;
+        z-index: 103;
         transition: 0.3s;
         top: 10px;
     }
 
     #page-header.nav-fixed.nav-visible #page-name {
-        z-index: 100;
+        z-index: 102;
         top: 62px;
         transition: 0.3s;
     }

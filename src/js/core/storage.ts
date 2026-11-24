@@ -51,6 +51,71 @@ export class ExpiringStorage {
   }
 }
 
+class MemoryStorage implements StorageLike {
+  readonly #values = new Map<string, string>();
+
+  getItem(key: string): string | null {
+    return this.#values.get(key) ?? null;
+  }
+
+  setItem(key: string, value: string): void {
+    this.#values.set(key, value);
+  }
+
+  removeItem(key: string): void {
+    this.#values.delete(key);
+  }
+}
+
+class SafeStorage implements StorageLike {
+  readonly #fallback = new MemoryStorage();
+  readonly #primary: StorageLike | undefined;
+
+  constructor(primary: StorageLike | undefined) {
+    this.#primary = primary;
+  }
+
+  getItem(key: string): string | null {
+    if (this.#primary) {
+      try {
+        return this.#primary.getItem(key);
+      } catch {
+        // Fall through to in-memory storage when browser storage is blocked.
+      }
+    }
+    return this.#fallback.getItem(key);
+  }
+
+  setItem(key: string, value: string): void {
+    if (this.#primary) {
+      try {
+        this.#primary.setItem(key, value);
+        return;
+      } catch {
+        // Fall through to in-memory storage on quota or security errors.
+      }
+    }
+    this.#fallback.setItem(key, value);
+  }
+
+  removeItem(key: string): void {
+    if (this.#primary) {
+      try {
+        this.#primary.removeItem(key);
+      } catch {
+        // Ignore storage errors and clear any fallback entry too.
+      }
+    }
+    this.#fallback.removeItem(key);
+  }
+}
+
 export function createBrowserStorage(): ExpiringStorage {
-  return new ExpiringStorage(window.localStorage);
+  let browserStorage: StorageLike | undefined;
+  try {
+    browserStorage = window.localStorage;
+  } catch {
+    browserStorage = undefined;
+  }
+  return new ExpiringStorage(new SafeStorage(browserStorage));
 }

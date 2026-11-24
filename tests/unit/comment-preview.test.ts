@@ -1,6 +1,22 @@
-import { describe, expect, it } from "vitest";
+import { parseHTML } from "linkedom";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { commentHtmlToText } from "../../src/js/features/page-widgets/comment-preview";
+
+beforeEach(() => {
+  vi.stubGlobal(
+    "DOMParser",
+    class {
+      parseFromString(html: string) {
+        return parseHTML(`<!doctype html><html><body>${html}</body></html>`).document;
+      }
+    },
+  );
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 describe("comment previews", () => {
   it("converts paragraphs, breaks, links and entities to readable text", () => {

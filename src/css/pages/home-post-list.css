@@ -215,23 +215,16 @@
     width: fit-content;
     line-height: 1;
     background: var(--heo-main);
-    color: #fff;
+    color: var(--heo-on-main);
     border-radius: 6px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    -ms-transition: all 0.3s;
     transition: all 0.3s;
     cursor: pointer;
 }
 
 .ai-btn-item:hover {
     background: var(--heo-theme);
-    color: var(--heo-card-bg);
+    color: var(--heo-on-main);
 }
 
 .ai-recommend {
@@ -799,7 +792,6 @@ span.recent-post-top-text {
     overflow: hidden;
     margin-top: 1rem;
     animation: slide-in .6s .4s backwards;
-    will-change: transform
 }
 
 /* 图片在左侧 */
@@ -842,7 +834,6 @@ span.recent-post-top-text {
         overflow: hidden;
         margin-top: 1rem;
         animation: slide-in .6s .4s backwards;
-        will-change: transform;
         width: calc(100% / 2 - .5rem);
         margin-top: .25rem;
         margin-bottom: .75rem;

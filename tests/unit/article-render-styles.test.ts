@@ -210,4 +210,34 @@ describe("page style boundaries", () => {
     });
     expect(heights).toEqual([desktop, mobile]);
   });
+
+  it("keeps scrolled full-page navbar links readable and prevents global button outline resets", () => {
+    const fullPageCss = postcss.parse(readFileSync("src/css/pages/full-page.css", "utf8"));
+    const fixedSelectors: string[] = [];
+    fullPageCss.walkRules((rule) => {
+      if (rule.selector.includes(".nav-fixed")) fixedSelectors.push(rule.selector);
+    });
+    expect(fixedSelectors.join("\n")).toContain("#page-header.nav-fixed #nav a");
+    expect(fixedSelectors.join("\n")).toContain("#page-header.nav-fixed #nav .site-page");
+
+    const linkCanvasCss = postcss.parse(readFileSync("src/css/components/link-canvas.css", "utf8"));
+    const bareButtonRules: string[] = [];
+    linkCanvasCss.walkRules((rule) => {
+      if (rule.selector.trim() === "button") bareButtonRules.push(rule.selector);
+    });
+    expect(bareButtonRules).toHaveLength(0);
+
+    const relatedSixCss = postcss.parse(
+      readFileSync("src/css/components/related-posts-six.css", "utf8"),
+    );
+    const titleColors: string[] = [];
+    relatedSixCss.walkRules((rule) => {
+      if (rule.selector.includes(".title")) {
+        rule.walkDecls("color", (decl) => {
+          titleColors.push(decl.value);
+        });
+      }
+    });
+    expect(titleColors).toEqual(["#fff"]);
+  });
 });

@@ -512,6 +512,13 @@
     text-rendering: auto;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .haofont.hao-icon-heartbeat,
+    .flink-item-tag::before {
+        animation: none;
+    }
+}
+
 @keyframes heartbeat-bounce {
     0%,
     100% {

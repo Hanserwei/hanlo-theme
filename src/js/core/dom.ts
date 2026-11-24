@@ -38,9 +38,16 @@ export function throttle<Arguments extends unknown[]>(
   return throttled;
 }
 
+export function prefersReducedMotion(): boolean {
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+}
+
 export function scrollToDestination(target: number): void {
   if (target < 0) return;
-  window.scrollTo({ top: Math.max(0, target - 70), behavior: "smooth" });
+  window.scrollTo({
+    top: Math.max(0, target - 70),
+    behavior: prefersReducedMotion() ? "auto" : "smooth",
+  });
 }
 
 export function isHidden(element: HTMLElement): boolean {
@@ -79,7 +86,7 @@ export function changeContent(content: string, maximumLength?: number): string {
   let result = content
     .replace(/<img.*?src="(.*?)"?[^>]+>/gi, "[图片]")
     .replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, "[链接]")
-    .replace(/<pre><code>.*?<\/pre>/gi, "[代码]")
+    .replace(/<pre><code>[\s\S]*?<\/pre>/gi, "[代码]")
     .replace(/<[^>]+>/g, "");
   if (maximumLength !== undefined && result.length > maximumLength) {
     result = `${result.slice(0, maximumLength)}...`;

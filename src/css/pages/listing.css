@@ -252,7 +252,7 @@ figure.gallery-group:hover .gallery-group-name::after {
     }
 }
 
-#tag #tag-page-tags:hover {
+#tag #tag-page-tags:is(:hover, :focus-within) {
     max-height: 1000px;
     transition: .3s ease-out;
     background: var(--heo-maskbgdeep)

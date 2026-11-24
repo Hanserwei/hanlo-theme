@@ -2,14 +2,14 @@
     <div class="bangumi-item">
         <div class="bangumi-picture no-lightbox">
             <img class="hl:[width:110px] hl:[margin:20px_auto]"
+                    th:alt="${spec.title}"
                     th:src="${isLazyload ? '' : spec.cover}"
                     th:data-lazy-src="${ isLazyload ? spec.cover : ''}"
-                    referrerpolicy="no-referrer" width="110"
-                   >
+                    referrerpolicy="no-referrer" width="110" loading="lazy" decoding="async">
         </div>
         <div class="bangumi-info">
             <div class="bangumi-title">
-                <a target="_blank" th:href="${spec.url}">[[${spec.title}]]</a>
+                <a target="_blank" rel="noopener noreferrer external nofollow" th:href="${spec.url}">[[${spec.title}]]</a>
             </div>
             <div class="bangumi-meta">
                 <span class="bangumi-info-items">
@@ -19,23 +19,23 @@
                     </span>
                     <span class="bangumi-info-item bangumi-area">
                         <span class="bangumi-info-label">[[${spec.type}]]</span>
-                        <em th:text="${#strings.isEmpty(spec.score)? '未知' :spec.area}"></em>
+                        <em th:text="${#strings.isEmpty(spec.area)? '未知' :spec.area}"></em>
                     </span>
                     <span class="bangumi-info-item bangumi-play">
                         <span class="bangumi-info-label">总播放</span>
-                        <em th:text="${#strings.isEmpty(spec.score)? '未知' :spec.view}"></em>
+                        <em th:text="${#strings.isEmpty(spec.view)? '未知' :spec.view}"></em>
                     </span>
                     <span class="bangumi-info-item bangumi-follow">
                         <span class="bangumi-info-label">追番人数</span>
-                        <em th:text="${#strings.isEmpty(spec.score)? '未知' :spec.follow}"></em>
+                        <em th:text="${#strings.isEmpty(spec.follow)? '未知' :spec.follow}"></em>
                     </span>
                     <span class="bangumi-info-item bangumi-coin">
                         <span class="bangumi-info-label">硬币数</span>
-                        <em th:text="${#strings.isEmpty(spec.score)? '未知' :spec.coin}"></em>
+                        <em th:text="${#strings.isEmpty(spec.coin)? '未知' :spec.coin}"></em>
                     </span>
                     <span class="bangumi-info-item bangumi-danmaku">
                         <span class="bangumi-info-label">弹幕总数</span>
-                        <em th:text="${#strings.isEmpty(spec.score)? '未知' :spec.danmaku}"></em>
+                        <em th:text="${#strings.isEmpty(spec.danmaku)? '未知' :spec.danmaku}"></em>
                     </span>
                     <span class="bangumi-info-item bangumi-info-item-score">
                         <span class="bangumi-info-label">评分</span>

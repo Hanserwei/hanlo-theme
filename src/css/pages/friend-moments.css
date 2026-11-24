@@ -14,7 +14,7 @@
   text-align: center;
   padding: 8px 0;
   margin-bottom: 16px;
-  border-bottom: 1px solid var(--heo-border-color);
+  border-bottom: 1px solid var(--heo-card-border);
   font-size: 14px;
   color: var(--heo-secondtext);
   font-weight: 500;
@@ -27,12 +27,12 @@
 }
 
 .fMomentsStatCard {
-  background: linear-gradient(135deg, var(--heo-secondbg), var(--heo-mask-bg));
+  background: linear-gradient(135deg, var(--heo-secondbg), var(--heo-maskbg));
   border-radius: 12px;
   padding: 16px;
   text-align: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid var(--heo-border-color);
+  border: 1px solid var(--heo-card-border);
   position: relative;
   overflow: hidden;
 }
@@ -104,7 +104,7 @@
 .fMomentsSearchInput {
   width: 100%;
   padding: 14px 16px 14px 44px;
-  border: 2px solid var(--heo-border-color);
+  border: 2px solid var(--heo-card-border);
   border-radius: 28px;
   background: var(--heo-secondbg);
   color: var(--heo-fontcolor);
@@ -114,9 +114,12 @@
 }
 
 .fMomentsSearchInput:focus {
-  outline: none;
   border-color: var(--heo-main);
-  box-shadow: 0 0 0 3px rgba(var(--heo-main-rgb), 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--heo-main) 18%, transparent);
+}
+
+.fMomentsSearchInput:focus:not(:focus-visible) {
+  outline: none;
 }
 
 .fMomentsSearchIcon {
@@ -137,7 +140,7 @@
 
 .fMomentsSelect {
   padding: 12px 16px;
-  border: 2px solid var(--heo-border-color);
+  border: 2px solid var(--heo-card-border);
   border-radius: 24px;
   background: var(--heo-secondbg);
   color: var(--heo-fontcolor);
@@ -149,9 +152,12 @@
 }
 
 .fMomentsSelect:focus {
-  outline: none;
   border-color: var(--heo-main);
-  box-shadow: 0 0 0 3px rgba(var(--heo-main-rgb), 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--heo-main) 18%, transparent);
+}
+
+.fMomentsSelect:focus:not(:focus-visible) {
+  outline: none;
 }
 
 .fMomentsToggle {
@@ -167,7 +173,7 @@
   position: relative;
   width: 52px;
   height: 28px;
-  background: var(--heo-border-color);
+  background: var(--heo-card-border);
   border-radius: 28px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -237,7 +243,7 @@
 .fMomentsLoadingSpinner {
   width: 40px;
   height: 40px;
-  border: 4px solid var(--heo-border-color);
+  border: 4px solid var(--heo-card-border);
   border-top: 4px solid var(--heo-main);
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -284,7 +290,7 @@
 
 .fMomentsArticleHeader {
   padding: 16px;
-  border-bottom: 1px solid var(--heo-border-color);
+  border-bottom: 1px solid var(--heo-card-border);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -360,7 +366,7 @@
 
 .fMomentsArticleFooter {
   padding: 12px 16px;
-  border-top: 1px solid var(--heo-border-color);
+  border-top: 1px solid var(--heo-card-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -378,7 +384,7 @@
   height: 54px;
   margin: 30px auto;
   background: linear-gradient(135deg, var(--heo-main), var(--heo-blue));
-  color: white;
+  color: var(--heo-on-main);
   border: none;
   border-radius: 27px;
   font-weight: 600;
@@ -389,17 +395,17 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 15px rgba(var(--heo-main-rgb), 0.3);
+  box-shadow: 0 4px 15px color-mix(in srgb, var(--heo-main) 30%, transparent);
   font-family: inherit;
 }
 
 #fmomentsMoreBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(var(--heo-main-rgb), 0.4);
+  box-shadow: 0 6px 25px color-mix(in srgb, var(--heo-main) 40%, transparent);
 }
 
 #fmomentsMoreBtn:disabled {
-  background: var(--heo-border-color);
+  background: var(--heo-card-border);
   color: var(--heo-secondtext);
   cursor: not-allowed;
   transform: none;
@@ -413,7 +419,7 @@
   font-size: 16px;
   background: var(--heo-card-bg);
   border-radius: 16px;
-  border: 2px dashed var(--heo-border-color);
+  border: 2px dashed var(--heo-card-border);
   margin: 20px 0;
 }
 
@@ -452,7 +458,7 @@
   margin-top: 20px;
   padding: 12px 24px;
   background: var(--heo-main);
-  color: white;
+  color: var(--heo-on-main);
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -462,6 +468,7 @@
 
 .fMomentsRetryBtn:hover {
   background: var(--heo-blue);
+  color: var(--heo-white);
   transform: translateY(-2px);
 }
 
@@ -472,13 +479,13 @@
   color: var(--heo-secondtext);
   background: var(--heo-card-bg);
   border-radius: 16px;
-  border: 2px dashed var(--heo-border-color);
+  border: 2px dashed var(--heo-card-border);
   margin: 20px 0;
 }
 
 .fMomentsEmptyState i {
   font-size: 64px;
-  color: var(--heo-border-color);
+  color: var(--heo-card-border);
   margin-bottom: 20px;
   display: block;
 }
@@ -706,5 +713,13 @@
 
 .fMomentsArticleItem:nth-child(4n) {
   animation-delay: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #fMomentsMessageBoard,
+  .fMomentsArticleItem,
+  .fMomentsLoadingSpinner {
+    animation: none;
+  }
 }
 }

@@ -59,7 +59,7 @@
 
 #article-container .tabs > .nav-tabs > .tab:not(.active) button:hover {
     background: var(--heo-main);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
     transition: 0.3s;
     border: var(--style-border-hover-always);
 }
@@ -131,7 +131,7 @@ details:not(.tk-admin-config-group):not(.card-friend-class-name) > *:nth-child(2
 
 details[open]:not(.tk-admin-config-group):not(.card-friend-class-name) summary {
     background: var(--heo-main);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 details:not(.tk-admin-config-group):not(.card-friend-class-name) summary::before {
@@ -142,12 +142,12 @@ details:not(.tk-admin-config-group):not(.card-friend-class-name) summary::before
 details:not(.tk-admin-config-group):not(.card-friend-class-name) summary:hover {
     cursor: pointer;
     background: var(--heo-main);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
     transition: 0.3s;
     box-shadow: var(--heo-shadow-main);
 }
 
-details:not(.tk-admin-config-group):not(.card-friend-class-name) summary:focus {
+details:not(.tk-admin-config-group):not(.card-friend-class-name) summary:focus:not(:focus-visible) {
     outline: none;
 }
 
@@ -157,11 +157,11 @@ details:not(.tk-admin-config-group):not(.card-friend-class-name) summary::marker
 }
 
 details[open]:not(.tk-admin-config-group):not(.card-friend-class-name) summary::marker {
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 details:not(.tk-admin-config-group):not(.card-friend-class-name) summary:hover::marker {
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 details[open]:not(.tk-admin-config-group):not(.card-friend-class-name) {
@@ -209,7 +209,7 @@ details[open]:not(.tk-admin-config-group):not(.card-friend-class-name) > summary
 #article-container .site-card:hover a {
     text-decoration: none;
     border-bottom: 2px solid var(--heo-none);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
     background: var(--heo-main);
     box-shadow: var(--heo-shadow-main)
 }
@@ -313,7 +313,7 @@ strong {
 }
 
 #article-container .tag-Link:hover .tag-link-tips {
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 #article-container .tag-Link .tag-link-bottom {
@@ -364,7 +364,7 @@ strong {
 }
 
 #article-container .tag-Link:hover .tag-link-bottom .tag-link-right .tag-link-sitename {
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 #article-container .tag-Link .tag-link-bottom i {
@@ -383,7 +383,7 @@ h6 {
     margin-top: 1rem;
     padding-top: 0;
     padding-left: 0;
-    font-weight: weight;
+    font-weight: 700;
 }
 
 #post h2 {
@@ -571,7 +571,7 @@ blockquote p {
 #post .tag_share .post-meta__tags:hover {
     background: var(--heo-lighttext);
     box-shadow: var(--heo-shadow-main);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 @media screen and (min-width: 1300px) {
@@ -605,7 +605,7 @@ blockquote p {
 
 .post-copyright__original:hover {
     background: var(--heo-main);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 @media screen and (max-width: 768px) {
@@ -719,7 +719,7 @@ blockquote p {
 
 
 .post-reward:hover .reward-button {
-    color: var(--heo-white);
+    color: var(--heo-on-main);
     background: var(--heo-theme);
     box-shadow: none;
 }

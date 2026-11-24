@@ -1,7 +1,9 @@
 import type { ThemeConfig } from "../../core/config";
+import { prefersReducedMotion } from "../../core/dom";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
 import { mountCommentAvatars } from "./comment-avatar";
+import { mountCommentPreviews } from "./comment-preview";
 import { mountFooterRecords } from "./footer-records";
 import { mountProfileCards } from "./profile-card";
 
@@ -88,13 +90,15 @@ function mountGreeting(config: Readonly<ThemeConfig>, resources: PageResourceSco
 }
 
 function mountTyped(config: Readonly<ThemeConfig>, resources: PageResourceScope): void {
-  if (!document.querySelector("#subtitle")) return;
+  const subtitle = document.querySelector<HTMLElement>("#subtitle");
+  if (!subtitle) return;
   const texts = parseTypedTexts(config.widgets.typed.items);
   const initialize = async () => {
     let strings = texts;
     if (config.widgets.typed.random) {
       try {
         const response = await fetch("https://v1.hitokoto.cn", { signal: resources.signal });
+        if (!response.ok) throw new Error(`Hitokoto request failed with ${response.status}.`);
         const result: unknown = await response.json();
         if (isRecord(result) && typeof result["hitokoto"] === "string") {
           strings = [
@@ -109,17 +113,26 @@ function mountTyped(config: Readonly<ThemeConfig>, resources: PageResourceScope)
         }
       }
     }
-    if (resources.disposed || !document.querySelector("#subtitle")) return;
-    const { default: Typed } = await import("typed.js");
-    if (resources.disposed) return;
-    const instance = new Typed("#subtitle", {
-      strings,
-      startDelay: 300,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-    });
-    resources.track(instance, (value) => value.destroy());
+    if (resources.disposed || !document.querySelector("#subtitle") || strings.length === 0) return;
+    if (prefersReducedMotion()) {
+      subtitle.textContent = strings[0] ?? "";
+      return;
+    }
+    try {
+      const { default: Typed } = await import("typed.js");
+      if (resources.disposed) return;
+      const instance = new Typed("#subtitle", {
+        strings,
+        startDelay: 300,
+        typeSpeed: 100,
+        loop: strings.length > 1,
+        backSpeed: 50,
+      });
+      resources.track(instance, (value) => value.destroy());
+    } catch (error) {
+      console.warn("[Hanlo] Could not load typed subtitle effect.", error);
+      subtitle.textContent = strings[0] ?? "";
+    }
   };
   resources.timeout(() => void initialize(), 1_800);
 }
@@ -133,7 +146,9 @@ function mountTenYear(config: Readonly<ThemeConfig>, resources: PageResourceScop
   if (!progress || !past || !label || !start || !end) return;
   const started = new Date(config.widgets.tenYear.startedAt).getTime();
   const ended = new Date(config.widgets.tenYear.endedAt).getTime();
-  const percentage = ((Date.now() - started) / (ended - started)) * 100;
+  const span = ended - started;
+  if (!Number.isFinite(started) || !Number.isFinite(ended) || span <= 0) return;
+  const percentage = ((Date.now() - started) / span) * 100;
   const clamped = Math.max(0, Math.min(100, percentage));
   past.style.setProperty("--past-time-percentage", `${clamped}%`);
   progress.style.setProperty("--progress-percentage", `${clamped}%`);
@@ -142,14 +157,18 @@ function mountTenYear(config: Readonly<ThemeConfig>, resources: PageResourceScop
   label.style.left = `calc(${clamped}% - 3rem)`;
   start.textContent = new Date(started).toLocaleDateString();
   end.textContent = new Date(ended).toLocaleDateString();
-  resources.timeout(() => {
-    label.style.visibility = "visible";
-  }, 2_500);
+  resources.timeout(
+    () => {
+      label.style.visibility = "visible";
+    },
+    prefersReducedMotion() ? 0 : 2_500,
+  );
 }
 
 function mountPursuit(resources: PageResourceScope): void {
-  if (!document.querySelector(".aboutsiteTips span")) return;
+  if (!document.querySelector(".aboutsiteTips span") || prefersReducedMotion()) return;
   resources.interval(() => {
+    if (document.hidden) return;
     const shown = document.querySelector<HTMLElement>("span[data-show]");
     if (!shown) return;
     const next = shown.nextElementSibling ?? document.querySelector(".first-tips");
@@ -159,6 +178,28 @@ function mountPursuit(resources: PageResourceScope): void {
     next?.setAttribute("data-show", "");
   }, 2_000);
 }
+
+const READABLE_TAG_PALETTE_LIGHT = [
+  "#2563eb",
+  "#7c3aed",
+  "#0f766e",
+  "#c2410c",
+  "#be123c",
+  "#0369a1",
+  "#4338ca",
+  "#15803d",
+];
+
+const READABLE_TAG_PALETTE_DARK = [
+  "#93c5fd",
+  "#c4b5fd",
+  "#5eead4",
+  "#fdba74",
+  "#fda4af",
+  "#7dd3fc",
+  "#a5b4fc",
+  "#86efac",
+];
 
 async function mountAboutEmotions(resources: PageResourceScope): Promise<void> {
   if (!document.querySelector("[data-about-emotions]")) return;
@@ -173,25 +214,34 @@ async function mountAboutEmotions(resources: PageResourceScope): Promise<void> {
   }
 }
 
-function mountRandomTagColors(config: Readonly<ThemeConfig>): void {
+function mountRandomTagColors(config: Readonly<ThemeConfig>, resources: PageResourceScope): void {
   if (!config.widgets.randomTagColors) return;
-  document.querySelectorAll<HTMLElement>(".card-tag-cloud .tag-item").forEach((tag) => {
-    tag.style.color = `#${Math.floor(Math.random() * 0x1000000)
-      .toString(16)
-      .padStart(6, "0")}`;
+  const tags = Array.from(document.querySelectorAll<HTMLElement>(".card-tag-cloud .tag-item"));
+  if (tags.length === 0) return;
+  const indices = tags.map(() => Math.floor(Math.random() * READABLE_TAG_PALETTE_LIGHT.length));
+  const apply = () => {
+    const isDark = document.documentElement.dataset["theme"] === "dark";
+    const palette = isDark ? READABLE_TAG_PALETTE_DARK : READABLE_TAG_PALETTE_LIGHT;
+    tags.forEach((tag, index) => {
+      tag.style.color = palette[indices[index]!]!;
+    });
+  };
+  apply();
+  const observer = resources.observe(new MutationObserver(apply));
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
   });
-}
-
-async function mountRecentCommentPreviews(resources: PageResourceScope): Promise<void> {
-  if (!document.querySelector("[data-hanlo-comment-preview]")) return;
-  const { mountCommentPreviews } = await import("./comment-preview");
-  if (!resources.disposed) mountCommentPreviews(document);
 }
 
 async function mountLinkCanvas(resources: PageResourceScope): Promise<void> {
   if (!document.querySelector("#link-canvas")) return;
-  const { mountLinkCanvas: mount } = await import("../link-canvas");
-  if (!resources.disposed) mount(resources);
+  try {
+    const { mountLinkCanvas: mount } = await import("../link-canvas");
+    if (!resources.disposed) mount(resources);
+  } catch (error) {
+    console.warn("[Hanlo] Could not load link canvas.", error);
+  }
 }
 
 async function mountBottle(resources: PageResourceScope): Promise<void> {
@@ -219,8 +269,8 @@ export function createPageWidgetsController(): PageControllerDefinition {
         mountPursuit(resources);
         void mountAboutEmotions(resources);
         void mountBottle(resources);
-        mountRandomTagColors(config);
-        void mountRecentCommentPreviews(resources);
+        mountRandomTagColors(config, resources);
+        mountCommentPreviews(document);
         void mountLinkCanvas(resources);
       },
       unmount() {},

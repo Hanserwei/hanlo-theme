@@ -1,3 +1,4 @@
+import { prefersReducedMotion, throttle } from "../../core/dom";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
 import { mountClickEffect } from "./click-effect";
@@ -71,12 +72,13 @@ function createStar(width: number, height: number): Star {
 }
 
 function mountBubbles(resources: PageResourceScope): void {
+  if (prefersReducedMotion()) return;
   const panel = document.querySelector<HTMLElement>(".author-content.author-content-item.single");
   const container = panel?.parentElement;
   if (!panel || !container) return;
   const canvas = document.createElement("canvas");
   canvas.id = "header_canvas";
-  canvas.style.cssText = "position:absolute;bottom:0";
+  canvas.style.cssText = "position:absolute;bottom:0;left:0;pointer-events:none";
   const context = canvas.getContext("2d");
   if (!context) return;
   panel.append(canvas);
@@ -84,9 +86,12 @@ function mountBubbles(resources: PageResourceScope): void {
   let width = 0;
   let height = 0;
   let bubbles: Bubble[] = [];
+  let running = false;
+  let intersecting = true;
+  let frameId: number | undefined;
   const resize = () => {
-    width = container.offsetWidth;
-    height = container.offsetHeight;
+    width = panel.offsetWidth || container.offsetWidth;
+    height = panel.offsetHeight || container.offsetHeight;
     canvas.width = width;
     canvas.height = height;
     bubbles = Array.from(
@@ -94,15 +99,45 @@ function mountBubbles(resources: PageResourceScope): void {
       () => new Bubble(context, () => ({ width, height })),
     );
   };
-  const animate = () => {
+  const stop = () => {
+    running = false;
+    if (frameId !== undefined) {
+      cancelAnimationFrame(frameId);
+      frameId = undefined;
+    }
+  };
+  const tick = () => {
+    if (!running || resources.disposed) return;
     context.clearRect(0, 0, width, height);
     bubbles.forEach((bubble) => bubble.draw());
-    resources.animationFrame(animate);
+    frameId = resources.animationFrame(tick);
   };
+  const sync = () => {
+    const shouldRun = !document.hidden && intersecting && !resources.disposed;
+    if (shouldRun && !running) {
+      running = true;
+      frameId = resources.animationFrame(tick);
+    } else if (!shouldRun && running) {
+      stop();
+    }
+  };
+  const throttledResize = throttle(resize, 150);
   resize();
-  animate();
-  resources.listen(window, "resize", resize);
+  sync();
+  resources.listen(window, "resize", throttledResize);
+  resources.listen(document, "visibilitychange", sync);
+  if ("IntersectionObserver" in window) {
+    const observer = resources.observe(
+      new IntersectionObserver((entries) => {
+        intersecting = entries[0]?.isIntersecting ?? true;
+        sync();
+      }),
+    );
+    observer.observe(panel);
+  }
   resources.defer(() => {
+    stop();
+    throttledResize.cancel();
     bubbles = [];
     canvas.remove();
     container.classList.remove("thumbnail_canvas");
@@ -110,12 +145,15 @@ function mountBubbles(resources: PageResourceScope): void {
 }
 
 function mountUniverse(resources: PageResourceScope): void {
+  if (prefersReducedMotion()) return;
   const canvas = document.querySelector<HTMLCanvasElement>("#universe");
   const context = canvas?.getContext("2d");
   if (!canvas || !context) return;
   let width = 0;
   let height = 0;
   let stars: Star[] = [];
+  let running = false;
+  let frameId: number | undefined;
   const resize = () => {
     width = window.innerWidth;
     height = window.innerHeight;
@@ -123,25 +161,51 @@ function mountUniverse(resources: PageResourceScope): void {
     canvas.height = height;
     stars = Array.from({ length: Math.ceil(width * 0.216) }, () => createStar(width, height));
   };
-  const animate = () => {
-    if (document.documentElement.dataset["theme"] === "dark") {
-      context.clearRect(0, 0, width, height);
-      for (const star of stars) {
-        star.x += star.speedX;
-        star.y += star.speedY;
-        star.opacity += star.opacityDelta;
-        if (star.opacity >= 1 || star.opacity <= 0) star.opacityDelta *= -1;
-        if (star.x > width || star.y < 0) Object.assign(star, createStar(width, height));
-        context.fillStyle = `rgba(226,225,142,${star.opacity})`;
-        context.fillRect(star.x, star.y, star.radius, star.radius);
-      }
+  const stop = () => {
+    running = false;
+    if (frameId !== undefined) {
+      cancelAnimationFrame(frameId);
+      frameId = undefined;
     }
-    resources.animationFrame(animate);
   };
+  const tick = () => {
+    if (!running || resources.disposed) return;
+    context.clearRect(0, 0, width, height);
+    for (const star of stars) {
+      star.x += star.speedX;
+      star.y += star.speedY;
+      star.opacity += star.opacityDelta;
+      if (star.opacity >= 1 || star.opacity <= 0) star.opacityDelta *= -1;
+      if (star.x > width || star.y < 0) Object.assign(star, createStar(width, height));
+      context.fillStyle = `rgba(226,225,142,${star.opacity})`;
+      context.fillRect(star.x, star.y, star.radius, star.radius);
+    }
+    frameId = resources.animationFrame(tick);
+  };
+  const sync = () => {
+    const dark = document.documentElement.dataset["theme"] === "dark";
+    const shouldRun = dark && !document.hidden && !resources.disposed;
+    if (shouldRun && !running) {
+      running = true;
+      frameId = resources.animationFrame(tick);
+    } else if (!shouldRun) {
+      stop();
+      if (!dark) context.clearRect(0, 0, width, height);
+    }
+  };
+  const throttledResize = throttle(resize, 150);
   resize();
-  animate();
-  resources.listen(window, "resize", resize);
+  sync();
+  resources.listen(window, "resize", throttledResize);
+  resources.listen(document, "visibilitychange", sync);
+  const observer = resources.observe(new MutationObserver(sync));
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
   resources.defer(() => {
+    stop();
+    throttledResize.cancel();
     stars = [];
     context.clearRect(0, 0, width, height);
   });

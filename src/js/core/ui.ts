@@ -1,11 +1,19 @@
+import type { ThemeConfig } from "./config";
+import { prefersReducedMotion } from "./dom";
+
 const scriptLoads = new Map<string, Promise<void>>();
+const pendingFadeOuts = new WeakMap<HTMLElement, () => void>();
 
 export function loadScript(
   url: string,
   attributes: Readonly<Record<`data-${string}`, string>> = {},
 ): Promise<void> {
   const absolute = new URL(url, window.location.href).href;
-  const existing = Array.from(document.scripts).find((script) => script.src === absolute);
+  let existing = Array.from(document.scripts).find((script) => script.src === absolute);
+  if (existing?.dataset["loaded"] === "error") {
+    existing.remove();
+    existing = undefined;
+  }
   // Script bundles can inspect data attributes while executing (e.g. Prism's data-manual).
   // Apply them before attaching a new script or waiting for an existing pending request.
   if (existing) {
@@ -27,9 +35,15 @@ export function loadScript(
       },
       { once: true },
     );
-    script.addEventListener("error", () => reject(new Error(`Failed to load ${absolute}.`)), {
-      once: true,
-    });
+    script.addEventListener(
+      "error",
+      () => {
+        script.dataset["loaded"] = "error";
+        if (!existing) script.remove();
+        reject(new Error(`Failed to load ${absolute}.`));
+      },
+      { once: true },
+    );
     if (!existing) document.head.append(script);
   });
   scriptLoads.set(absolute, promise);
@@ -64,7 +78,7 @@ export function snackbarShow(
   duration = 2_000,
   actionText: false | string = false,
 ): void {
-  const config = window.GLOBAL_CONFIG.Snackbar;
+  const config = (window.GLOBAL_CONFIG as ThemeConfig | undefined)?.Snackbar;
   const colorKey = document.documentElement.dataset["theme"] === "light" ? "bgLight" : "bgDark";
   document.documentElement.style.setProperty("--heo-snackbar-time", `${duration}ms`);
   window.clearTimeout(snackbarTimer);
@@ -99,17 +113,31 @@ export function snackbarShow(
 }
 
 export function fadeIn(element: HTMLElement, seconds: number): void {
-  element.style.cssText = `display:block;animation:to_show ${seconds}s`;
+  pendingFadeOuts.get(element)?.();
+  pendingFadeOuts.delete(element);
+  element.style.display = "block";
+  element.style.animation = prefersReducedMotion() ? "" : `to_show ${seconds}s`;
 }
 
 export function fadeOut(element: HTMLElement, seconds: number): void {
-  element.addEventListener(
-    "animationend",
-    () => {
-      element.style.cssText = "display:none;animation:''";
-    },
-    { once: true },
-  );
+  pendingFadeOuts.get(element)?.();
+  pendingFadeOuts.delete(element);
+  if (prefersReducedMotion()) {
+    element.style.display = "none";
+    element.style.animation = "";
+    return;
+  }
+  const finish = () => {
+    element.removeEventListener("animationend", finish);
+    pendingFadeOuts.delete(element);
+    element.style.display = "none";
+    element.style.animation = "";
+  };
+  const cancel = () => {
+    element.removeEventListener("animationend", finish);
+  };
+  pendingFadeOuts.set(element, cancel);
+  element.addEventListener("animationend", finish, { once: true });
   element.style.animation = `to_hide ${seconds}s`;
 }
 
@@ -121,25 +149,42 @@ export function sidebarPaddingRight(): void {
 export function syncThemeColor(): void {
   const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
   if (!meta) return;
-  const isPost = window.location.pathname.includes("/archives/");
+  const htmlType = (window.GLOBAL_CONFIG as ThemeConfig | undefined)?.htmlType;
+  const isPost = htmlType === "post";
   const property = isPost && window.scrollY === 0 ? "--heo-main" : "--heo-background";
-  meta.content = getComputedStyle(document.documentElement).getPropertyValue(property).trim();
+  const color = getComputedStyle(document.documentElement).getPropertyValue(property).trim();
+  if (color) meta.content = color;
 }
 
 export function downloadImage(source: string, name = "photo"): void {
   const image = new Image();
   image.crossOrigin = "anonymous";
-  image.addEventListener("load", () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = image.width;
-    canvas.height = image.height;
-    const context = canvas.getContext("2d");
-    if (!context) return;
-    context.drawImage(image, 0, 0);
-    const link = document.createElement("a");
-    link.download = name;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  });
+  image.addEventListener(
+    "load",
+    () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const context = canvas.getContext("2d");
+      if (!context) return;
+      try {
+        context.drawImage(image, 0, 0);
+        const link = document.createElement("a");
+        link.download = name;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      } catch {
+        snackbarShow("图片下载失败，可能受跨域策略限制");
+      }
+    },
+    { once: true },
+  );
+  image.addEventListener(
+    "error",
+    () => {
+      snackbarShow("图片下载失败，请尝试在新窗口打开后保存");
+    },
+    { once: true },
+  );
   image.src = source;
 }

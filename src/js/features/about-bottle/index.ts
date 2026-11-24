@@ -96,9 +96,10 @@ export function mountAboutBottle(resources: PageResourceScope): void {
     let timeout: ReturnType<typeof setTimeout> | undefined;
     try {
       const loaded = Promise.all([
-        import("./three-loader").then((module) => module.loadThree()),
+        import("./three-loader").then((module) => module.loadThree(ticket > 1)),
         import("./scene"),
       ]);
+      void loaded.catch(() => {});
       const deadline = new Promise<never>((_, reject) => {
         timeout = resources.timeout(() => reject(new Error("Three.js CDN timed out.")), 12000);
       });
@@ -145,6 +146,7 @@ export function mountAboutBottle(resources: PageResourceScope): void {
   resources.listen(root, "keydown", (event) => {
     if ((event as KeyboardEvent).key === "Escape") {
       panel.hidden = true;
+      chapters.forEach((button) => button.setAttribute("aria-pressed", "false"));
       scene?.setStorm(false);
     }
   });

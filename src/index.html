@@ -31,7 +31,7 @@
             <div class="recent-posts" id="recent-posts">
                 
                 <!-- 分类导航栏 -->
-                <div th:replace="~{'modules/bar/' + ${theme.config.layout.navs.nav}}"></div>
+                <div th:replace="~{'modules/bar/' + ${#strings.isEmpty(theme.config.layout.navs.nav) ? 'category' : theme.config.layout.navs.nav}}"></div>
                 
                 <th:block th:replace="~{modules/post-list}"/>
             

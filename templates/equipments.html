@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'equipments',title = ${title + ' | ' + site.title}, head = ~{::head},_title = ${title})}">
+      th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'equipments', title = ${(title ?: '装备') + ' | ' + site.title}, head = ~{::head})}">
 <th:block th:fragment="head">
     <link th:if="${pluginFinder.available('han-equipment', '>=2.0.0')}" rel="stylesheet"
           th:href="@{/plugins/han-equipment/assets/static/equipment.css(v='2.0.0')}">
-    <link rel="stylesheet"
+    <link rel="stylesheet" data-hanlo-page-style
           th:href="${assets_link + '/css/equipment-' + theme.spec.version + '.css' + theme_version}">
-    <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${_title},
+    <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${title ?: '装备'},
                 _permalink = '/equipments',
                 _cover = ${theme.config.other.opengraph.image},
                 _excerpt = ${site.seo.description},
@@ -17,7 +17,7 @@
 
         <!-- 头部导航栏 -->
         <header class="not-top-img" id="page-header">
-            <nav th:replace="~{modules/nav :: nav(title = ${_title})}"></nav>
+            <nav th:replace="~{modules/nav :: nav(title = ${title ?: '装备'})}"></nav>
         </header>
         <main class="layout hide-aside" id="content-inner">
             <div id="page">

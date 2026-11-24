@@ -43,23 +43,20 @@
 }
 
 .relatedPosts>.relatedPosts-list>div:hover a .title {
-    color: var(--heo-white)
-}
-
-.relatedPosts>.relatedPosts-list .content .title {
-    color: var(--heo-white);
-    -webkit-line-clamp: 2;
-    margin-right: auto;
+    color: var(--heo-on-main);
 }
 
 .relatedPosts>.relatedPosts-list .content .title {
     color: var(--heo-fontcolor);
     font-weight: 700;
     line-height: 1.5;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
     font-size: .9rem;
     text-align: left;
-    overflow: hidden
+    overflow: hidden;
+    margin-right: auto;
 }
 
 .relatedPosts>.relatedPosts-list .content {

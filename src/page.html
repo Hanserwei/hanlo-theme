@@ -16,9 +16,11 @@
         <header class="not-top-img" id="page-header">
             <nav th:replace="~{modules/nav :: nav(title = ${singlePage.spec.title})}"></nav>
         </header>
-        <main class="layout" th:classappend="${not #lists.isEmpty(theme.config.sidebar.widgetss.pageWidget) ? '' : 'hide-aside'}" id="content-inner">
+        <main class="layout"
+              th:classappend="${theme.config.sidebar.location != 'hide-aside' && not #lists.isEmpty(theme.config.sidebar.widgetss.pageWidget) ? theme.config.sidebar.location : 'hide-aside'}"
+              id="content-inner">
             <div id="page">
-            <div id="article-container" th:utext="${singlePage.content.content}"></div>
+            <div id="article-container" th:if="${singlePage.content?.content != null}" th:utext="${singlePage.content.content}"></div>
                 <hr>
                 <!--/* 评论组件 */-->
                 <th:block

@@ -23,7 +23,7 @@
                 <div  th:replace="~{macro/author-content :: author-content(background = ${singlePage.spec.cover},
                         smallTitle = '想做清单',
                         bigTitle = ${singlePage.spec.title},
-                        detail = ${singlePage.spec.excerpt.raw},
+                        detail = ${singlePage.spec.excerpt?.raw},
                         buttonUrl = '',
                         buttonTitle = '')}" ></div>
                 <div id="todolist-main" th:if="${not #lists.isEmpty(theme.config.todo.list)}"
@@ -32,7 +32,7 @@
 
                     <div id="todolist-left-container">
                         <th:block th:each="todo : ${todoList}">
-                            <div id="todolist-left" th:if="${#strings.equals(todo.seat, 'left')}">
+                            <div class="todolist-left" th:if="${#strings.equals(todo.seat, 'left')}">
                                 <div class="todolist-item">
                                     <h3 class="todolist-title">[[${todo.class_name}]]</h3>
                                     <ul class="todolist-ul">
@@ -40,7 +40,7 @@
                                                   th:each="data : ${todo.todo_list}">
                                             <li th:class="${data.completed ? 'achieve' : ''}">
                                                 <i class="hl:[font-size:19px] hl:[margin-right:5px]"
-                                                   th:class="${data.completed ? 'haofont  hao-icon-check-circle' : 'haofont hao-icon-yuan'}">
+                                                   th:classappend="${data.completed ? 'haofont hao-icon-check-circle' : 'haofont hao-icon-yuan'}">
                                                 </i>[[${data.content}]]
                                             </li>
                                         </th:block>
@@ -51,15 +51,15 @@
                     </div>
                     <div id="todolist-right-container">
                         <th:block th:each="todo : ${todoList}">
-                            <div id="todolist-right" th:if="${#strings.equals(todo.seat, 'right')}">
+                            <div class="todolist-right" th:if="${#strings.equals(todo.seat, 'right')}">
                                 <div class="todolist-item">
                                     <h3 class="todolist-title">[[${todo.class_name}]]</h3>
-                                    <ul>
+                                    <ul class="todolist-ul">
                                         <th:block th:if="${not #lists.isEmpty(todo.todo_list)}"
                                                   th:each="data : ${todo.todo_list}">
                                             <li th:class="${data.completed ? 'achieve' : ''}">
                                                 <i class="hl:[font-size:19px] hl:[margin-right:5px]"
-                                                   th:class="${data.completed ? 'haofont  hao-icon-check-circle' : 'haofont hao-icon-yuan'}">
+                                                   th:classappend="${data.completed ? 'haofont hao-icon-check-circle' : 'haofont hao-icon-yuan'}">
                                                 </i>[[${data.content}]]
                                             </li>
                                         </th:block>

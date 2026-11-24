@@ -37,6 +37,7 @@ export function createMarkmapRenderer(
   load: typeof loadScript = loadScript,
 ): (element: HTMLElement, source: string) => Promise<void> {
   const states = new Map<HTMLElement, MarkmapState>();
+  const revisions = new WeakMap<HTMLElement, number>();
   const enabledFeatures = new Set<string>();
   let library: Promise<MarkmapApi> | undefined;
   const getLibrary = (): Promise<MarkmapApi> => {
@@ -64,11 +65,15 @@ export function createMarkmapRenderer(
   return async (element, source) => {
     // Vditor's original adapter removes <code> and appends a sibling. Keep this node stable
     // and update one owned instance so source tracking and observers survive every toggle.
+    const revision = (revisions.get(element) ?? 0) + 1;
+    revisions.set(element, revision);
+    const isStale = () =>
+      resources.disposed || !element.isConnected || revisions.get(element) !== revision;
     element.classList.remove("vditor-reset--error");
     element.dataset["processed"] = "false";
     try {
       const api = await getLibrary();
-      if (resources.disposed || !element.isConnected) return;
+      if (isStale()) return;
       let state = states.get(element);
       if (!state) {
         const svg = element.ownerDocument.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -83,13 +88,13 @@ export function createMarkmapRenderer(
       if (assets.styles) api.loadCSS(assets.styles);
       if (assets.scripts) await api.loadJS(assets.scripts);
       features.forEach((key) => enabledFeatures.add(key));
-      if (resources.disposed || !element.isConnected) return;
+      if (isStale()) return;
       await state.instance.setData(result.root, api.deriveOptions(result.frontmatter?.markmap));
-      if (resources.disposed || !element.isConnected) return;
+      if (isStale()) return;
       await state.instance.fit();
-      if (!resources.disposed && element.isConnected) element.dataset["processed"] = "true";
+      if (!isStale()) element.dataset["processed"] = "true";
     } catch (error) {
-      if (resources.disposed || !element.isConnected) return;
+      if (isStale()) return;
       states.get(element)?.instance.destroy();
       states.delete(element);
       element.textContent = source;

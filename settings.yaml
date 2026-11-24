@@ -287,7 +287,8 @@ spec:
           help: 位于页面内容下方，与首页首屏背景独立。背景图片仅在宽于 1300px 的屏幕显示；不会自动把文章卡片变透明。
           value:
             enable_global_background_img: false
-            index_background_img:
+            enable_global_background_above_video: false
+            global_background_img:
           children:
             - $formkit: switch
               label: 启用全站背景
@@ -638,10 +639,10 @@ spec:
           name: navs
           value:
             nav: category
-            navCustomCategory:
-            navCustomTag:
+            navCategory:
+            navTag:
             navCustomUrl:
-            navMore:
+            navMore: categories
             navMoreCustomUrl:
           children:
             - $formkit: select
@@ -2297,10 +2298,10 @@ spec:
           if: $get(hanlo_envelope_comment_enable_envelope_comment).value
           label: 信封与信纸图片
           value:
-            cover:
-            line:
-            beforeimg:
-            afterimg:
+            cover: "/themes/theme-hanlo/assets/images/envelope/cover.jpg"
+            line: "/themes/theme-hanlo/assets/images/envelope/line.png"
+            beforeimg: "/themes/theme-hanlo/assets/images/envelope/before.png"
+            afterimg: "/themes/theme-hanlo/assets/images/envelope/after.png"
           children:
             - $formkit: attachment
               name: cover

@@ -1,20 +1,20 @@
 
 <!-- 阅读建议 -->
-<th:block th:if="${not #lists.isEmpty(post.categories)}">
+<th:block th:if="${not #lists.isEmpty(post.categories) and (theme.config.post.recommendQuantity == 'six' or theme.config.post.recommendQuantity == 'two')}">
     <th:block th:with="recommendQuantity=${theme.config.post.recommendQuantity},
-                       recommandPosts=${postFinder.listByCategory(1, recommendQuantity == 'six' ? 7 : recommendQuantity == 'two' ? 3 : 1, post.categories.get(0).metadata.name)},
+                       recommandPosts=${postFinder.list({page: 1, size: recommendQuantity == 'six' ? 7 : 3, categoryName: post.categories.get(0).metadata.name})},
                        postRandomImg=${#strings.contains(postRandomImgSource,'?') ? postRandomImgSource+'&amp;' : postRandomImgSource+'?'}">
         <th:block th:with="relatedPosts=${recommandPosts.items.?[metadata.name != #ctx.getVariable('post').metadata.name]}">
             <link th:if="${not #lists.isEmpty(relatedPosts) and recommendQuantity == 'six'}" rel="stylesheet"
                   th:href="${assets_link + '/css/related-posts-six-' + theme.spec.version + '.css' + theme_version}">
             <link th:if="${not #lists.isEmpty(relatedPosts) and recommendQuantity == 'two'}" rel="stylesheet"
                   th:href="${assets_link + '/css/related-posts-two-' + theme.spec.version + '.css' + theme_version}">
-            <div class="relatedPosts" th:if="${not #lists.isEmpty(relatedPosts) and (recommendQuantity == 'six' or recommendQuantity == 'two')}">
+            <div class="relatedPosts" th:if="${not #lists.isEmpty(relatedPosts)}">
                 <div class="headline">
                     <i class="haofont hao-icon-cainixihuan hl:[font-size:1.1rem]"></i>
                     <span>阅读建议</span>
                 </div>
-                <div class="relatedPosts-list">
+                <div class="relatedPosts-list" th:classappend="${recommendQuantity == 'two' ? 'hanlo-related-two' : 'hanlo-related-six'}">
                     <th:block th:each="recommandPost,iterStat : ${relatedPosts}">
                         <div th:if="${iterStat.index < (recommendQuantity == 'six' ? 6 : 2)}">
                             <a th:href="@{${recommandPost.status.permalink}}" th:title="${recommandPost.spec.title}">
@@ -23,7 +23,7 @@
                                      th:src="${isLazyload ? '' : img}"
                                      th:data-lazy-src="${isLazyload ? img : ''}">
                                 <div class="content is-center">
-                                    <div class="date" th:classappend="${recommendQuantity == 'six' ? 'hl:text-white' : ''}"><i class="far fa-calendar-alt fa-fw"></i>
+                                    <div class="date" th:classappend="${recommendQuantity == 'six' ? 'hl:text-white' : ''}"><i class="haofont hao-icon-calendar-alt" aria-hidden="true"></i>
                                         [[${#dates.format(recommandPost.spec.publishTime,'yyyy-MM-dd')}]]
                                     </div>
                                     <div class="title" th:classappend="${recommendQuantity == 'six' ? 'hl:text-white' : ''}" th:text="${recommandPost.spec.title}"></div>

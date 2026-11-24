@@ -10,8 +10,8 @@
     position: relative;
 }
 
-[data-theme=dark].toc-list .toc-item.active .toc-link {
-    color: var(--heo-white);
+[data-theme="dark"] .toc-list .toc-item.active .toc-link {
+    color: var(--heo-lighttext);
 }
 
 #aside-content #card-toc .toc-content .toc-item.active .toc-link {

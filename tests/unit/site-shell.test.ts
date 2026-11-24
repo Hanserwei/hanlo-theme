@@ -106,4 +106,65 @@ describe("optional content isolation", () => {
       await resources.dispose();
     }
   });
+
+  it("toggles mobile sidebar submenus, preserves console link clicks and closes console on Escape", async () => {
+    const { document, window } = parseHTML(`<html><body>
+      <div id="console" class="show">
+        <div data-hanlo-action="hide-console">
+          <a id="console-link" href="/tags/halo">Halo</a>
+        </div>
+      </div>
+      <div id="sidebar-menus">
+        <div class="menus_item">
+          <button class="site-page expand" type="button" aria-expanded="true">文章</button>
+          <ul class="menus_item_child"><li><a href="/archives">归档</a></li></ul>
+        </div>
+      </div>
+    </body></html>`);
+    vi.stubGlobal("document", document);
+    vi.stubGlobal("window", window);
+    vi.stubGlobal("Element", window.Element);
+    vi.stubGlobal("location", new URL("https://example.test/"));
+    vi.stubGlobal("sessionStorage", { getItem: () => null });
+    const resources = new PageResourceScope();
+    const storage = new ExpiringStorage({ getItem: () => null, setItem() {}, removeItem() {} });
+    const controller = createSiteShellController(storage).create({
+      config: {
+        htmlType: "index",
+        date_suffix: {},
+        lazyload: { enable: false },
+        source: { post: { dynamicBackground: false } },
+      },
+      resources,
+    } as PageControllerContext);
+    try {
+      await controller.mount(document as unknown as ParentNode);
+
+      const expand = document.querySelector<HTMLElement>("#sidebar-menus .expand")!;
+      const submenu = document.querySelector<HTMLElement>("#sidebar-menus .menus_item_child")!;
+      expand.click();
+      expect(submenu.style.display).toBe("none");
+      expect(expand.classList.contains("hide")).toBe(true);
+      expect(expand.getAttribute("aria-expanded")).toBe("false");
+
+      expand.click();
+      expect(submenu.style.display).toBe("");
+      expect(expand.classList.contains("hide")).toBe(false);
+      expect(expand.getAttribute("aria-expanded")).toBe("true");
+
+      const consoleLink = document.querySelector<HTMLAnchorElement>("#console-link")!;
+      const clickEvent = new window.Event("click", { bubbles: true, cancelable: true });
+      consoleLink.dispatchEvent(clickEvent);
+      expect(clickEvent.defaultPrevented).toBe(false);
+      expect(document.querySelector("#console")!.classList.contains("show")).toBe(false);
+
+      document.querySelector("#console")!.classList.add("show");
+      document.dispatchEvent(
+        Object.assign(new window.Event("keydown", { bubbles: true }), { key: "Escape" }),
+      );
+      expect(document.querySelector("#console")!.classList.contains("show")).toBe(false);
+    } finally {
+      await resources.dispose();
+    }
+  });
 });

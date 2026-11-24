@@ -5,7 +5,7 @@
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 899.98px) {
     #aside-content {
         width: 100%;
     }
@@ -267,7 +267,7 @@
     max-height: calc(100vh - 300px);
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 899.98px) {
     #aside-content #card-toc .toc-content {
         max-height: calc(100vh - 140px);
     }
@@ -277,7 +277,7 @@
     display: none;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 899.98px) {
     #aside-content #card-toc .toc-content .toc-child {
         display: block;
     }
@@ -340,6 +340,12 @@
 
 #aside-content .card-more-btn:hover {
     animation: 1s ease 0s infinite normal none running more-btn-move;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #aside-content .card-more-btn:hover {
+        animation: none;
+    }
 }
 
 @media screen and (min-width: 900px) {

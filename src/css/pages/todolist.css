@@ -38,12 +38,12 @@
                         width: 50%;
                     }
 
-                    #todolist-left {
+                    .todolist-left {
                         width: 100%;
                         padding: 0 8px 0 0
                     }
 
-                    #todolist-right {
+                    .todolist-right {
                         width: 100%;
                         padding: 0 0 0 8px
                     }
@@ -62,7 +62,7 @@
                             width: 100%;
                         }
 
-                        #todolist-left, #todolist-right {
+                        .todolist-left, .todolist-right {
                             padding: 0 0 0 0
                         }
                     }

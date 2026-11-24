@@ -4,7 +4,6 @@
         <th:block th:if="!${theme.config.top.above.enable_above_video}">
             <div class="pl-img pl-blur pl-visible"></div>
             <div class="pl-img pl-visible"></div>
-            <video class="video"></video>
         </th:block>
         <th:block th:if="${theme.config.top.above.enable_above_video}">
             <video class="index-video hl:block hl:object-cover hl:w-full hl:h-full hl:pointer-events-none" id="index-video" autoplay=""
@@ -22,6 +21,6 @@
             <span class="typed-cursor" aria-hidden="true"></span>
         </div>
     </div>
-    <div id="scroll-down"><i class="haofont hao-icon-angle-down scroll-down-effects"></i></div>
+    <button id="scroll-down" type="button" class="hanlo-button-reset" aria-label="向下滚动查看正文"><i class="haofont hao-icon-angle-down scroll-down-effects" aria-hidden="true"></i></button>
 
 </th:block>

@@ -27,7 +27,7 @@
                     <div th:replace="~{macro/author-content :: author-content(background = ${singlePage.spec.cover},
                         smallTitle = '相册集',
                         bigTitle = ${singlePage.spec.title},
-                        detail = ${singlePage.spec.excerpt.raw},
+                        detail = ${singlePage.spec.excerpt?.raw},
                         buttonUrl = '',
                         buttonTitle = '')}"></div>
 
@@ -35,6 +35,7 @@
                         <th:block th:each="group : ${photoGroups}">
                             <a class="card" th:href="@{/photos(group=${group.metadata.name})}">
                                 <img class="card_cover"
+                                     th:alt="${group.spec.displayName}"
                                      th:src="${isLazyload ? '' : #annotations.get(group, 'cover')}"
                                      th:data-lazy-src="${ isLazyload ? #annotations.get(group, 'cover') : ''}"
                                 >
@@ -57,12 +58,12 @@
                                 <img class="gallery-group-img no-lightbox"
                                      th:src="${isLazyload ? '' : #annotations.get(group, 'cover')}"
                                      th:data-lazy-src="${ isLazyload ? #annotations.get(group, 'cover') : ''}"
-                                     alt="Group Image Gallery">
+                                     th:alt="${group.spec.displayName}">
                                 <figcaption>
                                     <div class="gallery-group-name">[[${group.spec.displayName}]]</div>
                                     <p>[[${#annotations.get(group, 'description')}]]</p>
                                     <a th:href="@{/photos(group=${group.metadata.name})}"
-                                       th:aria-label="|'查看 ${group.spec.displayName} 相册'|"></a>
+                                       th:aria-label="|查看 ${group.spec.displayName} 相册|"></a>
                                 </figcaption>
                             </figure>
                         </th:block>

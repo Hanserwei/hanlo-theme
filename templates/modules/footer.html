@@ -1,5 +1,5 @@
 <!-- 页脚模块 -->
-<footer class="hanlo-site-footer" id="footer" xmlns:th="http://www.w3.org/1999/xhtml"
+<footer class="hanlo-site-footer" id="footer" xmlns:th="http://www.thymeleaf.org"
         th:with="footerRecords=${theme.config.footer.records},
                  recordsEnabled=${footerRecords?.enable != false},
                  recordLogo=${#strings.isEmpty(footerRecords?.logo) ? '/themes/theme-hanlo/assets/images/footer/shiba.svg' : footerRecords.logo}">
@@ -25,7 +25,7 @@
     <div id="footer_deal" class="hanlo-footer-social"
          th:if="${not #lists.isEmpty(theme.config.footer.social_media.socialMediaLeft) || not #lists.isEmpty(theme.config.footer.social_media.socialMediaRight) || recordsEnabled}">
         <th:block th:with="socialMedias = ${theme.config.footer.social_media.socialMediaLeft}">
-            <a th:class="${socialMedia.option_social_data == 'custom' ? 'custom_socials' : 'deal_link'}" rel="external nofollow" target="_blank" th:each="socialMedia : ${socialMedias}"
+            <a th:class="${socialMedia.option_social_data == 'custom' ? 'custom_socials' : 'deal_link'}" rel="noopener noreferrer external nofollow" target="_blank" th:each="socialMedia : ${socialMedias}"
                th:href="${socialMedia.url}" th:title="${socialMedia.name}">
                 <i th:if="${socialMedia.option_social_data == 'icon'  || #strings.isEmpty(socialMedia.option_social_data)}"
                    th:class="${socialMedia.icon}"></i>
@@ -39,7 +39,7 @@
         </button>
 
         <th:block th:with="socialMedias = ${theme.config.footer.social_media.socialMediaRight}">
-            <a th:class="${socialMedia.option_social_data == 'custom' ? 'custom_socials' : 'deal_link'}" rel="external nofollow" target="_blank" th:each="socialMedia : ${socialMedias}"
+            <a th:class="${socialMedia.option_social_data == 'custom' ? 'custom_socials' : 'deal_link'}" rel="noopener noreferrer external nofollow" target="_blank" th:each="socialMedia : ${socialMedias}"
                th:href="${socialMedia.url}" th:title="${socialMedia.name}">
                 <i th:if="${socialMedia.option_social_data == 'icon' || #strings.isEmpty(socialMedia.option_social_data)}"
                    th:class="${socialMedia.icon}"></i>
@@ -60,23 +60,27 @@
     </div>
 
     <!-- 相关地址  -->
-    <th:block th:if="${not #strings.isEmpty(theme.config.footer.menu)}"
-              th:with="footMenu = ${menuFinder.getByName(theme.config.footer.menu)}">
-        <div id="heo-footer" th:if="${not #lists.isEmpty(footMenu.menuItems)}">
-            <div class="footer-group" th:each="menuItem : ${footMenu.menuItems}">
-                <h3 class="footer-title" th:text="${menuItem.status.displayName}"></h3>
-                <div class="footer-links">
-                    <a class="footer-item" th:each="childMenu : ${menuItem.children}"
-                       th:href="@{${childMenu.status.href}}" th:target="${childMenu.spec.target?.value}"
-                       th:text="${childMenu.status.displayName}">
-                    </a>
+    <th:block th:with="footMenu = ${not #strings.isEmpty(theme.config.footer.menu) ? menuFinder.getByName(theme.config.footer.menu) : null},
+                       hasFootMenu = ${footMenu != null and not #lists.isEmpty(footMenu.menuItems)}">
+        <div id="heo-footer" th:if="${hasFootMenu || theme.config.footer.footer_group.enable_footer_group}">
+            <th:block th:if="${hasFootMenu}">
+                <div class="footer-group" th:each="menuItem : ${footMenu.menuItems}">
+                    <h3 class="footer-title" th:text="${menuItem.status.displayName}"></h3>
+                    <div class="footer-links">
+                        <a class="footer-item" th:each="childMenu : ${menuItem.children}"
+                           th:href="@{${childMenu.status.href}}"
+                           th:target="${childMenu.spec.target?.value}"
+                           th:rel="${childMenu.spec.target?.value == '_blank' ? 'noopener noreferrer' : null}"
+                           th:text="${childMenu.status.displayName}">
+                        </a>
+                    </div>
                 </div>
-            </div>
+            </th:block>
             <div th:if="${theme.config.footer.footer_group.enable_footer_group}" class="footer-group">
                 <div class="footer-title-group">
                     <h3 class="footer-title">友链</h3>
                     <button class="random-friends-btn hanlo-button-reset" id="footer-random-friends-btn"
-                            data-hanlo-action="refresh-footer-links" type="button" title="换一批友情链接">
+                            data-hanlo-action="refresh-footer-links" type="button" title="换一批友情链接" aria-label="换一批友情链接">
                         <i class="haofont hao-icon-arrow-rotate-right hl:[font-size:16px]"></i>
                     </button>
                 </div>
@@ -137,7 +141,7 @@
                         <th:block th:if="${#strings.isEmpty(theme.config.basics.siteStartTime)}">
                             ©[[${#dates.format(new java.util.Date(), 'yyyy')}]]
                         </th:block>
-                        By <a class="footer-banner-link" href="/" target="_blank">[[${site.title}]]</a>
+                        By <a class="footer-banner-link" href="/">[[${site.title}]]</a>
                     </div>
                 </div>
             </div>
@@ -146,11 +150,11 @@
                 <!-- 腾讯云 -->
                 <a th:if="${theme.config.footer.footerContent.default_enable_group.yunzhichi}"
                    class="footer-banner-link cloud" href="https://cloud.tencent.com/"
-                   rel="noopener external nofollow noreferrer noopener"
+                   rel="noopener noreferrer external nofollow"
                    target="_blank">
                     <span>本网站由</span>&nbsp;&nbsp;
                     <img th:src="${assets_link + '/images/footer/tencentcloud-color.svg'}"
-                         alt="腾讯云" class="cloud-logo" />
+                         alt="腾讯云" class="cloud-logo" loading="lazy" decoding="async" />
                     &nbsp;&nbsp;<span>提供CDN加速/云存储服务</span>
                 </a>
                 
@@ -161,20 +165,20 @@
                 <a th:if="${theme.config.footer.footerContent.default_enable_group.about}" class="footer-banner-link" href="/about">关于</a>
                 <a th:if="${not #strings.isEmpty(theme.config.basics.icp) && theme.config.footer.footerContent.default_enable_group.icp_icon}"
                    class="footer-banner-link" href="https://beian.miit.gov.cn/#/Integrated/index"
-                   rel="noopener external nofollow noreferrer noopener"
+                   rel="noopener noreferrer external nofollow"
                    target="_blank">
                     <span th:if="${not #strings.startsWith(theme.config.basics.icp, 'http')}">[[${theme.config.basics
                         .icp}]]</span>
                     <img th:if="${#strings.startsWith(theme.config.basics.icp, 'http')}"
-                         th:src="@{${theme.config.basics.icp}}" alt="icp"/>
+                         th:src="@{${theme.config.basics.icp}}" alt="icp" loading="lazy" decoding="async"/>
                 </a>
                 <a th:if="${not #strings.isEmpty(theme.config.basics.gongan) && theme.config.footer.footerContent.default_enable_group.gongwangan}"
-                   class="footer-banner-link" href="http://www.beian.gov.cn/portal/registerSystemInfo"
-                   rel="noopener external nofollow noreferrer noopener"
+                   class="footer-banner-link" href="https://beian.mps.gov.cn/#/query/webSearch"
+                   rel="noopener noreferrer external nofollow"
                    target="_blank">
                     <span th:if="${not #strings.startsWith(theme.config.basics.gongan, 'http')}">[[${theme.config.basics.gongan}]]</span>
                     <img th:if="${#strings.startsWith(theme.config.basics.gongan, 'http')}"
-                         th:src="@{${theme.config.basics.gongan}}" alt="gongan"/>
+                         th:src="@{${theme.config.basics.gongan}}" alt="gongan" loading="lazy" decoding="async"/>
                 </a>
                 <a class="footer-banner-link cc" th:href="${theme.config.basics.copyrightAgreement}"
                    th:if="${not #strings.isEmpty(theme.config.basics.copyrightAgreement) && theme.config.footer.footerContent.default_enable_group.yingsi}" title="cc协议">
@@ -193,7 +197,8 @@
         <div class="cookies-window-title" th:text="${theme.config.tool.snackbar.introductionTitle}"></div>
         <div class="cookies-window-content"><span class="cookies-tip"
                                                   th:text="${theme.config.tool.snackbar.introductionTip}"></span>
-            <a class="cookies-link" th:href="@{${theme.config.tool.snackbar.introductionUrl}}"
+            <a th:if="${not #strings.isEmpty(theme.config.tool.snackbar.introductionUrl)}"
+               class="cookies-link" th:href="@{${theme.config.tool.snackbar.introductionUrl}}"
                th:title="${theme.config.tool.snackbar.introductionName}"><i
                     class="bber-gotobb haofont hao-icon-circle-arrow-right"></i></a>
         </div>

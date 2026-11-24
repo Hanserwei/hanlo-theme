@@ -6,6 +6,7 @@
          th:data-submenu-layout="${menuLayout}">
         <div class="recursion_menus_item" th:each="childMenu : ${menuItem.children}">
             <a class="site-page child" th:target="${childMenu.spec.target?.value}"
+               th:rel="${childMenu.spec.target?.value == '_blank' ? 'noopener noreferrer' : null}"
                th:href="@{${childMenu.status.href}}">
                 <th:block th:replace="~{modules/widgets/menu-icon :: menu-icon(icon=${#annotations.getOrDefault(childMenu, 'icon', '')})}"></th:block>
                 <span th:text="${childMenu.status.displayName}"></span>
@@ -21,11 +22,13 @@
 </th:block>
 
 <!-- The first level opens children; leaf items keep their configured links. -->
-<div id="menus" class="hanlo-nav-menus" th:fragment="nav-menu">
-    <div class="menus_items">
-        <div class="menus_item" th:each="menuItem : ${menuFinder.getPrimary().menuItems}">
+<div id="menus" class="hanlo-nav-menus" th:fragment="nav-menu" th:with="primaryMenu=${menuFinder.getPrimary()}">
+    <div class="menus_items" th:if="${primaryMenu != null and not #lists.isEmpty(primaryMenu.menuItems)}">
+        <div class="menus_item" th:each="menuItem : ${primaryMenu.menuItems}">
             <a class="site-page" th:if="${#lists.isEmpty(menuItem.children)}"
-               th:target="${menuItem.spec.target?.value}" th:href="@{${menuItem.status.href}}">
+               th:target="${menuItem.spec.target?.value}"
+               th:rel="${menuItem.spec.target?.value == '_blank' ? 'noopener noreferrer' : null}"
+               th:href="@{${menuItem.status.href}}">
                 <th:block th:replace="~{modules/widgets/menu-icon :: menu-icon(icon=${#annotations.getOrDefault(menuItem, 'icon', '')})}"></th:block>
                 <span th:text="${menuItem.status.displayName}"></span>
             </a>

@@ -34,18 +34,59 @@ export function createTranslationController(storage: ExpiringStorage): PageContr
           icon?.classList.toggle("hao-icon-jianti", traditional);
           icon?.classList.toggle("hao-icon-fanti", !traditional);
         };
+        let activated = false;
+        const pending = new Set<Node>();
+        let scheduled = false;
+        let observing = false;
+        const ensureObserver = () => {
+          if (observing || resources.disposed) return;
+          observing = true;
+          const observer = resources.observe(
+            new MutationObserver((records) => {
+              for (const record of records) {
+                if (record.type === "childList")
+                  record.addedNodes.forEach((node) => pending.add(node));
+                else pending.add(record.target);
+              }
+              if (scheduled) return;
+              scheduled = true;
+              resources.animationFrame(() => {
+                scheduled = false;
+                const nodes = [...pending];
+                pending.clear();
+                nodes
+                  .filter((node) => node.isConnected)
+                  .forEach((node) => dom.apply(node, convert));
+              });
+            }),
+          );
+          observer.observe(document.body, {
+            subtree: true,
+            childList: true,
+            characterData: true,
+            attributes: true,
+            attributeFilter: ["title", "alt", "placeholder", "aria-label", "aria-description"],
+          });
+        };
         const apply = async (target: ChineseEncoding, notify: boolean) => {
           try {
+            if (!activated && target === translation.sourceEncoding && !notify) {
+              document.documentElement.lang = target === 1 ? "zh-Hant" : "zh-Hans";
+              updateButtons();
+              return;
+            }
             if (!(await translation.setTarget(target)) || resources.disposed) return;
+            activated = true;
+            ensureObserver();
             document.documentElement.lang = target === 1 ? "zh-Hant" : "zh-Hans";
             dom.apply(document.body, convert);
             updateButtons();
             if (notify) storage.set(TRANSLATION_STORAGE_KEY, target, 2);
             document.dispatchEvent(new CustomEvent(TRANSLATION_EVENT));
             if (notify && config.Snackbar) {
-              snackbarShow(
-                (target === 1 ? config.Snackbar.chs_to_cht : config.Snackbar.cht_to_chs) ?? "",
-              );
+              const message =
+                (target === 1 ? config.Snackbar.chs_to_cht : config.Snackbar.cht_to_chs) ?? "";
+              if (message) snackbarShow(message);
             }
           } catch (error) {
             if (resources.disposed) return;
@@ -64,34 +105,6 @@ export function createTranslationController(storage: ExpiringStorage): PageContr
         if (button) resources.listen(button, "click", toggle);
         if (menu) resources.listen(menu, "click", toggle);
 
-        // Convert only newly added/changed content; cache the original, never reverse-convert
-        // previously converted text. Own writes are detected by the cache and do not loop.
-        const pending = new Set<Node>();
-        let scheduled = false;
-        const observer = resources.observe(
-          new MutationObserver((records) => {
-            for (const record of records) {
-              if (record.type === "childList")
-                record.addedNodes.forEach((node) => pending.add(node));
-              else pending.add(record.target);
-            }
-            if (scheduled) return;
-            scheduled = true;
-            resources.animationFrame(() => {
-              scheduled = false;
-              const nodes = [...pending];
-              pending.clear();
-              nodes.filter((node) => node.isConnected).forEach((node) => dom.apply(node, convert));
-            });
-          }),
-        );
-        observer.observe(document.body, {
-          subtree: true,
-          childList: true,
-          characterData: true,
-          attributes: true,
-          attributeFilter: ["title", "alt", "placeholder", "aria-label", "aria-description"],
-        });
         resources.defer(() => {
           translation.dispose();
           pending.clear();

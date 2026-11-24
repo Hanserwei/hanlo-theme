@@ -18,6 +18,8 @@
     <!-- KaTeX plugin runtime required by server-rendered formula markup. -->
     <script th:if="${pluginFinder.available('plugin-katex')}" defer=""
             src="/plugins/plugin-katex/assets/static/katex.min.js"></script>
+    <!-- 根据配置设置 css 变量值，全局 css 通过变量值进行处理 -->
+    <th:block th:replace="~{'modules/variables/layout'}"></th:block>
     <th:block th:if="${head != null}">
         <th:block th:replace="${head}"/>
     </th:block>
@@ -32,12 +34,12 @@
 <!-- 网站背景 -->
 <div id="web_bg">
     <div th:if="${theme.config.top.global_background.enable_global_background_img}">
-        <img th:if="${theme.config.top.global_background.enable_global_background_above_video == false}"
+        <img th:if="${theme.config.top.global_background.enable_global_background_above_video != true and not #strings.isEmpty(theme.config.top.global_background.global_background_img)}"
              class="global_background_img"
              alt=""
              th:src="${theme.config.top.global_background.global_background_img}"
         />
-        <video th:if="${theme.config.top.global_background.enable_global_background_above_video}"
+        <video th:if="${theme.config.top.global_background.enable_global_background_above_video == true and not #strings.isEmpty(theme.config.top.global_background.global_background_video)}"
                class="index-video hl:block hl:object-cover hl:w-full hl:h-full hl:pointer-events-none"
                id="global-background-video"
                autoplay=""
@@ -51,16 +53,15 @@
     </div>
 </div>
 
-<th:block th:if="${theme.config.top.global_background.enable_global_background_img}">
-</th:block>
-
 <th:block th:with="randomPosts=${postFinder.random(1)}">
     <div hidden id="hanlo-page-data" th:if="${not #lists.isEmpty(randomPosts)}"
          th:data-random-post-url="${randomPosts[0].status.permalink}"></div>
 </th:block>
 
 <!-- 控制台 -->
-<div th:replace="~{modules/widgets/console}"/>
+<th:block th:if="${theme.config.nav.right.console.consoleEnable}">
+    <div th:replace="~{modules/widgets/console}"/>
+</th:block>
 
 <div th:replace="~{modules/sidebar}"/>
 
@@ -68,25 +69,18 @@
 <th:block th:replace="${content}"></th:block>
 
 
-<!-- todo 右下角悬浮操作按钮 -->
+<!-- 右下角悬浮操作按钮 -->
 <th:block th:replace="~{modules/widgets/rightside}"/>
 
 
 <div th:replace="~{modules/widgets/right-menu}"/>
 
 <div>
-    <div>
-        <script th:replace="~{modules/common/diytitle}"></script>
-    </div>
-
     <canvas th:if="${theme.config.style.universe}" id="universe" width="1312" height="880"></canvas>
 
     <!-- 核心导航和生命周期始终从主题本地加载，避免自定义 CDN 故障阻断导航。 -->
     <script type="module" th:src="${'/themes/theme-hanlo/assets/js/hanlo-runtime-' + theme.spec.version + '.js'}"></script>
 </div>
-
-<!-- 根据配置设置 css 变量值，全局 css 通过变量值进行处理 -->
-<th:block th:replace="~{'modules/variables/layout'}"></th:block>
 
 </body>
 

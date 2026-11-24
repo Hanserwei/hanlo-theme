@@ -22,7 +22,7 @@
                     <div class="error-info">
                         <h1 class="error_title">404</h1>
                         <div class="error_subtitle">[[${theme.config.other.error_404.subtitle}]]</div>
-                        <a class="button--animated" href="/"><i class="fas fa-rocket"></i>回到主页</a>
+                        <a class="button--animated" href="/"><i class="haofont hao-icon-rocket" aria-hidden="true"></i>回到主页</a>
                     </div>
                 </div>
             </div>
@@ -30,9 +30,9 @@
             <!-- 默认设置前 6 篇文章 -->
             <div class="aside-list">
                 <div class="aside-list-group"
-                     th:with='topGroupPosts = ${postFinder.list(1,6)},
+                     th:with='topGroupPosts = ${postFinder.list({page: 1, size: 6})},
                 postRandomImg=${#strings.contains(postRandomImgSource,"?") ? postRandomImgSource+"&" : postRandomImgSource+"?"}'>
-                    <div th:each="post : ${topGroupPosts}" class="aside-list-item">
+                    <div th:each="post : ${topGroupPosts?.items}" class="aside-list-item">
                         <a class="thumbnail div_border"
                            th:href="@{${post.status.permalink}}"
                            th:title="${post.spec.title}"><img

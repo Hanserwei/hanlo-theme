@@ -14,8 +14,12 @@ function fallbackCopyText(text: string): boolean {
 
 export async function copyTextToClipboard(text: string): Promise<boolean> {
   if (navigator.clipboard?.writeText && window.isSecureContext) {
-    await navigator.clipboard.writeText(text);
-    return true;
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return fallbackCopyText(text);
+    }
   }
   return fallbackCopyText(text);
 }

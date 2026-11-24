@@ -28,17 +28,21 @@
                     </th:block>
 
 
-                    <div class="hanlo-envelope-container">
+                    <div class="hanlo-envelope-container"
+                         th:with="envelopeBefore=${#strings.isEmpty(theme.config.envelope_comment.custom_pic?.beforeimg) ? assets_link + '/images/envelope/before.png' : theme.config.envelope_comment.custom_pic.beforeimg},
+                                  envelopeCover=${#strings.isEmpty(theme.config.envelope_comment.custom_pic?.cover) ? assets_link + '/images/envelope/cover.jpg' : theme.config.envelope_comment.custom_pic.cover},
+                                  envelopeLine=${#strings.isEmpty(theme.config.envelope_comment.custom_pic?.line) ? assets_link + '/images/envelope/line.png' : theme.config.envelope_comment.custom_pic.line},
+                                  envelopeAfter=${#strings.isEmpty(theme.config.envelope_comment.custom_pic?.afterimg) ? assets_link + '/images/envelope/after.png' : theme.config.envelope_comment.custom_pic.afterimg}">
                         <div id="maincontent">
-                            <div id="form-wrap"
-                                 th:style="|--hanlo-envelope-open-height: ${theme.config.envelope_comment.height}px|">
-                                <img class="no-lightbox entered loaded" id="beforeimg"
-                                     th:src="@{${theme.config.envelope_comment.custom_pic.beforeimg}}">
+                            <div id="form-wrap" tabindex="0"
+                                 th:style="|--hanlo-envelope-open-height: ${theme.config.envelope_comment.height ?: 900}px|">
+                                <img class="no-lightbox entered loaded" id="beforeimg" alt=""
+                                     th:src="@{${envelopeBefore}}">
                                 <div id="envelope">
                                     <form>
                                         <div class="formmain hanlo-envelope-letter hl:pointer-events-none">
-                                            <img class="headerimg no-lightbox entered loaded hl:w-full hl:overflow-hidden hl:pointer-events-none"
-                                                 th:src="@{${theme.config.envelope_comment.custom_pic.cover}}"
+                                            <img class="headerimg no-lightbox entered loaded hl:w-full hl:overflow-hidden hl:pointer-events-none" alt=""
+                                                 th:src="@{${envelopeCover}}"
                                                 >
                                             <div class="comments-main">
                                                 <h3 class="title3 hl:no-underline hl:[color:var(--heo-theme)] hl:text-center"
@@ -51,8 +55,8 @@
 
                                                 </div>
                                                 <div class="bottomcontent hl:text-center hl:[margin-top:40px]">
-                                                    <img class="bottomimg no-lightbox entered loaded hl:w-full hl:[margin:5px_auto_5px_auto] hl:block hl:pointer-events-none"
-                                                         th:src="@{${theme.config.envelope_comment.custom_pic.line}}"
+                                                    <img class="bottomimg no-lightbox entered loaded hl:w-full hl:[margin:5px_auto_5px_auto] hl:block hl:pointer-events-none" alt=""
+                                                         th:src="@{${envelopeLine}}"
                                                         >
                                                 </div>
                                                 <p class="hanlo-envelope-signature">
@@ -61,16 +65,16 @@
                                         </div>
                                     </form>
                                 </div>
-                                <img id="afterimg" class="no-lightbox entered loaded"
-                                     th:src="@{${theme.config.envelope_comment.custom_pic.afterimg}}">
+                                <img id="afterimg" class="no-lightbox entered loaded" alt=""
+                                     th:src="@{${envelopeAfter}}">
                             </div>
                         </div>
                     </div>
 
                 </th:block>
 
-                <div class="flink" id="article-container">
-                    <th:block  th:utext="${singlePage.content.content}"></th:block>
+                <div class="flink" id="article-container" th:if="${singlePage.content?.content != null}">
+                    <th:block th:utext="${singlePage.content.content}"></th:block>
                 </div>
 
                 <hr>

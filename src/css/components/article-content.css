@@ -7,8 +7,12 @@
     text-decoration: none;
     background: var(--heo-main);
     border-width: 0;
-    color: var(--heo-white);
-    border-radius: 4px
+    color: var(--heo-on-main);
+    border-radius: 4px;
+}
+
+#article-container a:hover :is(b, strong) {
+    color: inherit;
 }
 
 #article-container img {
@@ -45,138 +49,32 @@
     line-height: 1em;
 }
 
-#article-container h1,
-#article-container h2,
-#article-container h3,
-#article-container h4,
-#article-container h5,
-#article-container h6 {
-    transition: all 0.2s ease-out 0s;
-}
-
-#article-container h1::before,
-#article-container h2::before,
-#article-container h3::before,
-#article-container h4::before,
-#article-container h5::before,
-#article-container h6::before {
-    position: absolute;
-    top: calc(50% - 0.35rem);
-    color: rgb(242, 186, 75);
-    content: "";
-    line-height: 1;
-    transition: all 0.2s ease-out 0s;
-}
-
-#article-container h1:hover::before,
-#article-container h2:hover::before,
-#article-container h3:hover::before,
-#article-container h4:hover::before,
-#article-container h5:hover::before,
-#article-container h6:hover::before {
-    color: rgb(48, 122, 246);
-}
-
-#article-container h1 {
-    padding-left: 1.4rem;
+[data-theme="dark"] #article-container kbd {
+    border-color: var(--heo-card-border);
+    background-color: var(--heo-secondbg);
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 1px 3px, rgba(255, 255, 255, 0.08) 0px 1px 0px 0px inset;
+    color: var(--heo-fontcolor);
 }
 
 #article-container h1 code {
     font-size: 1rem;
 }
 
-#article-container h1::before {
-    margin-left: -1.2rem;
-    font-size: 1rem;
-}
-
-#article-container h1:hover {
-    padding-left: 1.6rem;
-}
-
-#article-container h2 {
-    padding-left: 1.3rem;
-}
-
 #article-container h2 code {
     font-size: 0.9rem;
-}
-
-#article-container h2::before {
-    margin-left: -1.1rem;
-    font-size: 0.9rem;
-}
-
-#article-container h2:hover {
-    padding-left: 1.5rem;
-}
-
-#article-container h3 {
-    padding-left: 1.2rem;
 }
 
 #article-container h3 code {
     font-size: 0.8rem;
 }
 
-#article-container h3::before {
-    margin-left: -1rem;
-    font-size: 0.8rem;
-}
-
-#article-container h3:hover {
-    padding-left: 1.4rem;
-}
-
-#article-container h4 {
-    padding-left: 1.1rem;
-}
-
 #article-container h4 code {
     font-size: 0.7rem;
 }
 
-#article-container h4::before {
-    margin-left: -0.9rem;
-    font-size: 0.7rem;
-}
-
-#article-container h4:hover {
-    padding-left: 1.3rem;
-}
-
-#article-container h5 {
-    padding-left: 1rem;
-}
-
-#article-container h5 code {
-    font-size: 0.6rem;
-}
-
-#article-container h5::before {
-    margin-left: -0.8rem;
-    font-size: 0.6rem;
-}
-
-#article-container h5:hover {
-    padding-left: 1.2rem;
-}
-
-#article-container h6 {
-    padding-left: 1rem;
-}
-
+#article-container h5 code,
 #article-container h6 code {
     font-size: 0.6rem;
-}
-
-#article-container h6::before {
-    margin-left: -0.8rem;
-    font-size: 0.6rem;
-}
-
-#article-container h6:hover {
-    padding-left: 1.2rem;
 }
 
 #article-container ol,
@@ -234,7 +132,7 @@
     top: 0px;
     left: 0px;
     background: rgb(48, 122, 246);
-    color: rgb(255, 255, 255);
+    color: var(--heo-on-main);
     cursor: pointer;
     transition: all 0.3s ease-out 0s;
 }
@@ -594,14 +492,27 @@
 }
 
 #sidebar #sidebar-menus .menus_items .expand {
-    position: absolute;
-    top: 0.78em;
-    right: 0.4rem;
-    transition: transform 0.3s ease 0s;
+    position: relative;
+    width: 100%;
+    align-items: center;
+    padding-right: 1.5rem;
+    cursor: pointer;
 }
 
-#sidebar #sidebar-menus .menus_items .expand.hide {
-    transform: rotate(90deg);
+#sidebar #sidebar-menus .menus_items .expand::after {
+    content: "";
+    position: absolute;
+    right: 0.65rem;
+    width: 0.42rem;
+    height: 0.42rem;
+    border-right: 1.5px solid currentcolor;
+    border-bottom: 1.5px solid currentcolor;
+    transform: rotate(45deg);
+    transition: transform 0.25s ease;
+}
+
+#sidebar #sidebar-menus .menus_items .expand.hide::after {
+    transform: rotate(-45deg);
 }
 
 #sidebar #sidebar-menus .menus_items .menus_item_child {
@@ -702,7 +613,7 @@
 }
 
 .medium-zoom-image--opened {
-    z-index: 99999;
+    z-index: 100000;
     margin: 0px;
 }
 
@@ -713,8 +624,7 @@
 .mermaid {
     overflow: auto;
     margin: 0px 0px 1rem;
-    background: rgb(255, 255, 255);
+    background: transparent;
     text-align: center;
-    opacity: 0;
     transition: all 0.3s ease 0s;
 }

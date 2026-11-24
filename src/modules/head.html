@@ -4,7 +4,7 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width,initial-scale=1" name="viewport">
     <meta content="telephone=no" name="format-detection">
-    <meta content="var(--heo-card-bg)" name="theme-color">
+    <meta content="#f7f9fe" name="theme-color">
     <title th:if="${htmlType != 'plugin' || !customHead}" th:text="${siteTitle}"></title>
     <link rel="shortcut icon"
           th:href="@{${#strings.isEmpty(site.favicon) ? assets_link + '/images/hanlo-logo.png' : site.favicon}}"/>
@@ -46,14 +46,14 @@
     <!-- 页脚内容-样式一 -->
     <th:block th:replace="~{modules/common/footer-style-one}"/>
 
-    <script>
+    <script th:inline="javascript">
         (win => {
             document.documentElement.classList.add('hanlo-js')
 
             const readStoredValue = key => {
-                const itemText = localStorage.getItem(key)
-                if (!itemText) return undefined
                 try {
+                    const itemText = localStorage.getItem(key)
+                    if (!itemText) return undefined
                     const item = JSON.parse(itemText)
                     if (!item || typeof item.expiry !== 'number' || Date.now() > item.expiry) {
                         localStorage.removeItem(key)
@@ -61,12 +61,12 @@
                     }
                     return item.value
                 } catch {
-                    localStorage.removeItem(key)
+                    try { localStorage.removeItem(key) } catch {}
                     return undefined
                 }
             }
 
-            const configuredMode = "[[${theme.config.style.colorScheme}]]"
+            const configuredMode = (/*[[${theme.config.style.colorScheme}]]*/ 'system') || 'system'
             const storedMode = readStoredValue('theme')
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
             const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches
@@ -77,6 +77,8 @@
                 : storedMode === 'dark' || storedMode === 'light' ? storedMode : automaticMode
             document.documentElement.setAttribute('data-theme', themeMode)
             document.documentElement.classList.toggle('color-scheme-dark', themeMode === 'dark')
+            const themeColorMeta = document.querySelector('meta[name="theme-color"]')
+            if (themeColorMeta) themeColorMeta.setAttribute('content', themeMode === 'dark' ? '#18171d' : '#f7f9fe')
 
             let internalNavigation = false
             try {

@@ -6,6 +6,7 @@ export async function renderGraphviz(
   source: string,
   win: VditorWindow,
   resources: PageResourceScope,
+  isCurrent?: () => boolean,
 ): Promise<void> {
   const script = element.ownerDocument.getElementById(
     "vditorGraphVizScript",
@@ -35,7 +36,7 @@ export async function renderGraphviz(
   try {
     worker = new Worker(url);
     const svg = await new win.Viz({ worker }).renderSVGElement(source);
-    if (resources.disposed || !element.isConnected) return;
+    if (resources.disposed || !element.isConnected || (isCurrent && !isCurrent())) return;
     element.replaceChildren(element.ownerDocument.importNode(svg, true));
     element.dataset["processed"] = "true";
   } finally {

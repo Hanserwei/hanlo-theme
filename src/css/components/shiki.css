@@ -12,7 +12,7 @@
     position: relative;
     margin: 18px 0;
     overflow: hidden;
-    border-radius: 7px;
+    border-radius: var(--hanlo-radius-md, 12px);
     box-shadow: var(--shiki-code-bar-shadow);
 }
 
@@ -38,7 +38,7 @@
     padding: 45px 18px 12px;
     overflow: auto;
     border: 0;
-    border-radius: 7px;
+    border-radius: var(--hanlo-radius-md, 12px);
     background-color: var(--shiki-light-bg);
     color: var(--shiki-light);
     text-align: left;
@@ -121,6 +121,7 @@
     display: none;
     padding: 0 90px;
     overflow: hidden;
+    color: color-mix(in srgb, var(--heo-fontcolor) 72%, transparent);
     font-size: 0.9em;
     font-weight: 700;
     text-overflow: ellipsis;
@@ -146,7 +147,7 @@
 .shiki-code-block .code-expand-btn {
     border: 0;
     background: transparent;
-    color: #999;
+    color: color-mix(in srgb, var(--heo-fontcolor) 65%, transparent);
     cursor: pointer;
 }
 
@@ -200,6 +201,10 @@
     max-height: var(--shiki-code-height, 300px);
 }
 
+.shiki-code-block.is-height-limited.is-height-expanded pre.shiki {
+    padding-bottom: 44px;
+}
+
 .shiki-code-block .code-expand-btn {
     position: absolute;
     right: 0;
@@ -219,7 +224,7 @@
 .shiki-code-block .code-expand-btn:hover,
 .shiki-code-block .code-expand-btn:focus-visible {
     background-color: var(--heo-main);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 .shiki-code-block .code-expand-btn.expand-done i {

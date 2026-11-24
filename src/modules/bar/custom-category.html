@@ -5,10 +5,10 @@
             <a href="/">首页</a>
         </div>
 
-        <th:block th:each="navCategory : ${theme.config.layout.navs.navCategory}">
-            <div class="category-bar-item"
-                 th:each="categoryItem : ${categoryFinder.getByName(navCategory)}"
-                 th:id="${categoryItem.spec.displayName}">
+        <th:block th:each="navCategory : ${theme.config.layout.navs.navCategory}"
+                  th:if="${not #strings.isEmpty(navCategory)}"
+                  th:with="categoryItem=${categoryFinder.getByName(navCategory)}">
+            <div class="category-bar-item" th:if="${categoryItem != null}">
                 <a th:href="@{${categoryItem.status.permalink}}" th:text="${categoryItem.spec.displayName}"></a>
             </div>
         </th:block>

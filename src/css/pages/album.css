@@ -59,13 +59,15 @@
                         object-fit: cover;
                     }
 
-                    #album .card:hover .card_cover {
-                        transform: scale(1.05) translateZ(0);
-                        filter: brightness(.9) saturate(1.2) contrast(1)
-                    }
+                    @media (hover: hover) {
+                        #album .card:hover .card_cover {
+                            transform: scale(1.05) translateZ(0);
+                            filter: brightness(.9) saturate(1.2) contrast(1)
+                        }
 
-                    #album .card-album:hover>.card:not(:hover) .card_cover {
-                        filter: brightness(.5) saturate(.9) contrast(1.2) blur(20px)
+                        #album .card-album:hover>.card:not(:hover) .card_cover {
+                            filter: brightness(.5) saturate(.9) contrast(1.2) blur(20px)
+                        }
                     }
 
                     #album .card__content {
@@ -98,13 +100,21 @@
 
                     @media (max-width: 960px) {
                         #album .card-album .card {
-                            width: calc(100% / 2 - 40px)
+                            width: calc(100% / 2 - 12px)
+                        }
+
+                        #album .card_cover {
+                            height: 360px
                         }
                     }
 
                     @media (max-width: 540px) {
                         #album .card-album .card {
-                            width: calc(100%)
+                            width: 100%
+                        }
+
+                        #album .card_cover {
+                            height: 260px
                         }
                     }
 }

@@ -63,16 +63,19 @@ export class ChineseDomTranslation {
     }
     if (root.nodeType === 1) {
       const element = root as Element;
-      const attributes = this.#attributes.get(element) ?? new Map<string, OriginalText>();
+      let attributes = this.#attributes.get(element);
       for (const name of TEXT_ATTRIBUTES) {
         const value = element.getAttribute(name);
         if (value === null) continue;
+        if (!attributes) {
+          attributes = new Map<string, OriginalText>();
+          this.#attributes.set(element, attributes);
+        }
         const state = updateOriginal(value, attributes.get(name));
         state.displayed = convert(state.original);
         attributes.set(name, state);
         if (value !== state.displayed) element.setAttribute(name, state.displayed);
       }
-      this.#attributes.set(element, attributes);
     }
     root.childNodes.forEach((child) => this.apply(child, convert));
   }

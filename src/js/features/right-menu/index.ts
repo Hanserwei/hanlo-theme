@@ -1,5 +1,6 @@
 import { copyTextToClipboard, readTextFromClipboard } from "../../core/clipboard";
 import { scrollToDestination } from "../../core/dom";
+import { openExternalUrl, resolveHttpUrl } from "../../core/navigation";
 import type { PageControllerDefinition } from "../../core/types";
 import { downloadImage, snackbarShow } from "../../core/ui";
 
@@ -48,10 +49,22 @@ async function copyImage(source: string): Promise<void> {
   await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
 }
 
+const TEXT_SELECTABLE_INPUT_TYPES = new Set(["", "text", "search", "url", "tel", "password"]);
+
+function supportsRangeText(target: HTMLInputElement | HTMLTextAreaElement): boolean {
+  if (target instanceof HTMLTextAreaElement) return true;
+  return TEXT_SELECTABLE_INPUT_TYPES.has(target.type.toLowerCase());
+}
+
 function pasteAtSelection(target: HTMLInputElement | HTMLTextAreaElement, text: string): void {
-  const start = target.selectionStart ?? target.value.length;
-  const end = target.selectionEnd ?? start;
-  target.setRangeText(text, start, end, "end");
+  if (supportsRangeText(target)) {
+    const start = target.selectionStart ?? target.value.length;
+    const end = target.selectionEnd ?? start;
+    target.setRangeText(text, start, end, "end");
+  } else {
+    target.value += text;
+  }
+  target.dispatchEvent(new Event("input", { bubbles: true }));
   target.focus();
 }
 
@@ -152,52 +165,72 @@ export function createRightMenuController(): PageControllerDefinition {
               case "menu-copytext":
                 copyText(state.selection, "复制成功，复制和转载请标注本文地址");
                 break;
-              case "menu-pastetext":
-                if (state.input) {
+              case "menu-pastetext": {
+                const targetInput = state.input;
+                if (targetInput) {
                   void readTextFromClipboard().then(
-                    (text) => pasteAtSelection(state.input!, text),
+                    (text) => pasteAtSelection(targetInput, text),
                     () => snackbarShow("当前浏览器环境不允许读取剪贴板"),
                   );
                 }
                 break;
-              case "menu-newwindow":
-                if (state.link) window.open(state.link, "_blank", "noopener");
+              }
+              case "menu-newwindow": {
+                const targetUrl = resolveHttpUrl(state.link, window.location.href);
+                if (targetUrl) openExternalUrl(targetUrl.href);
                 break;
+              }
               case "menu-copylink":
                 copyText(state.link, "已复制链接地址");
                 break;
-              case "menu-downloadimg":
-                if (state.image) downloadImage(state.image, "hao");
+              case "menu-downloadimg": {
+                const imageUrl = resolveHttpUrl(state.image, window.location.href);
+                if (imageUrl) downloadImage(imageUrl.href, "hao");
                 break;
-              case "menu-newwindowimg":
-                if (state.image) window.open(state.image, "_blank", "noopener");
+              }
+              case "menu-newwindowimg": {
+                const imageUrl = resolveHttpUrl(state.image, window.location.href);
+                if (imageUrl) openExternalUrl(imageUrl.href);
                 break;
-              case "menu-copyimg":
-                if (state.image) {
+              }
+              case "menu-copyimg": {
+                const imageUrl = resolveHttpUrl(state.image, window.location.href);
+                if (imageUrl) {
                   snackbarShow("正在复制图片，请稍后", false, 10_000);
-                  void copyImage(state.image).then(
+                  void copyImage(imageUrl.href).then(
                     () => snackbarShow("复制成功！请遵守图片版权协议"),
                     () => snackbarShow("图片复制失败，请检查浏览器权限"),
                   );
                 }
                 break;
+              }
+              case "menu-search":
+                if (window.SearchWidget?.open) {
+                  window.SearchWidget.open();
+                } else {
+                  snackbarShow("未启用站内搜索插件");
+                }
+                break;
               case "menu-searchBaidu":
-                window.open(
+                openExternalUrl(
                   `https://www.baidu.com/s?wd=${encodeURIComponent(state.selection)}`,
-                  "_blank",
-                  "noopener",
                 );
                 break;
               default:
             }
             hide();
           });
+          resources.listen(document, "keydown", (event) => {
+            if ((event as KeyboardEvent).key === "Escape" && menu.style.display === "block") {
+              hide();
+            }
+          });
           resources.listen(mask, "contextmenu", (event) => {
             event.preventDefault();
             hide();
           });
-          resources.listen(mask, "wheel", hide);
-          resources.listen(menu, "wheel", hide);
+          resources.listen(mask, "wheel", hide, { passive: true });
+          resources.listen(menu, "wheel", hide, { passive: true });
           resources.defer(hide);
         },
         unmount: hide,

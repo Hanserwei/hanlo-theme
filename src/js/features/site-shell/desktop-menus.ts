@@ -1,3 +1,4 @@
+import { throttle } from "../../core/dom";
 import type { PageResourceScope } from "../../core/resource-scope";
 
 interface MenuPanel {
@@ -51,11 +52,15 @@ export function mountDesktopMenus(resources: PageResourceScope): void {
 
   for (const entry of entries) {
     close(entry);
+    let expandedBeforePointerDown = false;
     resources.listen(entry.item, "pointerenter", (event) => {
       if ((event as PointerEvent).pointerType !== "touch") open(entry);
     });
     resources.listen(entry.item, "pointerleave", (event) => {
       if ((event as PointerEvent).pointerType !== "touch") close(entry);
+    });
+    resources.listen(entry.control, "pointerdown", () => {
+      expandedBeforePointerDown = entry.item.dataset["expanded"] === "true";
     });
     resources.listen(entry.item, "focusin", () => open(entry));
     resources.listen(entry.item, "focusout", (event) => {
@@ -63,8 +68,17 @@ export function mountDesktopMenus(resources: PageResourceScope): void {
       if (!(next instanceof Node) || !entry.item.contains(next)) close(entry);
     });
     resources.listen(entry.control, "click", (event) => {
+      const isKeyboard = (event as MouseEvent).detail === 0;
+      const shouldClose = isKeyboard
+        ? entry.item.dataset["expanded"] === "true"
+        : expandedBeforePointerDown;
+      expandedBeforePointerDown = false;
+      if (shouldClose) {
+        close(entry);
+        return;
+      }
       open(entry);
-      if ((event as MouseEvent).detail === 0 || (event as PointerEvent).pointerType === "touch") {
+      if (isKeyboard || (event as PointerEvent).pointerType === "touch") {
         entry.panel.querySelector<HTMLElement>("a, button")?.focus();
       }
     });
@@ -88,14 +102,15 @@ export function mountDesktopMenus(resources: PageResourceScope): void {
   resources.listen(document, "pointerdown", (event) => {
     if (event.target instanceof Node && !root.contains(event.target)) closeAll();
   });
-  const reposition = () => {
+  const reposition = throttle(() => {
     for (const { item, panel } of entries) {
       if (item.dataset["expanded"] === "true") positionPanel(panel);
     }
-  };
+  }, 100);
   resources.listen(window, "resize", reposition);
   if (document.fonts) resources.listen(document.fonts, "loadingdone", reposition);
   resources.defer(() => {
+    reposition.cancel();
     closeAll();
     delete root.dataset["menusReady"];
     for (const { item, panel } of entries) {

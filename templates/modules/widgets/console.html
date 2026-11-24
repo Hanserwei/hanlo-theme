@@ -7,23 +7,21 @@
   <div class="console-card-group">
     <!-- 评论，需要使用评论插件，获取最近评论 -->
     <div class="console-card-group-left">
-      <div class="console-card" data-hanlo-action="hide-console" id="card-newest-comments">
+      <div class="console-card" id="card-newest-comments">
         <div class="card-content">
           <div class="author-content-item-tips">互动</div>
           <span class="author-content-item-title">最近评论</span>
         </div>
         <div class="aside-list">
-          <th:block th:each="comment,iterStat : ${commentFinder.list(null, 1, 20)}">
-            <th:block th:if="${iterStat.index < 6}">
-              <th:block th:replace="~{modules/common/comment-item :: comment-item(${comment}, 'console')}" />
-            </th:block>
+          <th:block th:each="comment : ${commentFinder.list(null, 1, 6)}">
+            <th:block th:replace="~{modules/common/comment-item :: comment-item(${comment}, 'console')}" />
           </th:block>
           </div>
       </div>
     </div>
     <!-- 右侧展示 tag -->
     <div class="console-card-group-right">
-      <div class="console-card tags" data-hanlo-action="hide-console">
+      <div class="console-card tags">
         <div class="card-content">
           <div class="author-content-item-tips">标签</div>
           <span class="author-content-item-title">寻找感兴趣的领域</span>
@@ -37,8 +35,8 @@
         </div>
       </div>
       <!-- 底部展示时间归档 -->
-      <div class="console-card history" data-hanlo-action="hide-console">
-        <div class="item-headline"><i class="fas fa-archive"></i><span>文章</span></div>
+      <div class="console-card history">
+        <div class="item-headline"><i class="haofont hao-icon-box-archive" aria-hidden="true"></i><span>文章</span></div>
         <ul class="card-archive-list" th:with="archives = ${postFinder.archives(1,0)}">
           <th:block th:each="archive : ${archives.items}">
             <li class="card-archive-list-item" th:each="month,monthStat : ${archive.months}">

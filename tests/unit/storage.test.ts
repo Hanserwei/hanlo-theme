@@ -1,6 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { ExpiringStorage, type StorageLike } from "../../src/js/core/storage";
+import { createBrowserStorage, ExpiringStorage, type StorageLike } from "../../src/js/core/storage";
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 function createStorage(): StorageLike & { readonly values: Map<string, string> } {
   const values = new Map<string, string>();
@@ -34,5 +38,33 @@ describe("ExpiringStorage", () => {
 
     expect(new ExpiringStorage(storage).get("theme")).toBeUndefined();
     expect(storage.values.has("theme")).toBe(false);
+  });
+
+  it("falls back to in-memory storage when window.localStorage is blocked or throws", () => {
+    vi.stubGlobal("window", {
+      get localStorage() {
+        throw new Error("SecurityError: storage disabled");
+      },
+    });
+    const blockedStorage = createBrowserStorage();
+    blockedStorage.set("theme", "dark", 2);
+    expect(blockedStorage.get("theme")).toBe("dark");
+
+    vi.stubGlobal("window", {
+      localStorage: {
+        getItem() {
+          throw new Error("QuotaExceededError");
+        },
+        setItem() {
+          throw new Error("QuotaExceededError");
+        },
+        removeItem() {
+          throw new Error("QuotaExceededError");
+        },
+      },
+    });
+    const failingStorage = createBrowserStorage();
+    failingStorage.set("aside-status", "hide", 2);
+    expect(failingStorage.get("aside-status")).toBe("hide");
   });
 });

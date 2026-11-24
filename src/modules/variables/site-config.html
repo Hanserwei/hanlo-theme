@@ -1,61 +1,62 @@
 <!-- 声明一些公共信息 -->
 <script id="site-config" th:inline="javascript"
-        th:with="postAiEnabled=${htmlType == 'post' && (not #strings.isEmpty(#annotations.get(post, 'ai')) ? #annotations.get(post, 'ai') == 'true' : theme.config.post.aiDescription.aiDescriptionEnable)}">
+        th:with="postAiEnabled=${htmlType == 'post' && post != null && (not #strings.isEmpty(#annotations.get(post, 'ai')) ? #annotations.get(post, 'ai') == 'true' : theme.config.post.aiDescription.aiDescriptionEnable)},
+                 postAiRemoteActive=${postAiEnabled && (theme.config.post.aiDescription.mode == 'tianli' || theme.config.post.aiDescription.switchBtn)}">
     window.GLOBAL_CONFIG = {
         // 页面类型 index,page,post,tag,category
-        htmlType: (/*[[${ htmlType }]]*/ null),
+        htmlType: (/*[[${ htmlType }]]*/ 'index') || 'index',
         lazyload: {
-            enable: (/*[[${theme.config.other.vanillaLazyload.enable}]]*/ null),
-            error: (/*[[@{${theme.config.other.vanillaLazyload.errorImg}}]]*/ null)
+            enable: Boolean((/*[[${theme.config.other.vanillaLazyload.enable}]]*/ false)),
+            error: (/*[[${#strings.isEmpty(theme.config.other.vanillaLazyload.errorImg) ? assets_link + '/images/404.gif' : theme.config.other.vanillaLazyload.errorImg}]]*/ '') ?? ''
         },
-        isFriendLinksInFooter: (/*[[${theme.config.footer.footer_group.enable_footer_group}]]*/ null),
-        loadingBox: (/*[[${theme.config.other.loadingBoxs.loadingBoxEnable}]]*/ null),
-        helloText: (/*[[${#strings.listSplit(theme.config.sidebar.profile.helloText, ',')}]]*/ null),
-        rightMenuEnable: (/*[[${theme.config.tool.rightMenu.rightMenuEnable}]]*/ null),
-        colorScheme: (/*[[${theme.config.style.colorScheme}]]*/ null),
+        isFriendLinksInFooter: Boolean((/*[[${theme.config.footer.footer_group.enable_footer_group}]]*/ false)),
+        loadingBox: Boolean((/*[[${theme.config.other.loadingBoxs.loadingBoxEnable}]]*/ false)),
+        helloText: (/*[[${#strings.listSplit(theme.config.sidebar.profile.helloText, ',')}]]*/ null) || [],
+        rightMenuEnable: Boolean((/*[[${theme.config.tool.rightMenu.rightMenuEnable}]]*/ false)),
+        colorScheme: (/*[[${theme.config.style.colorScheme}]]*/ 'system') || 'system',
         effects: {
-            bubble: (/*[[${theme.config.other.bubbleEnable}]]*/ null),
-            universe: (/*[[${theme.config.style.universe}]]*/ null),
-            baClick: (/*[[${theme.config.style.baClickEnable == null || theme.config.style.baClickEnable}]]*/ false)
+            bubble: Boolean((/*[[${theme.config.other.bubbleEnable}]]*/ false)),
+            universe: Boolean((/*[[${theme.config.style.universe}]]*/ false)),
+            baClick: Boolean((/*[[${theme.config.style.baClickEnable == null || theme.config.style.baClickEnable}]]*/ false))
         },
         friends: {
             apiUrl: '/apis/api.friend.moony.la/v1alpha1/friendposts',
-            pageSize: Number((/*[[${theme.config.link.fmomentsPageSize}]]*/ null)),
-            errorImage: (/*[[@{${error404Image}}]]*/ null)
+            pageSize: Number((/*[[${theme.config.link.fmomentsPageSize}]]*/ 12)) || 12,
+            errorImage: (/*[[${error404Image}]]*/ '') ?? ''
         },
         postAi: {
             summary: (/*[[${!postAiEnabled ? '' :
                         theme.config.post.aiDescription.mode != 'local' && !theme.config.post.aiDescription.switchBtn ? '' :
-                        post.spec.excerpt.autoGenerate ? '本地模式需要自己填写文章摘要' :
-                        #strings.isEmpty(post.status.excerpt) ? '请填写文章摘要' : post.status.excerpt}]]*/ null),
-            randomRange: Number((/*[[${theme.config.post.aiDescription.randomNum}]]*/ null)),
-            wordLimit: Number((/*[[${theme.config.post.aiDescription.basicWordCount}]]*/ null)),
+                        post.spec?.excerpt?.autoGenerate ? '本地模式需要自己填写文章摘要' :
+                        #strings.isEmpty(post.status?.excerpt) ? '请填写文章摘要' : post.status.excerpt}]]*/ '') ?? '',
+            randomRange: Number((/*[[${theme.config.post.aiDescription.randomNum}]]*/ 3)) || 3,
+            wordLimit: Number((/*[[${theme.config.post.aiDescription.basicWordCount}]]*/ 1000)) || 1000,
             buttonLink: (/*[[${theme.config.post.aiDescription.btnLink}]]*/ '') ?? '',
             name: (/*[[${theme.config.post.aiDescription.gptName}]]*/ '') ?? '',
-            mode: (/*[[${theme.config.post.aiDescription.mode}]]*/ null),
-            switchable: (/*[[${theme.config.post.aiDescription.switchBtn}]]*/ null),
-            key: (/*[[${theme.config.post.aiDescription.key}]]*/ '') ?? '',
-            referer: (/*[[${theme.config.post.aiDescription.Referer}]]*/ '') ?? ''
+            mode: (/*[[${theme.config.post.aiDescription.mode == 'tianli' ? 'tianli' : 'local'}]]*/ 'local') || 'local',
+            switchable: Boolean((/*[[${theme.config.post.aiDescription.switchBtn}]]*/ false)),
+            key: (/*[[${postAiRemoteActive ? theme.config.post.aiDescription.key : ''}]]*/ '') ?? '',
+            referer: (/*[[${postAiRemoteActive ? theme.config.post.aiDescription.Referer : ''}]]*/ '') ?? ''
         },
         widgets: {
             dynamicTitle: {
-                enabled: Boolean((/*[[${theme.config.other.diytitle.diytitleEnable}]]*/ null)),
-                leave: (/*[[${theme.config.other.diytitle.leaveTitle}]]*/ null) || '',
-                back: (/*[[${theme.config.other.diytitle.backTitle}]]*/ null) || ''
+                enabled: Boolean((/*[[${theme.config.other.diytitle.diytitleEnable}]]*/ false)),
+                leave: (/*[[${theme.config.other.diytitle.leaveTitle}]]*/ '') ?? '',
+                back: (/*[[${theme.config.other.diytitle.backTitle}]]*/ '') ?? ''
             },
             greeting: {
-                enabled: Boolean((/*[[${theme.config.other.greeting.enable_greeting}]]*/ null)),
+                enabled: Boolean((/*[[${theme.config.other.greeting.enable_greeting}]]*/ false)),
                 items: (/*[[${theme.config.other.greeting.setting}]]*/ null) || []
             },
             typed: {
-                random: Boolean((/*[[${theme.config.top.above.enable_typed_random}]]*/ null)),
+                random: Boolean((/*[[${theme.config.top.above.enable_typed_random}]]*/ false)),
                 items: (/*[[${theme.config.top.above.typed}]]*/ null) || []
             },
             tenYear: {
-                startedAt: (/*[[${theme.config.about.tenyear.start_time}]]*/ null),
-                endedAt: (/*[[${theme.config.about.tenyear.end_time}]]*/ null)
+                startedAt: (/*[[${theme.config.about.tenyear.start_time}]]*/ '') ?? '',
+                endedAt: (/*[[${theme.config.about.tenyear.end_time}]]*/ '') ?? ''
             },
-            randomTagColors: (/*[[${theme.config.other.tagRandomColorEnable}]]*/ null)
+            randomTagColors: Boolean((/*[[${theme.config.other.tagRandomColorEnable}]]*/ false))
         },
         date_suffix: {
             just: '刚刚',
@@ -69,34 +70,34 @@
             cht_to_chs: "你已切换为简体",
             day_to_night: "你已切换为深色模式",
             night_to_day: "你已切换为浅色模式",
-            bgLight: (/*[[${theme.config.style.themeLightSkin}]]*/ ''),
-            bgDark: (/*[[${theme.config.style.themeDarkSkin}]]*/ ''),
+            bgLight: (/*[[${theme.config.style.themeLightSkin}]]*/ '') ?? '',
+            bgDark: (/*[[${theme.config.style.themeDarkSkin}]]*/ '') ?? '',
             position: "top-center",
         },
         translate: {
-            defaultEncoding: (/*[[${theme.config.style.translate.defaultEncoding}]]*/ null),
+            defaultEncoding: Number((/*[[${theme.config.style.translate.defaultEncoding}]]*/ 2)) || 2,
             msgToTraditionalChinese: "繁",
             msgToSimplifiedChinese: "简",
         },
         shiki: {
-            enable: (/*[[${theme.config.code.shiki_enable == null || theme.config.code.shiki_enable}]]*/ null),
-            enable_title: (/*[[${ theme.config.code.enable_title }]]*/ null),
-            enable_hr: (/*[[${ theme.config.code.enable_hr }]]*/ null),
-            enable_line: (/*[[${ theme.config.code.enable_line }]]*/ null),
-            enable_copy: (/*[[${ theme.config.code.enable_copy }]]*/ null),
-            enable_expander: (/*[[${ theme.config.code.enable_expander }]]*/ null),
-            height_limit: Number((/*[[${#strings.isEmpty(theme.config.code.height_limit) ? 300 : theme.config.code.height_limit}]]*/ null)),
-            enable_height_limit: (/*[[${theme.config.code.enable_height_limit}]]*/ null),
-            theme_light: (/*[[${theme.config.code.theme_light}]]*/ ''),
-            theme_dark: (/*[[${theme.config.code.theme_dark}]]*/ '')
+            enable: Boolean((/*[[${theme.config.code.shiki_enable == null || theme.config.code.shiki_enable}]]*/ true)),
+            enable_title: Boolean((/*[[${ theme.config.code.enable_title }]]*/ false)),
+            enable_hr: Boolean((/*[[${ theme.config.code.enable_hr }]]*/ false)),
+            enable_line: Boolean((/*[[${ theme.config.code.enable_line }]]*/ false)),
+            enable_copy: Boolean((/*[[${ theme.config.code.enable_copy }]]*/ false)),
+            enable_expander: Boolean((/*[[${ theme.config.code.enable_expander }]]*/ false)),
+            height_limit: Number((/*[[${#strings.isEmpty(theme.config.code.height_limit) ? 300 : theme.config.code.height_limit}]]*/ 300)) || 300,
+            enable_height_limit: Boolean((/*[[${theme.config.code.enable_height_limit}]]*/ false)),
+            theme_light: (/*[[${theme.config.code.theme_light}]]*/ '') ?? '',
+            theme_dark: (/*[[${theme.config.code.theme_dark}]]*/ '') ?? ''
         },
         source: {
             links: {
-                linksUrl: (/*[[${ theme.config.link.linksUrl }]]*/ null),
-                linksNum: (/*[[${theme.config.footer.footer_group.num}]]*/ null),
+                linksUrl: (/*[[${ theme.config.link.linksUrl }]]*/ '') ?? '',
+                linksNum: Number((/*[[${theme.config.footer.footer_group.num}]]*/ 5)) || 5,
             },
             post: {
-                dynamicBackground: (/*[[${ theme.config.post.dynamicBackground }]]*/ null)
+                dynamicBackground: Boolean((/*[[${ theme.config.post.dynamicBackground }]]*/ false))
             },
         }
     };

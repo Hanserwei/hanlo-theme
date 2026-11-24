@@ -3,8 +3,8 @@
 #article-container a.repo-title:hover,#article-container a.mr-3:hover{
     text-decoration: none;
     border-bottom: 0px;
-    color: rgb(48 122 246 / 0%);
-    background: rgb(48 122 246 / 0%);
+    color: var(--heo-main);
+    background: transparent;
     border-radius: 0px;
     box-shadow: 0 8px 12px -3px rgb(13,17,23);
 }

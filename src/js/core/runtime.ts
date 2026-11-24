@@ -42,6 +42,7 @@ class PageLifecycleCoordinator {
   readonly #registry: PageControllerRegistry;
   readonly #window: Window;
   #destroying = false;
+  #initialLoadStarted = false;
   #mountedNavigation: Readonly<NavigationContext> | undefined;
   #navigationId = 0;
   #started = false;
@@ -86,17 +87,19 @@ class PageLifecycleCoordinator {
     const enqueueContext =
       this.#mountedNavigation ??
       this.#createNavigation("initial", "unknown", this.#window.location.href);
-    void this.#enqueue(async () => {
-      const navigation = this.#mountedNavigation;
-      const config = this.#currentConfig();
-      if (!navigation || !config) return;
-      await this.#registry.mountDefinition(
-        definition.name.trim(),
-        this.#pageRoot(),
-        config,
-        navigation,
-      );
-    }, enqueueContext);
+    if (this.#initialLoadStarted) {
+      void this.#enqueue(async () => {
+        const navigation = this.#mountedNavigation;
+        const config = this.#currentConfig();
+        if (!navigation || !config) return;
+        await this.#registry.mountDefinition(
+          definition.name.trim(),
+          this.#pageRoot(),
+          config,
+          navigation,
+        );
+      }, enqueueContext);
+    }
 
     return () => this.#enqueue(unregister, this.#mountedNavigation ?? enqueueContext);
   }
@@ -104,6 +107,7 @@ class PageLifecycleCoordinator {
   #handleInitialLoad = (): void => {
     const navigation = this.#createNavigation("initial", "unknown", this.#window.location.href);
     void this.#enqueue(async () => {
+      this.#initialLoadStarted = true;
       const config = this.#configStore.refresh();
       let mountError: unknown;
       try {

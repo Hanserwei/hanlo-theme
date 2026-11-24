@@ -3,14 +3,6 @@
     --pseudo-hover: #ff7242;
 }
 
-[data-theme=dark] div.btns {
-    filter: brightness(.7)
-}
-
-[data-theme=dark] div.btns a {
-    background: 0 0
-}
-
 div.btns {
     margin: 0 -8px;
     display: -webkit-box;
@@ -107,7 +99,7 @@ div.btns.grid5>a {
 #article-container .btns a:hover {
     text-decoration: none;
     border-bottom: 0px;
-    color: rgb(48 122 246 / 0%);
+    color: var(--heo-on-main);
 }
 
 div.btns a {
@@ -152,8 +144,9 @@ div.btns a {
     flex-direction: column;
     padding: 8px;
     text-align: center;
-    background: #f6f6f6;
-    border-radius: 4px
+    background: var(--heo-secondbg);
+    border: var(--style-border);
+    border-radius: 8px;
 }
 
 div.btns a>i {
@@ -181,16 +174,17 @@ div.btns a:not([href]) {
 
 div.btns a[href]:hover {
     background: var(--heo-main);
-    color: var(--heo-white)
+    color: var(--heo-on-main);
 }
 
 div.btns a[href]:hover>i:first-child {
-    background: var(--heo-main)
+    background: var(--heo-main);
+    color: var(--heo-on-main);
 }
 
 div.btns,div.btns a,div.btns p {
     font-size: .8125rem;
-    color: #555
+    color: var(--heo-fontcolor);
 }
 
 @media screen and (max-width: 1200px) {
@@ -297,8 +291,8 @@ div.btns a b,div.btns a p {
     word-wrap: break-word
 }
 
-div.btns a[href]:hover,div.btns a[href]:hover b {
-    color: #ff5722
+div.btns a[href]:hover,div.btns a[href]:hover b,div.btns a[href]:hover p {
+    color: var(--heo-on-main);
 }
 
 div.btns a[href]:hover>i:first-child,div.btns a[href]:hover>img:first-child {
@@ -414,32 +408,32 @@ div.btns.rounded a>i:first-child,div.btns.rounded a>img:first-child {
 
 #article-container p.p.h1,span.p.h1 {
     font-size: 1.625rem;
-    color: var(--color-h1);
+    color: var(--heo-fontcolor);
     padding-top: 2em
 }
 
 #article-container p.p.h2,span.p.h2 {
     font-size: 1.625rem;
-    color: var(--color-h2);
+    color: var(--heo-fontcolor);
     padding-top: 2em;
-    border-bottom: 1px solid rgba(68,68,68,.1)
+    border-bottom: 1px solid var(--heo-card-border);
 }
 
 #article-container p.p.h3,span.p.h3 {
     font-size: 1.375rem;
-    color: var(--color-h3);
+    color: var(--heo-fontcolor);
     padding-top: 2em
 }
 
 #article-container p.p.h4,span.p.h4 {
     font-size: 1.125rem;
-    color: var(--color-h4);
+    color: var(--heo-fontcolor);
     padding-top: 2em
 }
 
 #article-container p.p.h5,span.p.h5 {
     font-size: 1rem;
-    color: var(--color-h5);
+    color: var(--heo-fontcolor);
     padding-top: 1.5em
 }
 
@@ -514,7 +508,6 @@ p.p.gray,span.p.gray {
     transition: all .15s ease-out 0s;
     cursor: pointer;
     display: inline-block;
-    outline: 0;
     border-radius: 2px;
     -webkit-flex-shrink: 0;
     flex-shrink: 0;

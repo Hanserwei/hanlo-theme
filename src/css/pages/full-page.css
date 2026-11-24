@@ -6,7 +6,7 @@
 
 @media screen and (max-width: 768px) {
     #page-header #nav {
-        background: 0%;
+        background: transparent;
         transition: 0s;
     }
 
@@ -20,17 +20,23 @@
     color: var(--light-grey);
 }
 
-.nav-fixed #nav #site-name span{
-    color: var(--heo-fontcolor);
-}
-
 #nav .site-page {
     color: rgba(255, 255, 255, 0.7);
 }
 
+#nav a {
+    color: var(--light-grey);
+}
+
+#page-header.nav-fixed #nav a,
+#page-header.nav-fixed #nav .site-page,
+#page-header.nav-fixed .back-home-button,
+#page-header.nav-fixed #nav #site-name span {
+    color: var(--heo-fontcolor);
+}
+
 #page-header.full_page {
     height: 100vh;
-    background-attachment: fixed;
     border-radius: 0;
 }
 
@@ -80,9 +86,13 @@
     height: 100%;
     position: relative;
     overflow: hidden;
-    will-change: transform;
-    /* 添加性能优化 */
     animation: blur-to-clear 2s cubic-bezier(.62, .21, .25, 1) 0s 1 normal backwards running, scale 1.5s cubic-bezier(.62, .21, .25, 1) 0s 1 both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pl-container {
+        animation: none;
+    }
 }
 
 .pl-img {
@@ -139,9 +149,5 @@
 .pl-blur {
     /* 小图锯齿多，增加高斯模糊 */
     filter: blur(50px);
-}
-
-#nav a {
-    color: var(--light-grey);
 }
 }

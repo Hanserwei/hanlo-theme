@@ -118,7 +118,12 @@
 
 .reward-link.mode:hover {
     background: var(--heo-theme);
+    color: var(--heo-on-main);
     box-shadow: none;
+}
+
+.reward-link.mode:hover a {
+    color: var(--heo-on-main);
 }
 
 .post-reward .reward-button {
@@ -140,14 +145,6 @@
     height: 40px;
     line-height: 39px;
     box-shadow: var(--heo-shadow-red);
-}
-
-#post .post-copyright .post-copyright-info a:hover {
-    text-decoration: none;
-    background-color: rgb(255, 255, 255);
-    color: rgb(59, 130, 255);
-    cursor: pointer;
-    border-radius: 4px;
 }
 
 /* 标签列表页 */

@@ -58,27 +58,27 @@
                 <h1 class="post-title" th:text="${post.spec.title}"></h1>
                 <div id="post-meta">
                     <div class="meta-secondline">
-                        <span class="post-meta-author" data-flag-title="文章作者" title="文章作者">
+                        <span class="post-meta-author" data-flag-title="文章作者" title="文章作者" th:if="${post.owner != null}">
                             <i class="haofont hao-icon-zuozhe post-meta-icon"></i>[[${post.owner.displayName}]]
                         </span>
                         <span class="post-meta-wordcount"
-                              th:with="wordCount = ${#strings.length(post.content.content)}">
+                              th:with="wordCount = ${post.content?.content != null ? #strings.length(post.content.content) : 0}">
                             <i class="haofont hao-icon-file-word post-meta-icon" title="字数"></i>
                             <span class="post-meta-label">字数:</span>
                             <span class="word-count" th:text="${{wordCount}}"></span>
                             <span class="post-meta-separator"></span>
                             <i class="haofont hao-icon-clock post-meta-icon" title="阅读耗时"></i>
                             <span class="post-meta-label">阅读耗时:</span>
-                            <span>[[${wordCount / 400}]] 分钟</span>
+                            <span>[[${wordCount < 400 ? 1 : wordCount / 400}]] 分钟</span>
                         </span>
-                        <span class="post-meta-date">
+                        <span class="post-meta-date" th:if="${post.spec.publishTime != null}">
                             <i class="haofont hao-icon-calendar-days post-meta-icon"></i>
                             <time th:attr="datetime=${#dates.format(post.spec.publishTime, 'yyyy-MM-dd')}"
                                   th:text="${#dates.format(post.spec.publishTime,'yyyy/MM/dd')}"
                                   th:title="${#dates.format(post.spec.publishTime,'yyyy-MM-dd HH:mm:ss')}">
                             </time>
                         </span>
-                        <span class="post-meta-date" th:if="${theme.config.post.update_time}">
+                        <span class="post-meta-date" th:if="${theme.config.post.update_time && post.status?.lastModifyTime != null}">
                             <i class="haofont hao-icon-pencil post-meta-icon" title="最后更新时间"></i>
                             <time th:attr="datetime=${#dates.format(post.status.lastModifyTime, 'yyyy-MM-dd')}"
                                   th:text="${#dates.format(post.status.lastModifyTime,'yyyy/MM/dd')}"
@@ -99,7 +99,7 @@
                               title="热度">
                             <i class="haofont hao-icon-fire post-meta-icon"></i>
                             <span class="post-meta-label">热度:</span>
-                            <span id="visit" th:text="${post.stats.visit}"></span>
+                            <span id="visit" th:text="${post.stats?.visit ?: 0}"></span>
                         </span>
                         <a th:if="${post.spec.allowComment && theme.config.comments.commentsEnable && pluginFinder.available('PluginCommentWidget')}"
                            class="post-meta-commentcount"  data-flag-title="评论数"
@@ -107,12 +107,13 @@
                            href="#post-comment">
                             <i class="haofont hao-icon-chat--fill post-meta-icon hl:[font-size:17px]"></i>
                             <span class="post-meta-label">评论:</span>
-                            <span id="comment-count" th:text="${post.stats.comment}"></span>
+                            <span id="comment-count" th:text="${post.stats?.comment ?: 0}"></span>
                         </a>
-                        <th:block th:with="contributorLogin = ${contributorFinder.getContributor(#authentication.name)}">
-                            <a class="post-meta-editor" sec:authorize="isAuthenticated()" data-flag-title="编辑文章"
+                        <th:block sec:authorize="isAuthenticated()"
+                                  th:with="contributorLogin = ${contributorFinder.getContributor(#authentication.name)}">
+                            <a class="post-meta-editor" data-flag-title="编辑文章"
                                title="编辑文章"
-                               th:if="${contributorLogin.name} == ${post.spec.owner}"
+                               th:if="${contributorLogin != null and contributorLogin.name == post.spec.owner}"
                                th:href="@{/console/posts/editor(name=${post.metadata.name},returnToView=true)}">
                                 <i class="haofont hao-icon-bianji post-meta-icon hl:[margin-top:2px]"></i>
                                 <span>编辑</span>
@@ -146,26 +147,28 @@
                 <!-- 文章ai摘要 -->
                 <div class="post-ai" th:if="${not #strings.isEmpty(#annotations.get(post, 'ai')) ?
                       #annotations.get(post, 'ai') == 'true' : theme.config.post.aiDescription.aiDescriptionEnable}">
-                    <div class="ai-title"><i class="haofont hao-icon-bilibili"></i>
+                    <div class="ai-title"><i class="haofont hao-icon-bilibili" aria-hidden="true"></i>
                         <div class="ai-title-text">AI-摘要</div>
-                        <div th:if="${theme.config.post.aiDescription.switchBtn}" id="ai-Toggle">切换</div>
-                        <i class="haofont hao-icon-arrow-rotate-right"></i>
-                        <div th:if="${#strings.equals(theme.config.post.aiDescription.mode, 'local')}" class="ai-tag">[[${theme.config.post.aiDescription.gptName}]] GPT</div>
-                        <div th:if="${#strings.equals(theme.config.post.aiDescription.mode, 'tianli')}" class="ai-tag">Tianli GPT</div>
+                        <button th:if="${theme.config.post.aiDescription.switchBtn}" id="ai-Toggle" type="button" class="hanlo-button-reset">切换</button>
+                        <button type="button" class="hanlo-button-reset" aria-label="重新生成摘要" title="重新生成摘要">
+                            <i class="haofont hao-icon-arrow-rotate-right" aria-hidden="true"></i>
+                        </button>
+                        <button th:if="${#strings.equals(theme.config.post.aiDescription.mode, 'local')}" type="button" class="ai-tag hanlo-button-reset">[[${theme.config.post.aiDescription.gptName}]] GPT</button>
+                        <button th:if="${#strings.equals(theme.config.post.aiDescription.mode, 'tianli')}" type="button" class="ai-tag hanlo-button-reset">Tianli GPT</button>
                     </div>
                     <div class="ai-explanation hl:block">AI初始化中...</div>
                     <div class="ai-btn-box">
-                        <div class="ai-btn-item">介绍自己</div>
-                        <div class="ai-btn-item">生成本文简介</div>
-                        <div class="ai-btn-item">推荐相关文章</div>
-                        <div class="ai-btn-item">前往主页</div>
-                        <div class="ai-btn-item" id="go-tianli-blog">前往tianli博客</div>
+                        <button class="ai-btn-item hanlo-button-reset" type="button">介绍自己</button>
+                        <button class="ai-btn-item hanlo-button-reset" type="button">生成本文简介</button>
+                        <button class="ai-btn-item hanlo-button-reset" type="button">推荐相关文章</button>
+                        <button class="ai-btn-item hanlo-button-reset" type="button">前往主页</button>
+                        <button class="ai-btn-item hanlo-button-reset" id="go-tianli-blog" type="button">前往tianli博客</button>
                     </div>
                 </div>
 
                 <!-- 文章内容 -->
                     <article class="post-content" id="article-container">
-                    <th:block th:if="${theme.config.post.passage_tips.enable}"
+                    <th:block th:if="${theme.config.post.passage_tips.enable && post.status?.lastModifyTime != null && not #strings.isEmpty(theme.config.post.passage_tips.day)}"
                               th:with="days=${(new java.util.Date().getTime()-post.status.lastModifyTime.toEpochMilli())/86400000}">
                         <div class="note simple  warning"  th:if="${days > #conversions.convert(theme.config.post.passage_tips.day, 'java.lang.Integer')}">
                             <p>
@@ -173,13 +176,13 @@
                             </p>
                         </div>
                     </th:block>
-                    <th:block th:utext="${post.content.content}"/>
+                    <th:block th:if="${post.content?.content != null}" th:utext="${post.content.content}"/>
                 </article>
 
                 <!-- 版权声明 -->
                 <th:block th:replace="~{modules/post/copyright}"></th:block>
 
-                <nav class="pagination-post needEndHide" id="pagination"
+                <nav class="pagination-post needEndHide" id="pagination" aria-label="文章上下篇导航"
                      th:with="postCursor = ${postFinder.cursor(post.metadata.name)},
                      postRandomImg=${#strings.contains(postRandomImgSource,'?') ? postRandomImgSource+'&' : postRandomImgSource+'?'}">
                     <div th:if="${postCursor.hasPrevious()}" th:class="${postCursor.hasNext()==false} ? 'prev-post pull-full ' : 'prev-post pull-left'">

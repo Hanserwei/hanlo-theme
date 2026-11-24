@@ -19,26 +19,14 @@
             transition: .2s;
             display: flex;
             margin: 31px auto 0px;
-            color: var(--heo-white);
+            color: var(--heo-on-main);
             padding: 15px;
-            border-radius: 12px;
-            background: var(--search-result-title);
-            align-items: center;
-        }
-
-        button {
-            padding: 0;
-            outline: 0;
             border: none;
-            background: 0 0;
+            border-radius: 12px;
+            background: var(--heo-main);
+            align-items: center;
             cursor: pointer;
             touch-action: manipulation;
-        }
-
-        .fa-solid,
-        .fas {
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
         }
 
         .addBtn i {
@@ -47,6 +35,6 @@
         }
 
         .addBtn button:hover {
-            background: #4b7aff;
-            color: #fff;
+            background: var(--heo-theme-op-deep, var(--heo-main));
+            color: var(--heo-on-main);
         }

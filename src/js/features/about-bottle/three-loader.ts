@@ -2,7 +2,8 @@ export type Three = typeof import("three");
 export const THREE_CDN = "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js";
 let pending: Promise<Three> | undefined;
 
-export function loadThree(): Promise<Three> {
+export function loadThree(fresh = false): Promise<Three> {
+  if (fresh) pending = undefined;
   pending ??= import(/* @vite-ignore */ THREE_CDN)
     .then((module: Three) => {
       if (module.REVISION !== "187") throw new Error("Unexpected Three.js revision.");

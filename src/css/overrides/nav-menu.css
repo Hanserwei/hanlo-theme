@@ -87,7 +87,7 @@
 .hanlo-nav-menus .menus_item_child .site-page:focus-visible {
   margin: 0;
   padding: 0.4rem 0.75rem;
-  color: var(--heo-card-bg);
+  color: var(--heo-on-main);
   background: var(--heo-lighttext);
   box-shadow: none;
   transform: none;
@@ -128,7 +128,7 @@
 .hanlo-nav-menus .menus_item > .site-page:hover,
 .hanlo-nav-menus .menus_item > .site-page:focus-visible,
 .hanlo-nav-menus .menus_item[data-expanded="true"] > .site-page {
-  color: var(--heo-white);
+  color: var(--heo-on-main);
   background: var(--heo-main);
 }
 

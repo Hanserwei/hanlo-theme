@@ -6,12 +6,12 @@
     @param  isIndex    是否主页
     @param  _param     参数
  -->
-<nav id="pagination" th:fragment="page(path,pageInfo,isIndex,_param)">
+<nav id="pagination" aria-label="分页导航" th:fragment="page(path,pageInfo,isIndex,_param)">
     <div class="pagination" th:with="paths = ${isIndex ? path+'/' : path}">
 
         <!-- 页码按钮 -->
         <th:block th:if="${pageInfo.page > 3}">
-            <a class="page-number" data-hanlo-action="scroll-posts" th:href="${paths}" th:text="1"></a>
+            <a class="page-number" data-hanlo-action="scroll-posts" th:href="${paths + _param}" th:text="1"></a>
             <span class="space" th:if="${pageInfo.page != 4}">…</span>
         </th:block>
 

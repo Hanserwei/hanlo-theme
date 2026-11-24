@@ -155,17 +155,35 @@ export function mermaidConfig(mode: Mode): Record<string, unknown> {
 }
 
 let mermaidId = 0;
+const diagramRevisions = new WeakMap<HTMLElement, number>();
+
+function nextRevision(element: HTMLElement): number {
+  const revision = (diagramRevisions.get(element) ?? 0) + 1;
+  diagramRevisions.set(element, revision);
+  return revision;
+}
+
+function isCurrentRevision(element: HTMLElement, revision: number): boolean {
+  return diagramRevisions.get(element) === revision;
+}
+
 async function renderMermaid(
   diagram: Diagram,
   input: DiagramInput,
   mode: Mode,
   win: VditorWindow,
   resources: PageResourceScope,
+  revision: number,
 ): Promise<void> {
   if (!win.mermaid) return;
   win.mermaid.initialize(mermaidConfig(mode));
   const { svg: markup } = await win.mermaid.render(`hanlo-mermaid-${++mermaidId}`, input.source);
-  if (resources.disposed || !diagram.element.isConnected) return;
+  if (
+    resources.disposed ||
+    !diagram.element.isConnected ||
+    !isCurrentRevision(diagram.element, revision)
+  )
+    return;
   const parsed = new DOMParser().parseFromString(markup, "text/html");
   const svg = parsed.querySelector("svg");
   if (!svg) throw new Error("Mermaid did not return an SVG diagram.");
@@ -191,6 +209,7 @@ export function refreshDiagram(
   resources: PageResourceScope,
 ): void {
   const { element, kind } = diagram;
+  const revision = nextRevision(element);
   // External SVG documents cannot be translated by walking the parent DOM. Update the encoded
   // request from the original source; stable URLs let the browser reuse its HTTP cache on return.
   const object = element.querySelector<HTMLObjectElement>("object");
@@ -200,15 +219,17 @@ export function refreshDiagram(
   }
   restoreDiagram(diagram, win, input);
   const fail = (error: unknown) => {
-    if (resources.disposed || !element.isConnected) return;
+    if (resources.disposed || !element.isConnected || !isCurrentRevision(element, revision)) return;
     element.textContent = input.source;
     element.classList.add("vditor-reset--error");
     console.error(`[Vditor] ${kind} rendering failed; source preserved.`, error);
   };
   if (kind === "mermaid" && win.mermaid) {
-    void renderMermaid(diagram, input, mode, win, resources).catch(fail);
+    void renderMermaid(diagram, input, mode, win, resources, revision).catch(fail);
   } else if (kind === "graphviz" && win.Viz) {
-    void renderGraphviz(element, input.source, win, resources).catch(fail);
+    void renderGraphviz(element, input.source, win, resources, () =>
+      isCurrentRevision(element, revision),
+    ).catch(fail);
   } else {
     try {
       const method = kind === "echarts" ? "chartRender" : (`${kind}Render` as const);

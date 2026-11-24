@@ -68,6 +68,7 @@ body.hanlo-lightbox-open {
   max-width: 100%;
   max-height: calc(100vh - 8rem);
   object-fit: contain;
+  filter: brightness(1);
 }
 
 .hanlo-lightbox figcaption {

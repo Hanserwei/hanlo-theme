@@ -141,22 +141,14 @@
 
 #console .console-mask {
     background: var(--heo-maskbgdeep);
-    backdrop-filter: saturate(100%) blur(0px);
-    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     width: 100vw;
     height: 100vh;
     top: 0;
     left: 0;
     position: absolute;
     z-index: -1;
-    transition: 0.3s;
-    -webkit-backface-visibility: hidden;
-    -webkit-transform-style: preserve-3d;
-}
-
-#console.show .console-mask {
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: blur(20px);
 }
 
 #card-newest-comments .aside-list-item .thumbnail img {
@@ -182,7 +174,7 @@
 
 #card-newest-comments .aside-list-item:hover {
     background: var(--heo-main);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 #card-newest-comments .aside-list-item:not(:last-child) {
@@ -215,7 +207,7 @@
 }
 
 #console .aside-list-item:hover .thumbnail {
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 #console .aside-list-item .content {
@@ -244,7 +236,7 @@
 }
 
 #console .aside-list-item:hover .content .comment {
-    color: var(--heo-card-bg);
+    color: var(--heo-on-main);
 }
 
 #console .aside-list-item .content time {
@@ -254,11 +246,11 @@
 }
 
 #console .aside-list-item:hover .content time {
-    color: var(--heo-card-bg);
+    color: var(--heo-on-main);
 }
 
 #card-newest-comments .aside-list-item:hover .name {
-    color: var(--heo-card-bg)
+    color: var(--heo-on-main);
 }
 
 #console .aside-list {
@@ -298,7 +290,7 @@
 #console .button-group .console-btn-item > :is(a, button) {
     width: 100%;
     height: 100%;
-    background: var(--card-bg);
+    background: var(--heo-card-bg);
     border: var(--style-border);
     border-radius: 60px;
     display: flex;
@@ -318,7 +310,7 @@
 }
 
 #console .button-group .console-btn-item:hover > :is(a, button) {
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 .console-card.tags .card-tag-cloud {
@@ -340,7 +332,7 @@
 
 .console-card.tags .card-tag-cloud a:hover {
     background: var(--heo-main);
-    color: var(--heo-card-bg);
+    color: var(--heo-on-main);
 }
 
 .console-card.tags .card-tag-cloud a sup {
@@ -351,7 +343,7 @@
     width: 100%;
     height: 60px;
     position: fixed;
-    right: max(0, calc((100% - 1400px) / 2));
+    right: max(0px, calc((100% - 1400px) / 2));
     top: 0;
     font-size: 35px;
     color: var(--heo-fontcolor);
@@ -421,7 +413,7 @@
 
 #console .console-card.history .card-archive-list .card-archive-list-link:hover {
     background: var(--heo-main);
-    color: var(--heo-card-bg);
+    color: var(--heo-on-main);
 }
 
 #console #card-newest-comments {
@@ -656,7 +648,7 @@ img.rss-plan-icon {
 #article-container a.rss-plan-item:hover {
     text-decoration: none;
     border-bottom: 0px;
-    color: rgb(48 122 246 / 0%);
+    color: var(--heo-white);
     box-shadow: 0 8px 12px -3px var(--heo-background);
     border-radius: 12px;
 }
@@ -679,7 +671,7 @@ img.rss-plan-icon {
     border-bottom: 0px;
     padding: 0px;
     border-radius: 12px;
-    color: rgb(48 122 246 / 0%);
+    color: var(--heo-white);
 }
 
 
@@ -690,7 +682,6 @@ img.rss-plan-icon {
     border-radius: 8px;
     border: var(--style-border-always);
     transition: .3s;
-    outline-style: none;
     font-size: 16px;
     padding-left: 12px;
     background: var(--heo-secondbg);
@@ -699,7 +690,6 @@ img.rss-plan-icon {
 
 .pagination .toPageGroup input:focus, .pagination .toPageGroup:hover input {
     border: var(--style-border-hover-always);
-    outline-style: none;
     width: 100px
 }
 

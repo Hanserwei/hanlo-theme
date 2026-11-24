@@ -21,10 +21,11 @@ function createLightbox(
   images: readonly HTMLImageElement[],
   startIndex: number,
   trigger: HTMLImageElement,
-): HTMLElement {
+): { overlay: HTMLElement; close: () => void } {
   let index = startIndex;
   const overlay = document.createElement("div");
   overlay.className = "hanlo-lightbox";
+  overlay.tabIndex = -1;
   overlay.setAttribute("role", "dialog");
   overlay.setAttribute("aria-modal", "true");
   overlay.setAttribute("aria-label", "图片预览");
@@ -46,25 +47,13 @@ function createLightbox(
     caption.hidden = !image.alt;
     count.value = `${index + 1} / ${images.length}`;
   };
-  const close = (): void => {
-    document.body.classList.remove("hanlo-lightbox-open");
-    overlay.remove();
-    if (trigger.isConnected) trigger.focus({ preventScroll: true });
-  };
   const move = (step: number): void => {
     index = (index + step + images.length) % images.length;
     render();
   };
   const focusable = (): HTMLButtonElement[] =>
     Array.from(overlay.querySelectorAll<HTMLButtonElement>("button:not([disabled])"));
-
-  overlay.querySelector(".hanlo-lightbox__close")?.addEventListener("click", close);
-  overlay.querySelector(".hanlo-lightbox__previous")?.addEventListener("click", () => move(-1));
-  overlay.querySelector(".hanlo-lightbox__next")?.addEventListener("click", () => move(1));
-  overlay.addEventListener("click", (event) => {
-    if (event.target === overlay) close();
-  });
-  overlay.addEventListener("keydown", (event) => {
+  const handleKeydown = (event: KeyboardEvent): void => {
     if (event.key === "Escape") {
       event.preventDefault();
       close();
@@ -92,12 +81,26 @@ function createLightbox(
         : current + 1;
     event.preventDefault();
     controls[next]?.focus();
+  };
+  const close = (): void => {
+    document.removeEventListener("keydown", handleKeydown);
+    document.body.classList.remove("hanlo-lightbox-open");
+    overlay.remove();
+    if (trigger.isConnected) trigger.focus({ preventScroll: true });
+  };
+
+  overlay.querySelector(".hanlo-lightbox__close")?.addEventListener("click", close);
+  overlay.querySelector(".hanlo-lightbox__previous")?.addEventListener("click", () => move(-1));
+  overlay.querySelector(".hanlo-lightbox__next")?.addEventListener("click", () => move(1));
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) close();
   });
+  document.addEventListener("keydown", handleKeydown);
   render();
   document.body.classList.add("hanlo-lightbox-open");
   document.body.append(overlay);
   overlay.querySelector<HTMLButtonElement>(".hanlo-lightbox__close")?.focus();
-  return overlay;
+  return { overlay, close };
 }
 
 export function mountNativeGallery(resources: PageResourceScope): void {
@@ -105,24 +108,39 @@ export function mountNativeGallery(resources: PageResourceScope): void {
     gallery.classList.add("hanlo-native-gallery");
     gallery.style.opacity = "1";
   });
-  document.querySelector("#article-container .loadings")?.classList.remove("loadings");
+  document.querySelectorAll("#article-container .loadings").forEach((element) => {
+    element.classList.remove("loadings");
+  });
+  document.querySelectorAll<HTMLImageElement>(IMAGE_SELECTOR).forEach((image) => {
+    if (!image.closest("a") && !image.classList.contains("no-lightbox") && image.tabIndex < 0) {
+      image.tabIndex = 0;
+    }
+  });
 
-  let overlay: HTMLElement | undefined;
-  resources.listen(document, "click", (event) => {
-    const target = event.target;
+  let active: { overlay: HTMLElement; close: () => void } | undefined;
+  const openForTarget = (target: EventTarget | null, event: Event): void => {
     if (!(target instanceof HTMLImageElement) || !target.matches(IMAGE_SELECTOR)) return;
     if (target.closest("a") || target.classList.contains("no-lightbox")) return;
     const images = galleryImages(target);
     const index = images.indexOf(target);
     if (index < 0) return;
     event.preventDefault();
-    overlay?.remove();
+    active?.close();
     if (target.tabIndex < 0) target.tabIndex = 0;
-    overlay = createLightbox(images, index, target);
+    active = createLightbox(images, index, target);
+  };
+  resources.listen(document, "click", (event) => {
+    openForTarget(event.target, event);
+  });
+  resources.listen(document, "keydown", (event) => {
+    const keyboard = event as KeyboardEvent;
+    if (keyboard.key === "Enter" || keyboard.key === " ") {
+      openForTarget(keyboard.target, keyboard);
+    }
   });
   resources.defer(() => {
-    overlay?.remove();
-    document.body.classList.remove("hanlo-lightbox-open");
+    active?.close();
+    active = undefined;
   });
 }
 

@@ -91,7 +91,7 @@
   border: 1px solid var(--heo-theme);
   border-radius: 8px;
   background: var(--heo-theme);
-  color: var(--heo-white);
+  color: var(--heo-on-main);
   font: inherit;
   cursor: pointer;
 }

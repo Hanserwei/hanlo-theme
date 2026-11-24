@@ -1,5 +1,5 @@
 <!-- 座右铭 -->
-<div class="author-content"  th:if="${theme.config.about.textarea.size()}=='2'" th:with="texts = ${theme.config.about.textarea}">
+<div class="author-content" th:if="${not #lists.isEmpty(theme.config.about.textarea)}" th:with="texts = ${theme.config.about.textarea}">
     <div class="author-content-item maxim">
         <div class="author-content-item-tips" th:text="${texts[0].tittle}">座右铭</div>
         <span class="maxim-title">
@@ -9,7 +9,7 @@
         </span>
     </div>
 
-    <div class="author-content-item buff">
+    <div class="author-content-item buff" th:if="${#lists.size(texts) >= 2}">
         <div class="card-content">
             <div class="author-content-item-tips" th:text="${texts[1].tittle}">特长</div>
             <span class="buff-title">

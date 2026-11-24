@@ -1,10 +1,11 @@
 <!-- 推荐文章 -->
 <div class="topGroup" id="topGroup"
-     th:with='topGroupPosts = ${postFinder.list(1,6)},
-    postRandomImg=${#strings.contains(postRandomImgSource,"?") ? postRandomImgSource+"&" : postRandomImgSource+"?"}'>
+     th:with='isLatestRecommend=${#strings.equals(theme.config.top.BannerRight.recommendPost, "latest")},
+              topGroupPosts=${isLatestRecommend ? postFinder.list({page: 1, size: 6}) : null},
+              postRandomImg=${#strings.contains(postRandomImgSource,"?") ? postRandomImgSource+"&" : postRandomImgSource+"?"}'>
     <div class="recent-post-group">
-        <div class="recent-post-item" th:each="post,iter : ${topGroupPosts}"
-             th:if="${#strings.equals(theme.config.top.BannerRight.recommendPost, 'latest')}">
+        <div class="recent-post-item" th:each="post,iter : ${topGroupPosts?.items}"
+             th:if="${isLatestRecommend}">
 
             <div class="post_cover" th:classappend="${iter.index % 2 == 0 ? 'left_radius' : 'right_radius'}">
                 <a th:href="@{${post.status.permalink}}" th:title="${post.spec.title}">
@@ -22,9 +23,10 @@
             </div>
         </div>
         <!-- 自定义的文章右上角的推荐文章 -->
-        <div class="recent-post-item" th:each="cuscomPost,iter : ${theme.config.top.BannerRight.recommendPostCustom}"
-             th:if="${#strings.equals(theme.config.top.BannerRight.recommendPost, 'custom') && not #strings.isEmpty(cuscomPost.post) }">
-            <th:block th:with="post = ${postFinder.getByName(cuscomPost.post)}">
+        <th:block th:each="customPost,iter : ${theme.config.top.BannerRight.recommendPostCustom}"
+                  th:if="${#strings.equals(theme.config.top.BannerRight.recommendPost, 'custom') && not #strings.isEmpty(customPost.post)}"
+                  th:with="post = ${postFinder.getByName(customPost.post)}">
+            <div class="recent-post-item" th:if="${post != null}">
                 <div class="post_cover" th:classappend="${iter.index % 2 == 0 ? 'left_radius' : 'right_radius'}">
                     <a th:href="@{${post.status.permalink}}" th:title="${post.spec.title}">
                         <span class="recent-post-top-text">荐</span>
@@ -39,8 +41,8 @@
                        th:title="${post.spec.title}">
                     </a>
                 </div>
-            </th:block>
-        </div>
+            </div>
+        </th:block>
     </div>
 
     <!-- 今日推荐 -->

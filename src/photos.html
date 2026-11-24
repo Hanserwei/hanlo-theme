@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{modules/layouts/layout :: layout(content = ~{::content},htmlType = 'photos',title = ${title + ' | ' + site.title}, head = ~{::head},_title = ${title})}">
+      th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'photos', title = ${(title ?: '相册') + ' | ' + site.title}, head = ~{::head})}">
 <th:block th:fragment="head">
-    <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${_title},
+    <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${title ?: '相册'},
                 _permalink = '/photos',
                 _cover = ${theme.config.other.opengraph.image},
                 _excerpt = ${site.seo.description},
@@ -15,25 +15,30 @@
     <div class="page" id="body-wrap">
         <!-- 头部导航栏 -->
         <header class="not-top-img" id="page-header">
-            <nav th:replace="~{modules/nav :: nav(title = ${_title})}"></nav>
+            <nav th:replace="~{modules/nav :: nav(title = ${title ?: '相册'})}"></nav>
         </header>
         <main class="layout hide-aside" id="content-inner">
-            <div id="page">
-                <th:block th:if="${#strings.equals(theme.config.photos.photosStyle, 'default')}">
-                    <th:block th:each="group : ${photoFinder.groupBy()}">
+            <div id="page"
+                 th:with="selectedGroup=${not #lists.isEmpty(param.group) ? param.group[0] : ''},
+                          param_group=${not #strings.isEmpty(selectedGroup) ? '?group=' + selectedGroup : ''}">
+                <p th:unless="${pluginFinder.available('PluginPhotos')}" role="status">图库插件未启用。</p>
+                <th:block th:if="${pluginFinder.available('PluginPhotos')}">
+                <th:block th:if="${#strings.equals(theme.config.photos.photosStyle, 'default')}"
+                          th:with="photoGroups=${photoFinder.groupBy()}">
+                    <th:block th:each="group : ${photoGroups}">
                         <th:block
-                                th:if="${#strings.equals(group.metadata.name, param.group) && not #strings.isEmpty(param.group)}"
+                                th:if="${not #strings.isEmpty(selectedGroup) && #strings.equals(group.metadata.name, selectedGroup)}"
                                 th:with="description = ${#annotations.get(group, 'description')},
-                         background = ${#annotations.get(group, 'background')}">
-                    <div class="author-content author-content-item essayPage single hanlo-essay-cover"
-                         th:style="|--hanlo-essay-cover: url('${background}')|">
+                                         background = ${#annotations.get(group, 'background')}">
+                            <div class="author-content author-content-item essayPage single hanlo-essay-cover"
+                                 th:style="${not #strings.isEmpty(background) ? '--hanlo-essay-cover: url(\'' + background + '\')' : null}">
                                 <div class="card-content">
                                     <div class="author-content-item-tips">相册集</div>
                                     <span class="author-content-item-title" th:text="${group.spec.displayName}"></span>
                                     <div class="content-bottom">
                                         <div class="tips" th:text="${description}"></div>
                                     </div>
-                                    <div class="banner-button-group">
+                                    <div class="banner-button-group" th:if="${not #strings.isEmpty(theme.config.photos.topLink)}">
                                         <a class="banner-button" th:href="${theme.config.photos.topLink}">
                                             <i class="haofont hao-icon-circle-arrow-right"></i>
                                             <span class="banner-button-text" th:text="返回"></span>
@@ -43,17 +48,17 @@
                             </div>
                         </th:block>
                     </th:block>
-                    <th:block th:if="${#strings.isEmpty(param.group)}"
+                    <th:block th:if="${#strings.isEmpty(selectedGroup)}"
                               th:with="background = ${theme.config.photos.backgroundImg}">
-                    <div class="author-content author-content-item essayPage single hanlo-essay-cover"
-                         th:style="|--hanlo-essay-cover: url('${background}')|">
+                        <div class="author-content author-content-item essayPage single hanlo-essay-cover"
+                             th:style="${not #strings.isEmpty(background) ? '--hanlo-essay-cover: url(\'' + background + '\')' : null}">
                             <div class="card-content">
                                 <div class="author-content-item-tips">相册集</div>
                                 <span class="author-content-item-title">全部</span>
                                 <div class="content-bottom">
                                     <div class="tips"></div>
                                 </div>
-                                <div class="banner-button-group">
+                                <div class="banner-button-group" th:if="${not #strings.isEmpty(theme.config.photos.topLink)}">
                                     <a class="banner-button" th:href="${theme.config.photos.topLink}">
                                         <i class="haofont hao-icon-circle-arrow-right"></i>
                                         <span class="banner-button-text" th:text="返回"></span>
@@ -64,24 +69,22 @@
                     </th:block>
                     <div th:replace="~{modules/widgets/photo-gallery :: gallery}"></div>
                     <!-- 分页 -->
-                    <th:block th:with="param_group = ${not #strings.isEmpty(param.group) ? '?group='+param.group : ''}">
-                        <div th:replace="~{modules/widgets/page :: page('/photos',${photos},false,${param_group})}"></div>
-                    </th:block>
+                    <div th:replace="~{modules/widgets/page :: page('/photos',${photos},false,${param_group})}"></div>
                 </th:block>
 
-                <div class="gallery-groups" th:if="${#strings.equals(theme.config.photos.photosStyle, 'one')}">
-                    <th:block th:each="group : ${photoFinder.groupBy()}">
-                        <h1 class="hl:[margin:8px_0px_20px]" th:if="${#strings.equals(group.metadata.name, param.group) && not #strings.isEmpty(param.group) }">
+                <div class="gallery-groups" th:if="${#strings.equals(theme.config.photos.photosStyle, 'one')}"
+                     th:with="photoGroups=${photoFinder.groupBy()}">
+                    <th:block th:each="group : ${photoGroups}">
+                        <h1 class="hl:[margin:8px_0px_20px]" th:if="${not #strings.isEmpty(selectedGroup) && #strings.equals(group.metadata.name, selectedGroup)}">
                             [[${group.spec.displayName}]]
                         </h1>
                     </th:block>
-                    <h1 class="hl:[margin:8px_0px_20px]" th:if="${#strings.isEmpty(param.group)}">全部</h1>
+                    <h1 class="hl:[margin:8px_0px_20px]" th:if="${#strings.isEmpty(selectedGroup)}">全部</h1>
                     <div th:replace="~{modules/widgets/photo-gallery :: gallery}"></div>
                     <!-- 分页 -->
-                    <th:block th:with="param_group = ${not #strings.isEmpty(param.group) ? '?group='+param.group : ''}">
-                        <div th:replace="~{modules/widgets/page :: page('/photos',${photos},false,${param_group})}"></div>
-                    </th:block>
+                    <div th:replace="~{modules/widgets/page :: page('/photos',${photos},false,${param_group})}"></div>
                 </div>
+                </th:block>
 
                 <!--/* 评论组件 */-->
                 <th:block th:replace="~{modules/comment :: comment(group = 'content.halo.run',

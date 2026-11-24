@@ -1,4 +1,4 @@
-import { throttle, type ThrottledFunction } from "../../core/dom";
+import { prefersReducedMotion, throttle, type ThrottledFunction } from "../../core/dom";
 import { resolveHttpUrl } from "../../core/navigation";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
@@ -85,6 +85,11 @@ function parseArticle(resource: FriendPostResource): FriendArticle {
   };
 }
 
+function safeTime(date: Date): number {
+  const value = date.getTime();
+  return Number.isNaN(value) ? 0 : value;
+}
+
 export function filterFriendArticles(
   articles: readonly FriendArticle[],
   filter: FriendArticleFilter,
@@ -98,27 +103,30 @@ export function filterFriendArticles(
     const firstValue =
       filter.sortField === "author" || filter.sortField === "title"
         ? first[filter.sortField].toLowerCase()
-        : first[filter.sortField].getTime();
+        : safeTime(first[filter.sortField]);
     const secondValue =
       filter.sortField === "author" || filter.sortField === "title"
         ? second[filter.sortField].toLowerCase()
-        : second[filter.sortField].getTime();
+        : safeTime(second[filter.sortField]);
     const comparison = firstValue < secondValue ? -1 : firstValue > secondValue ? 1 : 0;
     return filter.sortOrder === "asc" ? comparison : -comparison;
   });
 }
 
 function delay(milliseconds: number, signal: AbortSignal): Promise<void> {
+  if (signal.aborted) {
+    return Promise.reject(new DOMException("The operation was aborted.", "AbortError"));
+  }
   return new Promise((resolve, reject) => {
-    const timeout = window.setTimeout(resolve, milliseconds);
-    signal.addEventListener(
-      "abort",
-      () => {
-        window.clearTimeout(timeout);
-        reject(new DOMException("The operation was aborted.", "AbortError"));
-      },
-      { once: true },
-    );
+    const onAbort = () => {
+      window.clearTimeout(timeout);
+      reject(new DOMException("The operation was aborted.", "AbortError"));
+    };
+    const timeout = window.setTimeout(() => {
+      signal.removeEventListener("abort", onAbort);
+      resolve();
+    }, milliseconds);
+    signal.addEventListener("abort", onAbort, { once: true });
   });
 }
 
@@ -136,6 +144,7 @@ class FriendMomentsController {
   #hasNext = false;
   #keyword = "";
   #loading = false;
+  #numberGenerations = new Map<string, number>();
   #unmounted = false;
   #scrollHandler: ThrottledFunction<[]> | undefined;
   #sortField: FriendMomentsSortField = "pubDate";
@@ -251,7 +260,9 @@ class FriendMomentsController {
     if (order) {
       this.#resources.listen(order, "click", () => {
         order.classList.toggle("active");
-        this.#sortOrder = order.classList.contains("active") ? "desc" : "asc";
+        const descending = order.classList.contains("active");
+        this.#sortOrder = descending ? "desc" : "asc";
+        order.setAttribute("aria-checked", String(descending));
         this.#render();
       });
     }
@@ -270,7 +281,7 @@ class FriendMomentsController {
         void this.#loadMore();
       }
     }, 200);
-    this.#resources.listen(window, "scroll", this.#scrollHandler);
+    this.#resources.listen(window, "scroll", this.#scrollHandler, { passive: true });
     this.#resources.defer(() => this.#scrollHandler?.cancel());
   }
 
@@ -340,7 +351,7 @@ class FriendMomentsController {
   #renderArticle(article: FriendArticle, index: number): HTMLElement {
     const item = document.createElement("article");
     item.className = "fMomentsArticleItem";
-    item.style.animationDelay = `${index * 0.1}s`;
+    item.style.animationDelay = prefersReducedMotion() ? "0s" : `${Math.min(index, 12) * 0.06}s`;
     const header = document.createElement("div");
     header.className = "fMomentsArticleHeader";
     const avatar = document.createElement("img");
@@ -362,12 +373,15 @@ class FriendMomentsController {
     const authorName = document.createElement("div");
     authorName.className = "fMomentsAuthorName";
     authorName.textContent = article.author;
+    const validPubDate = !Number.isNaN(article.pubDate.getTime());
     const time = document.createElement("div");
     time.className = "fMomentsPublishTime";
-    time.textContent = article.pubDate.toLocaleTimeString("zh-CN", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    time.textContent = validPubDate
+      ? article.pubDate.toLocaleTimeString("zh-CN", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "";
     info.append(authorName, time);
     authorLink.replaceChildren(info);
     header.append(avatar, authorLink);
@@ -389,7 +403,7 @@ class FriendMomentsController {
     const footer = document.createElement("div");
     footer.className = "fMomentsArticleFooter";
     const date = document.createElement("span");
-    date.textContent = `📅 ${article.pubDate.toLocaleDateString("zh-CN")}`;
+    date.textContent = `📅 ${validPubDate ? article.pubDate.toLocaleDateString("zh-CN") : "日期未知"}`;
     const source = document.createElement("span");
     source.append("🌐 ", this.#link(article.authorUrl, article.author));
     footer.append(date, source);
@@ -403,7 +417,7 @@ class FriendMomentsController {
     if (resolved && link instanceof HTMLAnchorElement) {
       link.href = resolved.href;
       link.target = "_blank";
-      link.rel = "noopener nofollow";
+      link.rel = "noopener noreferrer nofollow";
     }
     link.textContent = label;
     return link;
@@ -446,8 +460,15 @@ class FriendMomentsController {
   #animateNumber(id: string, value: number): void {
     const element = document.querySelector<HTMLElement>(`#${id}`);
     if (!element) return;
+    const generation = (this.#numberGenerations.get(id) ?? 0) + 1;
+    this.#numberGenerations.set(id, generation);
+    if (prefersReducedMotion()) {
+      element.textContent = String(value);
+      return;
+    }
     const started = performance.now();
     const animate = (timestamp: number) => {
+      if (this.#numberGenerations.get(id) !== generation || this.#unmounted) return;
       const progress = Math.min((timestamp - started) / 1_000, 1);
       element.textContent = String(Math.floor(value * progress));
       if (progress < 1) this.#resources.animationFrame(animate);

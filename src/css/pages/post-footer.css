@@ -65,11 +65,11 @@
     }
 
     #pagination .next-post a:hover div, #pagination .prev-post a:hover div {
-        color: var(--heo-white)
+        color: var(--heo-white);
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767.98px) {
 
     #pagination .next-post a:hover, #pagination .prev-post a:hover {
         background: var(--heo-none)
@@ -111,8 +111,9 @@
 
 #post #pagination {
     overflow: hidden;
-    position: inherit;
-    border: var(--style-border-always)
+    position: relative;
+    border: var(--style-border-always);
+    border-radius: 12px;
 }
 
 #pagination.pagination-post {
@@ -121,113 +122,25 @@
 
 @media screen and (min-width: 1300px) {
     #post #pagination {
-        position: fixed;
-        width: 300px;
-        bottom: -100px;
-        right: 20px;
-        z-index: 1000;
-        height: fit-content;
-        transition: cubic-bezier(.42, 0, .3, 1.11) .3s;
-        border: var(--style-border);
-        border-radius: 12px;
-        overflow: hidden;
-        cursor: pointer;
-        opacity: 0;
-        z-index: 999
-    }
-
-
-    #post #pagination.show-window {
-        bottom: 20px;
-        opacity: 1
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     #post #pagination:hover {
-        border: 1px solid var(--heo-main)
+        border: 1px solid var(--heo-main);
     }
 
-    #pagination .next-post a, #pagination .prev-post a {
-        border: none;
-        height: fit-content;
-        padding: .5rem 0
-    }
-
-    #pagination.pagination-post {
-        border-radius: 0
-    }
-
-    #pagination .next_info, #post #pagination .prev_info {
-        font-size: 14px;
-        font-weight: 400;
-        margin-bottom: 0
-    }
-
-    #pagination .pagination-info {
-        padding: .5rem 1rem;
-        transform: none
-    }
-
-    #post #pagination {
-        background: 0 0
-    }
-
-    #pagination .next_info, #post #pagination .prev_info {
-        color: var(--heo-fontcolor);
-    }
-
-    #pagination .next-post, #pagination .prev-post, .next-post.pull-right, .prev-post.pull-left {
-        background: var(--heo-maskbgdeep);
-        -webkit-backdrop-filter: blur(5px);
-        backdrop-filter: blur(5px);
-        transform: translateZ(0)
-    }
-
-    #pagination .next-post a:hover, #pagination .prev-post a:hover {
+    #pagination .next-post a:hover,
+    #pagination .prev-post a:hover {
         background: var(--heo-main);
     }
 
-    #pagination .next-post .label, #post #pagination .prev-post .label {
-        color: var(--heo-fontcolor)
+    #pagination .next-post a:hover div,
+    #pagination .prev-post a:hover div {
+        color: var(--heo-on-main);
     }
-
-    #pagination.pagination-post .next-post.pull-full img, #pagination.pagination-post .next-post.pull-right img, #pagination.pagination-post .prev-post.pull-full img, #pagination.pagination-post .prev-post.pull-left img {
-        display: none;
-        top: 0
-    }
-
-
-    #post #pagination .prev-post .label,
-    #pagination .next-post .label {
-        color: var(--heo-fontcolor)
-    }
-
-
-    .prev-post.pull-left {
-        display: none
-    }
-
-    .next-post.pull-right {
-        width: 100%
-    }
-
-    #pagination .next-post .pagination-info {
-        text-align: left;
-        position: relative
-    }
-
-    #pagination .next-post .label, #post #pagination .prev-post .label {
-        color: var(--heo-fontcolor);
-        font-weight: 700;
-        font-size: 12px;
-        margin-bottom: .5rem;
-        border-bottom: var(--style-border);
-        line-height: 1;
-        padding-bottom: .5rem
-    }
-
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767.98px) {
     .prev-post.pull-left {
         border-bottom: var(--style-border-always);
     }
@@ -250,7 +163,7 @@
 }
 
 /* 翻页 */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767.98px) {
     #pagination .page-number {
         display: none;
     }
@@ -276,7 +189,7 @@
 
     #pagination .pagination .extend:hover {
         background: var(--heo-theme);
-        color: var(--heo-white);
+        color: var(--heo-on-main);
     }
 
     #pagination .pagination {
@@ -303,12 +216,13 @@
         background: var(--heo-theme);
         border: var(--style-border-hover);
         box-shadow: var(--heo-shadow-theme);
+        color: var(--heo-on-main);
     }
 
     #pagination .page-number.current:hover {
         background: var(--heo-theme);
         box-shadow: var(--heo-shadow-theme);
-        color: var(--heo-white);
+        color: var(--heo-on-main);
     }
 
     #pagination .page-number:hover {
@@ -433,13 +347,17 @@
 }
 
 @media screen and (min-width: 1300px) {
-    .relatedPosts > .relatedPosts-list > div {
+    .relatedPosts > .relatedPosts-list:not(.hanlo-related-two) > div {
         width: calc(25% - 8px);
     }
 }
 
-.relatedPosts > .relatedPosts-list > div:hover a .title {
+.relatedPosts > .relatedPosts-list:not(.hanlo-related-two) > div:hover a .title {
     color: var(--heo-white);
+}
+
+.relatedPosts > .relatedPosts-list.hanlo-related-two > div:hover a .title {
+    color: var(--heo-on-main);
 }
 
 /* 分割线 */
@@ -564,7 +482,7 @@ div#post-comment {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767.98px) {
 
     .post-reward .reward-main .reward-all {
         width: 100%;
@@ -676,7 +594,7 @@ div#post-comment {
 .share-button:hover {
     background: var(--heo-theme);
     border-color: var(--heo-theme);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
     transition: 0.3s;
     box-shadow: var(--heo-shadow-blue);
 }
@@ -684,6 +602,7 @@ div#post-comment {
 .share-link.weibo:hover .share-button {
     background: var(--heo-red);
     border-color: var(--heo-red);
+    color: var(--heo-white);
     box-shadow: var(--heo-shadow-red);
 }
 

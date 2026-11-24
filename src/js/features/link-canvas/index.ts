@@ -1,3 +1,4 @@
+import { prefersReducedMotion, throttle } from "../../core/dom";
 import type { PageResourceScope } from "../../core/resource-scope";
 
 interface Bubble {
@@ -65,6 +66,9 @@ export function mountLinkCanvas(resources: PageResourceScope): void {
   let width = 0;
   let height = 0;
   let frame = 0;
+  let running = false;
+  let intersecting = true;
+  const reducedMotion = prefersReducedMotion();
 
   const resize = (): void => {
     const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -74,21 +78,15 @@ export function mountLinkCanvas(resources: PageResourceScope): void {
     canvas.height = Math.max(1, Math.floor(height * ratio));
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
   };
-  const shuffle = (): void => {
-    for (const bubble of bubbles) {
-      bubble.x = bubble.radius + Math.random() * Math.max(1, width - bubble.radius * 2);
-      bubble.y = bubble.radius + Math.random() * Math.max(1, height - bubble.radius * 2);
-      bubble.velocityX = randomVelocity();
-      bubble.velocityY = randomVelocity();
-    }
-  };
-  const draw = (): void => {
+  const renderFrame = (advance: boolean): void => {
     context.clearRect(0, 0, width, height);
     for (const bubble of bubbles) {
-      bubble.x += bubble.velocityX;
-      bubble.y += bubble.velocityY;
-      if (bubble.x <= bubble.radius || bubble.x >= width - bubble.radius) bubble.velocityX *= -1;
-      if (bubble.y <= bubble.radius || bubble.y >= height - bubble.radius) bubble.velocityY *= -1;
+      if (advance) {
+        bubble.x += bubble.velocityX;
+        bubble.y += bubble.velocityY;
+        if (bubble.x <= bubble.radius || bubble.x >= width - bubble.radius) bubble.velocityX *= -1;
+        if (bubble.y <= bubble.radius || bubble.y >= height - bubble.radius) bubble.velocityY *= -1;
+      }
       bubble.x = Math.max(bubble.radius, Math.min(width - bubble.radius, bubble.x));
       bubble.y = Math.max(bubble.radius, Math.min(height - bubble.radius, bubble.y));
       context.save();
@@ -109,16 +107,68 @@ export function mountLinkCanvas(resources: PageResourceScope): void {
       }
       context.restore();
     }
+  };
+  const shuffle = (): void => {
+    for (const bubble of bubbles) {
+      bubble.x = bubble.radius + Math.random() * Math.max(1, width - bubble.radius * 2);
+      bubble.y = bubble.radius + Math.random() * Math.max(1, height - bubble.radius * 2);
+      bubble.velocityX = randomVelocity();
+      bubble.velocityY = randomVelocity();
+    }
+    if (reducedMotion) renderFrame(false);
+  };
+  const stop = (): void => {
+    running = false;
+    if (frame) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+    }
+  };
+  const draw = (): void => {
+    if (!running || resources.disposed) return;
+    renderFrame(true);
     frame = requestAnimationFrame(draw);
   };
+  const sync = (): void => {
+    if (reducedMotion) {
+      renderFrame(false);
+      return;
+    }
+    const shouldRun = !document.hidden && intersecting && !resources.disposed;
+    if (shouldRun && !running) {
+      running = true;
+      frame = requestAnimationFrame(draw);
+    } else if (!shouldRun && running) {
+      stop();
+    }
+  };
 
-  resize();
-  shuffle();
-  draw();
-  resources.listen(window, "resize", () => {
+  if (reducedMotion) {
+    for (const bubble of bubbles) {
+      resources.listen(bubble.image, "load", () => renderFrame(false));
+    }
+  }
+  const handleResize = throttle(() => {
     resize();
     shuffle();
-  });
+  }, 150);
+  resize();
+  shuffle();
+  sync();
+  resources.listen(window, "resize", handleResize);
+  resources.listen(document, "visibilitychange", sync);
+  if ("IntersectionObserver" in window && !reducedMotion) {
+    const observer = resources.observe(
+      new IntersectionObserver((entries) => {
+        intersecting = entries[0]?.isIntersecting ?? true;
+        sync();
+      }),
+    );
+    observer.observe(canvas);
+  }
   resources.listen(button, "click", shuffle);
-  resources.defer(() => cancelAnimationFrame(frame));
+  resources.defer(() => {
+    handleResize.cancel();
+    stop();
+  });
 }

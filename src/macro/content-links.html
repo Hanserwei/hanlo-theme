@@ -1,9 +1,10 @@
 <th:block th:fragment="content-links(htmlType, applicationEnabled, applicationTarget)">
 
     <p th:unless="${pluginFinder.available('PluginLinks')}" role="status">友链插件未启用。</p>
-    <div th:if="${not pluginFinder.available('PluginLinks') and htmlType == 'page'}" th:utext="${singlePage.content.content}"></div>
+    <div th:if="${not pluginFinder.available('PluginLinks') and htmlType == 'page' and singlePage != null and singlePage.content?.content != null}" th:utext="${singlePage.content.content}"></div>
     <th:block th:if="${pluginFinder.available('PluginLinks')}">
-    <th:block th:with="groups = ${linkFinder.groupBy()}">
+    <th:block th:with="groups = ${linkFinder.groupBy()},
+                       defaultLinkLogo = ${assets_link + '/images/hanlo-logo.png'}">
         <div class="flink" id="banners">
             <div class="banners-title">
                 <div class="banners-title-small">[[${theme.config.link.smallTitle}]]</div>
@@ -32,21 +33,28 @@
                     <th:block th:each="group : ${groups}">
                         <th:block th:each="link,iterStat : ${group.links}" th:if="${#lists.size(group.links) > 2}">
                             <div class="tags-group-icon-pair" th:if="${iterStat.even}">
-                                <a class="tags-group-icon" target="_blank" th:href="${linkOdd.spec.url}"
+                                <a class="tags-group-icon" target="_blank" rel="noopener noreferrer external nofollow"
+                                   th:href="${linkOdd.spec.url}"
                                    th:title="${linkOdd.spec.displayName}"
-                                   th:with="linkOdd = ${group.links.get(iterStat.index - 1)}">
-                                    <img th:with="img = @{${linkOdd.spec.logo}}"
+                                   th:with="linkOdd = ${group.links.get(iterStat.index - 1)},
+                                            oddLogo = ${#strings.isEmpty(linkOdd.spec.logo) ? defaultLinkLogo : linkOdd.spec.logo}">
+                                    <img th:with="img = @{${oddLogo}}"
                                          th:src="${isLazyload ? '' : img}"
                                          th:data-src="${isLazyload ? img : ''}"
                                          th:data-lazy-src="${isLazyload ? img : ''}"
+                                         th:alt="${linkOdd.spec.displayName}"
                                          th:title="${linkOdd.spec.displayName}">
                                 </a>
-                                <a class="tags-group-icon" target="_blank" th:href="${linkEven.spec.url}"
-                                   th:title="${linkEven.spec.displayName}" th:with="linkEven = ${link}">
-                                    <img th:with="img = @{${linkEven.spec.logo}}"
+                                <a class="tags-group-icon" target="_blank" rel="noopener noreferrer external nofollow"
+                                   th:href="${linkEven.spec.url}"
+                                   th:title="${linkEven.spec.displayName}"
+                                   th:with="linkEven = ${link},
+                                            evenLogo = ${#strings.isEmpty(linkEven.spec.logo) ? defaultLinkLogo : linkEven.spec.logo}">
+                                    <img th:with="img = @{${evenLogo}}"
                                          th:src="${isLazyload ? '' : img}"
                                          th:data-src="${isLazyload ? img : ''}"
                                          th:data-lazy-src="${isLazyload ? img : ''}"
+                                         th:alt="${linkEven.spec.displayName}"
                                          th:title="${linkEven.spec.displayName}">
                                 </a>
                             </div>
@@ -61,40 +69,44 @@
 
         <div class="flink" id="article-container">
 
-            <th:block th:each="group,iterStat : ${groups}">
+            <th:block th:each="group,iterStat : ${groups}"
+                      th:with="groupStyle=${#annotations.getOrDefault(group, 'displayStyle', 'default')}">
 
-                <h2 th:if="${not #lists.isEmpty(group.spec.displayName)}">
+                <h2 th:if="${not #strings.isEmpty(group.spec.displayName)}">
                     <a class="headerlink" th:href="'#'+${group.spec.displayName}+'-'+${#lists.size(group.links)}"
-                       th:title="${group.spec.displayName}+ '('+${#lists.size(group.links)}+')'"></a>
+                       th:title="${group.spec.displayName}+ '('+${#lists.size(group.links)}+')'"
+                       th:aria-label="${group.spec.displayName}"></a>
                     [[${group.spec.displayName}]] ([[${#lists.size(group.links)}]])
                 </h2>
 
                 <div class="flink-desc" th:if="${not #strings.isEmpty(#annotations.get(group, 'description'))}">[[${#annotations.get(group, 'description')}]]</div>
 
                 <!-- 第一个，使用卡片展示 -->
-                <div th:if="${#strings.equals(#annotations.get(group, 'displayStyle'),'beautify') && not #lists.isEmpty(group.links)}"
+                <div th:if="${#strings.equals(groupStyle,'beautify') && not #lists.isEmpty(group.links)}"
                      class="site-card-group">
 
-                    <div class="site-card" th:each="link : ${group.links}">
+                    <div class="site-card" th:each="link : ${group.links}"
+                         th:with="linkLogo=${#strings.isEmpty(link.spec.logo) ? defaultLinkLogo : link.spec.logo},
+                                  labelColor=${#annotations.get(link,'labelColor')}">
                             <span th:if="${not #strings.isEmpty(#annotations.get(link, 'label'))}"
-                                  th:style="'--hanlo-label-color:' + ${#annotations.get(link,'labelColor')}"
+                                  th:style="${not #strings.isEmpty(labelColor) ? '--hanlo-label-color:' + labelColor : null}"
                                   class="site-card-tag hanlo-label-color">[[${#annotations.get(link, 'label')}]]</span>
 
-                        <a class="img" target="_blank" th:href="${link.spec.url}" th:title="${link.spec.displayName}">
+                        <a class="img" target="_blank" rel="noopener noreferrer external nofollow" th:href="${link.spec.url}" th:title="${link.spec.displayName}">
                             <img class="flink-avatar hl:pointer-events-none" th:alt="${link.spec.displayName}"
-                                 th:with="img = @{${#strings.isEmpty(#annotations.get(link, 'siteshot')) ? link.spec.logo : #annotations.get(link,'siteshot') }}"
+                                 th:with="img = @{${#strings.isEmpty(#annotations.get(link, 'siteshot')) ? linkLogo : #annotations.get(link,'siteshot') }}"
                                  th:src="${isLazyload ? '' : img}"
                                  th:data-src="${isLazyload ? img : ''}"
                                  th:data-lazy-src="${isLazyload ? img : ''}">
                         </a>
 
-                        <a class="info cf-friends-link" target="_blank" th:href="${link.spec.url}"
+                        <a class="info cf-friends-link" target="_blank" rel="noopener noreferrer external nofollow" th:href="${link.spec.url}"
                            th:title="${link.spec.displayName}">
                             <div class="site-card-avatar no-lightbox">
                                 <img class="flink-avatar cf-friends-avatar" th:alt="${link.spec.displayName}"
-                                     th:src="${isLazyload ? '' : link.spec.logo}"
-                                     th:data-src="${isLazyload ? link.spec.logo : ''}"
-                                     th:data-lazy-src="${isLazyload ? link.spec.logo : ''}">
+                                     th:src="${isLazyload ? '' : linkLogo}"
+                                     th:data-src="${isLazyload ? linkLogo : ''}"
+                                     th:data-lazy-src="${isLazyload ? linkLogo : ''}">
                             </div>
                             <div class="site-card-text">
                                 <span class="title cf-friends-name" th:text="${link.spec.displayName}"></span>
@@ -107,38 +119,42 @@
                 </div>
 
                 <div class="flink-list"
-                     th:if="${#strings.equals(#annotations.get(group, 'displayStyle'),'default') && not #lists.isEmpty(group.links)}">
-                    <div class="flink-list-item" th:each="link : ${group.links}">
+                     th:if="${#strings.equals(groupStyle,'default') && not #lists.isEmpty(group.links)}">
+                    <div class="flink-list-item" th:each="link : ${group.links}"
+                         th:with="linkLogo=${#strings.isEmpty(link.spec.logo) ? defaultLinkLogo : link.spec.logo},
+                                  labelColor=${#annotations.get(link,'labelColor')}">
                             <span th:if="${not #strings.isEmpty(#annotations.get(link, 'label'))}"
-                                  th:style="'--hanlo-label-color:' + ${#annotations.get(link,'labelColor')}"
+                                  th:style="${not #strings.isEmpty(labelColor) ? '--hanlo-label-color:' + labelColor : null}"
                                   class="site-card-tag hanlo-label-color">[[${#annotations.get(link, 'label')}]]</span>
-                        <a class="cf-friends-link" rel="external nofollow" target="_blank" th:href="${link.spec.url}"
+                        <a class="cf-friends-link" rel="noopener noreferrer external nofollow" target="_blank" th:href="${link.spec.url}"
                            th:title="${link.spec.displayName}">
                             <img class="flink-avatar cf-friends-avatar" th:alt="${link.spec.displayName}"
-                                 th:src="${isLazyload ? '' : link.spec.logo}"
-                                 th:data-src="${isLazyload ? link.spec.logo : ''}"
-                                 th:data-lazy-src="${isLazyload ? link.spec.logo : ''}">
+                                 th:src="${isLazyload ? '' : linkLogo}"
+                                 th:data-src="${isLazyload ? linkLogo : ''}"
+                                 th:data-lazy-src="${isLazyload ? linkLogo : ''}">
                             <div class="flink-item-info no-lightbox">
                                 <span class="flink-item-name cf-friends-name" th:text="${link.spec.displayName}"></span>
                                 <span class="flink-item-desc" th:text="${link.spec.description}"
                                       th:title="${link.spec.description}"></span>
-                                <img th:src="${isLazyload ? '' : link.spec.logo}"
-                                     th:data-src="${isLazyload ? link.spec.logo : ''}"
-                                     th:data-lazy-src="${isLazyload ? link.spec.logo : ''}">
+                                <img th:alt="${link.spec.displayName}"
+                                     th:src="${isLazyload ? '' : linkLogo}"
+                                     th:data-src="${isLazyload ? linkLogo : ''}"
+                                     th:data-lazy-src="${isLazyload ? linkLogo : ''}">
                             </div>
                         </a>
                     </div>
                 </div>
 
                 <div class="flink-list mini"
-                     th:if="${#strings.equals(#annotations.get(group, 'displayStyle'),'deprecated') && not #lists.isEmpty(group.links)}">
-                    <div class="flink-list-item" th:each="link : ${group.links}">
-                        <a class="cf-friends-link" rel="external nofollow" target="_blank" th:href="${link.spec.url}"
+                     th:if="${#strings.equals(groupStyle,'deprecated') && not #lists.isEmpty(group.links)}">
+                    <div class="flink-list-item" th:each="link : ${group.links}"
+                         th:with="linkLogo=${#strings.isEmpty(link.spec.logo) ? defaultLinkLogo : link.spec.logo}">
+                        <a class="cf-friends-link" rel="noopener noreferrer external nofollow" target="_blank" th:href="${link.spec.url}"
                            th:title="${link.spec.displayName}">
                             <img class="flink-avatar cf-friends-avatar"
-                                 th:src="${isLazyload ? '' : link.spec.logo}"
-                                 th:data-src="${isLazyload ? link.spec.logo : ''}"
-                                 th:data-lazy-src="${isLazyload ? link.spec.logo : ''}"
+                                 th:src="${isLazyload ? '' : linkLogo}"
+                                 th:data-src="${isLazyload ? linkLogo : ''}"
+                                 th:data-lazy-src="${isLazyload ? linkLogo : ''}"
                                  th:alt="${link.spec.displayName}">
                             <div class="img-alt is-center">[[${link.spec.displayName}]]</div>
                             <div class="flink-item-info">
@@ -155,7 +171,7 @@
             <th:block th:if="${not #strings.isEmpty(theme.config.link.linksArticle)}"
                       th:utext="${theme.config.link.linksArticle}"> </th:block>
 
-            <th:block th:if="${htmlType == 'page'}" th:utext="${singlePage.content.content}">
+            <th:block th:if="${htmlType == 'page' and singlePage != null and singlePage.content?.content != null}" th:utext="${singlePage.content.content}">
             </th:block>
 
         </div>

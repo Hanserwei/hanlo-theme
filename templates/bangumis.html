@@ -25,6 +25,8 @@
                         <p>生命不息，追番不止！</p>
                     </blockquote>
 
+                    <p th:if="${bangumiFinder == null}" role="status">追番插件未启用。</p>
+                    <th:block th:if="${bangumiFinder != null}">
                     <div class="bangumi-tabs">
                         <button class="bangumi-tab hanlo-button-reset" id="bangumi-tab1" type="button">
                             想看
@@ -74,6 +76,7 @@
                             </div>
                         </div>
                     </div>
+                    </th:block>
                 </div>
                 <hr>
                 <!--/* 评论组件 */-->

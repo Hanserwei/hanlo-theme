@@ -1,6 +1,6 @@
-<th:block th:fragment="custom_html(widget_data)">
+<th:block th:fragment="custom_html(widget_data)" th:if="${widget_data != null and widget_data.custom_html != null}">
     <div class="card-widget card-announcement">
-        <div class="item-headline" th:utext="${widget_data.custom_html.title}"></div>
-        <th:block th:utext="${widget_data.custom_html.html}"></th:block>
+        <div class="item-headline" th:if="${not #strings.isEmpty(widget_data.custom_html.title)}" th:utext="${widget_data.custom_html.title}"></div>
+        <th:block th:if="${not #strings.isEmpty(widget_data.custom_html.html)}" th:utext="${widget_data.custom_html.html}"></th:block>
     </div>
 </th:block>

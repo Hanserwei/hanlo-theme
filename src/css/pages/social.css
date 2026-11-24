@@ -365,14 +365,18 @@
 /* 标签 */
 #bber .bber-content .datacont a.tag {
     background-image: none;
-    background-color: #f2f2f2;
-    color: #999;
+    background-color: var(--heo-secondbg);
+    color: var(--heo-secondtext);
     border-radius: 4px;
     text-decoration: none;
     font-weight: 400;
     font-size: 15px;
     padding: 2px 5px;
+}
 
+#bber .bber-content .datacont a.tag:hover {
+    background-color: var(--heo-main);
+    color: var(--heo-on-main);
 }
 
 #bber .bber-content .datacont a.tag:before {
@@ -551,7 +555,7 @@ a.bb-link-info:hover {
 }
 
 .moments_load_button:hover {
-    color: var(--heo-white);
+    color: var(--heo-on-main);
     background: var(--heo-main);
     transition: 0.3s;
 }

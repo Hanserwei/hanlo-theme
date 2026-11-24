@@ -22,7 +22,7 @@
                             position: relative;
                             clear: both;
                             padding: 10px 0;
-                            border-bottom: 1px solid #ddd;
+                            border-bottom: 1px solid var(--heo-card-border);
                             min-height: 180px
                         }
 
@@ -279,7 +279,7 @@
 
                         #page #article-container .bangumi-tab.bangumi-active {
                             background: var(--heo-theme);
-                            color: var(--heo-ahoverbg);
+                            color: var(--heo-on-main);
                             border-radius: 10px;
                         }
 
@@ -291,7 +291,8 @@
                         #page #article-container .bangumi-tabs .bangumi-tab:hover {
                             text-decoration: none;
                             border-radius: 10px;
-                            column-gap: var(--heo-ahoverbg);
+                            background: var(--heo-theme);
+                            color: var(--heo-on-main);
                         }
 
                         #page #article-container .bangumi-pagination .bangumi-button {
@@ -302,7 +303,7 @@
                         .bangumi-button:hover {
                             background: var(--heo-theme);
                             border-radius: 10px;
-                            color: var(--heo-ahoverbg);
+                            color: var(--heo-on-main);
                         }
 
                         .bangumi-button.bangumi-nextpage:hover {

@@ -37,19 +37,11 @@
 
 .introduction-card:active .introduction-card-bottom {
     background-color: var(--heo-main);
-    color: #fff
+    color: var(--heo-on-main);
 }
 
 .introduction-card:active .introduction-card-bottom .left .info .subTitle {
-    color: #fff
-}
-
-.introduction-card:active .introduction-card-bottom {
-    -webkit-animation: resetAnimation 3s 1s forwards;
-    -moz-animation: resetAnimation 3s 1s forwards;
-    -o-animation: resetAnimation 3s 1s forwards;
-    -ms-animation: resetAnimation 3s 1s forwards;
-    animation: resetAnimation 3s 1s forwards
+    color: var(--heo-on-main);
 }
 
 .introduction-card {
@@ -219,14 +211,14 @@
 #article-container .introduction-card .introduction-card-bottom .right a:hover {
     text-decoration: none;
     border-bottom: 0px;
-    color: rgb(48 122 246 / 0%);
+    color: var(--heo-on-main);
 }
 
 
 .introduction-card .introduction-card-bottom .right a {
     width: 100%;
     text-align: center;
-    background: #efeef2;
+    background: var(--heo-card-btn-bg);
     color: var(--heo-main);
     border-radius: 50px;
     height: 35px;
@@ -236,22 +228,22 @@
 
 .introduction-card .introduction-card-bottom .right a:hover {
     background: var(--heo-main);
-    color: var(--heo-white)
+    color: var(--heo-on-main);
 }
 
 u {
-    color: #444;
+    color: var(--heo-fontcolor);
     text-decoration: none;
     border-bottom: 1px solid #fe5f58
 }
 
 emp {
-    color: #444;
+    color: var(--heo-fontcolor);
     border-bottom: 4px dotted #fe5f58
 }
 
 wavy {
-    color: #444;
+    color: var(--heo-fontcolor);
     text-decoration-style: wavy;
     text-decoration-line: underline;
     text-decoration-color: #fe5f58
@@ -261,25 +253,18 @@ psw {
     color: transparent;
     background: #a1a1a1;
     border-radius: 2px;
-    -webkit-transition: all .28s ease;
-    -moz-transition: all .28s ease;
-    -o-transition: all .28s ease;
-    -ms-transition: all .28s ease;
     transition: all .28s ease;
-    -moz-transition: all .28s ease;
-    -webkit-transition: all .28s ease;
-    -o-transition: all .28s ease
 }
 
 psw:hover {
-    color: var(--heo-font);
-    background: 0 0
+    color: var(--heo-fontcolor);
+    background: transparent;
 }
 
 
 kbd {
     display: inline-block;
-    color: #666;
+    color: #555;
     font-weight: bold;
     font-size: 9pt;
     font-family: var(--hanlo-font-mono);
@@ -288,15 +273,29 @@ kbd {
     padding: 2px 5px;
     margin: 0 5px;
     background: #eff0f2;
-    -moz-border-radius: 4px;
     border-radius: 4px;
     border-top: 1px solid #f5f5f5;
-    -webkit-box-shadow: inset 0 0 20px #e8e8e8,0 1px 0 #c3c3c3,0 1px 0 #c9c9c9,0 1px 2px #333;
-    -moz-box-shadow: inset 0 0 20px #e8e8e8,0 1px 0 #c3c3c3,0 1px 0 #c9c9c9,0 1px 2px #333;
-    -webkit-box-shadow: inset 0 0 20px #e8e8e8,0 1px 0 #c3c3c3,0 1px 0 #c9c9c9,0 1px 2px #333;
-    -webkit-box-shadow: inset 0 0 20px #e8e8e8,0 1px 0 #c3c3c3,0 1px 0 #c9c9c9,0 1px 2px #333;
     box-shadow: inset 0 0 20px #e8e8e8,0 1px 0 #c3c3c3,0 1px 0 #c9c9c9,0 1px 2px #333;
     text-shadow: 0 1px 0 #f5f5f5
+}
+
+[data-theme="dark"] kbd {
+    color: var(--heo-fontcolor);
+    background: var(--heo-secondbg);
+    border-top-color: var(--heo-card-border);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 2px rgba(0, 0, 0, 0.5);
+    text-shadow: none;
+}
+
+[data-theme="dark"] details.folding-tag[purple] > summary,
+[data-theme="dark"] details.folding-tag[blue] > summary,
+[data-theme="dark"] details.folding-tag[cyan] > summary,
+[data-theme="dark"] details.folding-tag[green] > summary,
+[data-theme="dark"] details.folding-tag[yellow] > summary,
+[data-theme="dark"] details.folding-tag[orange] > summary,
+[data-theme="dark"] details.folding-tag[red] > summary {
+    background: var(--heo-secondbg);
+    color: var(--heo-fontcolor);
 }
 
 
@@ -580,7 +579,24 @@ details.folding-tag[red]>summary {
 }
 
 .note.flat a:hover {
-    color: var(--anzhiyu-white)
+    color: var(--heo-on-main);
+}
+
+[data-theme="dark"] .note.flat,
+[data-theme="dark"] .note.modern,
+[data-theme="dark"] .note.blue,
+[data-theme="dark"] .note.pink,
+[data-theme="dark"] .note.red,
+[data-theme="dark"] .note.purple,
+[data-theme="dark"] .note.orange,
+[data-theme="dark"] .note.green {
+    background: var(--heo-secondbg);
+    color: var(--heo-fontcolor);
+    border-color: var(--heo-card-border);
+}
+
+[data-theme="dark"] .note.flat a {
+    color: var(--heo-fontcolor);
 }
 
 .note h2,.note h3,.note h4,.note h5,.note h6 {
@@ -866,7 +882,7 @@ details.folding-tag[red]>summary {
     -webkit-box-shadow: 0 0 0 2.5px #f7f8f9;
     box-shadow: 0 0 0 2.5px #f7f8f9;
     font-weight: 600;
-    font-family: "Font Awesome 6 Free";
+    font-family: haofont;
     text-align: center
 }
 
@@ -969,7 +985,7 @@ details.folding-tag[red]>summary {
     background: -o-linear-gradient(90deg,#ff3838,#ff7849);
     background: -ms-linear-gradient(90deg,#ff3838,#ff7849);
     background: linear-gradient(0deg,#ff3838,#ff7849);
-    content: $note-error-icon;
+    content: "\e66d";
     text-shadow: 0 -1px #ff4949;
     font-family: haofont;
 }

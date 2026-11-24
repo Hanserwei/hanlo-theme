@@ -25,13 +25,13 @@
                 </div>
             </div>
             <div class="share-link weibo" th:if="${theme.config.post.share_right.weibo_edit}">
-                <a class="share-button" rel="noopener external nofollow noreferrer noopener" target="_blank"
-                   th:href="'https://service.weibo.com/share/share.php?title=' + ${post.spec.title}" title="分享到微博">
+                <a class="share-button" rel="noopener noreferrer external nofollow" target="_blank"
+                   th:href="@{https://service.weibo.com/share/share.php(title=${post.spec.title})}" title="分享到微博" aria-label="分享到微博">
                     <i class="haofont hao-icon-weibo hl:[font-size:22px]"></i></a>
             </div>
             <div class="share-link copyurl" th:if="${theme.config.post.share_right.copyurl_edit}">
-                <div class="share-button" data-hanlo-action="copy-page-url" id="post-share-url" title="复制链接"><i
-                        class="haofont hao-icon-link"></i></div>
+                <button class="share-button hanlo-button-reset" data-hanlo-action="copy-page-url" id="post-share-url" type="button" title="复制链接" aria-label="复制链接"><i
+                        class="haofont hao-icon-link"></i></button>
             </div>
         </div>
         <div class="post-tools-right">

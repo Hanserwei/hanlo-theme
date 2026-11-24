@@ -1,9 +1,10 @@
 import { copyTextToClipboard } from "../../core/clipboard";
 import type { ThemeConfig } from "../../core/config";
-import { differenceInDays, formatExactRelativeDate, formatRelativeDate } from "../../core/date";
+import { differenceInDays, formatExactRelativeDate } from "../../core/date";
 import {
   changeContent,
-  isHidden,
+  elementTop,
+  prefersReducedMotion,
   scrollToDestination,
   throttle,
   wrapElement,
@@ -20,6 +21,30 @@ import { finishPageLoading, mountPageLoading } from "./page-loading";
 
 const LINKS_ENDPOINT = "/apis/api.plugin.halo.run/v1alpha1/plugins/PluginLinks/links?keyword=";
 const SCROLL_POSTS_KEY = "hanlo-scroll-posts";
+
+function readSessionFlag(key: string): string | null {
+  try {
+    return sessionStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeSessionFlag(key: string, value: string): void {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch {
+    // Ignore storage errors in restricted browsing contexts.
+  }
+}
+
+function removeSessionFlag(key: string): void {
+  try {
+    sessionStorage.removeItem(key);
+  } catch {
+    // Ignore storage errors in restricted browsing contexts.
+  }
+}
 
 interface LinkItem {
   readonly spec: Readonly<{ readonly displayName: string; readonly url: string }>;
@@ -100,17 +125,20 @@ async function refreshFooterLinks(
     const count = config.source.links?.linksNum ?? 5;
     container.replaceChildren();
     for (const item of randomItems(links, count)) {
+      const targetUrl = resolveHttpUrl(item.spec.url, window.location.href);
+      if (!targetUrl) continue;
       const link = document.createElement("a");
       link.className = "footer-item";
-      link.href = item.spec.url;
+      link.href = targetUrl.href;
       link.target = "_blank";
-      link.rel = "noopener nofollow";
+      link.rel = "noopener noreferrer nofollow";
       link.textContent = item.spec.displayName;
       container.append(link);
     }
     const more = document.createElement("a");
     more.className = "footer-item";
-    more.href = config.source.links?.linksUrl ?? "/links";
+    const moreUrl = resolveHttpUrl(config.source.links?.linksUrl ?? "/links", window.location.href);
+    more.href = moreUrl ? moreUrl.href : "/links";
     more.textContent = "更多";
     container.append(more);
   } catch (error) {
@@ -141,7 +169,7 @@ function goToPage(): void {
   current.search = "";
   const base = current.href.replace(/\/page\/\d+\/?$/, "").replace(/\/$/, "");
   const target = `${page === 1 ? base : `${base}/page/${page}`}${suffix}`;
-  if (document.querySelector(".pl-container")) sessionStorage.setItem(SCROLL_POSTS_KEY, "1");
+  if (document.querySelector(".pl-container")) writeSessionFlag(SCROLL_POSTS_KEY, "1");
   navigateTo(target);
 }
 
@@ -195,7 +223,7 @@ function handleAction(
       scrollToDestination(0);
       break;
     case "scroll-posts":
-      if (document.querySelector(".pl-container")) sessionStorage.setItem(SCROLL_POSTS_KEY, "1");
+      if (document.querySelector(".pl-container")) writeSessionFlag(SCROLL_POSTS_KEY, "1");
       break;
     case "random-post":
       event.preventDefault();
@@ -206,7 +234,9 @@ function handleAction(
       showConsole();
       break;
     case "hide-console":
-      event.preventDefault();
+      if (!(event.target instanceof Element && event.target.closest("a[href]"))) {
+        event.preventDefault();
+      }
       hideConsole();
       break;
     case "toggle-aside":
@@ -266,9 +296,11 @@ function initializeHeader(resources: PageResourceScope): void {
         nav.offsetWidth - 120;
     nav.classList.toggle("hide-menu", hide);
   };
+  const throttledAdjust = throttle(adjust, 100);
   adjust();
   nav?.classList.add("show");
-  resources.listen(window, "resize", adjust);
+  resources.listen(window, "resize", throttledAdjust);
+  resources.defer(() => throttledAdjust.cancel());
   if (document.fonts) resources.listen(document.fonts, "loadingdone", adjust);
   resources.listen(window, "orientationchange", () => resources.timeout(adjust, 100));
 }
@@ -318,6 +350,11 @@ function initializeNavigation(
     const action = target?.dataset["hanloAction"];
     if (target && action) handleAction(action, target, config, storage, resources, event);
 
+    if (event.target.closest("#scroll-down")) {
+      const target = document.querySelector<HTMLElement>("#home_top, #content-inner");
+      scrollToDestination(target ? elementTop(target) : window.innerHeight + 70);
+    }
+
     if (event.target.closest("#toggle-menu")) {
       sidebarPaddingRight();
       body.style.overflow = "hidden";
@@ -329,9 +366,13 @@ function initializeNavigation(
 
     const expand = event.target.closest<HTMLElement>("#sidebar-menus .expand");
     if (expand) {
-      expand.classList.toggle("hide");
-      const child = expand.parentElement?.nextElementSibling as HTMLElement | null;
-      if (child) child.style.display = isHidden(child) ? "block" : "none";
+      const child = expand.nextElementSibling as HTMLElement | null;
+      if (child) {
+        const willCollapse = !expand.classList.contains("hide") && child.style.display !== "none";
+        child.style.display = willCollapse ? "none" : "";
+        expand.classList.toggle("hide", willCollapse);
+        expand.setAttribute("aria-expanded", String(!willCollapse));
+      }
     }
 
     const hideButton = event.target.closest<HTMLElement>("#article-container .hide-button");
@@ -348,16 +389,6 @@ function initializeNavigation(
     if (tabTop) {
       const tabs = tabTop.closest<HTMLElement>(".tabs");
       if (tabs) scrollToDestination(tabs.getBoundingClientRect().top + window.scrollY);
-    }
-
-    const category = event.target.closest<HTMLElement>(
-      "#aside-cat-list .card-category-list-item.parent i",
-    );
-    if (category) {
-      event.preventDefault();
-      category.classList.toggle("expand");
-      const children = category.parentElement?.nextElementSibling as HTMLElement | null;
-      if (children) children.style.display = isHidden(children) ? "block" : "none";
     }
 
     const rightsideTarget = event.target.closest<HTMLElement>("#rightside [id]")?.id;
@@ -379,6 +410,13 @@ function initializeNavigation(
     ) {
       keyboardEvent.preventDefault();
       goToPage();
+      return;
+    }
+    if (keyboardEvent.key === "Escape") {
+      if (document.querySelector("#console.show")) hideConsole();
+      if (sidebar?.classList.contains("open")) closeSidebar();
+      if (document.body.classList.contains("read-mode")) exitReadMode();
+      document.querySelector("#card-toc.open")?.classList.remove("open");
     }
   });
   resources.listen(document, "input", (event) => {
@@ -392,9 +430,11 @@ function initializeNavigation(
       ?.classList.toggle("haveValue", event.target.value !== "");
   });
 
-  resources.listen(window, "resize", () => {
+  const handleSidebarResize = throttle(() => {
     if (window.innerWidth >= 768 && sidebar?.classList.contains("open")) closeSidebar();
-  });
+  }, 150);
+  resources.listen(window, "resize", handleSidebarResize);
+  resources.defer(() => handleSidebarResize.cancel());
 }
 
 function activateTab(button: HTMLButtonElement): void {
@@ -419,21 +459,22 @@ function revealGalleries(root: ParentNode): void {
   root.querySelector(".loadings")?.classList.remove("loadings");
 }
 
+function exitReadMode(): void {
+  document.body.classList.remove("read-mode");
+  document.querySelectorAll(".exit-readmode").forEach((button) => button.remove());
+}
+
 function enterReadMode(resources: PageResourceScope): void {
   if (document.body.classList.contains("read-mode")) return;
   document.body.classList.add("read-mode");
   const exit = document.createElement("button");
   exit.type = "button";
   exit.className = "haofont hao-icon-sign-out-alt exit-readmode";
+  exit.setAttribute("aria-label", "退出阅读模式");
+  exit.title = "退出阅读模式";
   document.body.append(exit);
-  resources.listen(exit, "click", () => {
-    document.body.classList.remove("read-mode");
-    exit.remove();
-  });
-  resources.defer(() => {
-    document.body.classList.remove("read-mode");
-    exit.remove();
-  });
+  resources.listen(exit, "click", exitReadMode);
+  resources.defer(exitReadMode);
 }
 
 function toggleMobileToc(trigger: HTMLElement): void {
@@ -488,7 +529,7 @@ function initializeScroll(resources: PageResourceScope): void {
     syncThemeColor();
   }, 200);
   update();
-  resources.listen(window, "scroll", update);
+  resources.listen(window, "scroll", update, { passive: true });
   resources.defer(() => update.cancel());
 }
 
@@ -497,12 +538,6 @@ function initializeContent(config: Readonly<ThemeConfig>, resources: PageResourc
   if (runtime?.textContent)
     runtime.textContent = `${Math.max(0, differenceInDays(runtime.textContent))}天`;
 
-  const lastPush = document.querySelector<HTMLElement>("#last-push-date");
-  const lastPushDate =
-    lastPush?.dataset["lastpushdate"] ?? lastPush?.getAttribute("data-lastPushDate");
-  if (lastPush && lastPushDate) {
-    lastPush.textContent = formatRelativeDate(lastPushDate, config.date_suffix);
-  }
   document.querySelectorAll<HTMLTimeElement>(".aside-list time[datetime]").forEach((time) => {
     time.textContent = formatExactRelativeDate(time.dateTime, config.date_suffix);
   });
@@ -553,7 +588,7 @@ async function initializeToc(resources: PageResourceScope): Promise<void> {
     activeLinkClass: "active",
     activeListItemClass: "active",
     headingsOffset: -400,
-    scrollSmooth: true,
+    scrollSmooth: !prefersReducedMotion(),
     scrollSmoothOffset: -70,
     tocScrollOffset: 50,
   });
@@ -571,9 +606,9 @@ function initializeLazyLoad(config: Readonly<ThemeConfig>, resources: PageResour
   const load = (image: HTMLImageElement): void => {
     const source = image.dataset["lazySrc"];
     if (!source) return;
+    image.loading = "lazy";
     image.src = source;
     image.removeAttribute("data-lazy-src");
-    image.loading = "lazy";
     image.addEventListener(
       "error",
       () => {
@@ -635,8 +670,9 @@ async function initializeQrCode(resources: PageResourceScope): Promise<void> {
 
 async function initializeIndexEssay(resources: PageResourceScope): Promise<void> {
   if (!document.querySelector(".hanlo-moment-track")) return;
-  document.querySelectorAll<HTMLElement>(".swiper-wrapper .swiper-slide").forEach((slide) => {
-    slide.textContent = changeContent(slide.textContent ?? "");
+  const slides = document.querySelectorAll<HTMLElement>(".swiper-wrapper .swiper-slide");
+  slides.forEach((slide) => {
+    slide.textContent = changeContent(slide.innerHTML);
   });
   const [{ default: Swiper }, { Autoplay }] = await Promise.all([
     import("swiper"),
@@ -644,11 +680,13 @@ async function initializeIndexEssay(resources: PageResourceScope): Promise<void>
     import("swiper/css"),
   ]);
   if (resources.disposed) return;
+  const shouldLoop = slides.length > 1;
   const swiper = new Swiper(".swiper-container", {
     modules: [Autoplay],
     direction: "vertical",
-    loop: true,
-    autoplay: { delay: 3_000, pauseOnMouseEnter: true },
+    loop: shouldLoop,
+    autoplay:
+      !shouldLoop || prefersReducedMotion() ? false : { delay: 3_000, pauseOnMouseEnter: true },
   });
   resources.track(swiper, (value) => {
     value.destroy(true, true);
@@ -672,22 +710,32 @@ function initializeWaterfall(resources: PageResourceScope): void {
     const marginLeft = Number.parseFloat(firstStyle.marginLeft) || 0;
     const marginRight = Number.parseFloat(firstStyle.marginRight) || 0;
     const stride = width + marginLeft + marginRight;
+    if (!Number.isFinite(stride) || stride <= 0) return;
     const columns = Math.max(
       1,
       Math.min(items.length, Math.floor((waterfall.clientWidth + marginRight) / stride)),
     );
-    const heights = Array.from({ length: columns }, () => 0);
-    for (const item of items) {
-      const column = heights.indexOf(Math.min(...heights));
+    const metrics = items.map((item) => {
       const style = window.getComputedStyle(item);
-      const marginTop = Number.parseFloat(style.marginTop) || 0;
-      const marginBottom = Number.parseFloat(style.marginBottom) || 0;
+      return {
+        item,
+        height: item.offsetHeight,
+        marginTop: Number.parseFloat(style.marginTop) || 0,
+        marginBottom: Number.parseFloat(style.marginBottom) || 0,
+      };
+    });
+    const heights = Array.from({ length: columns }, () => 0);
+    const placements = metrics.map(({ item, height, marginTop, marginBottom }) => {
+      const column = heights.indexOf(Math.min(...heights));
       const top = heights[column]! + marginTop;
+      heights[column] = top + height + marginBottom;
+      return { item, left: column * stride + marginLeft, top };
+    });
+    for (const { item, left, top } of placements) {
       item.style.position = "absolute";
       item.style.removeProperty("width");
-      item.style.left = `${column * stride + marginLeft}px`;
+      item.style.left = `${left}px`;
       item.style.top = `${top}px`;
-      heights[column] = top + item.offsetHeight + marginBottom;
     }
     waterfall.style.position = "relative";
     waterfall.style.height = `${Math.max(...heights)}px`;
@@ -733,6 +781,7 @@ async function initializeCoverColor(
   const rootStyle = document.documentElement.style;
   const reset = () => {
     rootStyle.setProperty("--heo-main", "var(--heo-theme)");
+    rootStyle.setProperty("--heo-on-main", "var(--hanlo-color-on-brand)");
     rootStyle.setProperty("--heo-main-op", "var(--heo-theme-op)");
     rootStyle.setProperty("--heo-main-op-deep", "var(--heo-theme-op-deep)");
     rootStyle.setProperty("--heo-main-none", "var(--heo-theme-none)");
@@ -755,6 +804,7 @@ async function initializeCoverColor(
       if (resources.disposed) return;
       const color = contrastIsLight(hex) ? adjustHexColor(hex, -40) : hex;
       rootStyle.setProperty("--heo-main", color);
+      rootStyle.setProperty("--heo-on-main", contrastIsLight(color) ? "#18171d" : "#ffffff");
       rootStyle.setProperty("--heo-main-op", `${color}23`);
       rootStyle.setProperty("--heo-main-op-deep", `${color}dd`);
       rootStyle.setProperty("--heo-main-none", `${color}00`);
@@ -802,8 +852,8 @@ function initializePageState(
     .querySelector("#consoleHideAside")
     ?.classList.toggle("on", document.documentElement.classList.contains("hide-aside"));
   if (config.isFriendLinksInFooter) void refreshFooterLinks(config, storage, resources.signal);
-  if (sessionStorage.getItem(SCROLL_POSTS_KEY) === "1") {
-    sessionStorage.removeItem(SCROLL_POSTS_KEY);
+  if (readSessionFlag(SCROLL_POSTS_KEY) === "1") {
+    removeSessionFlag(SCROLL_POSTS_KEY);
     if (document.querySelector(".pl-container")) {
       resources.timeout(() => scrollToDestination(window.innerHeight), 1_000);
     }
@@ -811,13 +861,28 @@ function initializePageState(
 }
 
 function initializeActiveNavigation(): void {
-  const path = decodeURIComponent(window.location.pathname);
-  document.querySelector("#category-bar")?.querySelector(".select")?.classList.remove("select");
-  if (path === "/") document.querySelector("#category-bar-home")?.classList.add("select");
+  let path = window.location.pathname;
+  try {
+    path = decodeURIComponent(path);
+  } catch {
+    // Keep raw pathname if percent-encoding is malformed.
+  }
+  const categoryBar = document.querySelector("#category-bar");
   const category = path.match(/^\/categories\/([^/]+)/)?.[1];
-  if (category) document.getElementById(category)?.classList.add("select");
   const tag = path.match(/^\/tags\/([^/]+)/)?.[1];
-  if (tag) document.getElementById(tag)?.classList.add("select");
+  const categoryTarget = category
+    ? (document.getElementById(`cat-${category}`) ?? document.getElementById(category))
+    : undefined;
+  const tagTarget = tag
+    ? (document.getElementById(`tag-${tag}`) ?? document.getElementById(tag))
+    : undefined;
+
+  if (path === "/" || categoryTarget) {
+    categoryBar?.querySelector(".select")?.classList.remove("select");
+  }
+  if (path === "/") document.querySelector("#category-bar-home")?.classList.add("select");
+  if (categoryTarget) categoryTarget.classList.add("select");
+  if (tagTarget) tagTarget.classList.add("select");
 }
 
 function initializeWheelScrolling(resources: PageResourceScope): void {

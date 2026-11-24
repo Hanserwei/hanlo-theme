@@ -130,7 +130,7 @@ img.post-copyright__author_img_front {
 }
 
 .post-reward:hover .reward-button {
-    color: var(--heo-white);
+    color: var(--heo-on-main);
     background: var(--heo-theme);
     box-shadow: none;
 }
@@ -158,7 +158,12 @@ img.post-copyright__author_img_front {
 
 .reward-link.mode:hover {
     background: var(--heo-theme);
+    color: var(--heo-on-main);
     box-shadow: none;
+}
+
+.reward-link.mode:hover a {
+    color: var(--heo-on-main);
 }
 
 /* 捐助工具栏 */
@@ -202,7 +207,7 @@ img.post-copyright__author_img_front {
 #post .post-copyright .post-copyright-info a:hover {
     text-decoration: none;
     background-color: var(--heo-main);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
     cursor: pointer;
     border-radius: 4px;
 }
@@ -240,7 +245,7 @@ img.post-copyright__author_img_front {
 #post .tag_share .post-meta__tags:hover {
     background: var(--heo-lighttext);
     box-shadow: var(--heo-shadow-main);
-    color: var(--heo-white);
+    color: var(--heo-on-main);
 }
 
 @media screen and (min-width: 1300px) {

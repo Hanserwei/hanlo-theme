@@ -1,6 +1,6 @@
 <!-- Steam卡片 -->
-<div th:style="|--hanlo-steam-cover: url('${theme.config.sidebar.steam.cardSteam}')|">
-    <div class="item-headline-steam"><i class="fa-brands fa-steam"></i><span>Steam卡片</span></div>
+<div th:style="${not #strings.isEmpty(theme.config.sidebar.steam.cardSteam)} ? |--hanlo-steam-cover: url('${theme.config.sidebar.steam.cardSteam}')| : null">
+    <div class="item-headline-steam"><i class="haofont hao-icon-steam" aria-hidden="true"></i><span>Steam卡片</span></div>
 
     <a class="card-widget card-steam" th:if="${not #strings.isEmpty(theme.config.sidebar.steam.steamUrl)}"
        th:href="${theme.config.sidebar.steam.steamUrl}"

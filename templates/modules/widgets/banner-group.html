@@ -182,17 +182,18 @@
                 <th:block th:each="tech,iterStat : ${techs}">
                     <div class="tags-group-icon-pair" th:if="${iterStat.odd}">
                     <div class="tags-group-icon hanlo-dynamic-background"
-                         th:style="'--hanlo-dynamic-background:' + ${techOdd.background}"
-                             th:with="techOdd = ${tech}">
-                            <img th:with=" img = @{${techOdd.url}}" th:src="${img}"
-                                 th:title="${techOdd.name}">
+                         th:if="${tech != null and not #strings.isEmpty(tech.url)}"
+                         th:style="'--hanlo-dynamic-background:' + ${tech.background}">
+                            <img th:with=" img = @{${tech.url}}" th:src="${img}"
+                                 th:alt="${tech.name}" th:title="${tech.name}" loading="lazy" decoding="async">
                         </div>
                         
                     <div class="tags-group-icon hanlo-dynamic-background" th:if="${not iterStat.last}"
-                         th:style="'--hanlo-dynamic-background:' + ${techEven.background}"
-                             th:with="techEven = ${techs[iterStat.index + 1]}">
-                            <img th:with=" img = @{${techEven.url}}" th:src="${img}"
-                                 th:title="${techEven.name}">
+                         th:with="techEven = ${techs[iterStat.index + 1]}"
+                         th:style="'--hanlo-dynamic-background:' + ${techEven.background}">
+                            <img th:if="${techEven != null and not #strings.isEmpty(techEven.url)}"
+                                 th:with=" img = @{${techEven.url}}" th:src="${img}"
+                                 th:alt="${techEven.name}" th:title="${techEven.name}" loading="lazy" decoding="async">
                         </div>
                     </div>
                 </th:block>
@@ -207,23 +208,23 @@
         </div>
         <div class="banners-link" th:if="${not #lists.isEmpty(theme.config.top.BannerLeft.categoryGroup)}"
              th:with="groups = ${theme.config.top.BannerLeft.categoryGroup}">
-            <div th:if="${#lists.size(theme.config.top.BannerLeft.categoryGroup) >= 1}">
+            <div th:if="${#lists.size(groups) >= 1 and not #strings.isEmpty(groups[0].url)}"
+                 th:with="iconIsImg=${not #strings.isEmpty(groups[0].icon) and (#strings.startsWith(groups[0].icon, 'http') or #strings.startsWith(groups[0].icon, '/'))}">
                 <a class="banners-link-btn blb-hot hanlo-configurable-gradient"
                    th:style="|--hanlo-gradient-light: linear-gradient(to right, ${groups[0].colorOneLight}, ${groups[0].colorTwoLight}); --hanlo-gradient-dark: linear-gradient(to right, ${groups[0].colorOneDark}, ${groups[0].colorTwoDark})|"
                    th:href="@{${groups[0].url}}">
-                    <i th:if="${not #strings.startsWith(groups[0].icon, 'http')}" th:class="${groups[0].icon}"></i>
-                    <img th:if="${#strings.startsWith(groups[0].icon, 'http')}" th:src="@{${groups[0].icon}}"
-                         alt="icon"/>
+                    <i th:if="${not iconIsImg}" th:class="${groups[0].icon}"></i>
+                    <img th:if="${iconIsImg}" th:src="@{${groups[0].icon}}" alt="" loading="lazy" decoding="async"/>
                     <div class="banners-link-title">[[${groups[0].title}]]</div>
                 </a>
             </div>
-            <div th:if="${#lists.size(theme.config.top.BannerLeft.categoryGroup) > 1}">
+            <div th:if="${#lists.size(groups) > 1 and not #strings.isEmpty(groups[1].url)}"
+                 th:with="iconIsImg=${not #strings.isEmpty(groups[1].icon) and (#strings.startsWith(groups[1].icon, 'http') or #strings.startsWith(groups[1].icon, '/'))}">
                 <a class="banners-link-btn blb-top hanlo-configurable-gradient"
                    th:style="|--hanlo-gradient-light: linear-gradient(to right, ${groups[1].colorOneLight}, ${groups[1].colorTwoLight}); --hanlo-gradient-dark: linear-gradient(to right, ${groups[1].colorOneDark}, ${groups[1].colorTwoDark})|"
                    th:href="@{${groups[1].url}}">
-                    <i th:if="${not #strings.startsWith(groups[1].icon, 'http')}" th:class="${groups[1].icon}"></i>
-                    <img th:if="${#strings.startsWith(groups[1].icon, 'http')}" th:src="@{${groups[1].icon}}"
-                         alt="icon"/>
+                    <i th:if="${not iconIsImg}" th:class="${groups[1].icon}"></i>
+                    <img th:if="${iconIsImg}" th:src="@{${groups[1].icon}}" alt="" loading="lazy" decoding="async"/>
                     <div class="banners-link-title">[[${groups[1].title}]]</div>
                 </a>
             </div>
@@ -235,24 +236,24 @@
     <div class="categoryGroup" th:if="${not #lists.isEmpty(theme.config.top.BannerLeft.categoryGroup)}">
         <th:block th:if="${not #lists.isEmpty(theme.config.top.BannerLeft.categoryGroup)}"
                   th:with="groups = ${theme.config.top.BannerLeft.categoryGroup}">
-            <div class="categoryItem" th:if="${#lists.size(theme.config.top.BannerLeft.categoryGroup) >= 1}">
+            <div class="categoryItem" th:if="${#lists.size(groups) >= 1 and not #strings.isEmpty(groups[0].url)}"
+                 th:with="iconIsImg=${not #strings.isEmpty(groups[0].icon) and (#strings.startsWith(groups[0].icon, 'http') or #strings.startsWith(groups[0].icon, '/'))}">
                 <a class="categoryButton CB1 bikan hanlo-configurable-gradient"
                    th:style="|--hanlo-gradient-light: linear-gradient(to right, ${groups[0].colorOneLight}, ${groups[0].colorTwoLight}); --hanlo-gradient-dark: linear-gradient(to right, ${groups[0].colorOneDark}, ${groups[0].colorTwoDark})|"
                    th:href="@{${groups[0].url}}">
                     <span class="categoryButtonText">[[${groups[0].title}]]</span>
-                    <i th:if="${not #strings.startsWith(groups[0].icon, 'http')}" th:class="${groups[0].icon}"></i>
-                    <img th:if="${#strings.startsWith(groups[0].icon, 'http')}" th:src="@{${groups[0].icon}}"
-                         alt="icon"/>
+                    <i th:if="${not iconIsImg}" th:class="${groups[0].icon}"></i>
+                    <img th:if="${iconIsImg}" th:src="@{${groups[0].icon}}" alt="" loading="lazy" decoding="async"/>
                 </a>
             </div>
-            <div class="categoryItem" th:if="${#lists.size(theme.config.top.BannerLeft.categoryGroup) > 1}">
+            <div class="categoryItem" th:if="${#lists.size(groups) > 1 and not #strings.isEmpty(groups[1].url)}"
+                 th:with="iconIsImg=${not #strings.isEmpty(groups[1].icon) and (#strings.startsWith(groups[1].icon, 'http') or #strings.startsWith(groups[1].icon, '/'))}">
                 <a class="categoryButton remen hanlo-configurable-gradient"
                    th:style="|--hanlo-gradient-light: linear-gradient(to right, ${groups[1].colorOneLight}, ${groups[1].colorTwoLight}); --hanlo-gradient-dark: linear-gradient(to right, ${groups[1].colorOneDark}, ${groups[1].colorTwoDark})|"
                    th:href="@{${groups[1].url}}">
                     <span class="categoryButtonText">[[${groups[1].title}]]</span>
-                    <i th:if="${not #strings.startsWith(groups[1].icon, 'http')}" th:class="${groups[1].icon}"></i>
-                    <img th:if="${#strings.startsWith(groups[1].icon, 'http')}" th:src="@{${groups[1].icon}}"
-                         alt="icon"/>
+                    <i th:if="${not iconIsImg}" th:class="${groups[1].icon}"></i>
+                    <img th:if="${iconIsImg}" th:src="@{${groups[1].icon}}" alt="" loading="lazy" decoding="async"/>
                 </a>
             </div>
         </th:block>

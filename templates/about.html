@@ -23,7 +23,7 @@
         <main class="layout hide-aside" id="content-inner">
             <div id="page">
                 <div class="about-experience" data-about-experience
-                     th:attr="data-about-default=${theme.config.about['presentation'] ?: 'bottle'}">
+                     th:attr="data-about-default=${theme.config.about?.presentation ?: 'bottle'}">
                 <div class="about-experience__switch" role="group" aria-label="关于页展示方式">
                     <button type="button" data-about-mode="bottle" aria-pressed="false">瓶中世界</button>
                     <button type="button" data-about-mode="classic" aria-pressed="true">文字关于</button>
@@ -46,7 +46,7 @@
                                                ? defaultImg
                                                : theme.config.about.aboutAuthorImage}
                                 ">
-                                <img th:src="${finalImg}">
+                                <img th:src="${finalImg}" th:alt="${site.title}">
                             </th:block>
                         </div>
                         <div class="author-tag-right"

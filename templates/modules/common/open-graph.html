@@ -1,26 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-<th:block th:fragment="open-graph(_title,_permalink,_cover,_excerpt,_type)">
+<th:block th:fragment="open-graph(_title,_permalink,_cover,_excerpt,_type)"
+          th:with="baseUrl=${not #strings.isEmpty(site.url) && #strings.endsWith(site.url, '/') ? #strings.substring(site.url, 0, #strings.length(site.url) - 1) : (site.url ?: '')},
+                   resolvedUrl=${not #strings.isEmpty(_permalink) && #strings.startsWith(_permalink, 'http') ? _permalink : baseUrl + (_permalink ?: '')},
+                   description=${not #strings.isEmpty(_excerpt) ? _excerpt : (not #strings.isEmpty(site.seo?.description) ? site.seo.description : _title)},
+                   rawImage=${not #strings.isEmpty(_cover) ? _cover : (not #strings.isEmpty(site.logo) ? site.logo : '')},
+                   image=${not #strings.isEmpty(rawImage) ? (#strings.startsWith(rawImage, 'http') ? rawImage : baseUrl + rawImage) : ''}">
     <!-- Open Graph Start -->
     <meta property="og:site_name" th:content="${site.title}" />
     <meta property="og:type" th:content="${_type}" />
     <meta property="og:title" th:content="${_title}" />
-    <meta property="og:url" th:content="|${site.url}${_permalink}|" />
-    <th:block
-            th:with="description = ${ not #strings.isEmpty(_excerpt) ? _excerpt : not #strings.isEmpty(site.seo.description) ? site.seo.description: _title},
-                     image=${not #strings.isEmpty(_cover) ? _cover : not #strings.isEmpty(site.logo) ? site.logo :'null'}">
-        <meta property="og:description" th:content="${description}" />
-        <meta property="og:image" th:content="${image}" />
-    </th:block>
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:url" th:content="${resolvedUrl}" />
+    <meta property="og:description" th:content="${description}" />
+    <meta th:if="${not #strings.isEmpty(image)}" property="og:image" th:content="${image}" />
+    <meta name="twitter:card" th:content="${not #strings.isEmpty(image) ? 'summary_large_image' : 'summary'}" />
     <meta name="twitter:title" th:content="${_title}" />
-    <meta name="twitter:url" th:content="|${site.url}${_permalink}|" />
-    <th:block th:with="description = ${ not #strings.isEmpty(_excerpt) ? _excerpt : not #strings.isEmpty(site.seo.description) ? site.seo.description: _title},
-    image=${not #strings.isEmpty(_cover) ? _cover : not #strings.isEmpty(site.logo) ? site.logo :'null'}">
-        <meta name="twitter:description" th:content="${description}" />
-        <meta name="twitter:image" th:content="${image}" />
-    </th:block>
-
+    <meta name="twitter:url" th:content="${resolvedUrl}" />
+    <meta name="twitter:description" th:content="${description}" />
+    <meta th:if="${not #strings.isEmpty(image)}" name="twitter:image" th:content="${image}" />
     <!-- Open Graph End -->
 </th:block>
 

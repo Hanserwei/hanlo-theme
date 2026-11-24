@@ -1,7 +1,3 @@
-import { parseFragment, type DefaultTreeAdapterMap } from "parse5";
-
-type CommentNode = DefaultTreeAdapterMap["node"];
-
 const omittedElements = new Set([
   "script",
   "style",
@@ -48,27 +44,38 @@ const separatedElements = new Set([
   "ul",
 ]);
 
-/** Parse into a plain syntax tree, without executing HTML or fetching embedded resources. */
+const TEXT_NODE = 3;
+const ELEMENT_NODE = 1;
+
+/** Parse into an inert DOM document, without executing HTML or fetching embedded resources. */
 export function commentHtmlToText(html: string): string {
+  if (!html) return "";
+  const parsed = new DOMParser().parseFromString(html, "text/html");
+  const root = parsed.body ?? parsed.documentElement;
+  if (!root) return "";
+
   const text: string[] = [];
-  function visit(node: CommentNode): void {
-    if (node.nodeName === "#text" && "value" in node) {
-      text.push(node.value);
+  function visit(node: Node): void {
+    if (node.nodeType === TEXT_NODE) {
+      if (node.nodeValue) text.push(node.nodeValue);
       return;
     }
-    if (omittedElements.has(node.nodeName)) return;
-    if (node.nodeName === "img" && "attrs" in node) {
-      const alt = node.attrs.find((attribute) => attribute.name === "alt")?.value;
+    if (node.nodeType !== ELEMENT_NODE) return;
+    const element = node as Element;
+    const tagName = element.tagName.toLowerCase();
+    if (omittedElements.has(tagName)) return;
+    if (tagName === "img") {
+      const alt = element.getAttribute("alt");
       text.push(` ${alt || "[图片]"} `);
       return;
     }
-    if (separatedElements.has(node.nodeName)) text.push(" ");
-    if ("childNodes" in node) {
-      for (const child of node.childNodes) visit(child);
-    }
-    if (separatedElements.has(node.nodeName)) text.push(" ");
+    const separated = separatedElements.has(tagName);
+    if (separated) text.push(" ");
+    for (const child of Array.from(element.childNodes)) visit(child);
+    if (separated) text.push(" ");
   }
-  visit(parseFragment(html));
+
+  for (const child of Array.from(root.childNodes)) visit(child);
   return text.join("").replace(/\s+/g, " ").trim();
 }
 

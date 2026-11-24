@@ -5,13 +5,12 @@
     <!-- 版权声明 -->
     <div class="post-copyright">
         <div class="post-copyright__author_group">
-            <div th:with="contributor=${contributorFinder.getContributor(post.owner.metadata.name)}">
-                <a class="post-copyright__author_img" th:href="'/authors/'+${contributor.name}">
-                    <!--                <img class="post-copyright__author_img_back entered loading"-->
-                    <!--                 th:src="@{${#strings.isEmpty(site.logo) ?  assets_link + '/images/hanlo-logo.png' : site.logo}}">-->
-                    <!-- 获取当前文章对象（假设变量为 $post） -->
+            <div th:if="${post.owner != null}"
+                 th:with="authorLink=${not #strings.isEmpty(post.owner.permalink) ? post.owner.permalink : '/authors/' + post.owner.name}">
+                <a class="post-copyright__author_img" th:href="@{${authorLink}}">
                     <img class="post-copyright__author_img_back entered loading"
-                         th:src="${contributor.avatar ?: assets_link + '/images/hanlo-logo.png'}"/>
+                         th:alt="${post.owner.displayName}"
+                         th:src="${#strings.isEmpty(post.owner.avatar) ? assets_link + '/images/hanlo-logo.png' : post.owner.avatar}"/>
                 </a>
             </div>
             <div class="post-copyright__author_name">[[${site.title}]]</div>
@@ -40,14 +39,14 @@
                         </div>
                     </div>
                     <div class="share-link weibo" th:if="${theme.config.post.share_right.weibo_edit}">
-                        <a class="share-button" rel="noopener external nofollow noreferrer noopener" target="_blank"
-                           th:href="'https://service.weibo.com/share/share.php?title=' + ${post.spec.title}"
-                           title="分享到微博">
+                        <a class="share-button" rel="noopener noreferrer external nofollow" target="_blank"
+                           th:href="@{https://service.weibo.com/share/share.php(title=${post.spec.title})}"
+                           title="分享到微博" aria-label="分享到微博">
                             <i class="haofont hao-icon-weibo hl:[font-size:22px]"></i></a>
                     </div>
                     <div class="share-link copyurl" th:if="${theme.config.post.share_right.copyurl_edit}">
-                        <div class="share-button" data-hanlo-action="copy-page-url" id="post-share-url" title="复制链接"><i
-                                class="haofont hao-icon-link"></i></div>
+                        <button class="share-button hanlo-button-reset" data-hanlo-action="copy-page-url" id="post-share-url" type="button" title="复制链接" aria-label="复制链接"><i
+                                class="haofont hao-icon-link"></i></button>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 import type { ThemeConfig } from "../../core/config";
+import { prefersReducedMotion } from "../../core/dom";
 import { navigateTo, openExternalUrl, resolveHttpUrl } from "../../core/navigation";
 import type { PageResourceScope } from "../../core/resource-scope";
 import type { PageControllerDefinition } from "../../core/types";
@@ -40,6 +41,7 @@ class PostAiController {
   readonly #explanation: HTMLElement;
   readonly #panel: HTMLElement;
   readonly #refresh: HTMLElement;
+  readonly #refreshButton: HTMLElement;
   readonly #resources: PageResourceScope;
   #animationGeneration = 0;
   #lastLocalIndex = -1;
@@ -48,12 +50,14 @@ class PostAiController {
   #refreshCount = 0;
   #request: AbortController | undefined;
   #statusInterval: ReturnType<typeof setInterval> | undefined;
+  #writeObserver: IntersectionObserver | undefined;
 
   constructor(
     config: PostAiConfig,
     panel: HTMLElement,
     explanation: HTMLElement,
     refresh: HTMLElement,
+    refreshButton: HTMLElement,
     resources: PageResourceScope,
   ) {
     this.#config = config;
@@ -61,6 +65,7 @@ class PostAiController {
     this.#panel = panel;
     this.#explanation = explanation;
     this.#refresh = refresh;
+    this.#refreshButton = refreshButton;
     this.#resources = resources;
     resources.defer(() => this.#cleanup());
   }
@@ -79,7 +84,7 @@ class PostAiController {
       const action = actions[index];
       if (action) this.#resources.listen(button, "click", action);
     });
-    this.#resources.listen(this.#refresh, "click", () => this.#refreshSummary());
+    this.#resources.listen(this.#refreshButton, "click", () => this.#refreshSummary());
 
     const tag = this.#panel.querySelector<HTMLElement>(".ai-tag");
     if (tag) this.#resources.listen(tag, "click", () => this.#describeMode());
@@ -101,6 +106,8 @@ class PostAiController {
 
   #cleanup(): void {
     this.#animationGeneration += 1;
+    this.#writeObserver?.disconnect();
+    this.#writeObserver = undefined;
     this.#request?.abort();
     this.#request = undefined;
     if (this.#statusInterval) clearInterval(this.#statusInterval);
@@ -109,34 +116,49 @@ class PostAiController {
 
   #write(text: string, pending = true): void {
     const generation = ++this.#animationGeneration;
+    this.#writeObserver?.disconnect();
+    this.#writeObserver = undefined;
+    if (prefersReducedMotion()) {
+      this.#explanation.textContent = text;
+      return;
+    }
     this.#explanation.textContent = pending ? "生成中. . ." : "请等待. . .";
-    let index = 0;
-    const observer = this.#resources.observe(
-      new IntersectionObserver((entries) => {
-        if (!entries[0]?.isIntersecting) return;
-        observer.disconnect();
-        const append = () => {
-          if (generation !== this.#animationGeneration || this.#resources.disposed) return;
-          const character = text.charAt(index);
-          if (!character) return;
-          if (index === 0) this.#explanation.replaceChildren();
-          const cursor = this.#explanation.querySelector(".ai-cursor");
-          cursor?.remove();
-          this.#explanation.append(document.createTextNode(character));
-          index += 1;
-          if (index < text.length) {
-            const nextCursor = document.createElement("span");
-            nextCursor.className = "ai-cursor";
-            this.#explanation.append(nextCursor);
-            this.#resources.timeout(
-              () => this.#resources.animationFrame(append),
-              /[,.，。!?！？]/.test(text.charAt(index)) ? 150 : 20,
-            );
-          }
-        };
-        this.#resources.timeout(() => this.#resources.animationFrame(append), 200);
-      }),
-    );
+    const startTyping = () => {
+      let index = 0;
+      const textNode = document.createTextNode("");
+      const cursor = document.createElement("span");
+      cursor.className = "ai-cursor";
+      const append = () => {
+        if (generation !== this.#animationGeneration || this.#resources.disposed) return;
+        if (index === 0) this.#explanation.replaceChildren(textNode, cursor);
+        index += 1;
+        textNode.data = text.slice(0, index);
+        if (index < text.length) {
+          this.#resources.timeout(
+            () => this.#resources.animationFrame(append),
+            /[,.，。!?！？]/.test(text.charAt(index)) ? 150 : 20,
+          );
+        } else {
+          cursor.remove();
+        }
+      };
+      if (text.length === 0) {
+        this.#explanation.textContent = "";
+        return;
+      }
+      this.#resources.timeout(() => this.#resources.animationFrame(append), 200);
+    };
+    if (!("IntersectionObserver" in window)) {
+      startTyping();
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries[0]?.isIntersecting) return;
+      observer.disconnect();
+      if (this.#writeObserver === observer) this.#writeObserver = undefined;
+      startTyping();
+    });
+    this.#writeObserver = observer;
     observer.observe(this.#panel);
   }
 
@@ -165,7 +187,6 @@ class PostAiController {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Referer: this.#config.referer,
         },
         body: JSON.stringify({
           key: this.#config.key,
@@ -177,6 +198,7 @@ class PostAiController {
       let summary: string;
       if (response.status === 403) summary = "403 refer 与 key 不匹配，本地无法显示。";
       else if (response.status === 500) summary = "500 系统内部错误";
+      else if (!response.ok) summary = `摘要获取失败（HTTP ${response.status}），请稍后重试。`;
       else {
         const result: unknown = await response.json();
         summary =
@@ -188,9 +210,6 @@ class PostAiController {
       }
       if (!summary) summary = "摘要获取失败，请检查 Tianli 服务是否正常。";
       this.#write(summary);
-      this.#resources.timeout(() => {
-        this.#refresh.style.opacity = "1";
-      }, 300);
     } catch (error) {
       if (!(error instanceof DOMException && error.name === "AbortError")) {
         console.error("[Hanlo] AI summary request failed.", error);
@@ -199,11 +218,18 @@ class PostAiController {
     } finally {
       if (this.#statusInterval) clearInterval(this.#statusInterval);
       this.#statusInterval = undefined;
+      if (!this.#resources.disposed) {
+        this.#resources.timeout(() => {
+          this.#refresh.style.opacity = "1";
+        }, 300);
+      }
     }
   }
 
   #cleanupRequest(): void {
     this.#animationGeneration += 1;
+    this.#writeObserver?.disconnect();
+    this.#writeObserver = undefined;
     this.#request?.abort();
     this.#request = undefined;
     if (this.#statusInterval) clearInterval(this.#statusInterval);
@@ -219,10 +245,10 @@ class PostAiController {
         : this.#config.wordLimit + Math.floor(Math.random() * range);
     if (limit === this.#previousLimit) limit += 1;
     this.#previousLimit = limit;
+    this.#refreshCount += 1;
     this.#refresh.style.opacity = "0.2";
     this.#refresh.style.transitionDuration = "0.3s";
     this.#refresh.style.transform = `rotate(${this.#refreshCount * 360}deg)`;
-    this.#refreshCount += 1;
     this.#showDefaultButtons();
     void this.#generateSummary(limit);
   }
@@ -294,6 +320,7 @@ class PostAiController {
   }
 
   #goHome(): void {
+    this.#cleanupRequest();
     this.#write("正在返回本站首页...", false);
     this.#resources.timeout(() => {
       navigateTo("/");
@@ -313,7 +340,15 @@ export function createPostAiController(): PageControllerDefinition {
           ".ai-title .haofont.hao-icon-arrow-rotate-right",
         );
         if (!panel || !explanation || !refresh) return;
-        new PostAiController(config.postAi, panel, explanation, refresh, resources).mount();
+        const refreshButton = refresh.closest<HTMLElement>("button") ?? refresh;
+        new PostAiController(
+          config.postAi,
+          panel,
+          explanation,
+          refresh,
+          refreshButton,
+          resources,
+        ).mount();
       },
       unmount() {},
     }),

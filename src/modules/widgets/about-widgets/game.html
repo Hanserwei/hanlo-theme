@@ -35,15 +35,16 @@
             <div class="author-content-item-title" th:text="${theme.config.about.game2.game2_title}"></div>
             <div class="comic-box" >
                 <a  th:each="comic : ${theme.config.about.game2.comic_list}"
+                    th:if="${comic != null and not #strings.isEmpty(comic.url)}"
                     class="comic-item"
                     th:href="${comic.url}"
-                    rel="external nofollow noreferrer" target="_blank" th:title="${comic.title}" draggable="false">
-                    <div class="comic-item-cover"><img
+                    rel="noopener noreferrer external nofollow" target="_blank" th:title="${comic.title}" draggable="false">
+                    <div class="comic-item-cover"><img th:if="${not #strings.isEmpty(comic.bg)}"
                             th:with="img = @{${comic.bg}}"
-
                             th:src="${isLazyload ? '' : img}"
                             th:data-lazy-src="${ isLazyload ? img : ''}"
                             th:alt="${comic.title}"
+                            loading="lazy" decoding="async"
                             draggable="false" >
                     </div>
                 </a>

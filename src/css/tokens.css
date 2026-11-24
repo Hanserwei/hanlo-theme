@@ -21,6 +21,7 @@
     color-scheme: light;
 
     --hanlo-color-brand: #425aef;
+    --hanlo-color-on-brand: #fff;
     --hanlo-color-brand-soft: rgb(66 90 239 / 14%);
     --hanlo-color-canvas: #f7f9fe;
     --hanlo-color-surface: #fff;
@@ -45,6 +46,7 @@
     color-scheme: dark;
 
     --hanlo-color-brand: #ffc848;
+    --hanlo-color-on-brand: #18171d;
     --hanlo-color-brand-soft: rgb(242 185 75 / 14%);
     --hanlo-color-canvas: #18171d;
     --hanlo-color-surface: #1d1e22;

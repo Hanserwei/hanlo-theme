@@ -7,7 +7,10 @@ import lightPlus from "shiki/themes/light-plus.mjs";
 import oneDarkPro from "shiki/themes/one-dark-pro.mjs";
 import oneLight from "shiki/themes/one-light.mjs";
 
-import { LANGUAGE_LOADERS } from "./registry";
+import { LANGUAGE_LABELS, LANGUAGE_LOADERS, LOCAL_LANGUAGES, LOCAL_THEMES } from "./registry";
+
+export { normalizeLanguage, normalizeTheme } from "./normalize";
+export { LANGUAGE_LABELS, LOCAL_LANGUAGES, LOCAL_THEMES };
 
 let highlighterPromise: ReturnType<typeof createHighlighterCore> | undefined;
 const languagePromises = new Map<string, Promise<void>>();

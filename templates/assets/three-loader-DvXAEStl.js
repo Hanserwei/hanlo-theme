@@ -1,0 +1,1 @@
+var e;function t(t=!1){return t&&(e=void 0),e??=import(`https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js`).then(e=>{if(e.REVISION!==`187`)throw Error(`Unexpected Three.js revision.`);return e}).catch(t=>{throw e=void 0,t}),e}export{t as loadThree};

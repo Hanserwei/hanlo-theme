@@ -58,7 +58,7 @@
             }
 
             100% {
-                background: var(--xlfd-main);
+                background: var(--heo-main);
             }
         }
 
@@ -68,7 +68,7 @@
             }
 
             100% {
-                background: var(--xlfd-main);
+                background: var(--heo-main);
             }
         }
 
@@ -205,5 +205,27 @@
             }
             100% {
                 opacity: 1;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #site-title {
+                color: #fff;
+                animation: none;
+            }
+
+            #site-subtitle {
+                animation: none;
+            }
+
+            #site-title::after,
+            #site-subtitle::after,
+            .typed-cursor.typed-cursor--blink {
+                animation: none;
+            }
+
+            #site-title::after,
+            #site-subtitle::after {
+                display: none;
             }
         }

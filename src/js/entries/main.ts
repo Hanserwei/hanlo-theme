@@ -11,7 +11,7 @@ import { createFriendMomentsController } from "../features/friend-moments";
 import { createPageWidgetsController } from "../features/page-widgets";
 import { createPostAiController } from "../features/post-ai";
 import { createRightMenuController } from "../features/right-menu";
-import { createShikiController } from "../features/shiki";
+import { createShikiController } from "../features/shiki/controller";
 import { createSiteShellController } from "../features/site-shell";
 import { createThemeModeController } from "../features/theme-mode";
 import { createTranslationController } from "../features/translation";

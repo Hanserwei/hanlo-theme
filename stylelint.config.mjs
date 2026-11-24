@@ -8,7 +8,10 @@ export default {
     {
       files: ["src/css/components/fonts.css"],
       // Generated Unicode ranges exceed css-tree's matcher limit; the font generator checks them.
-      rules: { "at-rule-descriptor-value-no-unknown": null },
+      rules: {
+        "at-rule-descriptor-no-unknown": null,
+        "at-rule-descriptor-value-no-unknown": null,
+      },
     },
     {
       files: [

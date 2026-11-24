@@ -988,4 +988,12 @@ li.card-archive-list-item {
 
 .medium-zoom-image--opened {
     border-radius: 2px;
+    z-index: 99999;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .parallax > use,
+    .pace .pace-progress {
+        animation: none;
+    }
 }

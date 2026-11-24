@@ -24,7 +24,7 @@
 
                     span.isBlogger {
                         background: var(--heo-main);
-                        color: white;
+                        color: var(--heo-on-main);
                         font-weight: normal;
                         font-size: 13px;
                         line-height: 1;
@@ -47,11 +47,11 @@
                         }
                     }
 
-                    #comments-page .comment-card:hover {
+                    #comments-page .comment-card:is(:hover, :focus-within) {
                         border-color: var(--heo-main)
                     }
 
-                    #comments-page .comment-card:hover .comment-article {
+                    #comments-page .comment-card:is(:hover, :focus-within) .comment-article {
                         opacity: 1;
                         top: 0
                     }
@@ -87,12 +87,10 @@
                     }
 
                     #comments-page .comment-card .comment-info .comment-information .comment-author::after {
-                        content: "\f3a5";
-                        font-family: "Font Awesome 6 Free";
+                        content: "✦";
                         padding-left: 6px;
-                        padding-top: 5px;
-                        font-size: 14px;
-                        color: #fdc22d
+                        font-size: 13px;
+                        color: #fdc22d;
                     }
 
                     [data-theme=dark] #comments-page .comment-card .comment-info .comment-information .comment-author::after {
@@ -108,7 +106,6 @@
                         margin: 8px 5px 0
                     }
 
-                    .comment-article,
                     .comment-content {
                         transition: .3s;
                         overflow: hidden;
@@ -128,13 +125,17 @@
                         width: 100%;
                         z-index: 1;
                         background: var(--heo-main);
-                        color: var(--heo-card-bg);
+                        color: var(--heo-on-main);
                         margin: 0;
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         padding: 1rem;
                         opacity: 0;
-                        text-align: center
+                        overflow: hidden;
+                        line-height: 1.6;
+                        font-weight: 500;
+                        text-align: center;
+                        transition: opacity .3s ease;
                     }
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'category',title = ${'分类' + ': ' + category.spec.displayName + ' | ' + site.title}, head = ~{::head})}">
 <th:block th:fragment="head">
-    <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = '分类',
+    <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${category.spec.displayName},
                 _permalink = ${category.status.permalink},
                 _cover = ${category.spec.cover},
                 _excerpt = ${category.spec.description},
@@ -14,7 +14,7 @@
         <header class="not-top-img" id="page-header">
             <nav th:replace="~{modules/nav :: nav(title = ${'分类' + ': ' + category.spec.displayName})}"></nav>
         </header>
-        <main class="layout" id="content-inner">
+        <main class="layout" id="content-inner" th:classappend="${theme.config.sidebar.location}">
             <div id="category">
                 <div id="category-bar">
                     <div class="category-bar-items" id="category-bar-items">
@@ -24,7 +24,7 @@
                         <div class="category-bar-item"
                              th:classappend="${category.metadata.name == categoryItem.metadata.name} ? ' select'"
                              th:each="categoryItem : ${categoryFinder.listAll()}"
-                             th:id="${categoryItem.spec.slug}">
+                             th:id="${'cat-' + categoryItem.spec.slug}">
                             <a th:href="@{${categoryItem.status.permalink}}"
                                th:text="${categoryItem.spec.displayName}"></a>
                         </div>
@@ -33,7 +33,7 @@
                     <a class="category-bar-more" href="/categories">更多</a>
                 </div>
                 <!-- 文章 -->
-                <th:block th:replace="~{macro/post-list :: post-list(${'/categories/'+category.spec.slug})}" />
+                <th:block th:replace="~{macro/post-list :: post-list(${category.status.permalink})}" />
             </div>
             <!-- sidebar -->
             <div th:replace="~{modules/aside :: aside(${theme.config.sidebar.widgetss.categoryWidget})}"></div>

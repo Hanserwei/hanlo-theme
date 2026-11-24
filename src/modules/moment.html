@@ -24,10 +24,10 @@
         <div class="swiper-container swiper-no-swiping hanlo-moment-swiper" id="bbtalk" tabindex="-1">
             <a class="hanlo-moment-link" href="/moments" aria-label="查看全部瞬间"></a>
             <div class="swiper-wrapper hanlo-moment-track" id="bber-talk" th:if="${momentFinder}">
-                <th:block th:each="moment : ${momentFinder.listAll()}" th:with="content=${moment.spec.content}">
+                <th:block th:each="moment,iterStat : ${momentFinder.listAll()}" th:if="${iterStat.index < 10}" th:with="content=${moment.spec.content}">
                     <div class="li-style swiper-slide"
-                         th:if="${not #strings.isEmpty(content.raw)}"
-                         th:utext="${content.raw}">
+                         th:if="${not #strings.isEmpty(content?.html) or not #strings.isEmpty(content?.raw)}"
+                         th:utext="${not #strings.isEmpty(content?.html) ? content.html : content.raw}">
                     </div>
                 </th:block>
             </div>
@@ -36,6 +36,7 @@
            href="/moments" title="查看全文"></a>
     </th:block>
     <img th:if="${theme.config.top.climb.climbEnable && theme.config.top.recentTop} " class="climb"  id="climb"
+         alt="" loading="lazy" decoding="async"
          th:src="${isLazyload ? '' : theme.config.top.climb.climbImg}"
          data-hanlo-action="random-margin"
          th:data-lazy-src="${ isLazyload ? theme.config.top.climb.climbImg : ''}">

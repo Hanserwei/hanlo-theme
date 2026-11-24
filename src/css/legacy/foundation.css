@@ -10,6 +10,7 @@
     --heo-gray-op: #9999992b;
     --heo-vip: #e5a80d;
     --heo-main: var(--heo-theme);
+    --heo-on-main: var(--hanlo-color-on-brand);
     --heo-main-op: var(--heo-theme-op);
     --heo-main-op-deep: var(--heo-theme-op-deep);
     --heo-main-op-light: var(--heo-theme-op-light);
@@ -80,6 +81,7 @@
     --heo-theme: var(--hanlo-color-brand);
     --heo-theme-op: #f2b94b23;
     --heo-theme-op-deep: #f2b94bdd;
+    --heo-theme-op-light: #f2b94b14;
     --heo-theme-none: #f2b94b00;
     --heo-blue: var(--hanlo-color-info);
     --heo-red: var(--hanlo-color-danger);
@@ -370,6 +372,13 @@ template {
 
 .scroll-down-effects {
     animation: 1.5s ease 0s infinite normal none running scroll-down-effect;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card-announcement-animation,
+    .scroll-down-effects {
+        animation: none;
+    }
 }
 
 .reward-main {
@@ -840,21 +849,21 @@ table th {
     vertical-align: middle;
 }
 
-::selection {
-    background: rgb(0, 121, 255);
-    color: rgb(247, 247, 247);
-}
-
 .fa-spin {
     animation: heo-spin 1.2s linear infinite;
     opacity: .6
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .fa-spin {
+        animation: none;
+    }
+}
+
 button {
     padding: 0px;
-    outline: 0px;
     border: none;
-    background: 0px 0px;
+    background: transparent;
     cursor: pointer;
 }
 

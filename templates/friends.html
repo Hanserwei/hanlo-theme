@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-    th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'page',title = '朋友圈 | ' + ${site.title}, head = ~{::head})}">
+    th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'friends',title = '朋友圈 | ' + ${site.title}, head = ~{::head})}">
 
 <th:block th:fragment="head">
     <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = '朋友圈',
-                _permalink = '/moments',
+                _permalink = '/friends',
                 _cover = '',
                 _excerpt = '友链朋友圈 - 发现更多精彩内容',
                 _type = 'website')}"></th:block>
@@ -24,7 +24,7 @@
                 <!-- 朋友圈统计信息面板 -->
                 <div id="fMomentsMessageBoard">
                     <div class="fMomentsUpdatedTime">
-                        <i class="fas fa-sync-alt"></i>
+                        <i class="haofont hao-icon-arrows-rotate" aria-hidden="true"></i>
                         最近更新：<span id="lastUpdateTime">加载中...</span>
                     </div>
 
@@ -58,7 +58,7 @@
                 <!-- 控制面板 -->
                 <div class="fMomentsControlPanel">
                     <div class="fMomentsSearchBox">
-                        <i class="fas fa-search fMomentsSearchIcon"></i>
+                        <i class="haofont hao-icon-search--line fMomentsSearchIcon" aria-hidden="true"></i>
                         <input type="text" class="fMomentsSearchInput" placeholder="搜索已加载的文章标题或作者..." aria-label="搜索已加载的文章" id="searchInput">
                     </div>
 
@@ -76,7 +76,7 @@
 
                         <div class="fMomentsToggle">
                             <span>升序</span>
-                            <div class="fMomentsSwitch active" id="sortOrderSwitch"></div>
+                            <button class="fMomentsSwitch active hanlo-button-reset" id="sortOrderSwitch" type="button" role="switch" aria-checked="true" aria-label="切换降序或升序"></button>
                             <span>降序</span>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                 <!-- 显示数量状态 -->
                 <div class="fMomentsDisplayStatus">
                     <div class="fMomentsDisplayInfo">
-                        <i class="fas fa-filter"></i>
+                        <i class="haofont hao-icon-bars" aria-hidden="true"></i>
                         <span>已加载文章中显示</span>
                         <span class="fMomentsDisplayCount" id="displayedCount">0</span>
                         <span>/</span>
@@ -94,7 +94,7 @@
                         <span>篇文章</span>
                     </div>
                     <div class="fMomentsDisplayInfo hl:hidden" id="filterStatus">
-                        <i class="fas fa-info-circle"></i>
+                        <i class="haofont hao-icon-circle-info" aria-hidden="true"></i>
                         <span id="filterText">已应用筛选条件</span>
                     </div>
                 </div>
@@ -111,11 +111,11 @@
                 <!-- 加载更多按钮 -->
                 <div class="hl:hidden" id="loadingStatus">
                     <button id="fmomentsMoreBtn" type="button">
-                        <i class="fas fa-angle-double-down"></i>
+                        <i class="haofont hao-icon-angle-double-down" aria-hidden="true"></i>
                         <span>加载更多</span>
                     </button>
                     <div class="fMomentsNoMore hl:hidden" id="noMoreTip">
-                        <i class="fas fa-check-circle"></i>
+                        <i class="haofont hao-icon-circle-check" aria-hidden="true"></i>
                         <div>🎉 已加载全部文章</div>
                         <small>当前筛选显示 <span id="finalCount">0</span> 篇文章</small>
                     </div>
@@ -123,15 +123,15 @@
 
                 <!-- 错误状态 -->
                 <div class="fMomentsErrorState hl:hidden" id="errorState">
-                    <i class="fas fa-exclamation-triangle"></i>
+                    <i class="haofont hao-icon-triangle-exclamation" aria-hidden="true"></i>
                     <h3>加载失败</h3>
                     <div id="errorMessage">请检查网络连接后重试</div>
-                    <button class="fMomentsRetryBtn" id="retryBtn">重新加载</button>
+                    <button class="fMomentsRetryBtn" id="retryBtn" type="button">重新加载</button>
                 </div>
 
                 <!-- 空状态 -->
                 <div class="fMomentsEmptyState hl:hidden" id="emptyState">
-                    <i class="fas fa-search"></i>
+                    <i class="haofont hao-icon-search--line" aria-hidden="true"></i>
                     <h3>已加载的文章中没有匹配结果</h3>
                     <p id="emptyHint">尝试更换搜索词或调整筛选条件</p>
                 </div>

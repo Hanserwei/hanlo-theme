@@ -9,7 +9,7 @@
 
             <div class="category-bar-item"
                  th:each="customUrlItem : ${customUrls}"
-                 th:id="${customUrlItem.title}">
+                 th:if="${customUrlItem != null and not #strings.isEmpty(customUrlItem.url)}">
                 <a th:href="@{${customUrlItem.url}}" th:text="${customUrlItem.title}"></a>
             </div>
 

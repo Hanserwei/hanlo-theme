@@ -63,8 +63,13 @@ describe("parseThemeConfig", () => {
       template.lastIndexOf("</script>"),
     );
     expect(() => new Script(script)).not.toThrow();
-    for (const field of ["btnLink", "gptName", "key", "Referer"]) {
+    for (const field of ["btnLink", "gptName"]) {
       expect(template).toContain(`theme.config.post.aiDescription.${field}}]]*/ '') ?? ''`);
+    }
+    for (const field of ["key", "Referer"]) {
+      expect(template).toContain(
+        `postAiRemoteActive ? theme.config.post.aiDescription.${field} : ''}]]*/ '') ?? ''`,
+      );
     }
   });
 

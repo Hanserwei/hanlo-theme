@@ -53,7 +53,7 @@ code:not([class]) {
         -ms-transform: translateY(-50%);
         transform: translateY(-50%);
         margin: auto;
-        color: #fff;
+        color: var(--heo-on-main);
         font-weight: 700;
         line-height: 2;
         font-size: 17px;
@@ -316,7 +316,7 @@ body[data-type=neodb] .sort-button-group button,body[data-type=neodb] .type-butt
 
 .type-button {
     background-color: var(--heo-card-bg);
-    color: var(--heo-font-color);
+    color: var(--heo-fontcolor);
     padding: 10px 20px;
     border: none;
     cursor: pointer;

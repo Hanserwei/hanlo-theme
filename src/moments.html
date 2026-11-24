@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'moments',title = ${title + ' | ' + site.title}, head = ~{::head}, _title = ${title})}">
+      th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'moments', title = ${(title ?: '瞬间') + ' | ' + site.title}, head = ~{::head})}">
 <th:block th:fragment="head">
-    <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${_title},
+    <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${title ?: '瞬间'},
                 _permalink = '/moments',
                 _cover = ${theme.config.other.opengraph.image},
                 _excerpt = ${site.seo.description},
@@ -14,7 +14,7 @@
 
         <!-- 头部导航栏 -->
         <header class="not-top-img" id="page-header">
-            <nav th:replace="~{modules/nav :: nav(title = ${_title})}"></nav>
+            <nav th:replace="~{modules/nav :: nav(title = ${title ?: '瞬间'})}"></nav>
         </header>
         <main class="layout hide-aside" id="content-inner">
             <div id="page">
@@ -39,14 +39,15 @@
                                             <img th:each="momentItem : ${content.medium}"
                                                  th:if="${momentItem.type.name == 'PHOTO'}"
                                                  th:src="${isLazyload ? '' : momentItem.url}"
-                                                 th:data-lazy-src="${ isLazyload ? momentItem.url : ''}" title="瞬间配图">
+                                                 th:data-lazy-src="${ isLazyload ? momentItem.url : ''}"
+                                                 alt="瞬间配图" title="瞬间配图" loading="lazy" decoding="async">
                                             <div class="bber-content-noimg"></div>
                                             <div class="bber-content-noimg"></div>
                                             <div class="bber-content-noimg"></div>
                                         </div>
                                         <div th:each="momentItem : ${content.medium}" class="bber-music"
                                              th:if="${momentItem.type.name == 'VIDEO'}">
-                                            <video th:src="${momentItem.url}"></video>
+                                            <video controls="" preload="metadata" th:src="${momentItem.url}"></video>
                                         </div>
                                     </th:block>
                                 </div>

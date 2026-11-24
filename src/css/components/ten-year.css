@@ -33,7 +33,7 @@
     position: absolute;
     left: 0;
     font-size: 14px;
-    color: var(--heo-card-bg);
+    color: var(--heo-on-main);
     font-weight: bold;
     top: 10px;
     white-space: nowrap;
@@ -84,6 +84,22 @@
     }
     100% {
         box-shadow: 0 0 2px var(--heo-main);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .progress {
+        width: var(--progress-percentage, 0);
+        animation: none;
+    }
+
+    .past-time {
+        transform: scaleX(var(--past-time-percentage, 0));
+        animation: none;
+    }
+
+    .timeline:hover {
+        animation: none;
     }
 }
 }

@@ -164,7 +164,6 @@ div#banners {
         flex-direction: column;
         overflow: hidden;
         transition: .3s;
-        will-change: transform;
         animation: slide-in .6s .1s backwards
     }
 
@@ -483,6 +482,13 @@ div#banners {
     display: flex
 }
 
+@media (prefers-reduced-motion: reduce) {
+    #bannerGroup .tags-group-wrapper,
+    .nowrapMove .tags-group-wrapper {
+        animation: none;
+    }
+}
+
 .tags-group-icon-pair .tags-group-icon:nth-child(even) {
     margin-top: 1rem;
     transform: translate(-60px)
@@ -756,12 +762,12 @@ a.categoryButton:hover {
 
 .category-bar-item:hover a {
     background: var(--heo-theme);
-    color: var(--heo-card-bg);
+    color: var(--heo-on-main);
 }
 
 .category-bar-item.select a {
     background: var(--heo-theme);
-    color: var(--heo-card-bg);
+    color: var(--heo-on-main);
     border-radius: 8px;
 }
 
@@ -779,7 +785,7 @@ a.categoryButton:hover {
         position: sticky;
         top: 60px;
         background: var(--heo-background);
-        z-index: 1002;
+        z-index: 90;
     }
 }
 

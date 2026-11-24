@@ -14,20 +14,20 @@
         <header class="not-top-img" id="page-header">
             <nav th:replace="~{modules/nav :: nav(title = ${'标签'+ ': ' + tag.spec.displayName})}"></nav>
         </header>
-        <main class="layout" id="content-inner">
+        <main class="layout" id="content-inner" th:classappend="${theme.config.sidebar.location}">
             <div id="tag">
                 <div id="tag-page-tags" th:with="tags = ${tagFinder.listAll()}">
                     <a class="hl:[font-size:1em] hl:[color:#3c228c]"
                        th:classappend="${tag.metadata.name == tagItem.metadata.name} ? 'select'"
                        th:each="tagItem : ${tags}"
                        th:href="@{${tagItem.status.permalink}}"
-                       th:id="${tagItem.spec.slug}">
+                       th:id="${'tag-' + tagItem.spec.slug}">
                         <span class="tags-punctuation">[[${tagItem.spec.displayName}]]</span>
                         <span class="tagsPageCount" th:text="${tagItem.status.visiblePostCount}"></span>
                     </a>
                 </div>
                 <!-- 文章 -->
-                <th:block th:replace="~{macro/post-list :: post-list(${'/tags/'+tag.spec.slug})}" />
+                <th:block th:replace="~{macro/post-list :: post-list(${tag.status.permalink})}" />
             </div>
             <!-- sidebar -->
             <div th:replace="~{modules/aside :: aside(${theme.config.sidebar.widgetss.tagWidget})}"></div>

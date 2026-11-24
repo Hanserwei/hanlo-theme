@@ -5,5 +5,5 @@
     <a class="category-bar-more" href="/tags"
        th:if="${#strings.equals(theme.config.layout.navs.navMore, 'tags') }">更多</a>
     <a class="category-bar-more" th:href="@{${theme.config.layout.navs.navMoreCustomUrl}}"
-       th:if="${#strings.equals(theme.config.layout.navs.navMore, 'customUrl') }">更多</a>
+       th:if="${#strings.equals(theme.config.layout.navs.navMore, 'customUrl') && not #strings.isEmpty(theme.config.layout.navs.navMoreCustomUrl)}">更多</a>
 </th:block>
