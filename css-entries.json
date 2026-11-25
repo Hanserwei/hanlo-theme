@@ -18,6 +18,7 @@
   "related-posts-six": "src/css/components/related-posts-six.css",
   "related-posts-two": "src/css/components/related-posts-two.css",
   "shiki": "src/css/components/shiki.css",
+  "tag-cloud": "src/css/pages/tag-cloud.css",
   "ten-year": "src/css/components/ten-year.css",
   "todolist": "src/css/pages/todolist.css"
 }

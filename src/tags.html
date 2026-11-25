@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{modules/layouts/layout :: layout(content = ~{::content},htmlType = 'tag',title = ${'标签' + ' | ' + site.title}, head = ~{::head})}">
 
 <th:block th:fragment="head">
@@ -8,6 +8,8 @@
                 _cover = ${theme.config.other.opengraph.image},
                 _excerpt = ${site.seo.description},
                 _type = 'website')}"></th:block>
+    <link rel="stylesheet" data-hanlo-page-style
+          th:href="${assets_link + '/css/tag-cloud-' + theme.spec.version + '.css' + theme_version}">
 </th:block>
 <th:block th:fragment="content">
 
@@ -16,19 +18,34 @@
             <nav th:replace="~{modules/nav :: nav(title = '标签')}"></nav>
         </header>
         <main class="layout hide-aside" id="content-inner">
-            <div id="page"><h1 class="page-title hl:inline">标签</h1>
-                <div class="tag-cloud-title is-center">标签 - <span class="tag-cloud-amount">0</span></div>
-                <div class="tag-cloud-list is-center">
-                    <a th:each="tagItem : ${tagFinder.listAll()}"
-                       th:href="@{${tagItem.status.permalink}}"
-                           class="hl:[font-size:1em] hanlo-dynamic-color"
-                           th:id="${tagItem.spec.displayName}" th:style="'--hanlo-dynamic-color:' + ${tagItem.spec.color}">
-                        <span class="tags-punctuation">[[${tagItem.spec.displayName}]]</span>
-
-                        <span class="tagsPageCount">[[${tagItem.status.visiblePostCount}]]</span>
-                    </a>
-
-                </div>
+            <div id="page">
+                <section class="tag-index" data-tag-index aria-labelledby="tag-index-title">
+                    <header class="tag-index__header">
+                        <div class="tag-index__heading">
+                            <h1 id="tag-index-title">标签</h1>
+                            <span class="tag-index__total" th:text="${#lists.size(tags) + ' 个标签'}"></span>
+                        </div>
+                        <div class="tag-index__toggle" role="group" aria-label="标签视图" data-tag-controls hidden>
+                            <button type="button" data-tag-view="cloud" aria-pressed="false" aria-controls="tag-index-items">3D 词云</button>
+                            <button type="button" data-tag-view="list" aria-pressed="true" aria-controls="tag-index-items">列表</button>
+                        </div>
+                    </header>
+                    <div class="tag-index__stage" th:if="${not #lists.isEmpty(tags)}">
+                        <ul class="tag-index__items tag-cloud-list is-center" id="tag-index-items" role="list">
+                            <li class="tag-index__item" th:each="tagItem : ${tags}"
+                                th:with="count=${tagItem.postCount ?: 0}" th:data-count="${count}">
+                                <a class="tag-index__link hanlo-dynamic-color" th:href="@{${tagItem.status.permalink}}"
+                                   th:style="|--hanlo-dynamic-color:${tagItem.spec.color}|"
+                                   th:attr="aria-label=${tagItem.spec.displayName + '，' + count + ' 篇文章'}">
+                                    <span class="tag-index__name tags-punctuation" th:text="${tagItem.spec.displayName}"></span>
+                                    <span class="tag-index__count tagsPageCount" aria-hidden="true" th:text="${count}"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <p class="tag-index__hint">拖动旋转</p>
+                    </div>
+                    <p class="tag-index__empty" th:if="${#lists.isEmpty(tags)}">暂无标签</p>
+                </section>
             </div>
         </main>
         <!-- 底部 -->
